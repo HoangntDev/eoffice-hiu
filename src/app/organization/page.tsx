@@ -1,0 +1,2 @@
+import { OrganizationConsole } from "@/components/organization-console";
+export default function OrganizationPage(){return <main className="page"><div className="page-header"><div><p className="eyebrow">Phạm vi tổ chức thật</p><h1>Danh mục và phân quyền</h1><p className="lead">Đoàn Trường quản lý toàn cục; Đoàn Khoa chỉ quản lý Lớp thuộc Khoa mình; Ban chỉ cấp CTV trong Ban.</p></div></div><OrganizationConsole/></main>;}
