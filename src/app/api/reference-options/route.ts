@@ -1,0 +1,7 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { requireUser } from "@/lib/auth/dal";
+import { apiError,HttpError,readJson } from "@/lib/http";
+
+const schema=z.object({category:z.enum(["education_level","specialization","political_theory","it_level","foreign_language","occupation"]),code:z.string().trim().min(1).max(50),label:z.string().trim().min(1).max(250),sourceNote:z.string().trim().min(5).max(500),isActive:z.boolean(),validFrom:z.iso.date(),validTo:z.union([z.iso.date(),z.literal(""),z.null()]).optional(),roleGrantId:z.uuid()}).strict();
+export async function POST(request:Request){try{const input=schema.parse(await readJson(request));const{user,supabase}=await requireUser();const{data:role}=await supabase.from("role_grants").select("role_code").eq("id",input.roleGrantId).eq("user_id",user.id).is("revoked_at",null).maybeSingle();if(!role||!["school_admin","office"].includes(role.role_code))throw new HttpError(403,"FORBIDDEN","Chỉ Đoàn Trường/Văn phòng được quản lý danh mục chính thức.");const{data,error}=await supabase.rpc("save_reference_option",{p_category:input.category,p_code:input.code,p_label:input.label,p_source_note:input.sourceNote,p_is_active:input.isActive,p_valid_from:input.validFrom,p_valid_to:input.validTo||null,p_role_grant_id:input.roleGrantId});if(error)throw new HttpError(422,"REFERENCE_OPTION_SAVE_FAILED","Không thể lưu; cần nguồn và khoảng hiệu lực hợp lệ.");return NextResponse.json({id:data,message:"Đã lưu lựa chọn từ nguồn được ghi nhận."});}catch(error){return apiError(error);}}
