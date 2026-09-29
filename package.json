@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:db": "supabase test db",
+    "db:reset": "supabase db reset",
+    "catalog:import": "node scripts/import-academic-catalog.mjs",
+    "admin:bootstrap": "node scripts/bootstrap-school-admin.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

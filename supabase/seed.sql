@@ -1,0 +1,2 @@
+-- Intentionally empty. Academic catalog and official reference options must be
+-- imported from authoritative operator-provided files; no fictional data is seeded.
