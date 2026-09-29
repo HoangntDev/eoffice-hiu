@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HIU Youth E-Office
 
-## Getting Started
+Đồ án cá nhân môn Software Development, Operations and Maintenance. Nhánh này triển khai nền tảng và hai use case Prompt 01; chưa phải đồ án hoàn chỉnh hay release v1.0/v1.1. Xem [phạm vi, kiến trúc và ERD](docs/requirements/mvp-scope.md).
 
-First, run the development server:
+## Yêu cầu và chạy local
+
+Node.js 24, npm 12, Docker và Supabase CLI. Vercel CLI chưa có trong môi trường hiện tại; cài `npm i -g vercel` để dùng `vercel env pull`, deploy và logs.
 
 ```bash
+npm ci
+supabase start
+supabase db reset
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Điền `.env.local` từ Supabase local/cloud và không commit. `SUPABASE_SERVICE_ROLE_KEY`/`AUTH_RATE_LIMIT_PEPPER` chỉ dùng server. Local Auth bật email confirmation; xem email thử bằng Mailpit của `supabase start`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Kiểm tra
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run typecheck
+npm test
+supabase test db
+npm run build
+```
 
-## Learn More
+## Import danh mục
 
-To learn more about Next.js, take a look at the following resources:
+CSV phải đúng header `STT,Khoa,Ngành,Lớp,Khóa,Số hiệu,Thứ tự khoa`. Dry-run mặc định:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run catalog:import -- /absolute/path/KHOA_NGANH_KHOA_CHI_DOAN.csv
+npm run catalog:import -- /absolute/path/KHOA_NGANH_KHOA_CHI_DOAN.csv --apply
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Không dùng sheet XLSX ngoài `KHOA_NGANH_KHOA_CHI_DOAN`; repo chưa có bộ chuyển XLSX. Không đưa workbook chứa hồ sơ cá nhân vào repo.
 
-## Deploy on Vercel
+## Bootstrap Đoàn Trường
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Đăng ký tài khoản cá nhân và xác minh Gmail.
+2. Lấy UUID tại Supabase Studio → Authentication → Users.
+3. Chạy đúng một lần:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run admin:bootstrap -- --user-id <UUID> --confirm
+```
+
+Sau đó Đoàn Trường quản lý quyền tại `/organization`. Hàm từ chối nếu đã có school admin hoạt động.
+
+## Cloud/Vercel — chỉ khi được ủy quyền
+
+```bash
+npm i -g vercel
+vercel link
+vercel env pull .env.local --yes
+supabase link --project-ref <PROJECT_REF>
+supabase db push --linked --dry-run
+# xem kỹ, backup rồi mới chạy: supabase db push --linked
+```
+
+Dashboard checklist:
+
+- Supabase Auth Site URL `https://doanhoihiu.io.vn`; thêm `https://doanhoihiu.io.vn/auth/confirm` và preview URL cần thiết.
+- Bật Confirm email và double confirmation khi đổi email; giữ mật khẩu tối thiểu 6 ký tự cho đến khi có quyết định khác.
+- Cấu hình SMTP Resend thật, sender domain đã verify, template confirmation/recovery về `/auth/confirm`.
+- Vercel khai báo bốn biến trong `.env.example`; không đưa service-role key ra client.
+- Smoke test đăng ký → email → profile và restore drill trước khi gắn release.
+
+## Vận hành
+
+- [Backup/restore](docs/operations/backup-restore.md)
+- [Test evidence](docs/testing/test-report.md)
+- Không tự tạo INC-01/CR-01; chỉ ghi sau sự kiện và phê duyệt thật.
