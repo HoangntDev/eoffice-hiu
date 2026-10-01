@@ -1,5 +1,5 @@
 begin;
-select plan(8);
+select plan(10);
 
 insert into auth.users(id, email) values
   ('10000000-0000-4000-8000-000000000001', 'admin-test@gmail.com'),
@@ -15,8 +15,8 @@ insert into public.accounts(user_id, student_code, status) values
 insert into public.account_emails(user_id, email, verified_at)
 select id, email, now() from auth.users where id::text like '10000000-%';
 
-select public.import_academic_catalog(
-  '[{"STT":"1","Khoa":"Khoa A","Ngành":"Ngành A","Lớp":"00AUTH0001","Khóa":"2026","Số hiệu":"01","Thứ tự khoa":"1"}]'::jsonb,
+select public.import_academic_catalog_v2(
+  '[{"lineNumber":2,"facultyName":"Khoa A","programName":"Ngành A","classCode":"00AUTH0001","cohortCode":"DHCQK2026","educationLevel":"Đại học","trainingType":"Chính quy"}]'::jsonb,
   'auth-test.csv', 'auth-test-sha', false
 );
 
@@ -59,6 +59,16 @@ select lives_ok(
 select is((select status from public.union_memberships where user_id='10000000-0000-4000-8000-000000000004'), 'recognized', 'recognition creates membership');
 
 select set_config('request.jwt.claim.sub', '10000000-0000-4000-8000-000000000004', true);
+select lives_ok(
+  $$select public.save_student_profile('Sinh viên Kiểm thử', 'female', '0900000000',
+    (select id from public.classes where current_code = '00AUTH0001'))$$,
+  'server accepts a class with a valid Khoa-Ngành-Khóa relationship'
+);
+select throws_ok(
+  $$select public.save_student_profile('Sinh viên Kiểm thử', 'female', '0900000000',
+    'ffffffff-ffff-4fff-8fff-ffffffffffff')$$,
+  'P0001', 'INVALID_OR_INACTIVE_CLASS', 'server rejects a class outside the active catalog'
+);
 select is((select count(*) from public.union_applications), 1::bigint, 'student can read own application through RLS');
 select throws_ok(
   $$select public.change_student_code('10000000-0000-4000-8000-000000000004','0000000099','Tự đổi trái phép',null)$$,

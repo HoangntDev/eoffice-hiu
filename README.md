@@ -28,14 +28,17 @@ npm run build
 
 ## Import danh mục
 
-CSV phải đúng header `STT,Khoa,Ngành,Lớp,Khóa,Số hiệu,Thứ tự khoa`. Dry-run mặc định:
+CSV phải đúng header và thứ tự `Khoa chủ quản,Tên lớp học,Khóa học,Bậc đào tạo,Loại đào tạo,Ngành`. Importer giữ nguyên mã Lớp, không suy đoán giá trị trống và mặc định chặn URL Supabase không phải local. Nạp biến local mà không in khóa, rồi chạy dry-run trước:
 
 ```bash
-npm run catalog:import -- /absolute/path/KHOA_NGANH_KHOA_CHI_DOAN.csv
-npm run catalog:import -- /absolute/path/KHOA_NGANH_KHOA_CHI_DOAN.csv --apply
+eval "$(supabase status -o env 2>/dev/null)"
+NEXT_PUBLIC_SUPABASE_URL="$API_URL" SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" \
+  npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv"
+NEXT_PUBLIC_SUPABASE_URL="$API_URL" SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" \
+  npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv" --apply
 ```
 
-Không dùng sheet XLSX ngoài `KHOA_NGANH_KHOA_CHI_DOAN`; repo chưa có bộ chuyển XLSX. Không đưa workbook chứa hồ sơ cá nhân vào repo.
+Chạy lại lệnh `--apply` phải trả về `alreadyApplied: true` và số thêm/cập nhật bằng 0. Cờ `--allow-remote` chỉ dùng khi có phê duyệt riêng, backup và dry-run đã được kiểm tra. Không đưa workbook chứa hồ sơ cá nhân vào repo.
 
 ## Bootstrap Đoàn Trường
 

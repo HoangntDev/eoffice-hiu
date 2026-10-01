@@ -1,0 +1,348 @@
+Khoa chủ quản,Tên lớp học,Khóa học,Bậc đào tạo,Loại đào tạo,Ngành
+Khoa Công Nghệ - Kỹ Thuật,SH21DHCQ-1,DHCQK2021,Đại học,Chính quy,Công nghệ sinh học
+Khoa Công Nghệ - Kỹ Thuật,TH21DH-CN2,DHCQK2021,Đại học,Chính quy,Công nghệ thông tin
+Khoa Công Nghệ - Kỹ Thuật,TH21DH-CN1,DHCQK2021,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,DD21DH-DK2,DHCQK2021,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,DD21DH-DK1,DHCQK2021,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,DM21DH-DM4,DHCQK2021,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM21DH-DM1,DHCQK2021,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM21DH-DM3,DHCQK2021,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM21DH-DM2,DHCQK2021,Đại học,Chính quy,Digital Marketing
+Khoa Dược,DS21DH-DS1,DHCQK2021,Đại học,Chính quy,Dược học
+Khoa Dược,DS21DH-DS3,DHCQK2021,Đại học,Chính quy,Dược học
+Khoa Dược,DS21DH-DS4,DHCQK2021,Đại học,Chính quy,Dược học
+Khoa Dược,DS21DH-DS2,DHCQK2021,Đại học,Chính quy,Dược học
+Khoa Khoa Học Xã Hội,EE21DH-CD1,DHCQK2021,Đại học,Chính quy,Giáo dục mầm non
+Khoa Khoa Học Xã Hội,GQ21DH-TC1,DHCQK2021,Đại học,Chính quy,Giáo dục thể chất
+Khoa Khoa Học Xã Hội,PE21DH-PE1,DHCQK2021,Đại học,Chính quy,Giáo dục tiểu học
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-HQ1,DHCQK2021,Đại học,Chính quy,Hàn Quốc học
+Khoa Điều Dưỡng - Hộ Sinh,MW21DH-MW1,DHCQK2021,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,AC21DH-CO1,DHCQK2021,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC21DH-DT1,DHCQK2021,Đại học,Chính quy,Kiến trúc
+Khoa Kỹ Thuật Phục Hồi Chức Năng,VL21DH-PN2,DHCQK2021,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,VL21DH-PN1,DHCQK2021,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Công Nghệ - Kỹ Thuật,XD21DH-DD1,DHCQK2021,Đại học,Chính quy,Kỹ thuật xây dựng
+Khoa Xét Nghiệm Y Học,XN21DH-XN3,DHCQK2021,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,XN21DH-XN2,DHCQK2021,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,XN21DH-XN1,DHCQK2021,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Công Nghệ - Kỹ Thuật,LO21DHE-LO1,DHCQK2021,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Công Nghệ - Kỹ Thuật,LO21DH-LO1,DHCQK2021,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Công Nghệ - Kỹ Thuật,LO21DH-LO2,DHCQK2021,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,LA21DH-LA1,DHCQK2021,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,LE21DH-LE1,DHCQK2021,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-AV3,DHCQK2021,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-AV1,DHCQK2021,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-AV2,DHCQK2021,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-NB1,DHCQK2021,Đại học,Chính quy,Nhật Bản học
+Khoa Khoa Học Xã Hội,PR21DH-PR1,DHCQK2021,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,XH21DH-QT1,DHCQK2021,Đại học,Chính quy,Quan hệ quốc tế
+Khoa Khoa Học Xã Hội,EM21DH-EM1,DHCQK2021,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,TM21DH-TM1,DHCQK2021,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,HM21DH-HM1,DHCQK2021,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,QT21DH-QT3,DHCQK2021,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT21DH-QT1,DHCQK2021,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT21DH-QT2,DHCQK2021,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT21DH-QT4,DHCQK2021,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,EV21DH-EV1,DHCQK2021,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,OS21DHE-OS1,DHCQK2021,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS21DHB-OS1,DHCQK2021,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS21DHB-OS3,DHCQK2021,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS21DHB-OS2,DHCQK2021,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,TK21DH-NH2,DHCQK2021,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Kinh Tế - Quản Trị,TK21DH-NH1,DHCQK2021,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,PS21DH-PS1,DHCQK2021,Đại học,Chính quy,Tâm lý học
+Khoa Công Nghệ - Kỹ Thuật,MT21DH-DH1,DHCQK2021,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Công Nghệ - Kỹ Thuật,MT21DH-TT1,DHCQK2021,Đại học,Chính quy,Thiết kế thời trang
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN21DH-TQ1,DHCQK2021,Đại học,Chính quy,Trung Quốc học
+Khoa Khoa Học Xã Hội,XH21DH-NV1,DHCQK2021,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Khoa Học Xã Hội,XH21DH-NV2,DHCQK2021,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Y,MD21DHE-MD1,DHCQK2021,Đại học,Chính quy,Y khoa
+Khoa Y,MD21DHE-MD2,DHCQK2021,Đại học,Chính quy,Y khoa
+Khoa Y,MD21DH-MD3,DHCQK2021,Đại học,Chính quy,Y khoa
+Khoa Y,MD21DH-MD1,DHCQK2021,Đại học,Chính quy,Y khoa
+Khoa Y,MD21DH-MD2,DHCQK2021,Đại học,Chính quy,Y khoa
+Khoa Công Nghệ - Kỹ Thuật,TH22DH-CN1,DHCQK2022,Đại học,Chính quy,Công nghệ thông tin
+Khoa Công Nghệ - Kỹ Thuật,TH22DH-CN2,DHCQK2022,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,DD22DH-DK2,DHCQK2022,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,DD22DH-DK1,DHCQK2022,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,DM22DH-DM4,DHCQK2022,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM22DH-DM2,DHCQK2022,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM22DH-DM3,DHCQK2022,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,DM22DH-DM1,DHCQK2022,Đại học,Chính quy,Digital Marketing
+Khoa Dược,DS22DH-DS4,DHCQK2022,Đại học,Chính quy,Dược học
+Khoa Dược,DS22DH-DS1,DHCQK2022,Đại học,Chính quy,Dược học
+Khoa Dược,DS22DH-DS3,DHCQK2022,Đại học,Chính quy,Dược học
+Khoa Dược,DS22DH-DS2,DHCQK2022,Đại học,Chính quy,Dược học
+Khoa Khoa Học Xã Hội,EE22DH-CD1,DHCQK2022,Đại học,Chính quy,Giáo dục mầm non
+Khoa Khoa Học Xã Hội,PE22DH-PE1,DHCQK2022,Đại học,Chính quy,Giáo dục tiểu học
+Khoa Điều Dưỡng - Hộ Sinh,MW22DH-MW1,DHCQK2022,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,AC22DH-CO1,DHCQK2022,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC22DH-DT1,DHCQK2022,Đại học,Chính quy,Kiến trúc
+Khoa Kỹ Thuật Phục Hồi Chức Năng,VL22DH-PN1,DHCQK2022,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Xét Nghiệm Y Học,XN22DH-XN1,DHCQK2022,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,XN22DH-XN2,DHCQK2022,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Công Nghệ - Kỹ Thuật,LO22DH-LO2,DHCQK2022,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Công Nghệ - Kỹ Thuật,LO22DH-LO1,DHCQK2022,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,LA22DH-LA1,DHCQK2022,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,LE22DH-LE1,DHCQK2022,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN22DH-AV2,DHCQK2022,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN22DH-AV1,DHCQK2022,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN22DH-HQ1,DHCQK2022,Đại học,Chính quy,Ngôn ngữ Hàn Quốc
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN22DH-NB1,DHCQK2022,Đại học,Chính quy,Ngôn ngữ Nhật
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,NN22DH-TQ1,DHCQK2022,Đại học,Chính quy,Ngôn ngữ Trung Quốc
+Khoa Khoa Học Xã Hội,PR22DH-PR1,DHCQK2022,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,PR22DH-PR2,DHCQK2022,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,XH22DH-QT1,DHCQK2022,Đại học,Chính quy,Quan hệ quốc tế
+Khoa Khoa Học Xã Hội,EM22DH-EM1,DHCQK2022,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,TM22DH-TM1,DHCQK2022,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,HM22DH-HM1,DHCQK2022,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,QT22DH-QT4,DHCQK2022,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT22DH-QT1,DHCQK2022,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT22DH-QT3,DHCQK2022,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,QT22DH-QT2,DHCQK2022,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,EV22DH-EV1,DHCQK2022,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,OS22DHE-OS1,DHCQK2022,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS22DH-OS1,DHCQK2022,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS22DH-OS2,DHCQK2022,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS22DH-OS3,DHCQK2022,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,OS22DH-OS4,DHCQK2022,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,TK22DH-NH2,DHCQK2022,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Kinh Tế - Quản Trị,TK22DH-NH1,DHCQK2022,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,PS22DH-PS1,DHCQK2022,Đại học,Chính quy,Tâm lý học
+Khoa Công Nghệ - Kỹ Thuật,MT22DH-DH1,DHCQK2022,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Kinh Tế - Quản Trị,EC22DH-EC1,DHCQK2022,Đại học,Chính quy,Thương mại điện tử
+Khoa Khoa Học Xã Hội,XH22DH-NV1,DHCQK2022,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Khoa Học Xã Hội,XH22DH-NV2,DHCQK2022,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Y,YC22DH-YC1,DHCQK2022,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,MD22DHE-MD1,DHCQK2022,Đại học,Chính quy,Y khoa
+Khoa Y,MD22DH-MD2,DHCQK2022,Đại học,Chính quy,Y khoa
+Khoa Y,MD22DH-MD3,DHCQK2022,Đại học,Chính quy,Y khoa
+Khoa Y,MD22DH-MD1,DHCQK2022,Đại học,Chính quy,Y khoa
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-CT2,DHCQK2023,Đại học,Chính quy,Công nghệ thông tin
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-CT1,DHCQK2023,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,KĐ23QĐV-ĐD2,DHCQK2023,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ23QĐV-ĐD1,DHCQK2023,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,KK23QĐV-DM2,DHCQK2023,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,KK23QĐV-DM1,DHCQK2023,Đại học,Chính quy,Digital Marketing
+Khoa Dược,KD23QĐV-DH3,DHCQK2023,Đại học,Chính quy,Dược học
+Khoa Dược,KD23QĐV-DH4,DHCQK2023,Đại học,Chính quy,Dược học
+Khoa Dược,KD23QĐV-DH1,DHCQK2023,Đại học,Chính quy,Dược học
+Khoa Dược,KD23QĐV-DH2,DHCQK2023,Đại học,Chính quy,Dược học
+Khoa Khoa Học Xã Hội,VK23QĐV-GT1,DHCQK2023,Đại học,Chính quy,Giáo dục tiểu học
+Khoa Điều Dưỡng - Hộ Sinh,KĐ23QĐV-HS1,DHCQK2023,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,KK23QĐV-KT1,DHCQK2023,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-KC1,DHCQK2023,Đại học,Chính quy,Kiến trúc
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP23QĐV-KP1,DHCQK2023,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Xét Nghiệm Y Học,KX23QĐV-KX2,DHCQK2023,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,KX23QĐV-KX1,DHCQK2023,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-LQ2,DHCQK2023,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-LQ1,DHCQK2023,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,KK23QĐV-LH1,DHCQK2023,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,KK23QĐV-LK1,DHCQK2023,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN23QĐV-NA1,DHCQK2023,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN23QĐV-NH1,DHCQK2023,Đại học,Chính quy,Ngôn ngữ Hàn Quốc
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN23QĐV-NN1,DHCQK2023,Đại học,Chính quy,Ngôn ngữ Nhật
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN23QĐV-NT1,DHCQK2023,Đại học,Chính quy,Ngôn ngữ Trung Quốc
+Khoa Khoa Học Xã Hội,KH23QĐV-QC1,DHCQK2023,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,KH23QĐV-QH1,DHCQK2023,Đại học,Chính quy,Quan hệ quốc tế
+Khoa Khoa Học Xã Hội,VK23QĐV-QG1,DHCQK2023,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,KK23QĐV-QD1,DHCQK2023,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,KK23QĐV-QN1,DHCQK2023,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,KK23QĐV-QK2,DHCQK2023,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK23QĐV-QK1,DHCQK2023,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK23QĐV-QS1,DHCQK2023,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,KR23QĐA-RM1,DHCQK2023,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR23QĐV-RM2,DHCQK2023,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR23QĐV-RM3,DHCQK2023,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR23QĐV-RM4,DHCQK2023,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR23QĐV-RM1,DHCQK2023,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,KK23QĐV-TN1,DHCQK2023,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,KH23QĐV-TL1,DHCQK2023,Đại học,Chính quy,Tâm lý học
+Khoa Công Nghệ - Kỹ Thuật,KC23QĐV-TĐ1,DHCQK2023,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Kinh Tế - Quản Trị,KK23QĐV-TM1,DHCQK2023,Đại học,Chính quy,Thương mại điện tử
+Khoa Khoa Học Xã Hội,KH23QĐV-TT1,DHCQK2023,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Khoa Học Xã Hội,KH23QĐV-TT2,DHCQK2023,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Y,KY23QĐV-YC1,DHCQK2023,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY23QĐA-YK2,DHCQK2023,Đại học,Chính quy,Y khoa
+Khoa Y,KY23QĐA-YK1,DHCQK2023,Đại học,Chính quy,Y khoa
+Khoa Y,KY23QĐV-YK1,DHCQK2023,Đại học,Chính quy,Y khoa
+Khoa Y,KY23QĐV-YK2,DHCQK2023,Đại học,Chính quy,Y khoa
+Khoa Y,KY23QĐV-YK3,DHCQK2023,Đại học,Chính quy,Y khoa
+Khoa Công Nghệ - Kỹ Thuật,KC24QĐV-CT1,DHCQK2024,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,KĐ24QĐV-ĐD2,DHCQK2024,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ24QĐV-ĐD3,DHCQK2024,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ24QĐV-ĐD1,DHCQK2024,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,KK24QĐV-DM2,DHCQK2024,Đại học,Chính quy,Digital Marketing
+Khoa Kinh Tế - Quản Trị,KK24QĐV-DM1,DHCQK2024,Đại học,Chính quy,Digital Marketing
+Khoa Y,KĐ24QĐV-DD1,DHCQK2024,Đại học,Chính quy,Dinh dưỡng
+Khoa Dược,KD24QĐV-DH3,DHCQK2024,Đại học,Chính quy,Dược học
+Khoa Dược,KD24QĐV-DH1,DHCQK2024,Đại học,Chính quy,Dược học
+Khoa Dược,KD24QĐV-DH2,DHCQK2024,Đại học,Chính quy,Dược học
+Khoa Điều Dưỡng - Hộ Sinh,KĐ24QĐV-HS1,DHCQK2024,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,KK24QĐV-KT1,DHCQK2024,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC24QĐV-KC1,DHCQK2024,Đại học,Chính quy,Kiến trúc
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP24QĐV-KP2,DHCQK2024,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP24QĐV-KP1,DHCQK2024,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Xét Nghiệm Y Học,KX24QĐV-KX2,DHCQK2024,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,KX24QĐV-KX1,DHCQK2024,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Công Nghệ - Kỹ Thuật,KC24QĐV-LQ1,DHCQK2024,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,KK24QĐV-LH1,DHCQK2024,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,KK24QĐV-LK1,DHCQK2024,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN24QĐV-NA1,DHCQK2024,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN24QĐV-NH1,DHCQK2024,Đại học,Chính quy,Ngôn ngữ Hàn Quốc
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN24QĐV-NN1,DHCQK2024,Đại học,Chính quy,Ngôn ngữ Nhật
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN24QĐV-NT1,DHCQK2024,Đại học,Chính quy,Ngôn ngữ Trung Quốc
+Khoa Khoa Học Xã Hội,KH24QĐV-QC1,DHCQK2024,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,KH24QĐV-QH1,DHCQK2024,Đại học,Chính quy,Quan hệ quốc tế
+Khoa Khoa Học Xã Hội,VK24QĐV-QG1,DHCQK2024,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,KK24QĐV-QD1,DHCQK2024,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,KK24QĐV-QN1,DHCQK2024,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,KK24QĐV-QK2,DHCQK2024,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK24QĐV-QK1,DHCQK2024,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK24QĐV-QS1,DHCQK2024,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,KR24QĐV-RM6,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR24QĐV-RM5,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR24QĐV-RM3,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR24QĐV-RM1,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR24QĐV-RM2,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR24QĐV-RM4,DHCQK2024,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,KK24QĐV-TN1,DHCQK2024,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,KH24QĐV-TL1,DHCQK2024,Đại học,Chính quy,Tâm lý học
+Khoa Công Nghệ - Kỹ Thuật,KC24QĐV-TĐ1,DHCQK2024,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Kinh Tế - Quản Trị,KK24QĐV-TM1,DHCQK2024,Đại học,Chính quy,Thương mại điện tử
+Khoa Khoa Học Xã Hội,KH24QĐV-TT2,DHCQK2024,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Khoa Học Xã Hội,KH24QĐV-TT1,DHCQK2024,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Y,KY24QĐV-YC1,DHCQK2024,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY24QĐV-YC2,DHCQK2024,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY24QĐA-YK2,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐA-YK1,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐV-YK4,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐV-YK3,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐV-YK2,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐV-YK1,DHCQK2024,Đại học,Chính quy,Y khoa
+Khoa Y,KY24QĐV-YT1,DHCQK2024,Đại học,Chính quy,Y tế công cộng
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-CS1,DHCQK2025,Đại học,Chính quy,Công nghệ sinh học
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-CT1,DHCQK2025,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,KĐ25QĐA-ĐD1,DHCQK2025,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ25QĐV-ĐD1,DHCQK2025,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ25QĐV-ĐD3,DHCQK2025,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ25QĐV-ĐD2,DHCQK2025,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,KK25QĐV-DM1,DHCQK2025,Đại học,Chính quy,Digital Marketing
+Khoa Y,KĐ25QĐV-DD1,DHCQK2025,Đại học,Chính quy,Dinh dưỡng
+Khoa Dược,KD25QĐV-DH2,DHCQK2025,Đại học,Chính quy,Dược học
+Khoa Dược,KD25QĐV-DH1,DHCQK2025,Đại học,Chính quy,Dược học
+Khoa Điều Dưỡng - Hộ Sinh,KĐ25QĐV-HS1,DHCQK2025,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,KK25QĐV-KT1,DHCQK2025,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-KC1,DHCQK2025,Đại học,Chính quy,Kiến trúc
+Khoa Kinh Tế - Quản Trị,KK25QĐV-KQ1,DHCQK2025,Đại học,Chính quy,Kinh doanh quốc tế
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-KĐ1,DHCQK2025,Đại học,Chính quy,Kỹ Thuật Cơ Điện Tử
+Khoa Y,KY25QĐV-KH1,DHCQK2025,Đại học,Chính quy,Kỹ thuật hình ảnh y học
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP25QĐV-KP1,DHCQK2025,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP25QĐV-KP2,DHCQK2025,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Xét Nghiệm Y Học,KX25QĐV-KX2,DHCQK2025,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,KX25QĐV-KX1,DHCQK2025,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Y,KC25QĐV-KY1,DHCQK2025,Đại học,Chính quy,Kỹ thuật y sinh
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-LQ1,DHCQK2025,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,KH25QĐV-LH1,DHCQK2025,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,KH25QĐV-LK1,DHCQK2025,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN25QĐV-NA1,DHCQK2025,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN25QĐV-NH1,DHCQK2025,Đại học,Chính quy,Ngôn ngữ Hàn Quốc
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN25QĐV-NT1,DHCQK2025,Đại học,Chính quy,Ngôn ngữ Trung Quốc
+Khoa Khoa Học Xã Hội,KH25QĐV-QC1,DHCQK2025,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,VK25QĐV-QG1,DHCQK2025,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,KK25QĐV-QD1,DHCQK2025,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,KK25QĐV-QN1,DHCQK2025,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,KK25QĐV-QK1,DHCQK2025,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK25QĐV-QS1,DHCQK2025,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,KR25QĐA-RM1,DHCQK2025,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR25QĐV-RM2,DHCQK2025,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR25QĐV-RM1,DHCQK2025,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR25QĐV-RM3,DHCQK2025,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR25QĐV-RM4,DHCQK2025,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,KK25QĐV-TN1,DHCQK2025,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,KH25QĐV-TL1,DHCQK2025,Đại học,Chính quy,Tâm lý học
+Khoa Công Nghệ - Kỹ Thuật,KC25QĐV-TĐ1,DHCQK2025,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Kinh Tế - Quản Trị,KK25QĐV-TM1,DHCQK2025,Đại học,Chính quy,Thương mại điện tử
+Khoa Khoa Học Xã Hội,KH25QĐV-TT1,DHCQK2025,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Y,KY25QĐV-YC1,DHCQK2025,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY25QĐV-YC2,DHCQK2025,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY25QĐA-YK2,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐA-YK1,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YK4,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YK2,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YK3,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YK1,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YK5,DHCQK2025,Đại học,Chính quy,Y khoa
+Khoa Y,KY25QĐV-YT1,DHCQK2025,Đại học,Chính quy,Y tế công cộng
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-CS1,DHCQK2026,Đại học,Chính quy,Công nghệ sinh học
+Khoa Kinh Tế - Quản Trị,KK26QĐV-CN1,DHCQK2026,Đại học,Chính quy,Công nghệ tài chính
+Khoa Dược,KD26QĐV-CM1,DHCQK2026,Đại học,Chính quy,Công nghệ thẩm mỹ
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-CT1,DHCQK2026,Đại học,Chính quy,Công nghệ thông tin
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐA-ĐD2,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐA-ĐD1,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-ĐD5,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-ĐD1,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-ĐD2,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-ĐD3,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-ĐD4,DHCQK2026,Đại học,Chính quy,Điều dưỡng
+Khoa Kinh Tế - Quản Trị,KK26QĐV-DM1,DHCQK2026,Đại học,Chính quy,Digital Marketing
+Khoa Y,KY26QĐV-DD1,DHCQK2026,Đại học,Chính quy,Dinh dưỡng
+Khoa Dược,KD26QĐA-DH1,DHCQK2026,Đại học,Chính quy,Dược học
+Khoa Dược,KD26QĐV-DH3,DHCQK2026,Đại học,Chính quy,Dược học
+Khoa Dược,KD26QĐV-DH2,DHCQK2026,Đại học,Chính quy,Dược học
+Khoa Dược,KD26QĐV-DH1,DHCQK2026,Đại học,Chính quy,Dược học
+Khoa Điều Dưỡng - Hộ Sinh,KĐ26QĐV-HS1,DHCQK2026,Đại học,Chính quy,Hộ sinh
+Khoa Kinh Tế - Quản Trị,KK26QĐV-KT1,DHCQK2026,Đại học,Chính quy,Kế toán
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-KC1,DHCQK2026,Đại học,Chính quy,Kiến trúc
+Khoa Kinh Tế - Quản Trị,KK26QĐV-KQ1,DHCQK2026,Đại học,Chính quy,Kinh doanh quốc tế
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-KĐ1,DHCQK2026,Đại học,Chính quy,Kỹ Thuật Cơ Điện Tử
+Khoa Y,KY26QĐV-KH1,DHCQK2026,Đại học,Chính quy,Kỹ thuật hình ảnh y học
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP26QĐV-KP4,DHCQK2026,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP26QĐV-KP1,DHCQK2026,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP26QĐV-KP2,DHCQK2026,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Kỹ Thuật Phục Hồi Chức Năng,KP26QĐV-KP3,DHCQK2026,Đại học,Chính quy,Kỹ thuật Phục hồi chức năng
+Khoa Xét Nghiệm Y Học,KX26QĐV-KX3,DHCQK2026,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,KX26QĐV-KX1,DHCQK2026,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Xét Nghiệm Y Học,KX26QĐV-KX2,DHCQK2026,Đại học,Chính quy,Kỹ thuật xét nghiệm y học
+Khoa Y,KY26QĐV-KY1,DHCQK2026,Đại học,Chính quy,Kỹ thuật y sinh
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐA-LQ1,DHCQK2026,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-LQ1,DHCQK2026,Đại học,Chính quy,Logistics và quản lý chuỗi cung ứng
+Khoa Kinh Tế - Quản Trị,KK26QĐV-LH1,DHCQK2026,Đại học,Chính quy,Luật
+Khoa Kinh Tế - Quản Trị,Kk26QĐV-LK1,DHCQK2026,Đại học,Chính quy,Luật kinh tế
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN26QĐV-NA1,DHCQK2026,Đại học,Chính quy,Ngôn ngữ Anh
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN26QĐV-NH1,DHCQK2026,Đại học,Chính quy,Ngôn ngữ Hàn Quốc
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN26QĐV-NN1,DHCQK2026,Đại học,Chính quy,Ngôn ngữ Nhật
+Khoa Ngôn Ngữ Và Văn Hóa Quốc Tế,KN26QĐV-NT1,DHCQK2026,Đại học,Chính quy,Ngôn ngữ Trung Quốc
+Khoa Khoa Học Xã Hội,KH26QĐV-QC1,DHCQK2026,Đại học,Chính quy,Quan hệ công chúng
+Khoa Khoa Học Xã Hội,KH26QĐV-QH1,DHCQK2026,Đại học,Chính quy,Quan hệ quốc tế
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-QL1,DHCQK2026,Đại học,Chính quy,Quản Lý Công Nghiệp
+Khoa Khoa Học Xã Hội,KH26QĐV-QG1,DHCQK2026,Đại học,Chính quy,Quản lý Giáo dục
+Khoa Kinh Tế - Quản Trị,KK26QĐV-QD1,DHCQK2026,Đại học,Chính quy,Quản trị dịch vụ du lịch và lữ hành
+Khoa Kinh Tế - Quản Trị,KK26QĐV-QN1,DHCQK2026,Đại học,Chính quy,Quản trị khách sạn
+Khoa Kinh Tế - Quản Trị,KK26QĐV-QK1,DHCQK2026,Đại học,Chính quy,Quản trị kinh doanh
+Khoa Kinh Tế - Quản Trị,KK26QĐV-QS1,DHCQK2026,Đại học,Chính quy,Quản trị sự kiện
+Khoa Răng Hàm Mặt,KR26QĐA-RM1,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR26QĐV-RM3,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR26QĐV-RM1,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR26QĐV-RM2,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR26QĐV-RM4,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Răng Hàm Mặt,KR26QĐV-RM5,DHCQK2026,Đại học,Chính quy,Răng - Hàm - Mặt
+Khoa Kinh Tế - Quản Trị,KK26QĐV-TN1,DHCQK2026,Đại học,Chính quy,Tài chính - Ngân hàng
+Khoa Khoa Học Xã Hội,KH26QĐV-TL1,DHCQK2026,Đại học,Chính quy,Tâm lý học
+Khoa Khoa Học Xã Hội,KH26QĐV-TG1,DHCQK2026,Đại học,Chính quy,Tâm lý học giáo dục
+Khoa Công Nghệ - Kỹ Thuật,KC26QĐV-TĐ1,DHCQK2026,Đại học,Chính quy,Thiết kế đồ họa
+Khoa Kinh Tế - Quản Trị,KK26QĐV-TM1,DHCQK2026,Đại học,Chính quy,Thương mại điện tử
+Khoa Khoa Học Xã Hội,KH26QĐV-TT1,DHCQK2026,Đại học,Chính quy,Truyền thông đa phương tiện
+Khoa Khoa Học Xã Hội,KH26QĐV-VN1,DHCQK2026,Đại học,Chính quy,Việt Nam học
+Khoa Y,KY26QĐV-YC4,DHCQK2026,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY26QĐV-YC3,DHCQK2026,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY26QĐV-YC2,DHCQK2026,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY26QĐV-YC1,DHCQK2026,Đại học,Chính quy,Y học cổ truyền
+Khoa Y,KY26QĐA-YK2,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YK5,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐA-YK1,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YK4,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YK2,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YK3,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YK1,DHCQK2026,Đại học,Chính quy,Y khoa
+Khoa Y,KY26QĐV-YT1,DHCQK2026,Đại học,Chính quy,Y tế công cộng
