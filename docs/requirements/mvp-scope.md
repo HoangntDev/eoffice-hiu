@@ -24,12 +24,12 @@ Khoa, Ngành, Lớp/Chi đoàn dùng UUID bất biến và phiên bản `dateran
 1. 100% mutation xác thực server; mutation đặc quyền kiểm tra scope ở Route Handler/RPC và RLS. pgTAP kiểm truy cập trái phép.
 2. `supabase db reset` áp dụng sạch; importer chạy lại không nhân đôi; khoảng hiệu lực không chồng lấn.
 3. Đổi MSSV, quyền, danh mục, nộp/duyệt/Sổ có audit append-only; `authenticated` không sửa/xóa audit.
-4. API tối đa 1.000 dòng; mục tiêu staging với khoảng 307 Lớp dưới 2 giây (chưa đo staging).
+4. API tối đa 1.000 dòng; nguồn CSV hiện tại có 347 Lớp. Mục tiêu staging dưới 2 giây chưa được đo.
 5. CI chạy Node 24: lint, typecheck, unit test, build. Restore drill tách biệt bắt buộc trước release (chưa chạy cloud).
 
 ## Cần xác nhận / NEEDS_USER_ACTION
 
-- Repo không có CSV: chưa có bằng chứng 307 dòng/10 Khoa/45 Ngành. Cần đúng file CSV.
+- CSV `data/DSN LOPWS - Sheet1 (1).csv` đã được đối chiếu checksum với bản người dùng cung cấp: 347 dòng dữ liệu, 10 Khoa, 51 Ngành, 6 Khóa, 347 mã Lớp; không trùng mã hoặc thiếu ô. Import local ngày 02/10/2026 tạo đúng các số lượng này; chạy lại thêm/cập nhật 0 bản ghi.
 - CSV không có mã Khoa/Ngành riêng: importer giữ tên gốc, để mã chính thức `NULL`; cần nguồn mã.
 - Chưa có nguồn sáu danh mục trình độ/chuyên môn và checklist; UI cho người có quyền cấu hình, không seed giả.
 - Cần xác nhận quy tắc `cycle_key` sau `2026-2027` và nghiệp vụ rút Sổ mở rộng.

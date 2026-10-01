@@ -1,18 +1,23 @@
 "use client";
 
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-
-type CatalogRow = {
-  class_id:string; class_code:string; class_name:string; cohort_code:string;
-  program_id:string; program_name:string; faculty_id:string; faculty_name:string;
-};
+import {
+  getClassOptions,
+  getCohortOptions,
+  getFacultyOptions,
+  getProgramOptions,
+  type AcademicCatalogRow,
+} from "@/modules/organization-catalog/cascade";
 
 export function StudentProfileForm() {
-  const [catalog, setCatalog] = useState<CatalogRow[]>([]);
+  const [catalog, setCatalog] = useState<AcademicCatalogRow[]>([]);
   const [profile, setProfile] = useState<Record<string, string>>({});
   const [account, setAccount] = useState<{student_code?:string}|null>(null);
   const [email, setEmail] = useState<{email?:string;verified_at?:string|null}|null>(null);
-  const [facultyId, setFacultyId] = useState(""); const [programId, setProgramId] = useState("");
+  const [facultyId, setFacultyId] = useState("");
+  const [programId, setProgramId] = useState("");
+  const [cohortId, setCohortId] = useState("");
+  const [classId, setClassId] = useState("");
   const [loading, setLoading] = useState(true); const [pending, setPending] = useState(false);
   const [message, setMessage] = useState(""); const [error, setError] = useState("");
 
@@ -23,15 +28,27 @@ export function StudentProfileForm() {
       const catalogData = await catalogResponse.json(); const profileData = await profileResponse.json();
       if (!catalogResponse.ok || !profileResponse.ok) throw new Error(catalogData.message ?? profileData.message ?? "Không thể tải dữ liệu.");
       setCatalog(catalogData.catalog); setProfile(profileData.profile ?? {}); setAccount(profileData.account); setEmail(profileData.email);
-      const current = catalogData.catalog.find((row:CatalogRow) => row.class_id === profileData.profile?.class_id);
-      if (current) { setFacultyId(current.faculty_id); setProgramId(current.program_id); }
+      const current = catalogData.catalog.find((row:AcademicCatalogRow) => row.class_id === profileData.profile?.class_id);
+      if (current) {
+        setFacultyId(current.faculty_id);
+        setProgramId(current.program_id);
+        setCohortId(current.cohort_id);
+        setClassId(current.class_id);
+      }
     } catch (reason) { setError(reason instanceof Error ? reason.message : "Không thể tải dữ liệu."); }
     finally { setLoading(false); }
   })(); }, []);
 
-  const faculties = useMemo(() => Array.from(new Map(catalog.map((row) => [row.faculty_id, row])).values()), [catalog]);
-  const programs = useMemo(() => Array.from(new Map(catalog.filter((row) => row.faculty_id === facultyId).map((row) => [row.program_id, row])).values()), [catalog, facultyId]);
-  const classes = useMemo(() => catalog.filter((row) => row.program_id === programId), [catalog, programId]);
+  const faculties = useMemo(() => getFacultyOptions(catalog), [catalog]);
+  const programs = useMemo(() => getProgramOptions(catalog, facultyId), [catalog, facultyId]);
+  const cohorts = useMemo(
+    () => getCohortOptions(catalog, facultyId, programId),
+    [catalog, facultyId, programId],
+  );
+  const classes = useMemo(
+    () => getClassOptions(catalog, facultyId, programId, cohortId),
+    [catalog, facultyId, programId, cohortId],
+  );
 
   async function submit(event:FormEvent<HTMLFormElement>) {
     event.preventDefault(); setPending(true); setError(""); setMessage("");
@@ -53,10 +70,10 @@ export function StudentProfileForm() {
       <label className="full">Họ và tên<input name="fullName" required defaultValue={profile.full_name ?? ""} /></label>
       <label>Giới tính<select name="gender" required defaultValue={profile.gender ?? ""}><option value="">Chọn giới tính</option><option value="female">Nữ</option><option value="male">Nam</option><option value="other">Khác</option></select></label>
       <label>Số điện thoại<input name="phone" required inputMode="tel" defaultValue={profile.phone ?? ""} /></label>
-      <label>Khoa<select value={facultyId} onChange={(event) => {setFacultyId(event.target.value);setProgramId("");}} required><option value="">Chọn Khoa</option>{faculties.map((row) => <option key={row.faculty_id} value={row.faculty_id}>{row.faculty_name}</option>)}</select></label>
-      <label>Ngành<select value={programId} onChange={(event) => setProgramId(event.target.value)} required><option value="">Chọn Ngành</option>{programs.map((row) => <option key={row.program_id} value={row.program_id}>{row.program_name}</option>)}</select></label>
-      <label>Khóa<input value={classes[0]?.cohort_code ?? ""} readOnly placeholder="Tự điền theo Lớp" /></label>
-      <label>Lớp<select name="classId" required defaultValue={profile.class_id ?? ""}><option value="">Chọn Lớp</option>{classes.map((row) => <option key={row.class_id} value={row.class_id}>{row.class_code} — {row.class_name}</option>)}</select></label>
+      <label>Khoa<select value={facultyId} onChange={(event) => {setFacultyId(event.target.value);setProgramId("");setCohortId("");setClassId("");}} required><option value="">Chọn Khoa</option>{faculties.map((row) => <option key={row.faculty_id} value={row.faculty_id}>{row.faculty_name}</option>)}</select></label>
+      <label>Ngành<select value={programId} onChange={(event) => {setProgramId(event.target.value);setCohortId("");setClassId("");}} required disabled={!facultyId}><option value="">Chọn Ngành</option>{programs.map((row) => <option key={row.program_id} value={row.program_id}>{row.program_name}</option>)}</select></label>
+      <label>Khóa<select value={cohortId} onChange={(event) => {setCohortId(event.target.value);setClassId("");}} required disabled={!programId}><option value="">Chọn Khóa</option>{cohorts.map((row) => <option key={row.cohort_id} value={row.cohort_id}>{row.cohort_name}</option>)}</select></label>
+      <label>Lớp<select name="classId" required value={classId} onChange={(event) => setClassId(event.target.value)} disabled={!cohortId}><option value="">Chọn Lớp</option>{classes.map((row) => <option key={row.class_id} value={row.class_id}>{row.class_code} — {row.class_name}</option>)}</select></label>
       <div className="full"><button className="primary" disabled={pending || catalog.length === 0 || !email?.verified_at}>{pending ? "Đang lưu…" : "Lưu hồ sơ cơ bản"}</button></div>
     </form>
     {message && <p className="notice" aria-live="polite">{message}</p>}
