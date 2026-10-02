@@ -16,6 +16,13 @@ npm run dev
 
 Điền `.env.local` từ Supabase local/cloud và không commit. `SUPABASE_SERVICE_ROLE_KEY`/`AUTH_RATE_LIMIT_PEPPER` chỉ dùng server. Local Auth bật email confirmation; xem email thử bằng Mailpit của `supabase start`.
 
+Luồng tài khoản local:
+
+1. `/register`: nhập MSSV 10 số + Gmail, rồi mở email “Xác thực Gmail” trong Mailpit.
+2. `/signup/create-pin`: tạo và xác nhận PIN đúng 6 chữ số; sau đó hoàn tất profile cơ bản.
+3. `/login`: chỉ dùng MSSV + PIN. `/auth/recover` dùng MSSV để gửi email khôi phục PIN, không biến Gmail thành tên đăng nhập.
+4. `/account/security`: người đã đăng nhập có thể đổi PIN (phải nhập PIN hiện tại) hoặc yêu cầu xác minh Gmail mới.
+
 ## Kiểm tra
 
 ```bash
@@ -66,7 +73,7 @@ supabase db push --linked --dry-run
 Dashboard checklist:
 
 - Supabase Auth Site URL `https://doanhoihiu.io.vn`; thêm `https://doanhoihiu.io.vn/auth/confirm` và preview URL cần thiết.
-- Bật Confirm email và double confirmation khi đổi email; giữ mật khẩu tối thiểu 6 ký tự cho đến khi có quyết định khác.
+- Bật Confirm email và double confirmation khi đổi email. Supabase Auth lưu PIN trong trường credential nội bộ; ứng dụng chỉ nhận PIN đúng 6 chữ số và không lưu PIN trong bảng nghiệp vụ/log.
 - Cấu hình SMTP Resend thật, sender domain đã verify, template confirmation/recovery về `/auth/confirm`.
 - Vercel khai báo bốn biến trong `.env.example`; không đưa service-role key ra client.
 - Smoke test đăng ký → email → profile và restore drill trước khi gắn release.

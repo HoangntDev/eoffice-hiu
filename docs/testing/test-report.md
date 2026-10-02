@@ -33,3 +33,26 @@ Bằng chứng: `supabase test db` (17 test), `npm test` (9 test) và HTTP local
 | UI-02 | Nhấp kiểm tra bằng trình duyệt tích hợp | Không có browser session khả dụng (`[]`) | NOT RUN |
 
 Lệnh đã chạy: `npm run lint`, `npm run typecheck`, `npm test` (11 test), `supabase test db` (19 test), `npm run build`. Tất cả lệnh đã chạy đều PASS. Không reset database, không push cloud và không deploy.
+
+## Bổ sung vòng đời tài khoản PIN — 02/10/2026
+
+Kiểm thử dùng tài khoản tổng hợp, không dùng dữ liệu cá nhân thật và không ghi PIN/token vào bằng chứng.
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| AUTH-01 | SIGN UP chỉ MSSV + Gmail → Mailpit → xác minh → tạo PIN → profile | 201 → email local → `/signup/create-pin` → create PIN 200 → profile 200 | PASS |
+| AUTH-02 | Profile tải đủ danh mục sau SIGN IN | API trả 10 Khoa, 51 Ngành, 6 Khóa, 347 Lớp | PASS |
+| AUTH-03 | SIGN OUT hủy session; URL/API bảo vệ không mở lại | logout 200; trang trả 307 về `/login`; API profile trả 401 | PASS |
+| AUTH-04 | SIGN IN chỉ MSSV + PIN; PIN cũ/sai bị từ chối | sai 401; đúng 200; schema từ chối Gmail/role thừa | PASS |
+| AUTH-05 | Giới hạn thử PIN ở server | 8 lần sai trả 401; lần thứ 9 cùng MSSV/IP trả 429 trong cửa sổ 15 phút | PASS |
+| AUTH-06 | Trạng thái chờ PIN không làm lộ tài khoản | MSSV chờ PIN và MSSV không tồn tại cùng trả 401, cùng thông báo; email hoàn tất vẫn được gửi | PASS |
+| AUTH-07 | Email chưa xác minh không đăng nhập; liên kết hết hạn có thể gửi lại | login 401; link hết hạn về `/register?error=confirmation`; resend 200 và Mailpit nhận email mới | PASS |
+| AUTH-08 | Đổi PIN phải xác minh PIN hiện tại | PIN hiện tại sai 400; đúng 200; PIN cũ login 401, PIN mới login 200 | PASS |
+| AUTH-09 | Khôi phục PIN là email riêng và chứng cứ dùng một lần | email “Khôi phục PIN”; callback vào `/account/recover-pin`; token hash chỉ claim một lần | PASS |
+| AUTH-10 | Gmail hiện tại chỉ đổi sau xác nhận Gmail mới | yêu cầu 200; local double-confirm gửi 2 email; mapping chỉ cập nhật sau callback cuối | PASS |
+| AUTH-11 | Không đăng ký trùng MSSV/Gmail | lần đăng ký trùng trả 409 | PASS |
+| UI-03 | Ba form tách biệt và có nút Đăng xuất rõ ràng | test component kiểm SIGN UP không có PIN, SIGN IN không có Gmail, đổi PIN có PIN hiện tại, có nút Đăng xuất | PASS |
+
+E2E trên là HTTP + Supabase Auth/PostgreSQL + Mailpit local thực tế. Kiểm tra trực quan bằng trình duyệt tích hợp chưa chạy, nên không ghi PASS cho bố cục/hình ảnh. Không reset database, không nhập lại CSV, không push cloud và không deploy.
+
+Lệnh xác nhận cuối: `npm run lint`, `npm run typecheck`, `npm test` (17 test), `supabase test db` (27 test), `supabase db lint --local`, `npm run build`.

@@ -17,7 +17,7 @@ Khoa, Ngành, Lớp/Chi đoàn dùng UUID bất biến và phiên bản `dateran
 
 ### UC2 — Tiếp nhận/công nhận Đoàn viên
 
-Đăng ký chỉ nhận MSSV 10 số, một Gmail, mật khẩu tối thiểu 6 ký tự theo repo; phải xác minh Gmail trước profile. Profile cơ bản chỉ có trường đã chốt và server suy cơ cấu từ Lớp. Hồ sơ Đoàn tách căn cước/Đoàn/trình độ; lời khai không tự tạo tư cách. Sinh viên sửa cùng `user_id + cycle_key` ở `draft/needs_changes`. Sự kiện Sổ chỉ snapshot họ tên, MSSV, ngày; rút Sổ không đổi tư cách. CTV phải được phân công và hoàn tất checklist bắt buộc; Văn phòng chỉ công nhận sau lần nhận Sổ còn hiệu lực. API danh sách không trả CCCD/địa chỉ.
+SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi mới tạo PIN đúng 6 chữ số, sau đó mới vào profile cơ bản. SIGN IN chỉ nhận MSSV + PIN; SIGN OUT hủy session và trang bảo vệ kiểm tra lại session/trạng thái tài khoản. Khôi phục PIN dùng Gmail đã xác minh nhưng Gmail không phải tên đăng nhập. Profile cơ bản chỉ có trường đã chốt và server suy cơ cấu từ Lớp; hồ sơ Đoàn không phải điều kiện hoàn tất tài khoản. Hồ sơ Đoàn tách căn cước/Đoàn/trình độ; lời khai không tự tạo tư cách. Sinh viên sửa cùng `user_id + cycle_key` ở `draft/needs_changes`. Sự kiện Sổ chỉ snapshot họ tên, MSSV, ngày; rút Sổ không đổi tư cách. CTV phải được phân công và hoàn tất checklist bắt buộc; Văn phòng chỉ công nhận sau lần nhận Sổ còn hiệu lực. API danh sách không trả CCCD/địa chỉ.
 
 ## NFR đo được
 
