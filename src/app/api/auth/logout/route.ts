@@ -5,8 +5,12 @@ import { createUserSupabase } from "@/lib/supabase/server";
 export async function POST() {
   try {
     const supabase = await createUserSupabase();
-    await supabase.auth.signOut();
-    return NextResponse.json({ message: "Đã đăng xuất." });
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    const response = NextResponse.json({ message: "Đã đăng xuất.", next: "/login" });
+    response.headers.set("Cache-Control", "no-store, max-age=0");
+    response.headers.set("Clear-Site-Data", '"cache"');
+    return response;
   } catch (error) {
     return apiError(error);
   }

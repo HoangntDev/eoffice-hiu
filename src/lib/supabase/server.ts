@@ -27,3 +27,10 @@ export function createAdminSupabase() {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 }
+
+export function createPublicSupabase() {
+  const { url, publishableKey } = publicSupabaseEnv();
+  return createClient(url, publishableKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}

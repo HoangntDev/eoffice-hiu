@@ -17,7 +17,39 @@ export async function proxy(request: NextRequest) {
       },
     },
   });
-  await supabase.auth.getClaims();
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+  const pathname = request.nextUrl.pathname;
+  const protectedPath = [
+    "/onboarding",
+    "/account/security",
+    "/account/recover-pin",
+    "/signup/create-pin",
+    "/union-membership",
+    "/organization",
+    "/office",
+  ].some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+  function redirect(path: string) {
+    const redirectResponse = NextResponse.redirect(new URL(path, request.url));
+    for (const cookie of response.cookies.getAll()) redirectResponse.cookies.set(cookie);
+    redirectResponse.headers.set("Cache-Control", "private, no-store, max-age=0");
+    return redirectResponse;
+  }
+
+  if (protectedPath) {
+    const userId = typeof claimsData?.claims?.sub === "string" ? claimsData.claims.sub : null;
+    if (claimsError || !userId) return redirect(`/login?next=${encodeURIComponent(pathname)}`);
+    const { data: account } = await supabase.from("accounts").select("status").eq("user_id", userId).maybeSingle();
+    if (pathname.startsWith("/signup/create-pin")) {
+      if (account?.status === "active") return redirect("/onboarding/profile");
+      if (account?.status !== "pending_pin") return redirect("/login");
+    } else if (account?.status === "pending_pin") {
+      return redirect("/signup/create-pin");
+    } else if (account?.status !== "active") {
+      return redirect("/login");
+    }
+    response.headers.set("Cache-Control", "private, no-store, max-age=0");
+  }
   return response;
 }
 

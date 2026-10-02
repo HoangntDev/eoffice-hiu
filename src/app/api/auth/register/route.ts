@@ -9,36 +9,36 @@ export async function POST(request: Request) {
   try {
     const input = registerSchema.parse(await readJson(request));
     const limiter = await enforceAuthRateLimit(request, "register", input.studentCode);
-    const authClient = await createUserSupabase();
     const admin = createAdminSupabase();
-
-    const { data, error } = await authClient.auth.signUp({
-      email: input.gmail,
-      password: input.password,
-      options: { emailRedirectTo: `${appUrl()}/auth/confirm?next=/onboarding/profile` },
-    });
-    if (error || !data.user) {
+    const { data: reserved, error: reservationError } = await admin.rpc(
+      "reserve_account_registration",
+      { p_student_code: input.studentCode, p_gmail: input.gmail },
+    );
+    if (reservationError || reserved !== true) {
       await limiter.record(false);
       throw new HttpError(409, "REGISTRATION_UNAVAILABLE", "Không thể tạo tài khoản với thông tin đã cung cấp.");
     }
 
-    const accountResult = await admin.from("accounts").insert({
-      user_id: data.user.id,
-      student_code: input.studentCode,
+    const authClient = await createUserSupabase();
+    const { error } = await authClient.auth.signInWithOtp({
+      email: input.gmail,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: `${appUrl()}/auth/confirm?flow=signup`,
+      },
     });
-    const emailResult = accountResult.error
-      ? accountResult
-      : await admin.from("account_emails").insert({ user_id: data.user.id, email: input.gmail });
-
-    if (accountResult.error || emailResult.error) {
-      await admin.auth.admin.deleteUser(data.user.id);
+    if (error) {
+      await admin.from("pending_account_registrations").delete()
+        .eq("student_code", input.studentCode)
+        .eq("gmail", input.gmail)
+        .is("consumed_at", null);
       await limiter.record(false);
       throw new HttpError(409, "REGISTRATION_UNAVAILABLE", "Không thể tạo tài khoản với thông tin đã cung cấp.");
     }
 
     await limiter.record(true);
     return NextResponse.json({
-      message: "Đã tạo tài khoản. Hãy mở Gmail để xác minh trước khi đăng nhập.",
+      message: "Đã gửi email xác thực. Hãy mở liên kết trong Gmail, sau đó tạo PIN 6 chữ số.",
     }, { status: 201 });
   } catch (error) {
     return apiError(error);

@@ -5,7 +5,7 @@ import { createAdminSupabase } from "@/lib/supabase/server";
 import { rateLimitPepper } from "@/lib/env";
 import { HttpError } from "@/lib/http";
 
-export type AuthAction = "login" | "register" | "recover";
+export type AuthAction = "login" | "register" | "recover" | "pin_change";
 
 function digest(value: string) {
   return createHash("sha256").update(rateLimitPepper()).update("\0").update(value).digest("hex");
@@ -30,6 +30,7 @@ export async function enforceAuthRateLimit(request: Request, action: AuthAction,
     .eq("action", action)
     .eq("identifier_hash", identifierHash)
     .eq("ip_hash", ipHash)
+    .eq("succeeded", false)
     .gte("attempted_at", windowStart);
 
   if (error) throw new Error("AUTH_RATE_LIMIT_UNAVAILABLE");

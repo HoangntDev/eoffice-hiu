@@ -11,7 +11,7 @@ export async function PATCH(request: Request) {
     const { user, supabase } = await requireUser();
     const { error } = await supabase.auth.updateUser(
       { email: input.gmail },
-      { emailRedirectTo: `${appUrl()}/auth/confirm?next=/account/security` },
+      { emailRedirectTo: `${appUrl()}/auth/confirm?flow=change-email` },
     );
     if (error) throw new HttpError(409, "EMAIL_CHANGE_UNAVAILABLE", "Không thể bắt đầu đổi Gmail.");
 
