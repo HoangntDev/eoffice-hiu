@@ -1,6 +1,6 @@
 # HIU Youth E-Office
 
-Đồ án cá nhân môn Software Development, Operations and Maintenance. Nhánh này triển khai nền tảng và hai use case Prompt 01; chưa phải đồ án hoàn chỉnh hay release v1.0/v1.1. Xem [phạm vi, kiến trúc và ERD](docs/requirements/mvp-scope.md).
+Đồ án cá nhân môn Software Development, Operations and Maintenance. Nhánh này triển khai Prompt 01 (tài khoản, danh mục, hồ sơ Đoàn viên) và Prompt 02 (thư viện mẫu đối tượng, biểu mẫu động); chưa phải release v1.0. Xem [phạm vi, kiến trúc và ERD](docs/requirements/mvp-scope.md).
 
 ## Yêu cầu và chạy local
 

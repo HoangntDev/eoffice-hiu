@@ -56,3 +56,28 @@ Kiểm thử dùng tài khoản tổng hợp, không dùng dữ liệu cá nhân
 E2E trên là HTTP + Supabase Auth/PostgreSQL + Mailpit local thực tế. Kiểm tra trực quan bằng trình duyệt tích hợp chưa chạy, nên không ghi PASS cho bố cục/hình ảnh. Không reset database, không nhập lại CSV, không push cloud và không deploy.
 
 Lệnh xác nhận cuối: `npm run lint`, `npm run typecheck`, `npm test` (17 test), `supabase test db` (27 test), `supabase db lint --local`, `npm run build`.
+
+## Prompt 02 — Thư viện mẫu và biểu mẫu động — 05/10/2026
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| F-DB-01 | `evaluate_audience_rule("any", null)` trả true | true | PASS |
+| F-DB-02 | `evaluate_audience_rule("hiu_student", null)` trả false | false | PASS |
+| F-DB-03 | `evaluate_audience_rule("hiu_student", active_user_id)` trả true | true | PASS |
+| F-DB-04 | `evaluate_audience_rule("union_member", student_without_membership)` trả false | false | PASS |
+| F-DB-05 | `evaluate_audience_rule("or",[hiu_student,any], user_id)` trả true | true | PASS |
+| F-DB-06 | `evaluate_audience_rule("and",[hiu_student,union_member], user_id)` trả false | false | PASS |
+| F-DB-07 | `user_can_manage_forms_for_org(school_union)` của school_admin trả true | true | PASS |
+| F-DB-08 | `user_can_manage_forms_for_org(school_union)` của sinh viên thường trả false | false | PASS |
+| F-DB-09 | school_admin tạo template thành công | lives_ok | PASS |
+| F-DB-10 | Non-school_admin tạo template bị từ chối FORBIDDEN | throws FORBIDDEN | PASS |
+| F-DB-11 | committee_manager tạo form cho đơn vị mình | lives_ok | PASS |
+| F-DB-12 | committee_manager tạo form cho đơn vị khác bị FORBIDDEN | throws FORBIDDEN | PASS |
+| F-DB-13 | Direct INSERT vào form_responses bị từ chối | throws | PASS |
+| F-UT-01 | audienceRuleSchema chấp nhận "any", "hiu_student", "faculty" với UUID, nested "and"/"or" | parse OK | PASS |
+| F-UT-02 | audienceRuleSchema từ chối type không hợp lệ và "faculty" thiếu faculty_id | throws | PASS |
+| F-UT-03 | questionSchema từ chối label rỗng | throws | PASS |
+| F-UT-04 | submitResponseSchema từ chối email không hợp lệ | throws | PASS |
+
+Lệnh xác nhận: `npm test` (34 test), `supabase test db` (41 test), `supabase db lint --local` (no errors), `npm run build` (PASS).
+Kiểm tra trực quan browser chưa chạy; không push cloud, không deploy.

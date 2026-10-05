@@ -27,7 +27,10 @@ export async function proxy(request: NextRequest) {
     "/union-membership",
     "/organization",
     "/office",
-  ].some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+    "/forms/templates",
+    "/forms/new",
+  ].some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+    || /^\/forms\/[^/]+(\/edit|\/responses)(\/|$)/.test(pathname);
 
   function redirect(path: string) {
     const redirectResponse = NextResponse.redirect(new URL(path, request.url));
