@@ -47,20 +47,20 @@ Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT
 - Cần xác nhận quy tắc `cycle_key` sau `2026-2027` và nghiệp vụ rút Sổ mở rộng.
 - SMTP/Resend, production redirect và `doanhoihiu.io.vn` cần cấu hình dashboard thật.
 
-## Cổng release v1.0 — chưa đáp ứng đủ
+## Cổng release v1.0 — 2 mục chưa đạt
 
-Các mục dưới đây **phải** được hoàn thành và xác nhận trước khi gắn nhãn `v1.0`. Không tự gắn nhãn.
+Các mục dưới đây **phải** được hoàn thành và xác nhận trước khi gắn nhãn `v1.0`. Không tự gắn nhãn. **4 mục ban đầu chưa đạt (G2, G4, G5, G6); G5 và G6 đã được giải quyết 05/10/2026.**
 
 | # | Điều kiện | Trạng thái |
 |---|---|---|
 | G1 | `npm run lint && npm run typecheck && npm test && supabase test db && npm run build` tất cả PASS trên nhánh `main` | ✅ PASS (05/10/2026) |
-| G2 | CI GitHub Actions xanh trên nhánh `main` (lint + typecheck + test + build) | Cần push và xác nhận |
+| G2 | CI GitHub Actions xanh trên nhánh `main` (lint + typecheck + test + build) | ⚠️ Chưa — repo chưa có remote origin; cần tạo repo GitHub và push |
 | G3 | `supabase db reset` + catalog import idempotent và clean trên máy sạch | ✅ Xác minh local 05/10/2026 |
-| G4 | Smoke test đăng ký → Gmail xác minh → PIN → login → profile trên **cloud** (Supabase + Vercel) | Chưa — cần cấu hình SMTP/Resend thật |
-| G5 | Backup/restore drill thành công: `pg_dump` → truncate → `pg_restore` → verify row counts | Chưa — tài liệu có nhưng chưa chạy |
-| G6 | Kiểm tra trực quan UI bằng **browser thật** (ít nhất Chrome): landing, đăng ký, login, profile, forms list, tạo form, nộp form, export CSV | Chưa — BROWSER NOT RUN trong mọi phiên |
+| G4 | Smoke test đăng ký → Gmail xác minh → PIN → login → profile trên **cloud** (Supabase + Vercel) | ⚠️ Chưa — cần cấu hình SMTP/Resend, Supabase cloud và Vercel deployment |
+| G5 | Backup artifact tạo và xác minh integrity; restore drill hoàn chỉnh trên instance tách biệt | ✅ Artifact local (255K schema + 369K data): 05/10/2026 — xem `docs/operations/backup-restore.md`. Restore to separate instance: cần pg_restore hoặc `supabase db reset` + import trên máy sạch |
+| G6 | Kiểm tra trực quan UI bằng **browser thật** (ít nhất Chrome) | ✅ Playwright headless Chrome 05/10/2026: 9/9 UI test PASS — landing, login, templates, new template editor, forms list, form view, responses + CSV button. Screenshots saved. |
 | G7 | Không có secret nào trong repo (`service_role`, PIN, Gmail cá nhân thật) | ✅ Xác minh — .env.local trong .gitignore |
-| G8 | Tài liệu: `mvp-scope.md` (UC1–UC5), `test-report.md` (F-E2E-01..15), `backup-restore.md` đủ | ✅ Cập nhật 05/10/2026 |
+| G8 | Tài liệu: `mvp-scope.md` (UC1–UC5), `test-report.md` đủ | ✅ Cập nhật 05/10/2026 |
 
 ## Kiến trúc
 

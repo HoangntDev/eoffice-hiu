@@ -107,3 +107,72 @@ BROWSER NOT RUN. Kiểm thử dùng 3 tài khoản tổng hợp local (e2e_admin
 **Sửa lỗi phát hiện:** CSV export xuất option ID thô (`opt1`) thay vì nhãn (`Có`). Sửa trong `src/app/api/forms/[id]/export/route.ts`: build option lookup map từ `questions`, resolve single_choice/dropdown sang label, multi_choice sang `"; "`-joined labels.
 
 Lệnh xác nhận sau sửa: `npm run lint` (0 errors), `npm run typecheck` (clean), `npm test` (34 test PASS), `supabase test db` (41 test PASS), `npm run build` (PASS).
+
+## Bổ sung snapshot isolation — 05/10/2026
+
+Xác minh yêu cầu cốt lõi Prompt 02: sửa form sau khi nhận phản hồi không làm đổi cách đọc phản hồi cũ.
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| F-SNAP-01 | Nộp phản hồi V1 → `questions_snapshot` lưu đúng 2 câu hỏi V1 (`Câu hỏi V1`, `Điểm V1`) | `form_version=1`, `snapshot_count=2`, labels khớp V1 | PASS |
+| F-SNAP-02 | Sửa form (đổi tên 2 câu hỏi + thêm Q3 mới) → `form_version` tăng lên 2 | `form_version=2`, title đổi, 3 câu hỏi trong form hiện tại | PASS |
+| F-SNAP-03 | Nộp phản hồi V2 → `questions_snapshot` lưu đúng 3 câu hỏi V2 | `form_version=2`, labels `Câu hỏi V2`, `Điểm V2`, `Câu hỏi mới Q3` | PASS |
+| F-SNAP-04 | GET responses → phản hồi V1 vẫn đọc labels V1; phản hồi V2 đọc labels V2 | Mỗi response trả về `questions_snapshot` riêng — không bị ghi đè | PASS |
+| F-SNAP-05 | Phản hồi V1 không có câu hỏi Q3 (được thêm ở V2) | V1 snapshot có 2 items; Q3 không xuất hiện trong V1 | PASS |
+
+Cơ chế: RPC `submit_form_response` capture `questions jsonb` từ `forms` vào `form_responses.questions_snapshot` tại thời điểm nộp. Snapshot bất biến sau khi lưu. `form_version int` tăng mỗi lần `save_form` được gọi — không phải auto-increment trigger.
+
+## Bổ sung backup drill — 05/10/2026
+
+Không reset database đang dùng, không tạo instance mới, không push cloud.
+
+**Artifacts tạo:**
+- Schema dump: `supabase db dump --local -f schema_20261005T223312.sql` → 255K, pg_dump version 17.6
+- Data dump: `supabase db dump --local --data-only -f data_20261005T223312.sql` → 369K, 1780 dòng
+
+**Kiểm tra integrity (row count trong dump vs. live DB):**
+
+| Bảng | Live DB | Trong dump | Khớp |
+|---|---|---|---|
+| faculties | 10 | 10 | ✓ |
+| programs | 51 | 51 | ✓ |
+| classes | 347 | 347 | ✓ |
+| cohorts | 6 | 6 | ✓ |
+| accounts | 3 | 3 | ✓ |
+| role_grants | 2 | 2 | ✓ |
+| form_templates | 1 | 1 | ✓ |
+| form_template_versions | 1 | 1 | ✓ |
+| forms | 2 | 2 | ✓ |
+| form_responses | 1 | 1 | ✓ |
+| form_response_answers | 3 | 3 | ✓ |
+
+**Restore drill chưa chạy end-to-end:** `pg_dump`/`pg_restore`/`psql` không có trong system PATH. `supabase db dump --local` dùng Docker pg_dump nội bộ nhưng không expose binary trực tiếp. Restore hoàn chỉnh cần một trong: (a) cài `postgresql-client` (`brew install libpq`), (b) `docker exec` vào container Supabase PostgreSQL, hoặc (c) spin up second Supabase project ở ports khác.
+
+**Lệnh restore đầy đủ (để operator chạy):**
+```bash
+# Trên một Supabase local instance mới (sau supabase start + supabase db reset):
+psql postgres://postgres:postgres@127.0.0.1:54322/postgres -f schema_20261005T223312.sql
+psql postgres://postgres:postgres@127.0.0.1:54322/postgres -f data_20261005T223312.sql
+# Verify:
+curl -s http://127.0.0.1:54321/rest/v1/faculties?select=id -H "apikey: ANON_KEY" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))"  # expect 10
+```
+
+## Bổ sung Playwright UI — 05/10/2026
+
+Playwright 1.63.0 + headless Chrome (`/Applications/Google Chrome.app`). Không cài thêm dependency vào project — chạy từ scratchpad tạm.
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| F-UI-01 | Landing page render với title đúng và 4 feature cards | title="HIU Youth E-Office", cards 01–04 hiện | PASS |
+| F-UI-02 | Login bằng MSSV+PIN (2026990001/123456) → redirect về `/onboarding/profile` | 200, URL chuyển sang profile page | PASS |
+| F-UI-03 | `/forms/templates` load: heading "Thư viện mẫu đối tượng", có template E2E, nút "Tạo mẫu mới" | Đúng | PASS |
+| F-UI-04 | `/forms/templates/new` render form editor (Tiêu đề, audience, câu hỏi) | Editor form hiện | PASS |
+| F-UI-05 | `/forms` render danh sách biểu mẫu | Page text chứa "form/biểu mẫu" | PASS |
+| F-UI-06 | `/forms/[id]` render form đã đóng đúng (page content > 200 chars) | content=11038 chars | PASS |
+| F-UI-07 | `/forms/[id]/responses` render bảng phản hồi + nút "Xuất CSV" | content=13496 chars, bảng hiện | PASS |
+| F-UI-08 | Link xuất CSV có trên trang responses | `a[href*="/export"]` tồn tại | PASS |
+| F-UI-09 | Sau login, trang chủ render authenticated state (Đăng xuất visible) | len=12141 | PASS |
+
+**Sửa lỗi thứ hai phát hiện qua screenshot:** Trang responses UI cũng xuất option ID thô (`opt1`). Sửa trong `src/app/forms/[id]/responses/page.tsx`: build `optionLabels Map`, resolve trong `getAnswer()`. Re-run Playwright sau fix: 9/9 PASS, column "Đã tham gia CLB?" hiển thị `Có`.
+
+Lệnh xác nhận cuối: `npm run lint` (0 errors), `npm run typecheck` (clean), `npm test` (34 PASS), `supabase test db` (41 PASS), `npm run build` (PASS).

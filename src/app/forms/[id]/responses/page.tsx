@@ -52,11 +52,24 @@ export default async function ResponsesPage({ params }: { params: Promise<{ id: 
 
   const fullResponses: Response[] = responses.map((r) => ({ ...r, answers: answersMap[r.id] ?? [] }));
 
-  function getAnswer(response: Response, questionId: string): string {
-    const a = response.answers.find((x) => x.question_id === questionId);
+  // Build option ID→label map for choice questions
+  const optionLabels = new Map<string, Map<string, string>>();
+  for (const q of questions) {
+    if (q.options) {
+      const m = new Map<string, string>();
+      for (const o of q.options) m.set(o.id, o.label);
+      optionLabels.set(q.id, m);
+    }
+  }
+
+  function getAnswer(response: Response, q: Question): string {
+    const a = response.answers.find((x) => x.question_id === q.id);
     if (!a || a.answer_value === null) return "—";
-    if (Array.isArray(a.answer_value)) return a.answer_value.join(", ");
-    return String(a.answer_value);
+    const opts = optionLabels.get(q.id);
+    if (Array.isArray(a.answer_value)) {
+      return a.answer_value.map((v) => opts?.get(String(v)) ?? String(v)).join(", ");
+    }
+    return (opts?.get(String(a.answer_value)) ?? String(a.answer_value));
   }
 
   return (
@@ -95,7 +108,7 @@ export default async function ResponsesPage({ params }: { params: Promise<{ id: 
                   </td>
                   <td>{r.respondent_email ?? (r.respondent_user_id ? `user:${r.respondent_user_id.slice(0, 8)}` : "Ẩn danh")}</td>
                   {questions.map((q) => (
-                    <td key={q.id}>{getAnswer(r, q.id)}</td>
+                    <td key={q.id}>{getAnswer(r, q)}</td>
                   ))}
                 </tr>
               ))}
