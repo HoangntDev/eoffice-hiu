@@ -59,8 +59,31 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
       answerMap.get(a.response_id)!.set(a.question_id, a.answer_value);
     }
 
-    // Build CSV — sorted by question order
+        // Build CSV — sorted by question order
     const sortedQuestions = [...questions].sort((a, b) => a.order - b.order);
+
+    // Option ID → label lookup for choice questions
+    const optionLabel = new Map<string, Map<string, string>>();
+    for (const q of sortedQuestions) {
+      if (q.options) {
+        const m = new Map<string, string>();
+        for (const o of q.options) m.set(o.id, o.label);
+        optionLabel.set(q.id, m);
+      }
+    }
+
+    function resolveAnswer(q: Question, raw: unknown): unknown {
+      const opts = optionLabel.get(q.id);
+      if (!opts) return raw;
+      if (q.type === "multi_choice" && Array.isArray(raw)) {
+        return raw.map((id) => opts.get(String(id)) ?? String(id)).join("; ");
+      }
+      if (raw !== null && raw !== undefined) {
+        return opts.get(String(raw)) ?? raw;
+      }
+      return raw;
+    }
+
     const headers = [
       "Thời gian nộp",
       "Email người nộp",
@@ -72,7 +95,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
       return [
         r.submitted_at,
         r.respondent_email ?? "",
-        ...sortedQuestions.map((q) => answers.get(q.id) ?? ""),
+        ...sortedQuestions.map((q) => resolveAnswer(q, answers.get(q.id) ?? "")),
       ].map(escapeCsv).join(",");
     });
 

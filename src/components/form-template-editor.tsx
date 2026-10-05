@@ -17,7 +17,6 @@ interface Props {
   template?: Template;
 }
 
-const defaultAudience: AudienceRule = { type: "hiu_student" };
 const questionTypeLabels: Record<string, string> = {
   short_text:    "Văn bản ngắn",
   long_text:     "Văn bản dài",

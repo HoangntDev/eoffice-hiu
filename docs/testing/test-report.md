@@ -81,3 +81,29 @@ Lệnh xác nhận cuối: `npm run lint`, `npm run typecheck`, `npm test` (17 t
 
 Lệnh xác nhận: `npm test` (34 test), `supabase test db` (41 test), `supabase db lint --local` (no errors), `npm run build` (PASS).
 Kiểm tra trực quan browser chưa chạy; không push cloud, không deploy.
+
+## Bổ sung E2E HTTP — Prompt 02 — 05/10/2026
+
+BROWSER NOT RUN. Kiểm thử dùng 3 tài khoản tổng hợp local (e2e_admin/e2e_manager/e2e_student), không dùng dữ liệu cá nhân thật.
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| F-E2E-01 | school_admin tạo template draft → 201 + id | `{"id":"2e90..."}` 201 | PASS |
+| F-E2E-02 | school_admin phát hành phiên bản template → version_id + template chuyển published | version_id trả về; GET `/templates/[id]` trả `status=published, versions=1` | PASS |
+| F-E2E-03 | committee_manager tạo form cho đơn vị mình (Ban TC-KT 003) → 201 | `{"id":"6f65..."}` 201 | PASS |
+| F-E2E-04 | committee_manager phát hành form → `{"status":"published"}` | 200 đúng | PASS |
+| F-E2E-05 | Sinh viên xem form đã publish → status=published, 3 câu hỏi | `status=published questions=3` | PASS |
+| F-E2E-06 | Sinh viên nộp phản hồi hợp lệ → response_id | `{"response_id":"87f2..."}` 201 | PASS |
+| F-E2E-07 | committee_manager xem phản hồi → 1 kết quả, answers đủ 3 | `total=1 answers=3` | PASS |
+| F-E2E-08 | Xuất CSV → UTF-8 BOM, header tiếng Việt, nhãn lựa chọn được giải mã (Có không phải opt1) | BOM=EF BB BF; `Có` thay `opt1` sau bản sửa | PASS (sau fix) |
+| F-E2E-09 | Non-admin tạo template → 403 FORBIDDEN | `FORBIDDEN` | PASS |
+| F-E2E-10 | Manager tạo form cho đơn vị khác → 403 FORBIDDEN | `FORBIDDEN` | PASS |
+| F-E2E-11 | Sinh viên nộp lần 2 (allow_multiple=false) → 409 ALREADY_SUBMITTED | `ALREADY_SUBMITTED` | PASS |
+| F-E2E-12 | Chuyển trạng thái không hợp lệ (closed → published) → INVALID_STATUS_TRANSITION | 422 `INVALID_STATUS_TRANSITION` | PASS |
+| F-E2E-13 | audience_rule type không hợp lệ → 400 VALIDATION_ERROR | `VALIDATION_ERROR` | PASS |
+| F-E2E-14 | Nộp thiếu câu hỏi bắt buộc → 422 REQUIRED_QUESTION_MISSING | `REQUIRED_QUESTION_MISSING` | PASS |
+| F-E2E-15 | Unauthenticated tạo form → 401 UNAUTHENTICATED | `UNAUTHENTICATED` | PASS |
+
+**Sửa lỗi phát hiện:** CSV export xuất option ID thô (`opt1`) thay vì nhãn (`Có`). Sửa trong `src/app/api/forms/[id]/export/route.ts`: build option lookup map từ `questions`, resolve single_choice/dropdown sang label, multi_choice sang `"; "`-joined labels.
+
+Lệnh xác nhận sau sửa: `npm run lint` (0 errors), `npm run typecheck` (clean), `npm test` (34 test PASS), `supabase test db` (41 test PASS), `npm run build` (PASS).

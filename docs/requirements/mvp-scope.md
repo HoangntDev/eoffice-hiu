@@ -1,6 +1,6 @@
-# Phạm vi Prompt 01
+# Phạm vi MVP — Prompt 01 + Prompt 02
 
-Trạng thái: nền tảng và hai use case Prompt 01; chưa phải toàn bộ đồ án, release v1.0, INC-01 hay CR-01.
+Trạng thái: nền tảng, UC1–UC2 (Prompt 01) và UC3–UC5 (Prompt 02); chưa phải release v1.0, INC-01 hay CR-01.
 
 ## Actor và use case
 
@@ -11,13 +11,25 @@ Trạng thái: nền tảng và hai use case Prompt 01; chưa phải toàn bộ 
 - CTV: checklist và đề xuất, không duyệt cuối. Văn phòng: nhận/rút Sổ, sửa MSSV, duyệt cuối.
 - Người vận hành: migration, bootstrap, import, backup/restore, Auth/SMTP/domain.
 
-### UC1 — Danh mục và cơ cấu
+### UC1 — Danh mục và cơ cấu (Prompt 01)
 
 Khoa, Ngành, Lớp/Chi đoàn dùng UUID bất biến và phiên bản `daterange` không chồng lấn. Lớp chỉ thuộc Ngành; Khoa của Lớp suy qua Ngành nên chuyển Ngành không nhân bản Lớp. Bản nộp giữ snapshot. Không xóa cứng thực thể đã tham chiếu. CSV luôn dry-run, báo xung đột trước khi ghi, không xóa Lớp vắng. Quyền gắn tài khoản cá nhân + đơn vị; audit ghi người, role grant và tổ chức thật.
 
-### UC2 — Tiếp nhận/công nhận Đoàn viên
+### UC2 — Tiếp nhận/công nhận Đoàn viên (Prompt 01)
 
 SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi mới tạo PIN đúng 6 chữ số, sau đó mới vào profile cơ bản. SIGN IN chỉ nhận MSSV + PIN; SIGN OUT hủy session và trang bảo vệ kiểm tra lại session/trạng thái tài khoản. Khôi phục PIN dùng Gmail đã xác minh nhưng Gmail không phải tên đăng nhập. Profile cơ bản chỉ có trường đã chốt và server suy cơ cấu từ Lớp; hồ sơ Đoàn không phải điều kiện hoàn tất tài khoản. Hồ sơ Đoàn tách căn cước/Đoàn/trình độ; lời khai không tự tạo tư cách. Sinh viên sửa cùng `user_id + cycle_key` ở `draft/needs_changes`. Sự kiện Sổ chỉ snapshot họ tên, MSSV, ngày; rút Sổ không đổi tư cách. CTV phải được phân công và hoàn tất checklist bắt buộc; Văn phòng chỉ công nhận sau lần nhận Sổ còn hiệu lực. API danh sách không trả CCCD/địa chỉ.
+
+### UC3 — Thư viện mẫu biểu mẫu (Prompt 02)
+
+Đoàn Trường (`school_admin`) tạo và chỉnh sửa `form_templates`; mỗi lần phát hành tạo `form_template_versions` bất biến chứa snapshot `questions jsonb`. Chỉ `school_admin` mới tạo/sửa template; không đơn vị khác có quyền này. Template có trạng thái `draft → published → deprecated`.
+
+### UC4 — Vòng đời biểu mẫu động (Prompt 02)
+
+Đơn vị có `committee_manager` hoặc `office` tạo `forms` trong đơn vị mình (kiểm tra RPC `user_can_manage_forms_for_org`). Form có thể tham chiếu một `form_template_versions` cố định hoặc tự xây questions. Trạng thái `draft → published → paused → closed → archived`; biến chuyển kiểm tra server. `audience_rule jsonb` đệ quy hỗ trợ `any`, `hiu_student`, `faculty`, `union_member`, `and`, `or`. Hệ thống đánh giá audience server-side qua RPC `evaluate_audience_rule`.
+
+### UC5 — Thu nhận phản hồi và xuất CSV (Prompt 02)
+
+Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT trực tiếp vào `form_responses` bị thu hồi quyền. Phản hồi ghi `questions_snapshot` tại thời điểm nộp, `form_version int` và `identity_snapshot` tùy chọn. Xuất CSV UTF-8 BOM, cột ổn định theo `question_id`, nhãn lựa chọn được giải mã từ questions (không xuất option ID thô). RLS hạn chế GET phản hồi cho đơn vị quản lý form; sinh viên không xem phản hồi của người khác.
 
 ## NFR đo được
 
@@ -35,6 +47,21 @@ SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi 
 - Cần xác nhận quy tắc `cycle_key` sau `2026-2027` và nghiệp vụ rút Sổ mở rộng.
 - SMTP/Resend, production redirect và `doanhoihiu.io.vn` cần cấu hình dashboard thật.
 
+## Cổng release v1.0 — chưa đáp ứng đủ
+
+Các mục dưới đây **phải** được hoàn thành và xác nhận trước khi gắn nhãn `v1.0`. Không tự gắn nhãn.
+
+| # | Điều kiện | Trạng thái |
+|---|---|---|
+| G1 | `npm run lint && npm run typecheck && npm test && supabase test db && npm run build` tất cả PASS trên nhánh `main` | ✅ PASS (05/10/2026) |
+| G2 | CI GitHub Actions xanh trên nhánh `main` (lint + typecheck + test + build) | Cần push và xác nhận |
+| G3 | `supabase db reset` + catalog import idempotent và clean trên máy sạch | ✅ Xác minh local 05/10/2026 |
+| G4 | Smoke test đăng ký → Gmail xác minh → PIN → login → profile trên **cloud** (Supabase + Vercel) | Chưa — cần cấu hình SMTP/Resend thật |
+| G5 | Backup/restore drill thành công: `pg_dump` → truncate → `pg_restore` → verify row counts | Chưa — tài liệu có nhưng chưa chạy |
+| G6 | Kiểm tra trực quan UI bằng **browser thật** (ít nhất Chrome): landing, đăng ký, login, profile, forms list, tạo form, nộp form, export CSV | Chưa — BROWSER NOT RUN trong mọi phiên |
+| G7 | Không có secret nào trong repo (`service_role`, PIN, Gmail cá nhân thật) | ✅ Xác minh — .env.local trong .gitignore |
+| G8 | Tài liệu: `mvp-scope.md` (UC1–UC5), `test-report.md` (F-E2E-01..15), `backup-restore.md` đủ | ✅ Cập nhật 05/10/2026 |
+
 ## Kiến trúc
 
 ```mermaid
@@ -49,7 +76,26 @@ flowchart LR
   N -. production .-> E[SMTP/Resend ngoài repo]
 ```
 
-Module: `auth-account`, `organization-catalog`, `student-profile`, `union-membership`; `lib/auth` và audit SQL là lớp cắt ngang. Route Handler là public boundary, RPC là transaction boundary, RLS là lớp phòng thủ bổ sung.
+Module: `auth-account`, `organization-catalog`, `student-profile`, `union-membership`, `forms`; `lib/auth` và audit SQL là lớp cắt ngang. Route Handler là public boundary, RPC là transaction boundary, RLS là lớp phòng thủ bổ sung.
+
+**Prompt 02 thêm:**
+
+```
+POST /api/forms/templates          — school_admin tạo template
+GET  /api/forms/templates          — danh sách template (admin)
+GET  /api/forms/templates/[id]     — chi tiết + versions
+PATCH /api/forms/templates/[id]    — sửa template
+POST /api/forms/templates/[id]/publish — phát hành version mới
+
+POST /api/forms                    — tạo form (committee_manager/office)
+GET  /api/forms                    — danh sách form (published + managed)
+GET  /api/forms/[id]               — chi tiết form (audience check)
+PATCH /api/forms/[id]              — sửa form
+PATCH /api/forms/[id]/status       — chuyển trạng thái
+GET  /api/forms/[id]/responses     — xem phản hồi (org manager only)
+POST /api/forms/[id]/responses     — nộp phản hồi (audience check, guest-ok)
+GET  /api/forms/[id]/export        — xuất CSV với BOM + resolved labels
+```
 
 ## ERD rút gọn
 
@@ -73,4 +119,10 @@ erDiagram
   UNION_APPLICATIONS ||--o{ PAPER_BOOK_EVENTS : paper
   UNION_APPLICATIONS ||--o| UNION_MEMBERSHIPS : recognition
   ACCOUNTS ||--o{ AUDIT_EVENTS : acts
+  FORM_TEMPLATES ||--o{ FORM_TEMPLATE_VERSIONS : versions
+  ORGANIZATION_UNITS ||--o{ FORMS : owner
+  FORMS }o--o| FORM_TEMPLATE_VERSIONS : locked_version
+  FORMS ||--o{ FORM_RESPONSES : collects
+  ACCOUNTS ||--o{ FORM_RESPONSES : respondent
+  FORM_RESPONSES ||--o{ FORM_RESPONSE_ANSWERS : answers
 ```
