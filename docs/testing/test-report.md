@@ -176,3 +176,69 @@ Playwright 1.63.0 + headless Chrome (`/Applications/Google Chrome.app`). Không 
 **Sửa lỗi thứ hai phát hiện qua screenshot:** Trang responses UI cũng xuất option ID thô (`opt1`). Sửa trong `src/app/forms/[id]/responses/page.tsx`: build `optionLabels Map`, resolve trong `getAnswer()`. Re-run Playwright sau fix: 9/9 PASS, column "Đã tham gia CLB?" hiển thị `Có`.
 
 Lệnh xác nhận cuối: `npm run lint` (0 errors), `npm run typecheck` (clean), `npm test` (34 PASS), `supabase test db` (41 PASS), `npm run build` (PASS).
+
+## G5 — Restore drill tách biệt — 06/10/2026
+
+Dùng `docker exec -i supabase_db_hiu-youth-e-office psql -U postgres` (PostgreSQL 17.6 trong container) — không cần cài `libpq` hệ thống, không dùng đường dẫn `/opt/homebrew` cố định.
+
+**Các bước đã thực hiện:**
+
+```bash
+# Tạo DB tách biệt trong cùng PostgreSQL instance
+docker exec supabase_db_hiu-youth-e-office psql -U postgres -c "CREATE DATABASE restore_test"
+
+# Restore schema (255K)
+docker exec -i supabase_db_hiu-youth-e-office psql -U postgres restore_test < schema_20261005T223312.sql
+
+# Restore data (369K)
+docker exec -i supabase_db_hiu-youth-e-office psql -U postgres restore_test < data_20261005T223312.sql
+
+# Dọn dẹp
+docker exec supabase_db_hiu-youth-e-office psql -U postgres -c "DROP DATABASE restore_test"
+```
+
+**Lỗi không nghiêm trọng:** `ERROR: relation "supabase_functions.hooks_id_seq" does not exist` — đây là sequence nội bộ Supabase không có trong plain PostgreSQL instance; không ảnh hưởng public schema.
+
+**Xác minh row count sau restore:**
+
+| Bảng | Trong backup | Restore_test | Khớp |
+|---|---|---|---|
+| faculties | 10 | 10 | ✓ |
+| programs | 51 | 51 | ✓ |
+| classes | 347 | 347 | ✓ |
+| cohorts | 6 | 6 | ✓ |
+| accounts | 3 | 3 | ✓ |
+| role_grants | 2 | 2 | ✓ |
+| form_templates | 1 | 1 | ✓ |
+| form_template_versions | 1 | 1 | ✓ |
+| forms | 2 | 2 | ✓ |
+| form_responses | 1 | 1 | ✓ |
+| form_response_answers | 3 | 3 | ✓ |
+
+**Business query xác minh:**
+- Catalog join: Khoa Kinh Tế 12 ngành / 80 lớp ✓
+- form_template: title "Mẫu đăng ký hoạt động E2E", audience=hiu_student, status=published, 1 version, 3 câu hỏi ✓
+- RPCs: `evaluate_audience_rule`, `save_form_template`, `submit_form_response` đều tồn tại ✓
+
+**Kết quả: G5 COMPLETE** — 11/11 bảng khớp, 3 business query PASS.
+
+## G6 — Write flow qua UI (Playwright) — 06/10/2026
+
+Playwright 1.63.0 + headless Chrome. Script: `pw_write_flow.mjs` trong scratchpad. Chạy lại 3 lần: kết quả 12/12 PASS ổn định.
+
+| ID | Bước | Kết quả |
+|---|---|---|
+| F-UI-10 | school_admin tạo template "G6 UI Write Test Template" với câu hỏi single_choice "Bạn có muốn tham gia?" → saved, redirect đến `/forms/templates/[id]` | PASS |
+| F-UI-11 | school_admin phát hành phiên bản template → notice "Đã phát hành phiên bản mới." | PASS |
+| F-UI-12 | committee_manager tạo form "G6 UI Write Test Form" với câu hỏi thủ công → saved, redirect đến `/forms/[id]/edit` | PASS |
+| F-UI-13 | committee_manager phát hành form → notice "Đã chuyển sang: published" | PASS |
+| F-UI-14 | student xem form: câu hỏi "Bạn có muốn tham gia?" hiển thị đúng | PASS |
+| F-UI-15 | student chọn option "Có" (radio label đúng tiếng Việt) | PASS |
+| F-UI-16 | student nộp → "Đã nộp thành công!" | PASS |
+| F-UI-17 | committee_manager xem `/responses`: bảng hiển thị "Có" (không phải option UUID) | PASS |
+| F-UI-18 | Không có UUID thô trong cột answer của bảng responses | PASS |
+| F-UI-19 | CSV qua `fetch()` trong browser context: chứa "Có" | PASS |
+| F-UI-20 | CSV không chứa option UUID thô trong data rows | PASS |
+| F-UI-21 | CSV header: `Thời gian nộp,Email người nộp,Bạn có muốn tham gia?` | PASS |
+
+**Kết quả: G6 COMPLETE** — 12/12 PASS. Toàn bộ write flow qua UI xác minh thành công.

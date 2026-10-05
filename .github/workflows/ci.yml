@@ -12,6 +12,16 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    # Env vars are CI-only placeholders for build/test compilation.
+    # No real Supabase instance is contacted during lint/typecheck/test/build.
+    # supabase test db (pgTAP, 41 tests) runs locally only — PostgreSQL is not
+    # available in this workflow.
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+      NEXT_PUBLIC_APP_URL: http://localhost:3001
+      SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+      AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

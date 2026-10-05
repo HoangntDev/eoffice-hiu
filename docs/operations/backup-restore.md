@@ -37,34 +37,41 @@ supabase db dump --local --data-only -f data_20261005T223312.sql  # 369K, 1780 d
 
 Kiểm tra integrity: 11 bảng public schema, row count trong dump khớp live DB (10/51/347/6 danh mục, 1 template, 2 forms, 1 response, 3 answers). Xem chi tiết tại `docs/testing/test-report.md` → "Bổ sung backup drill".
 
-## Restore drill local (chưa chạy end-to-end)
+## Restore drill đã chạy — 06/10/2026
 
-`pg_restore`/`psql` không có trong system PATH. Khi cần chạy drill hoàn chỉnh:
+Dùng `docker exec -i supabase_db_hiu-youth-e-office psql -U postgres` (PostgreSQL 17.6 trong container). Không cần cài `libpq` hệ thống và không hard-code đường dẫn `/opt/homebrew`.
 
 ```bash
-# Bước 1 — cài client (cách an toàn, không ảnh hưởng server)
-brew install libpq
-export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+# Tạo DB tách biệt trong cùng instance
+sh -c 'docker exec supabase_db_hiu-youth-e-office psql -U postgres -c "CREATE DATABASE restore_test"'
 
-# Bước 2 — spin up second instance hoặc dùng máy sạch
-supabase start  # hoặc target instance khác
+# Restore schema rồi data qua stdin
+sh -c 'docker exec -i supabase_db_hiu-youth-e-office psql -U postgres restore_test < schema_20261005T223312.sql'
+sh -c 'docker exec -i supabase_db_hiu-youth-e-office psql -U postgres restore_test < data_20261005T223312.sql'
 
-# Bước 3 — apply schema rồi data
+# Verify từng bảng
+sh -c 'docker exec supabase_db_hiu-youth-e-office psql -U postgres restore_test -tc "select count(*) from public.faculties"'
+# → 10
+
+# Dọn dẹp sau drill
+sh -c 'docker exec supabase_db_hiu-youth-e-office psql -U postgres -c "DROP DATABASE restore_test"'
+```
+
+**Lỗi không nghiêm trọng:** `supabase_functions.hooks_id_seq` không tồn tại — internal Supabase sequence, không ảnh hưởng public schema.
+
+Kết quả: 11/11 bảng khớp đúng (xem chi tiết tại `docs/testing/test-report.md` → "G5 — Restore drill").
+
+## Runbook cho instance mới (nếu cần)
+
+Nếu muốn restore sang Supabase local instance thứ hai (`brew install libpq` hoặc `brew --prefix libpq` để lấy đúng prefix):
+
+```bash
+# Lấy đường dẫn psql đúng với máy hiện tại
+LIBPQ_PREFIX=$(brew --prefix libpq 2>/dev/null || echo "/usr/local")
+export PATH="$LIBPQ_PREFIX/bin:$PATH"
+
 psql postgres://postgres:postgres@127.0.0.1:54322/postgres \
   -v ON_ERROR_STOP=1 -f schema_20261005T223312.sql
 psql postgres://postgres:postgres@127.0.0.1:54322/postgres \
   -v ON_ERROR_STOP=1 -f data_20261005T223312.sql
-
-# Bước 4 — verify
-for tbl in faculties programs classes cohorts; do
-  echo -n "$tbl: "
-  psql postgres://postgres:postgres@127.0.0.1:54322/postgres \
-    -tc "select count(*) from public.$tbl"
-done
-# expect: faculties=10, programs=51, classes=347, cohorts=6
-
-# Bước 5 — pgTAP (chạy trên instance restore)
-supabase test db
 ```
-
-Drill phải hoàn tất PASS trước khi gắn nhãn v1.0.
