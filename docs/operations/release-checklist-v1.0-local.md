@@ -44,9 +44,9 @@ Chỉ tag `v1.0-local` khi tất cả ô dưới đây được kiểm tra. G4 c
 
 ## Đóng gói / artifact
 
-- [x] `git tag v1.0-local` trên commit cuối của nhánh `feat/prompt-01-foundation` (hoặc `main` sau khi merge)
-- [x] Tag có chú thích release notes (xem phần dưới)
-- [ ] **Cần:** PR merged vào `main` → CI xanh → tag tạo trên `main`
+- [ ] `git tag v1.0-local` trên `main` sau khi merge và CI main xanh
+- [ ] Tag có chú thích release notes (xem phần dưới)
+- [ ] **Cần:** PR merged vào `main` → CI main xanh → tag tạo trên `main`
 
 ## Release notes (draft)
 
@@ -76,7 +76,7 @@ Giới hạn đã biết:
 | Gate | Trạng thái |
 |---|---|
 | G1 lint/typecheck/test/build | ✅ COMPLETE |
-| G2 CI GitHub Actions | ⬜ CHỜ — cần tạo repo + push + CI xanh |
+| G2 CI GitHub Actions | ✅ PR run #2 xanh; ⬜ chờ merge và CI trên main |
 | G3 db reset idempotent | ✅ COMPLETE |
 | G4 cloud smoke test | ➡️ DEFERRAL — giai đoạn sau v1.0-local |
 | G5 backup + restore drill | ✅ COMPLETE |
@@ -85,9 +85,8 @@ Giới hạn đã biết:
 | G8 docs đầy đủ | ✅ COMPLETE |
 
 **Thao tác còn lại để tag v1.0-local:**
-1. Tạo repo GitHub private `hiu-youth-e-office`
-2. `git remote add origin <URL> && git push -u origin feat/prompt-01-foundation`
-3. Mở PR `feat/prompt-01-foundation` → `main`, chờ CI xanh
-4. Merge PR
-5. `git tag -a v1.0-local -m "$(cat docs/operations/release-notes-draft.txt)"` trên main
-6. `git push origin v1.0-local`
+1. Rà PR #1 tại `HoangntDev/effice-hiu` và merge vào `main` khi sẵn sàng.
+2. Xác minh GitHub Actions trên commit `main` sau merge xanh.
+3. Đồng bộ nhánh `main` về máy Mac, xác minh HEAD là commit sau merge.
+4. Tạo annotated tag bằng release notes trong mục trên, rồi push tag lên `origin`.
+5. Lưu URL tag, commit SHA và CI run vào test report/release evidence.
