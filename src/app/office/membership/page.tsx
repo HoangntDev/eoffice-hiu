@@ -1,0 +1,2 @@
+import { MembershipReviewConsole } from "@/components/membership-review-console";
+export default function OfficeMembershipPage(){return <main className="page"><div className="page-header"><div><p className="eyebrow">CTV và Văn phòng</p><h1>Tiếp nhận và công nhận</h1><p className="lead">CTV kiểm tra và đề xuất. Chỉ Văn phòng/Đoàn Trường có quyền quyết định cuối.</p></div></div><MembershipReviewConsole/></main>;}

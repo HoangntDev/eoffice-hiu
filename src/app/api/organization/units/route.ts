@@ -1,0 +1,6 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { requirePermission,requireUser } from "@/lib/auth/dal";
+import { apiError,HttpError,readJson } from "@/lib/http";
+const schema=z.object({organizationId:z.uuid().nullable().optional(),code:z.string().trim().min(2),name:z.string().trim().min(3),unitType:z.enum(["school_committee","office"]),parentId:z.uuid(),effectiveDate:z.iso.date(),isActive:z.boolean(),reason:z.string().trim().min(5),roleGrantId:z.uuid().nullable().optional()}).strict();
+export async function POST(request:Request){try{const input=schema.parse(await readJson(request));const{supabase}=await requireUser();await requirePermission(supabase,"organization.manage");const{data,error}=await supabase.rpc("save_organization_unit",{p_organization_id:input.organizationId??null,p_code:input.code,p_name:input.name,p_unit_type:input.unitType,p_parent_id:input.parentId,p_effective_date:input.effectiveDate,p_is_active:input.isActive,p_reason:input.reason,p_role_grant_id:input.roleGrantId??null});if(error)throw new HttpError(422,"ORGANIZATION_SAVE_FAILED","Không thể lưu đơn vị hoặc quan hệ trực thuộc.");return NextResponse.json({id:data,message:"Đã lưu đơn vị và lịch sử hiệu lực."});}catch(error){return apiError(error);}}

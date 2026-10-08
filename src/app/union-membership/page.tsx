@@ -1,0 +1,2 @@
+import { UnionApplicationForm } from "@/components/union-application-form";
+export default function UnionMembershipPage(){return <main className="page"><div className="page-header"><div><p className="eyebrow">Sinh viên tự mở khi cần</p><h1>Xác thực Đoàn viên</h1><p className="lead">Bản khai không tự tạo tư cách Đoàn viên. Văn phòng chỉ duyệt cuối sau khi đã tiếp nhận Sổ Đoàn bản giấy.</p></div></div><UnionApplicationForm/></main>;}
