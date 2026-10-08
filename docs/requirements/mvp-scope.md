@@ -47,20 +47,20 @@ Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT
 - Cần xác nhận quy tắc `cycle_key` sau `2026-2027` và nghiệp vụ rút Sổ mở rộng.
 - SMTP/Resend, production redirect và `doanhoihiu.io.vn` cần cấu hình dashboard thật.
 
-## Cổng release v1.0 — 2 mục chưa đạt (cloud)
+## Cổng release v1.0-local
 
-Các mục dưới đây **phải** được hoàn thành và xác nhận trước khi gắn nhãn `v1.0`. Không tự gắn nhãn. **4 mục ban đầu chưa đạt (G2, G4, G5, G6); G5 và G6 COMPLETE 06/10/2026; G2 và G4 cần hành động cloud.**
+G4 cloud/SMTP/Vercel được hoãn sang giai đoạn triển khai thật sau release local; đây không phải điều kiện của `v1.0-local`. CI của PR #1 đã xanh ở run #2; còn merge và xác minh CI trên `main` trước khi tag. Các bằng chứng kiểm thử local và giới hạn restore nằm trong `docs/testing/test-report.md` và `docs/operations/release-checklist-v1.0-local.md`.
 
 | # | Điều kiện | Trạng thái |
 |---|---|---|
-| G1 | `npm run lint && npm run typecheck && npm test && supabase test db && npm run build` tất cả PASS trên nhánh `main` | ✅ PASS (05/10/2026) |
-| G2 | CI GitHub Actions xanh trên nhánh `main` (lint + typecheck + test + build) | ⚠️ Chưa — repo chưa có remote origin; cần tạo repo GitHub và push |
-| G3 | `supabase db reset` + catalog import idempotent và clean trên máy sạch | ✅ Xác minh local 05/10/2026 |
-| G4 | Smoke test đăng ký → Gmail xác minh → PIN → login → profile trên **cloud** (Supabase + Vercel) | ⚠️ Chưa — cần cấu hình SMTP/Resend, Supabase cloud và Vercel deployment |
-| G5 | Backup artifact tạo và xác minh integrity; restore drill hoàn chỉnh trên instance tách biệt | ✅ COMPLETE (06/10/2026) — schema 255K + data 369K; restore vào `restore_test` DB qua `docker exec psql`; 11/11 bảng khớp; 3 business query PASS. Xem `docs/operations/backup-restore.md` và `test-report.md`. |
-| G6 | Kiểm tra trực quan UI bằng **browser thật** — write flow đầy đủ | ✅ COMPLETE (06/10/2026) — Playwright 12/12 PASS: tạo template → phát hành → tạo form → phát hành → nộp response → xem nhãn tiếng Việt "Có" trong bảng → xác minh CSV. Screenshots saved. |
-| G7 | Không có secret nào trong repo (`service_role`, PIN, Gmail cá nhân thật) | ✅ Xác minh — .env.local trong .gitignore |
-| G8 | Tài liệu: `mvp-scope.md` (UC1–UC5), `test-report.md` đủ | ✅ Cập nhật 06/10/2026 |
+| G1 | lint, typecheck, Vitest, pgTAP và build local | ✅ PASS theo báo cáo 05–06/10/2026 |
+| G2 | GitHub Actions trên PR và `main` xanh | ✅ PR #1 run #2 xanh; ⬜ chờ merge và CI main |
+| G3 | Migration từ đầu và catalog import idempotent local | ✅ PASS theo báo cáo 05/10/2026 |
+| G4 | Smoke test Supabase cloud, SMTP/Resend, Vercel | ➡️ Hoãn sau `v1.0-local` |
+| G5 | Backup và restore drill trên DB thử tách biệt | ✅ PASS với giới hạn đã ghi nhận: lỗi sequence nội bộ Supabase; chưa pgTAP trên instance khôi phục |
+| G6 | Browser UI write flow | ✅ Playwright 12/12 PASS theo báo cáo 06/10/2026 |
+| G7 | Rà secret trong source và lịch sử | ✅ Theo báo cáo rà ngày 06/10/2026 |
+| G8 | Yêu cầu, ERD, test report và release checklist | ✅ Có tài liệu trong PR #1; cập nhật trạng thái release sau merge |
 
 ## Kiến trúc
 
