@@ -1,26 +1,36 @@
 begin;
-select plan(8);
+select plan(10);
 
 insert into auth.users(id, email)
-values ('40000000-0000-4000-8000-000000000001', 'signup-flow-test@gmail.com');
+values ('40000000-0000-4000-8000-000000000001', 'signup0000091@student.hiu.vn');
 
 select ok(
-  public.reserve_account_registration('0000000091', 'signup-flow-test@gmail.com'),
-  'reserves a new MSSV and Gmail before verification'
+  public.reserve_account_registration('0000000091', 'signup0000091@student.hiu.vn'),
+  'reserves a new MSSV and student email before verification'
 );
 select isnt(
-  public.reserve_account_registration('0000000091', 'another-signup-test@gmail.com'),
+  public.reserve_account_registration('0000000091', 'another0000091@student.hiu.vn'),
   true,
   'cannot reserve an MSSV twice'
 );
 select isnt(
-  public.reserve_account_registration('0000000092', 'signup-flow-test@gmail.com'),
+  public.reserve_account_registration('0001110091', 'signup0000091@student.hiu.vn'),
   true,
-  'cannot reserve a Gmail twice'
+  'cannot reserve a student email twice'
+);
+select isnt(
+  public.reserve_account_registration('0000000093', 'signup0000093@gmail.com'),
+  true,
+  'rejects Gmail: only @student.hiu.vn is accepted'
+);
+select isnt(
+  public.reserve_account_registration('0000000094', 'signup0009999@student.hiu.vn'),
+  true,
+  'rejects a student email whose number does not match the MSSV'
 );
 select lives_ok(
   $$select public.complete_account_registration(
-    '40000000-0000-4000-8000-000000000001', 'signup-flow-test@gmail.com'
+    '40000000-0000-4000-8000-000000000001', 'signup0000091@student.hiu.vn'
   )$$,
   'verified email completes the pending registration'
 );
@@ -31,7 +41,7 @@ select is(
 );
 select ok(
   (select verified_at is not null from public.account_emails where user_id = '40000000-0000-4000-8000-000000000001'),
-  'verified Gmail is recorded separately'
+  'verified student email is recorded separately'
 );
 
 insert into public.pin_recovery_authorizations(token_hash, user_id, expires_at)

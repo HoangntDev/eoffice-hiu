@@ -13,7 +13,7 @@ export async function PATCH(request: Request) {
       { email: input.gmail },
       { emailRedirectTo: `${appUrl()}/auth/confirm?flow=change-email` },
     );
-    if (error) throw new HttpError(409, "EMAIL_CHANGE_UNAVAILABLE", "Không thể bắt đầu đổi Gmail.");
+    if (error) throw new HttpError(409, "EMAIL_CHANGE_UNAVAILABLE", "Không thể bắt đầu đổi email sinh viên.");
 
     const admin = createAdminSupabase();
     await admin.from("email_change_requests").delete().eq("user_id", user.id).is("completed_at", null);
@@ -24,7 +24,7 @@ export async function PATCH(request: Request) {
     if (insertError) throw new Error("EMAIL_CHANGE_AUDIT_FAILED");
 
     return NextResponse.json({
-      message: "Đã gửi yêu cầu xác minh. Gmail đang dùng chỉ đổi sau khi quy trình xác nhận hoàn tất.",
+      message: "Đã gửi yêu cầu xác minh. Email đang dùng chỉ đổi sau khi quy trình xác nhận hoàn tất.",
     });
   } catch (error) {
     return apiError(error);

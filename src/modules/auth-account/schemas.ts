@@ -1,13 +1,26 @@
 import { z } from "zod";
 
 export const studentCodeSchema = z.string().regex(/^\d{10}$/, "MSSV hiện phải có đúng 10 chữ số.");
-export const gmailSchema = z.string().trim().toLowerCase().email().regex(/@gmail\.com$/i, "Phải dùng địa chỉ Gmail.");
+export const studentEmailSchema = z.string().trim().toLowerCase().email().regex(/@student\.hiu\.vn$/i, "Phải dùng email sinh viên HIU (@student.hiu.vn).");
+/** @deprecated DB RPC params still named "gmail" — keep alias to avoid renaming migrations */
+export const gmailSchema = studentEmailSchema;
 export const pinSchema = z.string().regex(/^\d{6}$/, "PIN phải có đúng 6 chữ số.");
 
 export const registerSchema = z.object({
   studentCode: studentCodeSchema,
-  gmail: gmailSchema,
-}).strict();
+  gmail: studentEmailSchema,
+}).strict().superRefine((val, ctx) => {
+  // numeric suffix of student email must match mssv[0:3] + mssv[6:10]
+  const expected = val.studentCode.slice(0, 3) + val.studentCode.slice(6);
+  const localPart = val.gmail.split("@")[0] ?? "";
+  if (!localPart.endsWith(expected)) {
+    ctx.addIssue({
+      code: "custom",
+      path: ["gmail"],
+      message: `Email sinh viên không khớp với MSSV (phải kết thúc bằng ${expected}@student.hiu.vn).`,
+    });
+  }
+});
 
 export const loginSchema = z.object({
   studentCode: studentCodeSchema,
@@ -16,7 +29,7 @@ export const loginSchema = z.object({
 
 export const recoverSchema = z.object({ studentCode: studentCodeSchema }).strict();
 
-export const changeEmailSchema = z.object({ gmail: gmailSchema }).strict();
+export const changeEmailSchema = z.object({ gmail: studentEmailSchema }).strict();
 
 export const createPinSchema = z.object({
   pin: pinSchema,

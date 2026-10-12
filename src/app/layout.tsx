@@ -7,7 +7,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "HIU Youth E-Office",
-  description: "Cổng nghiệp vụ Đoàn – Hội HIU",
+  description: "Văn phòng điện tử Đoàn – Hội HIU",
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -17,15 +17,44 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="vi">
       <body>
         <header className="site-header">
-          <Link className="brand" href="/">HIU Youth E-Office</Link>
-          <nav aria-label="Điều hướng chính">
-            <Link href="/onboarding/profile">Hồ sơ sinh viên</Link>
-            <Link href="/programs">Chương trình</Link>
-            <Link href="/union-membership">Xác thực Đoàn viên</Link>
-            <Link href="/organization">Cơ cấu</Link>
-            <Link href="/office/membership">Xử lý hồ sơ</Link>
-            <Link href="/account/security">Tài khoản</Link>
-            {data.user ? <LogoutButton /> : <Link href="/login">SIGN IN</Link>}
+          {/* Tier 1: brand bar */}
+          <div className="header-brand-bar">
+            <Link className="brand" href="/">
+              <svg className="brand-logo" viewBox="0 0 32 32" fill="none" aria-hidden>
+                <rect width="32" height="32" rx="8" fill="currentColor" opacity=".12"/>
+                <path d="M8 10h16M8 16h16M8 22h10" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+              </svg>
+              <span className="brand-text">
+                <span className="brand-name">HIU Youth E-Office</span>
+                <span className="brand-sub">Văn phòng điện tử Đoàn – Hội</span>
+              </span>
+            </Link>
+            {data.user && (
+              <div className="header-user">
+                <span className="user-label">Đã đăng nhập</span>
+                <LogoutButton />
+              </div>
+            )}
+          </div>
+          {/* Tier 2: nav bar */}
+          <nav className="header-nav" aria-label="Điều hướng chính">
+            <Link href="/">Trang chủ</Link>
+            <Link href="/forms">Biểu mẫu</Link>
+            {data.user ? (
+              <>
+                <Link href="/onboarding/profile">Hồ sơ</Link>
+                <Link href="/programs">Chương trình</Link>
+                <Link href="/union-membership">Đoàn viên</Link>
+                <Link href="/organization">Cơ cấu</Link>
+                <Link href="/office/membership">Xử lý hồ sơ</Link>
+                <Link href="/account/security">Tài khoản</Link>
+              </>
+            ) : (
+              <>
+                <Link href="/register">Tạo tài khoản</Link>
+                <Link href="/login" className="nav-login-btn">Đăng nhập</Link>
+              </>
+            )}
           </nav>
         </header>
         {children}
