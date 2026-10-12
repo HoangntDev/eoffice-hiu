@@ -1,3 +1,29 @@
+# Cập nhật — 13/10/2026 lượt 2 (ổn định UC6)
+
+Nhánh `feat/event-program-plans`. Không push, merge, deploy, db reset; không đụng cloud.
+
+| Việc | File | Nguyên nhân / thay đổi | Kiểm tra |
+|---|---|---|---|
+| Chỉ Văn phòng xét duyệt | `202610130001_event_program_plans.sql` (`event_program_reviewer_grant`), `modules/event-programs/viewer.ts`, `tests/005` (+2), docs | Bản trước cho `school_admin` quyền tương đương. Nay chỉ role `office` trên đơn vị `office`; `school_admin` không duyệt và không thấy hồ sơ đang chờ | pgTAP 005: 35/35 PASS |
+| 9 lỗi lint | `components/account-security-panel.tsx` | `onChange={handleChange(...)}` gọi factory ngay lúc render → React Compiler coi truy cập ref là trong render. Đổi sang `onChange={(e) => handleChange(e, …)}`, hành vi giữ nguyên | lint PASS |
+| 1 lỗi lint | `components/union-application-form.tsx` (`WardSelect`) | `setState` trong `useEffect` để reset phường khi đổi tỉnh → đổi sang so sánh prop trước đó trong render | lint PASS |
+| 3 test UI fail | `tests/auth-ui.test.tsx` | Test cũ theo UI trước redesign (nhãn "Gmail", "PIN" cùng màn). Viết lại theo luồng WIP: đăng nhập 2 bước MSSV → PIN, ô PIN dạng chấm; giữ ý định (đăng ký không hỏi PIN, đăng nhập không hỏi email, đổi PIN phải qua PIN hiện tại) | 4/4 PASS |
+| 1 test validation fail + **lỗi thật** | `supabase/migrations/202610130002_student_email_domain.sql` (mới), `tests/validation.test.ts`, `supabase/tests/002`, `003` (+2) | WIP yêu cầu `@student.hiu.vn` nhưng DB chỉ nhận `@gmail.com` → đăng ký qua UI luôn lỗi. **Người dùng chọn chuyển sang `@student.hiu.vn`** (thay quy tắc Gmail của Prompt 01). Migration đổi 3 CHECK (NOT VALID, giữ tài khoản Gmail cũ) + `reserve_account_registration` kiểm số email khớp MSSV (3 số đầu + 4 số cuối) | vitest 11/11, pgTAP 002+003 PASS |
+| Storage `42P10` | chỉ DB local | **Đã xác minh:** `storage-api v1.72.1` (05/10) tạo `idx_objects_current_version` không `COLLATE "C"`; `v1.79.36` (09/10) đổi nội dung cùng migration 0066 thành có `COLLATE "C"` nhưng không chạy lại → code mới dùng `ON CONFLICT … COLLATE "C"` không khớp. Đã thay index local bằng đúng định nghĩa upstream (bỏ index vá tạm) | `ON CONFLICT` thử trong transaction: OK |
+| Lịch sử migration | — | 4 migration `202610090012`, `202610100001`–`0003` (+ `202610130001`, `202610130002` của UC6) có hiệu lực trong DB nhưng chưa có trong `schema_migrations` vì apply tay bằng psql | Chưa sửa (xem tồn đọng) |
+
+**Lệnh cuối:** `npm run lint` PASS · `tsc --noEmit` PASS.
+
+**Commit:** chỉ commit phần UC6 (quyền Văn phòng + docs). Migration email, sửa lint 2 file WIP và test auth/validation/002/003 **để chưa commit cùng WIP UI**, vì chúng phụ thuộc WIP (commit riêng sẽ làm CI đỏ).
+
+**Tồn đọng:**
+1. Commit WIP UI + migration email + test liên quan thành một commit/PR riêng.
+2. Đồng bộ lịch sử migration local: `supabase migration repair --status applied 202610090012 202610100001 202610100002 202610100003 202610130001 202610130002 --local` (chỉ ghi metadata, không chạy SQL); sau đó thử `db reset` ở lượt riêng để kiểm áp từ đầu. Lưu ý: `202610100001` xóa rồi seed lại `reference_options`, không idempotent; `202610100003` bỏ qua seed template nếu `accounts` trống.
+3. Tài khoản test cũ dùng Gmail vẫn đăng nhập được (constraint NOT VALID); tài khoản mới phải dùng `@student.hiu.vn`. Cần cập nhật Prompt/tài liệu yêu cầu cho quyết định đổi email.
+4. Trước PR: một lượt kiểm tra toàn repo (vitest toàn bộ, pgTAP toàn bộ, build, Playwright).
+
+---
+
 # Kết quả — 13/10/2026 (UC6: Quản lý kế hoạch chương trình sự kiện)
 
 UC6 đã chạy trọn luồng ở local và qua toàn bộ test đã viết. Code nằm trên nhánh `feat/event-program-plans` (3 commit: `e122b81` DB, `8947553` UI/API, `cec202f` docs). **Chưa push, chưa PR, chưa deploy, không gọi là release v1.0.**
@@ -18,7 +44,7 @@ UC6 đã chạy trọn luồng ở local và qua toàn bộ test đã viết. Co
 | Hạng mục | Chi tiết |
 |---|---|
 | Migration | `202610130001_event_program_plans.sql`: `event_programs`, `event_program_documents` (mỗi lần tải là bản mới + SHA-256), `event_program_history` (append-only, snapshot tên + vai trò người thao tác), 4 RPC, RLS, bucket riêng tư `event-program-plans` (5MB, chỉ PDF) + storage policy |
-| Quyền | Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) chỉ trong Khoa mình; Văn phòng (`office`) và Đoàn Trường xét duyệt; không tự duyệt hồ sơ mình nộp; sinh viên chỉ thấy chương trình `approved` |
+| Quyền | Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) chỉ trong Khoa mình; **chỉ Văn phòng (`office`) xét duyệt** (lượt 2: bỏ quyền mặc nhiên của `school_admin`); không tự duyệt hồ sơ mình nộp; sinh viên chỉ thấy chương trình `approved` |
 | Kiểm tra ở server | Đủ 7 trường (nội dung, địa điểm, bắt đầu, kết thúc, số người, số kế hoạch, ngày ký) + PDF mới được gửi; PDF ≤ 5MB, đúng đuôi/MIME/magic `%PDF-`; lý do ≥ 10 ký tự khi từ chối/yêu cầu sửa |
 | Logging | `src/lib/log.ts` log JSON + `x-request-id`, lưu cả vào `audit_events.request_id` |
 | UI | `/programs` (hàng đợi Văn phòng, kế hoạch của Khoa, danh sách đã chấp thuận), `/programs/new`, `/programs/[id]` |
@@ -76,7 +102,7 @@ Nút bấm trên UI chỉ là gợi ý; quyền thật luôn được kiểm tra
 ## 5. Quyết định cần xác nhận
 
 - **Quy trình ký:** tài liệu chỉ ghi Văn phòng "kiểm tra kế hoạch đã ký" (Q&A 12.2), nên hệ thống bắt buộc **Số kế hoạch + Ngày ký + PDF**. Không xác minh chữ ký số; Văn phòng đối chiếu bằng mắt.
-- **Đoàn Trường (`school_admin`) cũng được xét duyệt**, giống các luồng duyệt khác trong dự án.
+- ~~Đoàn Trường cũng được xét duyệt~~ → đã đổi ở lượt 2: chỉ Văn phòng.
 - **Không dùng hệ thống biểu mẫu động:** kế hoạch là thực thể có trường cố định kèm PDF.
 - Ngoài phạm vi lượt này: QR điểm danh, điểm rèn luyện, mượn phòng.
 

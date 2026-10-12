@@ -247,7 +247,7 @@ Playwright 1.63.0 + headless Chrome. Script: `pw_write_flow.mjs` trong scratchpa
 
 Nhánh `feat/event-program-plans`. Dữ liệu tổng hợp: tài khoản `2026990003` (sinh viên), `2026990004` (BCH Đoàn Khoa CNKT), `2026990005` (BCH Đoàn Khoa Dược), `2026990006` (Văn phòng), Gmail `e2e.*@gmail.com`, PIN chỉ dùng local. Không deploy, không push cloud, không `db reset`.
 
-### pgTAP — `supabase/tests/005_event_programs.sql` (33 assertion)
+### pgTAP — `supabase/tests/005_event_programs.sql` (35 assertion)
 
 | ID | Expected | Actual | Kết quả |
 |---|---|---|---|
@@ -284,6 +284,8 @@ Nhánh `feat/event-program-plans`. Dữ liệu tổng hợp: tài khoản `20269
 | EP-DB-31 | Sinh viên thấy chương trình đã chấp thuận | 1 dòng | PASS |
 | EP-DB-32 | Sinh viên không đọc PDF của chương trình đã chấp thuận | 0 dòng | PASS |
 | EP-DB-33 | Người vừa là Đoàn Khoa vừa là Văn phòng tự duyệt hồ sơ mình nộp → `SELF_REVIEW_FORBIDDEN` | đúng | PASS |
+| EP-DB-34 | `school_admin` xét duyệt kế hoạch → `FORBIDDEN` (chỉ Văn phòng, 13/10) | `FORBIDDEN` | PASS |
+| EP-DB-35 | RLS: `school_admin` không thấy hồ sơ đang chờ Văn phòng | 0 dòng | PASS |
 
 **Lỗi phát hiện nhờ test:** EP-DB-08 lần đầu trả `malformed array literal: "summary"` vì `text[] || 'summary'` bị hiểu là array literal; sửa bằng `array_append`. EP-DB-06 ban đầu đếm toàn bảng nên fail sau khi chạy E2E (sinh viên được phép thấy 3 chương trình đã chấp thuận); sửa test để chỉ đếm hồ sơ chưa chấp thuận.
 
@@ -340,3 +342,18 @@ Schema chặn trường trạng thái do client tự gửi, kết thúc trước
 `npx tsc --noEmit` PASS · ESLint trên toàn bộ file UC6 PASS · `vitest` 48/52 (4 fail có sẵn trong `auth-ui.test.tsx`/`validation.test.ts` thuộc thay đổi UI chưa commit, không liên quan UC6) · `supabase test db` 74/74 PASS · `supabase db lint --local` không còn cảnh báo về UC6 · `npm run build` PASS. `npm run lint` toàn repo còn 10 lỗi có sẵn trong `account-security-panel.tsx` và `union-application-form.tsx` (thay đổi chưa commit, có từ trước UC6).
 
 **Chưa kiểm thử:** `supabase db reset` từ đầu với migration mới (không chạy để giữ dữ liệu local); Storage trên Supabase cloud; PDF > 10MB đi qua proxy thật trên Vercel; đọc PDF bằng trình xem trong trình duyệt (chỉ kiểm tra SHA-256 khi tải về).
+
+
+## Ổn định UC6 + email sinh viên — 13/10/2026 (lượt 2)
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| EP-DB-34/35 | Chỉ role `office` trên đơn vị `office` xét duyệt; `school_admin` bị từ chối và không thấy hồ sơ chờ | đúng | PASS (`supabase test db supabase/tests/005_event_programs.sql` 35/35) |
+| ACC-01 | `reserve_account_registration`: email `@student.hiu.vn` khớp MSSV (3 số đầu + 4 số cuối) → nhận; Gmail → từ chối; sai số → từ chối | t / f / f | PASS |
+| ACC-02 | pgTAP 002, 003 với fixture email sinh viên (+2 assertion Gmail/sai MSSV) | ok | PASS |
+| UT-AUTH | `auth-ui.test.tsx` theo luồng WIP (đăng nhập 2 bước MSSV → PIN, ô PIN dạng chấm); `validation.test.ts` theo quy tắc email sinh viên | 11/11 | PASS |
+| STG-01 | Câu `ON CONFLICT (bucket_id, name COLLATE "C") WHERE archived_at IS NULL` của Storage chạy được sau khi đưa index local về định nghĩa upstream | `ON_CONFLICT_OK` (rollback) | PASS |
+
+`npm run lint` toàn repo PASS; `tsc --noEmit` PASS. Không chạy lại Playwright, toàn bộ pgTAP, build, db reset theo yêu cầu.
+
+**Nguyên nhân Storage (đã xác minh):** `storage-api v1.72.1` (05/10) tạo `idx_objects_current_version` trên `(bucket_id, name)`; CLI nâng lên `v1.79.36` (09/10) có cùng migration 0066 nhưng nội dung mới `(bucket_id, name COLLATE "C")`. Migration 66 đã ghi là chạy nên không chạy lại (và có `IF NOT EXISTS`), DB giữ index cũ trong khi code mới dùng `ON CONFLICT … COLLATE "C"` → `42P10`. Đã thay index local bằng đúng định nghĩa upstream. DB tạo mới bằng image hiện tại không bị lỗi này; cloud do Supabase quản lý.
