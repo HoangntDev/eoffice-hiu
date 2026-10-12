@@ -20,6 +20,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Link className="brand" href="/">HIU Youth E-Office</Link>
           <nav aria-label="Điều hướng chính">
             <Link href="/onboarding/profile">Hồ sơ sinh viên</Link>
+            <Link href="/programs">Chương trình</Link>
             <Link href="/union-membership">Xác thực Đoàn viên</Link>
             <Link href="/organization">Cơ cấu</Link>
             <Link href="/office/membership">Xử lý hồ sơ</Link>
