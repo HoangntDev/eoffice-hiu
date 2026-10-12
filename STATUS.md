@@ -1,3 +1,23 @@
+# Cập nhật — 14/10/2026 (chuẩn bị PR UC6)
+
+Nhánh `feat/event-program-plans` **đã push** lên origin. Chưa merge; không đụng Supabase cloud.
+
+| Việc | Kết quả |
+|---|---|
+| Lịch sử migration local | `migration repair --status applied` cho 6 version (chỉ ghi metadata) → `migration list --local`: 18/18 khớp. Migration mới `202610140001` được áp bằng `migration up --local`. |
+| Seed mẫu Cảm tình Đoàn | Commit `eee68e0`: `seed_camtinh_doan_template(p_creator)` (idempotent, chỉ service_role) được gọi trong `bootstrap_school_admin`, người tạo là tài khoản Đoàn Trường thật; DB đã bootstrap được seed một lần. Sửa luôn lỗi 0003 lấy `accounts limit 1` (có thể là sinh viên) làm người tạo. Test `supabase/tests/006_bootstrap_template_seed.sql`. |
+| Dựng từ đầu (stack tách biệt `uc6-iso-check`, cổng 553xx, đã xóa sau khi kiểm) | 18/18 migration chạy sạch; 0 mẫu trước bootstrap → 1 mẫu `published`, 19 câu hỏi, người tạo đúng tài khoản bootstrap; danh mục đủ (dân tộc 61, tôn giáo 14, tỉnh 34, phường 3321); không còn CHECK Gmail; upload PDF qua Storage API: 200; pgTAP 002, 003, 005, 006 PASS (lỗi trùng email lần đầu do tài khoản bootstrap tạo tay trùng fixture 002, đã đổi và chạy lại PASS). |
+| Storage `42P10` | Nguyên nhân bổ sung: container Storage stack chính tạo 09/10 từ `v1.79.36`, còn CLI v2.117.0 dựng mới bằng `v1.72.1`; volume DB tạo 05/10 với `v1.72.1`. Stack sạch không lỗi. Hướng dẫn trong `docs/operations/local-environment.md`. |
+| Dữ liệu local | Giữ nguyên: 7 tài khoản, 5 chương trình, 3479 reference options, 5 mẫu (mẫu Cảm tình Đoàn không bị tạo lại). |
+| Lint / typecheck | PASS / PASS |
+| PR / CI | **Chưa mở PR**: máy không có `gh` CLI. CI chỉ chạy trên `pull_request` và push `main`, nên **CI chưa chạy**. |
+
+**Blocker:** cần mở PR. Link tạo PR: https://github.com/HoangntDev/eoffice-hiu/pull/new/feat/event-program-plans (hoặc cài `gh` và `gh auth login`).
+
+**Bước tiếp theo:** mở PR vào `main`, chờ CI (lint, typecheck, toàn bộ Vitest, build) rồi mới merge.
+
+---
+
 # Cập nhật — 13/10/2026 lượt 3 (commit WIP + đối chiếu migration)
 
 Nhánh `feat/event-program-plans`. Không push, merge, deploy, migration repair, db reset; không đụng cloud.
