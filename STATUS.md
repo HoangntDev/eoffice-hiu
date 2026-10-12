@@ -16,6 +16,8 @@ Nhánh `feat/event-program-plans` **đã push** lên origin. Chưa merge; không
 
 **Bước tiếp theo:** mở PR vào `main`, chờ CI (lint, typecheck, toàn bộ Vitest, build) rồi mới merge.
 
+**Mô tả PR đã soạn (14/10):** tiêu đề `feat: UC6 kế hoạch chương trình sự kiện + quy tắc email sinh viên`; nội dung gồm 5 ý tóm tắt của người dùng + checklist kiểm thử (CI và cloud chưa tích). Vẫn chờ mở PR qua web vì chưa có `gh`.
+
 ---
 
 # Cập nhật — 13/10/2026 lượt 3 (commit WIP + đối chiếu migration)
