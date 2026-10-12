@@ -1,3 +1,37 @@
+# Cập nhật — 13/10/2026 lượt 3 (commit WIP + đối chiếu migration)
+
+Nhánh `feat/event-program-plans`. Không push, merge, deploy, migration repair, db reset; không đụng cloud.
+
+**Commit mới:** `52a0594` feat(ui,auth): redesign giao diện portal, danh mục tỉnh/phường, quy tắc email sinh viên. Gồm WIP UI, 4 migration seed (`202610090012`, `202610100001`–`0003`), migration `202610130002_student_email_domain.sql`, test phụ thuộc (auth-ui, validation, pgTAP 002/003), `config.toml` (redirect local cổng 3001), sửa chữ "Gmail" trong API đổi email, tài liệu quy tắc email trong `mvp-scope.md`. Đã rà: không có secret hay dữ liệu cá nhân thật, chỉ có fixture tổng hợp.
+
+**File chưa commit:** không còn (trước commit STATUS này).
+
+**Lint / typecheck:** PASS / PASS. Không chạy Playwright, toàn bộ pgTAP, toàn bộ Vitest hay build. Lượt này chỉ sửa chuỗi thông báo, không sửa logic.
+
+**Tình trạng 6 migration áp tay** (`schema_migrations` không có bản nào từ `202610090012` trở đi):
+
+| Migration | Có trong DB | Thiếu | Ghi chú khi chạy lại |
+|---|---|---|---|
+| `202610090012_reference_options_seed` | CHECK category mở rộng (đã được 0002 thay bằng bản có `ward`); các nhóm education_level 8, specialization 7, political_theory 4, it_level 4, foreign_language 18, occupation 8 | Chỉ thiếu bản ghi lịch sử | Có `on conflict`; ethnicity/religion/province bị 0001 thay thế |
+| `202610100001_reference_options_source_data` | ethnicity 61, religion 14, province 34 (`source_note` DAN_TOC/TON_GIAO/DIA_CHI.csv) | Chỉ thiếu bản ghi lịch sử | **Không idempotent**: xóa rồi chèn lại, không có `on conflict` |
+| `202610100002_reference_options_ward` | Cột `parent_code`; CHECK có `ward`; 3321 phường/xã, tất cả có `parent_code` trỏ đúng tỉnh | Chỉ thiếu bản ghi lịch sử | Chèn không có `on conflict` → chạy lại sẽ lỗi trùng khóa |
+| `202610100003_seed_camtinh_doan_template` | Template `f0000000-…0001` + version `…0002` (19 câu hỏi) | Chỉ thiếu bản ghi lịch sử | Có guard theo id; **bỏ qua khi `accounts` rỗng** (sau db reset sẽ không có template) |
+| `202610130001_event_program_plans` | 3 bảng, 10 function, 5 policy, trigger, bucket riêng tư 5MB; reviewer chỉ `office` | Chỉ thiếu bản ghi lịch sử | Idempotent (`if not exists`, `drop … if exists`, `create or replace`) |
+| `202610130002_student_email_domain` | 3 CHECK `*_student_email` (NOT VALID), không còn CHECK `*_gmail`; RPC kiểm `@student.hiu.vn` + khớp MSSV | Chỉ thiếu bản ghi lịch sử | Idempotent; 7 dòng Gmail cũ vẫn tồn tại hợp lệ |
+
+Đề xuất đồng bộ lịch sử: `supabase migration repair --status applied 202610090012 202610100001 202610100002 202610100003 202610130001 202610130002 --local`. Lệnh chỉ ghi metadata, không chạy SQL, nên không đụng tới 0001/0002 không idempotent. Sau đó dùng `supabase migration list --local` để xác nhận local = remote.
+
+**Rủi ro còn lại:**
+- Chưa chạy CI, toàn bộ Vitest/pgTAP hay build sau commit `52a0594`. Lần build gần nhất có WIP là PASS, nhưng chưa xác nhận lại.
+- `db reset` từ đầu chưa kiểm; sau reset sẽ mất template Cảm tình Đoàn (0003 cần có `accounts`) và tài khoản test.
+- 7 tài khoản Gmail cũ chỉ dùng được nhờ NOT VALID; không thể chạy `VALIDATE CONSTRAINT` cho tới khi chuyển hết.
+- Đổi email chỉ kiểm tên miền, chưa kiểm số khớp MSSV.
+- Index Storage đã sửa chỉ ở local; cloud chưa kiểm.
+
+**Bước tiếp theo (một bước):** chạy `supabase migration repair` như trên để đồng bộ lịch sử migration local.
+
+---
+
 # Cập nhật — 13/10/2026 lượt 2 (ổn định UC6)
 
 Nhánh `feat/event-program-plans`. Không push, merge, deploy, db reset; không đụng cloud.
