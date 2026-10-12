@@ -1,46 +1,101 @@
 # Kết quả — 13/10/2026 (UC6: Quản lý kế hoạch chương trình sự kiện)
 
-Nhánh: `feat/event-program-plans` (chưa push, chưa PR, chưa deploy, không gọi là release).
+UC6 đã chạy trọn luồng ở local và qua toàn bộ test đã viết. Code nằm trên nhánh `feat/event-program-plans` (3 commit: `e122b81` DB, `8947553` UI/API, `cec202f` docs). **Chưa push, chưa PR, chưa deploy, không gọi là release v1.0.**
 
-### Use case nghiệp vụ đã chạy đầu cuối (không tính sign up/in/out)
+## 1. Use case nghiệp vụ đã chạy đầu cuối (không tính sign up/in/out)
 
-| UC | Nội dung | Bằng chứng |
+| UC | Nội dung | Bằng chứng (`docs/testing/test-report.md`) |
 |---|---|---|
-| UC1 | Danh mục học vụ + cơ cấu tổ chức | CSV-01…04, DB-07, UI-01 (test-report) |
-| UC2 | Tiếp nhận/công nhận hồ sơ Đoàn viên | DB-03…05, pgTAP 002 |
-| UC3 | Thư viện mẫu theo đối tượng | F-DB-09/10, F-E2E-01/02, G6 F-UI-10/11 |
-| UC4 | Vòng đời biểu mẫu động | F-E2E-03/04/12, G6 F-UI-12/13 |
-| UC5 | Thu nhận phản hồi + CSV | F-E2E-05…08, F-SNAP-01…05, G6 F-UI-14…21 |
-| **UC6** | **Kế hoạch chương trình: Đoàn Khoa lập → PDF đã ký → Văn phòng duyệt/yêu cầu sửa/từ chối** | **pgTAP 33, unit 18, E2E HTTP 28, browser 14 — tất cả PASS** |
+| UC1 | Danh mục học vụ + cơ cấu tổ chức | CSV-01…04, DB-07, UI-01 |
+| UC2 | Tiếp nhận, công nhận hồ sơ Đoàn viên | DB-03…05, pgTAP 002 |
+| UC3 | Thư viện mẫu theo đối tượng | F-DB-09/10, F-E2E-01/02, Playwright F-UI-10/11 |
+| UC4 | Vòng đời biểu mẫu động | F-E2E-03/04/12, F-UI-12/13 |
+| UC5 | Thu nhận phản hồi + xuất CSV | F-E2E-05…08, F-SNAP-01…05, F-UI-14…21 |
+| **UC6** | **Kế hoạch chương trình (lượt này)** | **pgTAP 33, unit 18, E2E HTTP 28, browser 14: tất cả PASS** |
 
-### UC6 — đã làm
+## 2. UC6 — đã làm
 
 | Hạng mục | Chi tiết |
 |---|---|
-| Migration | `202610130001_event_program_plans.sql`: `event_programs`, `event_program_documents`, `event_program_history` (append-only), 4 RPC, RLS, bucket riêng tư `event-program-plans` + storage policy |
-| Trạng thái | `draft → submitted → (needs_changes → submitted)* → approved \| rejected` |
-| Quyền | Đoàn Khoa chỉ trong Khoa mình; Văn phòng/Đoàn Trường xét; không tự duyệt hồ sơ mình nộp; sinh viên chỉ thấy chương trình `approved` |
-| Server check | Đủ 7 trường + PDF mới được gửi; PDF ≤ 5MB, đúng đuôi/MIME/magic `%PDF-`, SHA-256; lý do ≥ 10 ký tự khi từ chối/yêu cầu sửa |
-| Logging | `src/lib/log.ts` JSON + `x-request-id`, nối với `audit_events.request_id` |
-| UI | `/programs`, `/programs/new`, `/programs/[id]` |
-| Tài liệu | `docs/requirements/event-programs.md`, test-report mục UC6 |
+| Migration | `202610130001_event_program_plans.sql`: `event_programs`, `event_program_documents` (mỗi lần tải là bản mới + SHA-256), `event_program_history` (append-only, snapshot tên + vai trò người thao tác), 4 RPC, RLS, bucket riêng tư `event-program-plans` (5MB, chỉ PDF) + storage policy |
+| Quyền | Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) chỉ trong Khoa mình; Văn phòng (`office`) và Đoàn Trường xét duyệt; không tự duyệt hồ sơ mình nộp; sinh viên chỉ thấy chương trình `approved` |
+| Kiểm tra ở server | Đủ 7 trường (nội dung, địa điểm, bắt đầu, kết thúc, số người, số kế hoạch, ngày ký) + PDF mới được gửi; PDF ≤ 5MB, đúng đuôi/MIME/magic `%PDF-`; lý do ≥ 10 ký tự khi từ chối/yêu cầu sửa |
+| Logging | `src/lib/log.ts` log JSON + `x-request-id`, lưu cả vào `audit_events.request_id` |
+| UI | `/programs` (hàng đợi Văn phòng, kế hoạch của Khoa, danh sách đã chấp thuận), `/programs/new`, `/programs/[id]` |
+| Tài liệu | `docs/requirements/event-programs.md` (quy tắc, quyền, sơ đồ trạng thái, luồng dữ liệu, ERD, API, NFR), test-report mục UC6, mvp-scope |
 
-### Kết quả lệnh
+## 3. Kết quả kiểm thử
 
-| Lệnh | Kết quả |
+| Kiểm tra | Kết quả |
 |---|---|
-| typecheck | ✅ PASS |
-| ESLint file UC6 | ✅ PASS |
-| `npm run lint` toàn repo | ❌ 10 lỗi **có sẵn** trong `account-security-panel.tsx`, `union-application-form.tsx` (WIP UI chưa commit) |
-| vitest | 48/52 — 4 fail **có sẵn** trong `auth-ui.test.tsx`, `validation.test.ts` (WIP UI chưa commit) |
-| pgTAP | ✅ 74/74 |
-| build | ✅ PASS |
+| pgTAP (`supabase test db`) | ✅ 74/74 (41 cũ + 33 mới) |
+| Vitest UC6 | ✅ 18/18 |
+| E2E HTTP qua 4 vai trò | ✅ 28/28; PDF tải về có SHA-256 trùng bản gốc; `request_id` trong log khớp `audit_events` |
+| Browser (Chrome headless, thao tác UI thật) | ✅ 14/14, gồm màn hình 390px không cuộn ngang |
+| typecheck, build | ✅ PASS, kể cả trên cây commit sạch giống CI (vitest 52/52, ESLint 0 lỗi) |
+| `npm run lint` toàn repo | ❌ 10 lỗi **có sẵn** trong `account-security-panel.tsx`, `union-application-form.tsx` (WIP UI chưa commit 09–10/10) |
+| vitest toàn repo (working tree) | 48/52 — 4 fail **có sẵn** trong `auth-ui.test.tsx`, `validation.test.ts` (WIP UI chưa commit) |
 
-### Rủi ro / việc còn lại
+Expected/actual tiêu biểu:
 
-- Storage local `storage-api v1.79.36` lỗi `42P10` khi upload (index thiếu `COLLATE "C"`); đã thêm index workaround **chỉ ở local**. Cần kiểm lại trên cloud.
-- Chưa chạy `supabase db reset` từ đầu (giữ dữ liệu local). 4 migration 202610090012/202610100001-3 đã apply tay nhưng chưa ghi `schema_migrations`.
-- WIP UI/CSV ngày 09–10/10 vẫn chưa commit, gây đỏ lint/test toàn repo → cần sửa trước khi mở PR.
+| Kịch bản | Expected | Actual |
+|---|---|---|
+| Đoàn Khoa B sửa hồ sơ Khoa A | 403 | 403 |
+| Sinh viên duyệt | 403 | 403 |
+| Gửi khi chưa có PDF | 422 | 422 |
+| Tệp DOCX đổi đuôi `.pdf` | 422 | 422 |
+| Văn phòng tự duyệt hồ sơ mình nộp | `SELF_REVIEW_FORBIDDEN` | đúng |
+| Nộp lại sau yêu cầu chỉnh sửa | cùng id, `submission_count = 2` | đúng |
+
+**Test đã bắt được 3 lỗi thật:**
+- Lỗi SQL trong RPC gửi kế hoạch: `text[] || 'summary'` bị hiểu thành array literal → sửa bằng `array_append`.
+- Một test pgTAP không cô lập dữ liệu (đếm toàn bảng) → sửa test.
+- Lỗi môi trường Storage local: `storage-api v1.79.36` báo `42P10` với mọi upload do index nội bộ thiếu `COLLATE "C"` → tạo index workaround `idx_objects_current_version_c` **chỉ trên DB local** (không đưa vào migration; sẽ mất nếu `db reset`).
+
+## 4. Luồng dữ liệu (để học và thuyết trình)
+
+```
+draft ──gửi──▶ submitted ──VP chấp thuận──▶ approved
+  ▲               │ └──VP từ chối (lý do)──▶ rejected
+  └─sửa tiếp──────┴──VP yêu cầu sửa (lý do)──▶ needs_changes ──nộp lại──▶ submitted
+```
+
+Ví dụ khi Đoàn Khoa tải PDF:
+1. Trình duyệt gửi tệp lên Route Handler.
+2. Route Handler kiểm tra tệp (≤ 5MB, đúng đuôi, đúng MIME, 5 byte đầu là `%PDF-`) và tính SHA-256.
+3. Tệp được upload vào Storage bằng chính session người dùng, nên policy Storage tự chặn Khoa khác.
+4. RPC `attach_event_program_document` khóa dòng hồ sơ, kiểm tra quyền, trạng thái và tệp đã tồn tại, rồi ghi tài liệu, lịch sử và audit trong một transaction.
+
+Ba lớp bảo vệ:
+- **Zod** kiểm tra định dạng dữ liệu đầu vào.
+- **RPC** kiểm tra quyền và chuyển trạng thái, có khóa dòng (`for update`) để tránh hai người thao tác cùng lúc.
+- **RLS + thu hồi INSERT/UPDATE/DELETE** chặn mọi đường ghi trực tiếp vào bảng.
+
+Nút bấm trên UI chỉ là gợi ý; quyền thật luôn được kiểm tra ở server.
+
+## 5. Quyết định cần xác nhận
+
+- **Quy trình ký:** tài liệu chỉ ghi Văn phòng "kiểm tra kế hoạch đã ký" (Q&A 12.2), nên hệ thống bắt buộc **Số kế hoạch + Ngày ký + PDF**. Không xác minh chữ ký số; Văn phòng đối chiếu bằng mắt.
+- **Đoàn Trường (`school_admin`) cũng được xét duyệt**, giống các luồng duyệt khác trong dự án.
+- **Không dùng hệ thống biểu mẫu động:** kế hoạch là thực thể có trường cố định kèm PDF.
+- Ngoài phạm vi lượt này: QR điểm danh, điểm rèn luyện, mượn phòng.
+
+## 6. Chưa kiểm thử
+
+- `supabase db reset` từ đầu (chưa chạy để giữ dữ liệu local). 4 migration `202610090012`, `202610100001`–`0003` đã apply tay nhưng chưa ghi `schema_migrations`.
+- Storage trên Supabase cloud.
+- Xem PDF trực tiếp trong trình duyệt (mới kiểm tra SHA-256 khi tải về).
+
+## 7. Dữ liệu test local
+
+Tài khoản thêm (PIN 123456, Gmail `e2e.*@gmail.com`): `2026990004` BCH Đoàn Khoa CNKT, `2026990005` BCH Đoàn Khoa Dược, `2026990006` Văn phòng. Tài khoản cũ: `2026990001` school_admin, `2026990002` committee_manager, `2026990003` sinh viên.
+
+## 8. Bước tiếp theo
+
+1. Sửa và commit phần WIP UI để lint/test toàn repo xanh.
+2. Chạy `supabase db reset` để kiểm tra áp migration từ đầu (cần tạo lại index workaround Storage và tài khoản test sau reset).
+3. Push nhánh, mở PR, chờ CI xanh rồi merge.
+4. G4 cloud (Supabase cloud + SMTP + Vercel), kiểm lại Storage trên cloud.
 
 ---
 
