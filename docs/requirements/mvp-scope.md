@@ -1,6 +1,6 @@
 # Phạm vi MVP — Prompt 01 + Prompt 02
 
-Trạng thái: nền tảng, UC1–UC2 (Prompt 01) và UC3–UC5 (Prompt 02); chưa phải release v1.0, INC-01 hay CR-01.
+Trạng thái: nền tảng, UC1–UC2 (Prompt 01), UC3–UC5 (Prompt 02) và UC6 (kế hoạch chương trình, nhánh `feat/event-program-plans`); chưa phải release v1.0, INC-01 hay CR-01.
 
 ## Actor và use case
 
@@ -30,6 +30,10 @@ SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi 
 ### UC5 — Thu nhận phản hồi và xuất CSV (Prompt 02)
 
 Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT trực tiếp vào `form_responses` bị thu hồi quyền. Phản hồi ghi `questions_snapshot` tại thời điểm nộp, `form_version int` và `identity_snapshot` tùy chọn. Xuất CSV UTF-8 BOM, cột ổn định theo `question_id`, nhãn lựa chọn được giải mã từ questions (không xuất option ID thô). RLS hạn chế GET phản hồi cho đơn vị quản lý form; sinh viên không xem phản hồi của người khác.
+
+### UC6 — Quản lý kế hoạch chương trình sự kiện (13/10/2026)
+
+Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) lập bản nháp, khai báo thông tin, tải PDF kế hoạch đã ký rồi gửi Văn phòng. Văn phòng (`office`, hoặc `school_admin`) yêu cầu chỉnh sửa/từ chối có lý do hoặc chấp thuận; người đã nộp không tự xét duyệt. Khi bị yêu cầu chỉnh sửa, Đoàn Khoa sửa tiếp đúng hồ sơ và nộp lại. Lịch sử append-only lưu người thao tác, vai trò, thời điểm, lý do. Chỉ `approved` được hiển thị như chương trình đã duyệt. Chi tiết: `docs/requirements/event-programs.md`. Chưa gồm QR điểm danh, điểm rèn luyện, mượn phòng.
 
 ## NFR đo được
 
