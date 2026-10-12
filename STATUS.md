@@ -1,3 +1,38 @@
+# Cập nhật — 14/10/2026 (mô tả PR UC6)
+
+**Trạng thái:** nhánh `feat/event-program-plans` đã push. **Chưa mở PR** vì máy không có `gh` CLI → **CI chưa chạy**. Chưa merge, chưa đụng cloud.
+
+**Cách mở PR:** vào https://github.com/HoangntDev/eoffice-hiu/pull/new/feat/event-program-plans (base `main`), dán tiêu đề và nội dung dưới đây. Hoặc chạy `brew install gh && gh auth login` để Claude tự mở PR và theo dõi CI.
+
+**Tiêu đề PR:** `feat: UC6 kế hoạch chương trình sự kiện + quy tắc email sinh viên`
+
+**Nội dung PR:**
+
+````markdown
+## Tóm tắt
+- Đoàn Khoa lập, tải PDF và nộp kế hoạch chương trình; Văn phòng Đoàn – Hội xét duyệt.
+- Hoàn thiện giao diện tài khoản và quy tắc email @student.hiu.vn đã chốt.
+- Đồng bộ migration, seed mẫu Cảm tình Đoàn sau bootstrap bằng tài khoản Đoàn Trường thật.
+- Đã xác minh dựng database từ đầu trên stack local tách biệt; lint và typecheck PASS.
+- Chưa kiểm thử Supabase cloud hoặc triển khai production.
+
+## Kiểm thử
+- [x] pgTAP UC6 (`005_event_programs.sql`) 35/35; 002, 003, 006 PASS trên DB dựng mới
+- [x] Vitest UC6 18/18; `auth-ui` + `validation` 11/11
+- [x] E2E HTTP UC6 28/28, Playwright UC6 14/14 (local, 13/10)
+- [x] `npm run lint`, `tsc --noEmit` PASS
+- [ ] CI trên PR này (lint, typecheck, toàn bộ Vitest, build)
+- [ ] Supabase cloud / production — chưa thực hiện
+
+Chi tiết: `docs/requirements/event-programs.md`, `docs/testing/test-report.md`, `docs/operations/local-environment.md`, `STATUS.md`.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+````
+
+**Bước tiếp theo:** mở PR, gửi số PR để theo dõi CI; chỉ merge khi CI xanh.
+
+---
+
 # Cập nhật — 14/10/2026 (chuẩn bị PR UC6)
 
 Nhánh `feat/event-program-plans` **đã push** lên origin. Chưa merge; không đụng Supabase cloud.
@@ -15,8 +50,6 @@ Nhánh `feat/event-program-plans` **đã push** lên origin. Chưa merge; không
 **Blocker:** cần mở PR. Link tạo PR: https://github.com/HoangntDev/eoffice-hiu/pull/new/feat/event-program-plans (hoặc cài `gh` và `gh auth login`).
 
 **Bước tiếp theo:** mở PR vào `main`, chờ CI (lint, typecheck, toàn bộ Vitest, build) rồi mới merge.
-
-**Mô tả PR đã soạn (14/10):** tiêu đề `feat: UC6 kế hoạch chương trình sự kiện + quy tắc email sinh viên`; nội dung gồm 5 ý tóm tắt của người dùng + checklist kiểm thử (CI và cloud chưa tích). Vẫn chờ mở PR qua web vì chưa có `gh`.
 
 ---
 
