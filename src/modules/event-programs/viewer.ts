@@ -19,6 +19,7 @@ export async function loadEventProgramViewer(supabase: SupabaseClient, userId: s
     .filter((g) => ["faculty_manager", "faculty_executive"].includes(g.role_code) && g.organization_units?.unit_type === "faculty_union")
     .map((g) => ({ id: g.organization_units!.id, name: g.organization_units!.name }))
     .filter((org, index, all) => all.findIndex((o) => o.id === org.id) === index);
-  const isReviewer = grants.some((g) => g.role_code === "office" || g.role_code === "school_admin");
+  // Only Văn phòng Đoàn – Hội reviews plans; school_admin has no implicit review right.
+  const isReviewer = grants.some((g) => g.role_code === "office" && g.organization_units?.unit_type === "office");
   return { managedOrgs, isReviewer };
 }

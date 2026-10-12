@@ -15,7 +15,7 @@ Ngoài phạm vi lượt này: QR điểm danh, điểm rèn luyện (kể cả 
 | Prompt 01 §1 | Tài khoản cá nhân; audit ghi actor và vai trò thật | `event_program_history.actor_user_id` + `actor_role_grant_id`; `audit_events` cùng `request_id` |
 | Prompt 01, hỏi đáp mục 6 | Đoàn Khoa thao tác trong phạm vi Khoa | `event_program_manager_grant(org)` chỉ nhận `faculty_manager`/`faculty_executive` trên đơn vị `faculty_union` |
 | Hỏi đáp 12.2 | BTC tự xin điểm ngoài hệ thống; Văn phòng không xác nhận điểm | Không có trường điểm trong UC6 |
-| Hỏi đáp 16.1 | Văn phòng là đơn vị nghiệm thu/công nhận | Chỉ `office` (và `school_admin` như các luồng xét duyệt khác) được xét |
+| Hỏi đáp 16.1 | Văn phòng là đơn vị nghiệm thu/công nhận | Chỉ role `office` trên đơn vị `office` được xét; `school_admin` không mặc nhiên có quyền (quyết định 13/10/2026) |
 | Hỏi đáp 21.11, quy tắc hồ sơ Đoàn viên | Khi bị yêu cầu chỉnh sửa thì sửa tiếp hồ sơ hiện có | Cùng `id`, `submission_count` tăng; không tạo hồ sơ mới |
 | Hỏi đáp 17.x | Đã có hệ thống mượn phòng riêng | Chỉ lưu "Địa điểm" dạng văn bản |
 | Prompt 02 | Không tạo hệ thống form thứ hai | Kế hoạch là thực thể nghiệp vụ có trường cố định + PDF, không dùng `form_*` và không tự sinh câu hỏi |
@@ -24,7 +24,7 @@ Quy trình ký kế hoạch: tài liệu khảo sát chỉ ghi Văn phòng "ki�
 
 ## Actor và quyền
 
-| Hành động | Đoàn Khoa sở hữu | Đoàn Khoa khác | Văn phòng / Đoàn Trường | Sinh viên |
+| Hành động | Đoàn Khoa sở hữu | Đoàn Khoa khác | Văn phòng Đoàn – Hội | Sinh viên, Đoàn Trường (`school_admin`) |
 |---|---|---|---|---|
 | Tạo/sửa bản nháp, tải PDF | ✅ khi `draft`/`needs_changes` | ❌ | ❌ | ❌ |
 | Gửi Văn phòng | ✅ | ❌ | ❌ | ❌ |

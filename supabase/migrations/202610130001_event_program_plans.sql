@@ -4,8 +4,8 @@
 -- - Mỗi người dùng tài khoản cá nhân; audit ghi actor thật + role grant thật đang dùng.
 -- - Đoàn Khoa (faculty_manager/faculty_executive trên đơn vị faculty_union) lập và sửa
 --   kế hoạch trong phạm vi Khoa mình; không chuyển hồ sơ sang Khoa khác.
--- - Văn phòng Đoàn – Hội (office) xét duyệt; Đoàn Trường (school_admin) giữ quyền tương đương
---   như các luồng xét duyệt khác. Người đã nộp hồ sơ không tự xét duyệt hồ sơ đó.
+-- - Chỉ Văn phòng Đoàn – Hội (role office trên đơn vị office) xét duyệt; school_admin không mặc
+--   nhiên có quyền này. Người đã nộp hồ sơ không tự xét duyệt hồ sơ đó.
 -- - Khi Văn phòng yêu cầu chỉnh sửa, Đoàn Khoa sửa tiếp đúng hồ sơ hiện có rồi nộp lại
 --   (cùng id, tăng submission_count) — giống quy tắc "sửa tiếp hồ sơ hiện có".
 -- - Văn phòng không xác nhận điểm rèn luyện trên hệ thống (Q&A 12.2); điểm danh QR, điểm rèn
@@ -119,16 +119,20 @@ language sql stable security definer set search_path = public as $$
   limit 1;
 $$;
 
--- Trả về role grant xét duyệt (ưu tiên Văn phòng, sau đó Đoàn Trường), hoặc null.
+-- Trả về role grant Văn phòng Đoàn – Hội của người dùng hiện tại, hoặc null.
+-- school_admin không được tính: xét duyệt kế hoạch là thẩm quyền riêng của Văn phòng.
 create or replace function public.event_program_reviewer_grant()
 returns uuid
 language sql stable security definer set search_path = public as $$
   select rg.id
   from public.role_grants rg
+  join public.organization_units ou on ou.id = rg.organization_id
   where rg.user_id = auth.uid()
     and rg.revoked_at is null
-    and rg.role_code in ('office', 'school_admin')
-  order by case rg.role_code when 'office' then 0 else 1 end, rg.granted_at
+    and rg.role_code = 'office'
+    and ou.unit_type = 'office'
+    and ou.is_active
+  order by rg.granted_at
   limit 1;
 $$;
 

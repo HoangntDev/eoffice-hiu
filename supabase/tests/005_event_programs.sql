@@ -2,7 +2,7 @@
 -- Run with: supabase test db
 
 begin;
-select plan(33);
+select plan(35);
 
 -- ── Fixtures (postgres) ───────────────────────────────────────────────────────
 insert into public.faculties (id, current_code, current_name) values
@@ -15,14 +15,16 @@ insert into auth.users (id, email) values
   ('bbbbbbbb-0000-4000-8000-000000000002', 'uc6-khoa-b@test.local'),
   ('bbbbbbbb-0000-4000-8000-000000000003', 'uc6-student@test.local'),
   ('bbbbbbbb-0000-4000-8000-000000000004', 'uc6-office@test.local'),
-  ('bbbbbbbb-0000-4000-8000-000000000006', 'uc6-dual@test.local');
+  ('bbbbbbbb-0000-4000-8000-000000000006', 'uc6-dual@test.local'),
+  ('bbbbbbbb-0000-4000-8000-000000000007', 'uc6-school-admin@test.local');
 
 insert into public.accounts (user_id, student_code, status) values
   ('bbbbbbbb-0000-4000-8000-000000000001', '2060000001', 'active'),
   ('bbbbbbbb-0000-4000-8000-000000000002', '2060000002', 'active'),
   ('bbbbbbbb-0000-4000-8000-000000000003', '2060000003', 'active'),
   ('bbbbbbbb-0000-4000-8000-000000000004', '2060000004', 'active'),
-  ('bbbbbbbb-0000-4000-8000-000000000006', '2060000006', 'active');
+  ('bbbbbbbb-0000-4000-8000-000000000006', '2060000006', 'active'),
+  ('bbbbbbbb-0000-4000-8000-000000000007', '2060000007', 'active');
 
 insert into public.role_grants (user_id, role_code, organization_id, reason)
 select 'bbbbbbbb-0000-4000-8000-000000000001'::uuid, 'faculty_manager', id, 'UC6 test'
@@ -32,7 +34,8 @@ select 'bbbbbbbb-0000-4000-8000-000000000002'::uuid, 'faculty_manager', id, 'UC6
 from public.organization_units where faculty_id = 'cccccccc-0000-4000-8000-00000000000b';
 insert into public.role_grants (user_id, role_code, organization_id, reason) values
   ('bbbbbbbb-0000-4000-8000-000000000004', 'office', '00000000-0000-4000-8000-000000000002', 'UC6 test'),
-  ('bbbbbbbb-0000-4000-8000-000000000006', 'office', '00000000-0000-4000-8000-000000000002', 'UC6 test');
+  ('bbbbbbbb-0000-4000-8000-000000000006', 'office', '00000000-0000-4000-8000-000000000002', 'UC6 test'),
+  ('bbbbbbbb-0000-4000-8000-000000000007', 'school_admin', '00000000-0000-4000-8000-000000000001', 'UC6 test');
 insert into public.role_grants (user_id, role_code, organization_id, reason)
 select 'bbbbbbbb-0000-4000-8000-000000000006'::uuid, 'faculty_executive', id, 'UC6 test'
 from public.organization_units where faculty_id = 'cccccccc-0000-4000-8000-00000000000a';
@@ -150,6 +153,13 @@ select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000003');
 select throws_ok(
   $$ select public.review_event_program((select v from uc6_ctx where k = 'p1'), 'approve', null) $$,
   'P0001', 'FORBIDDEN', 'Sinh viên không tự duyệt kế hoạch');
+
+select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000007');
+select throws_ok(
+  $$ select public.review_event_program((select v from uc6_ctx where k = 'p1'), 'approve', null) $$,
+  'P0001', 'FORBIDDEN', 'school_admin không mặc nhiên có quyền xét duyệt kế hoạch');
+select is((select count(*)::int from public.event_programs where id = (select v from uc6_ctx where k = 'p1')), 0,
+  'RLS: school_admin không thấy hồ sơ đang chờ Văn phòng xét');
 
 select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000004');
 select throws_ok(
