@@ -420,3 +420,34 @@ Luồng UI:
 - Checkbox bị kéo rộng 100%.
 
 Chưa chạy: Playwright/pgTAP UC6, toàn bộ Vitest/build (để CI), Supabase cloud.
+
+## UC8 — Điểm danh QR lượt — 13/10/2026
+
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `008_program_attendance.sql` | 55/55 PASS (DB local, rollback) |
+| Vitest `program-attendance` | 7/7 PASS |
+| Luồng UI trên Chrome (dev server local, QR giải mã quang học bằng jsQR từ ảnh chụp màn hình BTC, sinh viên dùng viewport điện thoại; script ở scratchpad, không commit) | 14/14 PASS |
+| Lint, typecheck toàn repo | PASS |
+
+pgTAP:
+- **QR:** còn hạn → nhận; quá 30 giây theo giờ server → `QR_EXPIRED`; mã lượt khác → `WRONG_SESSION`; chữ ký sai, hoặc sửa thời điểm phát để kéo dài hạn → `QR_INVALID`; lượt chưa mở hoặc đã đóng → `SESSION_NOT_OPEN`.
+- **Đăng ký:** chờ duyệt hoặc không đăng ký → `REGISTRATION_NOT_ACCEPTED`.
+- **Quét trùng:** `ALREADY_CHECKED_IN`.
+- **Mở lại:** cần lý do; vẫn là lượt cũ (`open_count` 2, không tạo lượt mới). Mã lần mở trước → `QR_EXPIRED`. Bản ghi bổ sung được đánh dấu. Người đã có mặt không được ghi lần nữa.
+- **Điểm tối đa:** điểm lượt/bậc vượt tối đa bị chặn. Cộng 0+2+2 với tối đa 3 → 3. Bậc, bậc kèm lượt bắt buộc, đủ lượt bắt buộc, ít nhất một lượt đều ra đúng.
+- **Trạng thái tham gia:** chỉ lượt 0 điểm → Có tham gia; không lượt nào → absent; chỉ đăng ký được nhận mới vào bảng.
+- **Khóa quy tắc:** thiếu lý do → `AMEND_REASON_REQUIRED`; BTV (faculty_executive) → `AMEND_FORBIDDEN`; xóa lượt đã mở → `SESSION_IN_USE`; mỗi lần điều chỉnh lưu trước/sau + lý do.
+- **Quyền và riêng tư:** BTC Khoa khác/SV không cấu hình, không lấy QR; SV không đọc bí mật QR, không xem bảng điểm, không ghi trực tiếp. Không phát sinh `reputation_adjustments`. Audit có `request_id`.
+
+Luồng UI:
+1. BTC lập kế hoạch (tối đa 3, cộng từng lượt: Đầu giờ 0, Cuối giờ 3), mở lượt, hiển thị QR.
+2. SV quét: lần đầu được nhận; quét lại bị chặn. SV có đăng ký bị từ chối không điểm danh được.
+3. QR đổi sau 30 giây; mã cũ báo hết hiệu lực, mã mới được nhận.
+4. Đóng lượt thì mã còn hạn cũng bị từ chối.
+5. Bảng xem trước của BTC: "Đầu giờ, Cuối giờ · Hoàn thành · 3". Lịch sử ghi mở/đóng; quy tắc hiện đã khóa.
+6. SV thấy các lượt của mình, không thấy điểm hay uy tín; SV mở trang BTC → 404.
+
+Lần chạy đầu phát hiện trang QR và trang `/attend` trả 404: embed `event_programs` sai quan hệ khóa ngoại. Đã sửa và chạy lại. Ảnh chụp phát hiện QR lệch trái và ô điểm của lượt rơi xuống dòng; đã sửa.
+
+Chưa chạy: E2E UC6/UC7, toàn bộ Vitest và build (để CI), pgTAP các file khác, kiểm thử đồng thời nhiều phiên cho điểm danh, Supabase cloud.
