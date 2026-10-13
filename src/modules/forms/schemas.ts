@@ -6,6 +6,7 @@ const baseAudienceRule = z.discriminatedUnion("type", [
   z.object({ type: z.literal("any") }),
   z.object({ type: z.literal("hiu_student") }),
   z.object({ type: z.literal("faculty"), faculty_id: z.string().uuid() }),
+  z.object({ type: z.literal("major"), program_id: z.string().uuid() }),
   z.object({ type: z.literal("union_member") }),
 ]);
 

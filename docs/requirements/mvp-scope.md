@@ -45,6 +45,10 @@ Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT
 
 Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) lập bản nháp, khai báo thông tin, tải PDF kế hoạch đã ký rồi gửi Văn phòng. Chỉ Văn phòng (`office`) yêu cầu chỉnh sửa/từ chối có lý do hoặc chấp thuận; người đã nộp không tự xét duyệt. Khi bị yêu cầu chỉnh sửa, Đoàn Khoa sửa tiếp đúng hồ sơ và nộp lại. Lịch sử append-only lưu người thao tác, vai trò, thời điểm, lý do. Chỉ `approved` được hiển thị như chương trình đã duyệt. Chi tiết: `docs/requirements/event-programs.md`. Chưa gồm QR điểm danh, điểm rèn luyện, mượn phòng.
 
+### UC7 — Đăng ký tham gia chương trình (15/10/2026)
+
+BTC (Đoàn Khoa sở hữu chương trình) cấu hình đối tượng, số chỗ (hoặc không giới hạn), nhận theo thứ tự hoặc xét duyệt, chỉ tiêu theo Khoa/ngành/Đoàn viên và hạn chuyển chỉ tiêu dư, mẫu đăng ký lấy từ biểu mẫu đã phát hành, rồi mở/đóng đăng ký. Chỉ chương trình `approved` mới mở được. Sinh viên xem điều kiện, điền mẫu, nhận xác nhận ngay hoặc chờ duyệt; không có chức năng tự hủy. DB chặn trùng, sai đối tượng, vượt chỉ tiêu, kể cả đồng thời (khóa hàng cấu hình). Điểm uy tín chỉ dùng khi vừa giới hạn chỗ vừa cần duyệt; duyệt vượt người uy tín cao hơn phải có lý do. Sinh viên không xem được điểm hay lịch sử uy tín. Đăng ký chưa phải điểm danh. Chi tiết: `docs/requirements/program-registrations.md`.
+
 ## NFR đo được
 
 1. 100% mutation xác thực server; mutation đặc quyền kiểm tra scope ở Route Handler/RPC và RLS. pgTAP kiểm truy cập trái phép.

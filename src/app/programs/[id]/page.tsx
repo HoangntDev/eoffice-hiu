@@ -9,6 +9,7 @@ import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { statusLabels, type EventProgramStatus } from "@/modules/event-programs/schemas";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { availableActions } from "@/modules/event-programs/workflow";
+import { RegistrationSection } from "./registration-section";
 
 type Program = EventProgramFormValues & {
   id: string;
@@ -112,6 +113,10 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
           <div className={styles.wide}><dt>Nội dung</dt><dd>{program.summary ?? "—"}</dd></div>
         </dl>
       </section>
+
+      {program.status === "approved" && (
+        <RegistrationSection supabase={supabase} userId={user.id} program={program} isManager={isManager} />
+      )}
 
       {actions.canEdit && (
         <section className="panel">
