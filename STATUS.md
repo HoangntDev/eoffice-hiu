@@ -1,3 +1,41 @@
+# Cập nhật — 16/10/2026 (UC7: sửa theo review PR #3)
+
+**Trạng thái:**
+- PR #3 (`feat/program-registrations`). Commit mới `d4c92af`, đã push.
+- CI của PR sẽ chạy toàn repo sau lần push này; mình không xem được kết quả vì máy không có `gh`.
+- **Chưa merge.** Chưa đụng Supabase cloud.
+
+## Đã sửa
+1. **Học kỳ cấu hình được** (migration `202610150002_academic_terms_reputation_pool.sql`, đã áp lên DB local bằng `migration up`):
+   - Bỏ `semester_key_for` (HK1 tháng 8–12, HK2 tháng 1–5, HK3 tháng 6–7).
+   - Thêm bảng `academic_terms`: năm học, mã, tên, ngày bắt đầu, ngày kết thúc. Hai học kỳ không được chồng ngày.
+   - Sổ uy tín gắn `term_id`. Chưa có học kỳ bao trùm thời điểm xét thì không tính khoản trừ.
+   - **Quyết định (ghi trong `docs/requirements/program-registrations.md`):** UC7 vẫn cần học kỳ, vì điểm reset theo học kỳ và BTC xét theo học kỳ hiện tại. Nhưng UC7 chỉ đọc; màn hình và quyền cấu hình học kỳ thuộc UC điểm danh/uy tín. Hiện chỉ ghi được bằng `service_role`/SQL.
+2. **Lý do duyệt ngoại lệ chỉ khi cùng suất:**
+   - Chỉ bắt buộc khi người điểm cao hơn đang chờ được xếp vào đúng suất người được duyệt sẽ chiếm (cùng nhóm chỉ tiêu, hoặc cùng chỉ tiêu chung).
+   - Người thuộc nhóm khác còn chỗ, hoặc không thể nhận suất đó, không tính.
+   - Danh sách BTC có cột "Suất / gợi ý" và xếp hạng gợi ý theo từng suất.
+3. **Lỗi hiển thị** phát hiện khi xem ảnh chụp luồng UI: lặp chữ "Khoa Khoa"; checkbox bị kéo rộng.
+
+## Kết quả chạy thật
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `007` (+17 assertion cho học kỳ cấu hình và cạnh tranh cùng suất) | 67/67 PASS |
+| Vitest `program-registrations` | 15/15 PASS |
+| Luồng UI trên Chrome: BTC cấu hình/mở → 2 SV đăng ký → BTC duyệt/hết chỗ/từ chối → SV xem kết quả → CSV | 15/15 PASS (2 lần, 2 chương trình) |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+## Giới hạn còn lại
+- Chưa có màn hình quản lý học kỳ và chưa có luồng ghi sổ uy tín (UC sau). Hiện mọi sinh viên 100 điểm trừ khi có dữ liệu chèn bằng SQL.
+- Phải đóng đăng ký mới sửa được cấu hình. Người bị từ chối không đăng ký lại được. Văn phòng không xem danh sách đăng ký của Khoa.
+- Script UI nằm ở scratchpad, không commit. Luồng UI để lại dữ liệu đăng ký thử trên 2 chương trình CNKT trong DB local (không có trong repo).
+- Chưa chạy lại Playwright/pgTAP UC6, chưa chạy toàn bộ Vitest/build ở máy local, chưa chạy lại script tranh chấp. Phần duyệt chỉ đổi điều kiện so sánh; cơ chế khóa giữ nguyên.
+
+## Bạn cần làm
+- Xem CI của PR #3 sau lần push này. Chỉ merge khi xanh.
+
+---
+
 # Cập nhật — 15/10/2026 (UC7 đăng ký tham gia chương trình)
 
 **Trạng thái:**
