@@ -49,6 +49,10 @@ Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT
 
 BTC (Đoàn Khoa sở hữu chương trình) cấu hình đối tượng, số chỗ (hoặc không giới hạn), nhận theo thứ tự hoặc xét duyệt, chỉ tiêu theo Khoa/ngành/Đoàn viên và hạn chuyển chỉ tiêu dư, mẫu đăng ký lấy từ biểu mẫu đã phát hành, rồi mở/đóng đăng ký. Chỉ chương trình `approved` mới mở được. Sinh viên xem điều kiện, điền mẫu, nhận xác nhận ngay hoặc chờ duyệt; không có chức năng tự hủy. DB chặn trùng, sai đối tượng, vượt chỉ tiêu, kể cả đồng thời (khóa hàng cấu hình). Điểm uy tín chỉ dùng khi vừa giới hạn chỗ vừa cần duyệt; duyệt vượt người uy tín cao hơn phải có lý do. Sinh viên không xem được điểm hay lịch sử uy tín. Đăng ký chưa phải điểm danh. Chi tiết: `docs/requirements/program-registrations.md`.
 
+### UC8 — Điểm danh QR lượt và điểm dự kiến đề nghị (13/10/2026)
+
+BTC cấu hình nhiều lượt, điểm tối đa (số nguyên) và một trong 4 quy tắc: đủ lượt bắt buộc, ít nhất một lượt, cộng từng lượt, hoặc theo bậc số lượt (có thể kèm lượt bắt buộc). Kết quả không vượt điểm tối đa. BTC mở/đóng từng lượt và chiếu QR chung đổi mỗi 30 giây; token ký HMAC và kiểm hạn theo giờ server. Sinh viên có đăng ký được nhận tự quét, mỗi lượt một lần. Mở lại đúng lượt cũ để điểm danh bổ sung (có lý do), mã của lần mở trước hết hiệu lực. Bảng xem trước phân loại Hoàn thành / Có tham gia / Đăng ký nhưng không tham gia kèm điểm dự kiến. Sau khi bắt đầu điểm danh, quy tắc bị khóa: chỉ faculty_manager điều chỉnh, có lý do và lịch sử. Không trừ uy tín. Chi tiết: `docs/requirements/program-attendance.md`.
+
 ## NFR đo được
 
 1. 100% mutation xác thực server; mutation đặc quyền kiểm tra scope ở Route Handler/RPC và RLS. pgTAP kiểm truy cập trái phép.
