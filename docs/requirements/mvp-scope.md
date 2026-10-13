@@ -53,6 +53,14 @@ BTC (Đoàn Khoa sở hữu chương trình) cấu hình đối tượng, số c
 
 BTC cấu hình nhiều lượt, điểm tối đa (số nguyên) và một trong 4 quy tắc: đủ lượt bắt buộc, ít nhất một lượt, cộng từng lượt, hoặc theo bậc số lượt (có thể kèm lượt bắt buộc). Kết quả không vượt điểm tối đa. BTC mở/đóng từng lượt và chiếu QR chung đổi mỗi 30 giây; token ký HMAC và kiểm hạn theo giờ server. Sinh viên có đăng ký được nhận tự quét, mỗi lượt một lần. Mở lại đúng lượt cũ để điểm danh bổ sung (có lý do), mã của lần mở trước hết hiệu lực. Bảng xem trước phân loại Hoàn thành / Có tham gia / Đăng ký nhưng không tham gia kèm điểm dự kiến. Sau khi bắt đầu điểm danh, quy tắc bị khóa: chỉ faculty_manager điều chỉnh, có lý do và lịch sử. Không trừ uy tín. Chi tiết: `docs/requirements/program-attendance.md`.
 
+### UC9 — Nghiệm thu, uy tín và khiếu nại điểm danh (13/10/2026)
+
+BTC khóa điểm danh, xem từng sinh viên (lượt, kết quả tham gia, điểm dự kiến đề nghị), xuất bảng và xem trước dữ liệu đơn (không phải mẫu chính thức), rồi nộp hồ sơ gồm Đơn đề nghị PDF có chữ ký Trưởng BTC, báo cáo và ảnh minh chứng. Mọi phiên bản tệp đều được giữ.
+
+Chỉ Văn phòng được yêu cầu bổ sung, từ chối hoặc nghiệm thu; người nộp không tự duyệt. Nghiệm thu chốt snapshot kết quả và trừ đúng 5 điểm uy tín, một lần mỗi chương trình, cho người được nhận mà không có lượt điểm danh nào, trong học kỳ chứa ngày chương trình. Ngày chương trình chưa thuộc học kỳ nào thì không nghiệm thu được.
+
+Sinh viên khiếu nại đến hết học kỳ. BTC chấp nhận thì hệ thống bổ sung điểm danh đúng lượt, hoàn +5 một lần và tính lại thành snapshot mới; sổ uy tín chỉ thêm, không sửa hay xóa. Có thêm trạng thái hủy chương trình (không trừ) và màn hình học kỳ cho Đoàn Trường/Văn phòng. Sinh viên không xem uy tín. Chi tiết: `docs/requirements/program-acceptance.md`.
+
 ## NFR đo được
 
 1. 100% mutation xác thực server; mutation đặc quyền kiểm tra scope ở Route Handler/RPC và RLS. pgTAP kiểm truy cập trái phép.

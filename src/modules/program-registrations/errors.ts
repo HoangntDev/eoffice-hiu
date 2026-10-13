@@ -18,6 +18,7 @@ const known: Array<[code: string, status: number, message: string]> = [
   ["ALREADY_REGISTERED", 409, "Bạn đã đăng ký chương trình này."],
   ["REGISTRATION_FULL", 409, "Chương trình đã đủ chỗ cho nhóm của bạn."],
   ["QUOTA_FULL", 409, "Không còn chỗ phù hợp cho người này (đã đủ tổng số hoặc chỉ tiêu nhóm)."],
+  ["ATTENDANCE_LOCKED", 409, "Điểm danh đã khóa để nghiệm thu nên không nhận thêm đăng ký."],
   ["INVALID_TRANSITION", 409, "Trạng thái hiện tại không cho phép thao tác này."],
   ["PENDING_REGISTRATIONS_EXIST", 409, "Còn đăng ký chờ duyệt nên chưa thể bỏ yêu cầu duyệt."],
   ["FORM_LOCKED_AFTER_REGISTRATION", 409, "Đã có người đăng ký nên không đổi mẫu đăng ký."],

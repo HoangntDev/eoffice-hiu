@@ -31,6 +31,7 @@ export async function proxy(request: NextRequest) {
     "/forms/new",
     "/programs",
     "/attend",
+    "/participation",
   ].some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
     || /^\/forms\/[^/]+(\/edit|\/responses)(\/|$)/.test(pathname);
 

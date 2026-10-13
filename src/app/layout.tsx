@@ -44,9 +44,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               <>
                 <Link href="/onboarding/profile">Hồ sơ</Link>
                 <Link href="/programs">Chương trình</Link>
+                <Link href="/participation">Kết quả tham gia</Link>
                 <Link href="/union-membership">Đoàn viên</Link>
                 <Link href="/organization">Cơ cấu</Link>
                 <Link href="/office/membership">Xử lý hồ sơ</Link>
+                <Link href="/office/terms">Học kỳ</Link>
                 <Link href="/account/security">Tài khoản</Link>
               </>
             ) : (

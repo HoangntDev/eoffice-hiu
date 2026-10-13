@@ -73,6 +73,6 @@ Trang:
 ## Giới hạn hiện tại
 
 - Trang đăng nhập hiện bỏ qua tham số `next` và luôn chuyển tới hồ sơ. Sinh viên chưa đăng nhập phải đăng nhập rồi quét lại (mã cũ có thể đã hết hạn). Luồng đăng nhập không đổi trong UC8.
-- Chưa có xuất CSV bảng điểm dự kiến; Đơn đề nghị cấp điểm thuộc UC sau.
+- Xuất CSV bảng điểm dự kiến và hồ sơ Đơn đề nghị: xem UC9 (`program-acceptance.md`).
 - BTC không thể tự điểm danh hộ hay sửa tay bản ghi. Người quên quét chỉ được bổ sung bằng cách mở lại lượt và quét.
-- Chưa xử lý khiếu nại hay hoàn điểm uy tín (UC nghiệm thu/uy tín).
+- Khiếu nại, trừ/hoàn điểm uy tín và khóa điểm danh: xem UC9 (`program-acceptance.md`).

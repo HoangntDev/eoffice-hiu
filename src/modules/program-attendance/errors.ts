@@ -10,6 +10,7 @@ const known: Array<[code: string, status: number, message: string]> = [
   ["PROGRAM_NOT_APPROVED", 409, "Chương trình chưa được Văn phòng chấp thuận."],
   ["SESSION_NOT_OPEN", 409, "Lượt điểm danh chưa mở hoặc đã đóng."],
   ["SESSION_IN_USE", 409, "Không xóa được lượt đã mở điểm danh."],
+  ["ATTENDANCE_LOCKED", 409, "Điểm danh đã khóa để nghiệm thu: không mở lượt hay đổi quy tắc."],
   ["INVALID_TRANSITION", 409, "Trạng thái lượt không cho phép thao tác này."],
   ["ALREADY_CHECKED_IN", 409, "Bạn đã được ghi nhận điểm danh ở lượt này."],
   ["QR_EXPIRED", 410, "Mã QR đã hết hiệu lực. Vui lòng quét mã mới đang hiển thị."],
