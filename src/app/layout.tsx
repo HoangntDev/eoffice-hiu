@@ -40,11 +40,13 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <nav className="header-nav" aria-label="Điều hướng chính">
             <Link href="/">Trang chủ</Link>
             <Link href="/forms">Biểu mẫu</Link>
+            <Link href="/news">Tin hoạt động</Link>
             {data.user ? (
               <>
                 <Link href="/onboarding/profile">Hồ sơ</Link>
                 <Link href="/programs">Chương trình</Link>
                 <Link href="/participation">Kết quả tham gia</Link>
+                <Link href="/publications">Đăng bài</Link>
                 <Link href="/union-membership">Đoàn viên</Link>
                 <Link href="/organization">Cơ cấu</Link>
                 <Link href="/office/membership">Xử lý hồ sơ</Link>

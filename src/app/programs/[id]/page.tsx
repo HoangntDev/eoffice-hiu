@@ -11,6 +11,7 @@ import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { availableActions } from "@/modules/event-programs/workflow";
 import { ReasonAction } from "@/components/acceptance-actions";
 import { AttendanceSection } from "./attendance-section";
+import { publicationStatusLabels, type PublicationStatus } from "@/modules/program-publication/schemas";
 import { ParticipationSection } from "./participation-section";
 import { RegistrationSection } from "./registration-section";
 
@@ -92,6 +93,8 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
     ? await supabase.from("role_grants").select("id").eq("user_id", user.id).eq("organization_id", program.owner_org_id)
       .eq("role_code", "faculty_manager").is("revoked_at", null).limit(1).maybeSingle()
     : { data: null };
+  // UC10: RLS chỉ trả dòng cho Ban Tuyên giáo, BTC của chương trình và Văn phòng, sau khi nghiệm thu.
+  const { data: publication } = await supabase.from("program_publications").select("status").eq("program_id", id).maybeSingle();
   const canCancel = program.status === "approved" && acceptance?.status !== "accepted" && (Boolean(managerGrant) || viewer.isReviewer);
 
   return (
@@ -143,6 +146,15 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
         <section className="panel inline">
           <h2>Nghiệm thu</h2>
           <Link className="button secondary" href={`/programs/${program.id}/acceptance`}>Hồ sơ nghiệm thu</Link>
+        </section>
+      )}
+      {publication && (
+        <section className="panel inline">
+          <h2>Đăng bài</h2>
+          <span className="status" data-testid="program-publication-status">
+            {publicationStatusLabels[publication.status as PublicationStatus]}
+          </span>
+          <Link className="button secondary" href={`/programs/${program.id}/publication`}>Bài đăng chương trình</Link>
         </section>
       )}
       {canCancel && (
