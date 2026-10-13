@@ -73,8 +73,9 @@ export default async function ProgramRegistrationsPage({ params }: { params: Pro
 
       {usesReputation && counts.pending > 0 && (
         <p className="notice">
-          Chương trình giới hạn chỗ và cần duyệt: danh sách chờ được gợi ý theo điểm uy tín rồi thời điểm đăng ký.
-          Duyệt người xếp sau khi người xếp trước còn có thể nhận phải ghi lý do.
+          Chương trình giới hạn chỗ và cần duyệt: người chờ được gợi ý theo điểm uy tín rồi thời điểm đăng ký,
+          trong từng suất đang cạnh tranh (nhóm chỉ tiêu hoặc chỉ tiêu chung). Duyệt người xếp sau khi người
+          xếp trước trong cùng suất vẫn chờ phải ghi lý do.
         </p>
       )}
 
@@ -83,7 +84,7 @@ export default async function ProgramRegistrationsPage({ params }: { params: Pro
           <table>
             <thead>
               <tr>
-                {usesReputation && <th>Gợi ý</th>}
+                {usesReputation && <th>Suất / gợi ý</th>}
                 <th>Sinh viên</th><th>Lớp / Khoa</th><th>Trạng thái</th><th>Đăng ký lúc</th>
                 {usesReputation && <th>Uy tín</th>}
                 <th></th>
@@ -93,7 +94,7 @@ export default async function ProgramRegistrationsPage({ params }: { params: Pro
               {rows.length === 0 && <tr><td colSpan={7} className="muted">Chưa có đăng ký.</td></tr>}
               {rows.map((row) => (
                 <tr key={row.registration_id}>
-                  {usesReputation && <td>{row.suggested_rank ?? ""}</td>}
+                  {usesReputation && <td>{row.pool_label ?? ""}{row.suggested_rank ? ` · #${row.suggested_rank}` : ""}</td>}
                   <td>{row.full_name ?? "—"}<br /><span className="muted">{row.student_code}</span></td>
                   <td>{row.class_code ?? "—"}<br /><span className="muted">{row.faculty_name ?? ""}</span></td>
                   <td>

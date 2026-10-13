@@ -2,7 +2,7 @@
 -- Tranh chấp suất cuối giữa nhiều phiên đồng thời: scripts/race-program-registration.sh (cần commit thật).
 
 begin;
-select plan(50);
+select plan(67);
 
 -- ── Fixtures (postgres) ───────────────────────────────────────────────────────
 insert into public.faculties (id, current_code, current_name) values
@@ -56,7 +56,8 @@ select v.id::uuid, (select v from uc7_ctx where k = 'org_a'), 'c7000000-0000-400
 from (values
   ('a7000000-0000-4000-8000-0000000000aa', 'UC7 nhận theo thứ tự', 'approved'),
   ('a7000000-0000-4000-8000-0000000000bb', 'UC7 BTC xét duyệt', 'approved'),
-  ('a7000000-0000-4000-8000-0000000000cc', 'UC7 chưa được duyệt', 'submitted')) v(id, title, status);
+  ('a7000000-0000-4000-8000-0000000000cc', 'UC7 chưa được duyệt', 'submitted'),
+  ('a7000000-0000-4000-8000-0000000000dd', 'UC7 duyệt theo nhóm chỉ tiêu', 'approved')) v(id, title, status);
 
 insert into public.forms (id, owner_org_id, title, questions, status, created_by)
 values ('f7000000-0000-4000-8000-000000000001', (select v from uc7_ctx where k = 'org_a'), 'Mẫu đăng ký UC7',
@@ -64,8 +65,26 @@ values ('f7000000-0000-4000-8000-000000000001', (select v from uc7_ctx where k =
         'published', 'b7000000-0000-4000-8000-000000000001');
 
 -- SV 12 bị trừ 10 điểm uy tín trong học kỳ hiện tại (do UC sau ghi; ở đây chèn trực tiếp).
-insert into public.reputation_adjustments (user_id, semester_key, delta, reason)
-values ('b7000000-0000-4000-8000-000000000012', public.semester_key_for(now()), -10, 'UC7 fixture');
+-- Học kỳ do người dùng cấu hình theo năm học, ngày lẻ (không theo quy ước tháng).
+insert into public.academic_terms (id, academic_year, term_code, name, starts_on, ends_on) values
+  ('d7000000-0000-4000-8000-000000000001', '2090-2091', 'HK-NOW', 'Học kỳ hiện tại (test)', current_date - 3, current_date + 41),
+  ('d7000000-0000-4000-8000-000000000002', '2089-2090', 'HK-OLD', 'Học kỳ trước (test)', current_date - 200, current_date - 90);
+insert into public.reputation_adjustments (user_id, term_id, delta, reason) values
+  ('b7000000-0000-4000-8000-000000000012', 'd7000000-0000-4000-8000-000000000001', -10, 'UC7 fixture'),
+  ('b7000000-0000-4000-8000-000000000013', 'd7000000-0000-4000-8000-000000000002', -30, 'UC7 fixture học kỳ trước');
+
+-- ── 0. Học kỳ cấu hình được, không suy ra từ tháng ───────────────────────────
+select hasnt_function('public', 'semester_key_for', 'Không còn hàm chia học kỳ cố định theo tháng');
+select is(public.academic_term_at(now()), 'd7000000-0000-4000-8000-000000000001'::uuid, 'Thời điểm hiện tại thuộc học kỳ đã cấu hình');
+select is(public.reputation_score('b7000000-0000-4000-8000-000000000012'), 90, 'Khoản trừ trong học kỳ hiện tại được tính');
+select is(public.reputation_score('b7000000-0000-4000-8000-000000000013'), 100, 'Khoản trừ của học kỳ trước không tính vào học kỳ này');
+select is(public.reputation_score('b7000000-0000-4000-8000-000000000013', now() - interval '120 days'), 70,
+  'Tính đúng điểm tại một thời điểm trong học kỳ trước');
+select is(public.reputation_score('b7000000-0000-4000-8000-000000000012', now() + interval '400 days'), 100,
+  'Thời điểm chưa có học kỳ cấu hình: không áp khoản trừ nào');
+select throws_ok($$ insert into public.academic_terms (academic_year, term_code, name, starts_on, ends_on)
+  values ('2090-2091', 'HK-X', 'Chồng ngày', current_date, current_date + 10) $$,
+  '23P01', null, 'Hai học kỳ không được chồng ngày');
 
 create function pg_temp.act_as(p_user text) returns void language sql as $$
   select set_config('request.jwt.claims',
@@ -230,6 +249,32 @@ select throws_ok($$ select public.decide_program_registration(pg_temp.reg_id('a7
   'P0001', 'REASON_REQUIRED', 'Từ chối phải có lý do');
 select is(public.decide_program_registration(pg_temp.reg_id('a7000000-0000-4000-8000-0000000000bb', '11'), 'reject',
   'Chương trình đã đủ người tham gia'), 'rejected', 'BTC từ chối có lý do');
+
+-- ── 8. Lý do ngoại lệ chỉ khi người cao điểm hơn cạnh tranh cùng suất ────────
+-- pD: 2 chỗ, cần duyệt; 1 chỗ dành ngành A2, 1 chỗ chung. SV 14 (A2, 100), SV 12 (A1, 90), SV 13 (A1, 100).
+select lives_ok($$ select public.save_program_registration_settings('a7000000-0000-4000-8000-0000000000dd',
+  '{"type":"faculty","faculty_id":"c7000000-0000-4000-8000-00000000000a"}', 2, true, null, null, null, null,
+  '[{"label":"Ngành A2","audience_rule":{"type":"major","program_id":"c7000000-0000-4000-8000-0000000000a2"},"seats":1}]') $$,
+  'Cấu hình pD có nhóm chỉ tiêu, cần duyệt');
+select is(public.set_program_registration_status('a7000000-0000-4000-8000-0000000000dd', 'open'), 'open', 'Mở đăng ký pD');
+select pg_temp.act_as('14');
+select lives_ok($$ select public.register_for_program('a7000000-0000-4000-8000-0000000000dd', '[]', null) $$, 'SV 14 (ngành A2) đăng ký pD');
+select pg_temp.act_as('12');
+select lives_ok($$ select public.register_for_program('a7000000-0000-4000-8000-0000000000dd', '[]', null) $$, 'SV 12 (ngành A1) đăng ký pD');
+select pg_temp.act_as('13');
+select lives_ok($$ select public.register_for_program('a7000000-0000-4000-8000-0000000000dd', '[]', null) $$, 'SV 13 (ngành A1) đăng ký pD');
+select pg_temp.act_as('01');
+select throws_ok($$ select public.decide_program_registration(pg_temp.reg_id('a7000000-0000-4000-8000-0000000000dd', '12'), 'approve', null) $$,
+  'P0001', 'SKIP_REASON_REQUIRED', 'SV 13 (100) cùng tranh chỗ chung với SV 12 (90): phải có lý do');
+select is((select pool_label from public.list_program_registrations('a7000000-0000-4000-8000-0000000000dd')
+           where user_id = 'b7000000-0000-4000-8000-000000000014'), 'Ngành A2', 'Danh sách cho biết SV 14 tranh chỗ nhóm A2');
+select lives_ok($$ select public.decide_program_registration(pg_temp.reg_id('a7000000-0000-4000-8000-0000000000dd', '13'), 'reject',
+  'Không đủ điều kiện sức khỏe theo kế hoạch') $$, 'BTC từ chối SV 13');
+select is(public.decide_program_registration(pg_temp.reg_id('a7000000-0000-4000-8000-0000000000dd', '12'), 'approve', null), 'accepted',
+  'SV 14 (100) chỉ tranh chỗ nhóm A2, không tranh chỗ chung: duyệt SV 12 không cần lý do');
+select is((select skipped_higher_reputation from public.program_registration_history
+           where registration_id = pg_temp.reg_id('a7000000-0000-4000-8000-0000000000dd', '12') and action = 'approved'), false,
+  'Không ghi nhận là duyệt ngoại lệ');
 
 reset role;
 select is((select count(*)::int from public.audit_events

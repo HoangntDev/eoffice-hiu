@@ -386,3 +386,37 @@ Chưa chạy:
 - Toàn bộ pgTAP: CI không có Postgres. Các file 001, 003, 005, 006 không chạy lại.
 - Đối chứng âm (bỏ khóa để chứng minh script phát hiện vượt chỉ tiêu).
 - Supabase cloud.
+
+## UC7 — Sửa theo review PR #3 — 16/10/2026
+
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `007` (thêm 17 assertion cho hai quy tắc sửa) | 67/67 PASS |
+| Vitest `program-registrations` | 15/15 PASS |
+| Luồng UI trên Chrome (dev server local, `scratchpad/e2e/uc7-browser.mjs`, không commit) | 15/15 PASS, chạy 2 lần trên 2 chương trình đã duyệt |
+| Lint, typecheck toàn repo | PASS |
+
+Học kỳ cấu hình được:
+- Không còn `semester_key_for`.
+- Học kỳ có ngày lẻ do người dùng nhập được nhận diện đúng.
+- Khoản trừ của học kỳ trước không tính vào học kỳ này, nhưng tính đúng khi xét một thời điểm trong học kỳ trước.
+- Thời điểm chưa có học kỳ cấu hình thì 100 điểm.
+- Học kỳ chồng ngày bị từ chối (23P01).
+
+Cạnh tranh cùng suất (chương trình 2 chỗ: 1 chỗ dành ngành A2, 1 chỗ chung):
+- Duyệt SV 90 điểm khi SV 100 điểm cùng ngành A1 đang chờ chỗ chung: phải có lý do.
+- Khi chỉ còn SV 100 điểm ngành A2 (được xếp vào nhóm A2): duyệt SV 90 điểm không cần lý do và không ghi là duyệt ngoại lệ.
+- Danh sách hiện đúng suất cho từng người chờ.
+
+Luồng UI:
+- BTC cấu hình (Khoa CNKT, 1 chỗ, BTC duyệt) → lưu → mở. Form cấu hình bị khóa khi đang mở.
+- Hai SV xem điều kiện và gửi → "Chờ BTC duyệt"; SV không thấy chữ "uy tín"; SV mở trang danh sách BTC nhận 404.
+- BTC thấy "Chung · #1/#2" và duyệt #1 không cần lý do. Duyệt người thứ hai báo hết chỗ. Từ chối có lý do. Lịch sử hiển thị.
+- SV thấy "Đã xác nhận" / "Không được duyệt" kèm lý do.
+- CSV chỉ có người được nhận, không có cột uy tín.
+
+Ảnh chụp phát hiện 2 lỗi hiển thị mà assertion DOM bỏ sót, đã sửa và chạy lại:
+- Lặp chữ "Khoa Khoa".
+- Checkbox bị kéo rộng 100%.
+
+Chưa chạy: Playwright/pgTAP UC6, toàn bộ Vitest/build (để CI), Supabase cloud.

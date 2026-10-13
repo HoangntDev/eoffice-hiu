@@ -43,12 +43,16 @@ export function parseQuotaRule(rule: AudienceRule): { kind: QuotaKind; targetId:
   return { kind: "union_member", targetId: null };
 }
 
+// Tên trong danh mục có thể đã gồm tiền tố ("Khoa Công Nghệ - Kỹ Thuật"); không lặp lại.
+const withPrefix = (prefix: string, name: string | undefined) =>
+  !name ? `${prefix} (không rõ)` : name.toLowerCase().startsWith(prefix.toLowerCase() + " ") ? name : `${prefix} ${name}`;
+
 export function describeAudience(rule: AudienceRule, names: NameLookup): string {
   switch (rule.type) {
     case "any": return "Mọi người";
     case "hiu_student": return "Sinh viên HIU";
-    case "faculty": return `Khoa ${names.faculties.get(rule.faculty_id) ?? "(không rõ)"}`;
-    case "major": return `Ngành ${names.majors.get(rule.program_id) ?? "(không rõ)"}`;
+    case "faculty": return withPrefix("Khoa", names.faculties.get(rule.faculty_id));
+    case "major": return withPrefix("Ngành", names.majors.get(rule.program_id));
     case "union_member": return "Đoàn viên";
     case "and": return rule.conditions.map((c) => describeAudience(c, names)).join(" · ");
     case "or": return rule.conditions.map((c) => describeAudience(c, names)).join(" hoặc ");

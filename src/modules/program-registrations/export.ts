@@ -11,6 +11,8 @@ export type RegistrationListRow = {
   faculty_name: string | null;
   status: RegistrationStatus;
   quota_label: string | null;
+  // Suất người đang chờ sẽ chiếm nếu được duyệt lúc này (nhóm chỉ tiêu, "Chung" hoặc "Hết chỗ phù hợp").
+  pool_label: string | null;
   registered_at: string;
   decided_at: string | null;
   decision_reason: string | null;

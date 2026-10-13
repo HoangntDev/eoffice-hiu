@@ -33,6 +33,9 @@ type Props = {
   forms: Option[];
 };
 
+// Ô nhập toàn cục có width: 100%; checkbox cần nằm cùng dòng với nhãn.
+const checkboxLabel = { display: "flex", gap: "0.5rem", alignItems: "center" } as const;
+
 let rowSeq = 0;
 const nextKey = () => `row-${++rowSeq}`;
 
@@ -145,8 +148,8 @@ export function ProgramRegistrationSettings({ programId, initial, faculties, maj
               {majors.map((m) => <option key={m.id} value={m.id}>{m.name}</option>)}
             </select>
           </label>
-          <label className="inline">
-            <input type="checkbox" name="unionOnly" defaultChecked={audience.unionOnly} /> Chỉ Đoàn viên
+          <label style={checkboxLabel}>
+            <input type="checkbox" name="unionOnly" style={{ width: "auto" }} defaultChecked={audience.unionOnly} /> Chỉ Đoàn viên
           </label>
         </fieldset>
 
@@ -156,8 +159,8 @@ export function ProgramRegistrationSettings({ programId, initial, faculties, maj
             Tổng số chỗ (để trống nếu không giới hạn)
             <input name="capacity" type="number" min={1} max={100000} defaultValue={initial?.capacity ?? ""} />
           </label>
-          <label className="inline">
-            <input type="checkbox" name="requiresApproval" defaultChecked={initial?.requires_approval ?? false} />
+          <label style={checkboxLabel}>
+            <input type="checkbox" name="requiresApproval" style={{ width: "auto" }} defaultChecked={initial?.requires_approval ?? false} />
             BTC xét duyệt từng đăng ký (bỏ chọn: nhận theo thứ tự đăng ký)
           </label>
           <label>

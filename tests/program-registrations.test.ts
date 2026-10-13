@@ -77,6 +77,11 @@ describe("UC7 điều kiện đối tượng", () => {
     expect(describeAudience(rule, names)).toBe("Sinh viên HIU · Khoa CNTT hoặc Ngành Kỹ thuật phần mềm · Đoàn viên");
   });
 
+  it("không lặp tiền tố khi tên danh mục đã có chữ Khoa", () => {
+    const catalogNames = { faculties: new Map([[FAC_A, "Khoa Công Nghệ - Kỹ Thuật"]]), majors: new Map<string, string>() };
+    expect(describeAudience({ type: "faculty", faculty_id: FAC_A }, catalogNames)).toBe("Khoa Công Nghệ - Kỹ Thuật");
+  });
+
   it("nhóm chỉ tiêu đọc lại đúng loại", () => {
     expect(parseQuotaRule(quotaRule("major", MAJOR_A))).toEqual({ kind: "major", targetId: MAJOR_A });
     expect(parseQuotaRule(quotaRule("union_member", null))).toEqual({ kind: "union_member", targetId: null });
@@ -86,7 +91,7 @@ describe("UC7 điều kiện đối tượng", () => {
 describe("UC7 xuất danh sách", () => {
   const row: RegistrationListRow = {
     registration_id: "r1", user_id: "u1", student_code: "2260000001", full_name: "Nguyễn Văn A",
-    class_code: "22DTH1", program_name: "KTPM", faculty_name: "CNTT", status: "accepted", quota_label: null,
+    class_code: "22DTH1", program_name: "KTPM", faculty_name: "CNTT", status: "accepted", quota_label: null, pool_label: null,
     registered_at: "2026-10-15T01:00:00Z", decided_at: "2026-10-15T01:00:00Z", decision_reason: null,
     reputation_score: 95, suggested_rank: null, answers: { q1: "=HYPERLINK(\"x\")", q2: ["o1", "o2"] },
   };
