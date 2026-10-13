@@ -16,9 +16,13 @@ interface Props {
   form: FormData;
   prefill?: Record<string, string>;
   isAuthenticated: boolean;
+  // Dùng lại cho đăng ký chương trình (UC7): gửi tới endpoint khác, thông báo lấy từ server.
+  submitUrl?: string;
+  submitLabel?: string;
+  onSubmitted?: () => void;
 }
 
-export function FormViewer({ form, prefill = {}, isAuthenticated }: Props) {
+export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, submitLabel, onSubmitted }: Props) {
   const sortedQuestions = [...form.questions].sort((a, b) => a.order - b.order);
   const [answers, setAnswers] = useState<Record<string, unknown>>(() => {
     const initial: Record<string, unknown> = {};
@@ -32,6 +36,7 @@ export function FormViewer({ form, prefill = {}, isAuthenticated }: Props) {
   });
   const [guestEmail, setGuestEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [serverMessage, setServerMessage] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -63,16 +68,18 @@ export function FormViewer({ form, prefill = {}, isAuthenticated }: Props) {
         identity_snapshot: isAuthenticated ? prefill : null,
       };
 
-      const res = await fetch(`/api/forms/${form.id}/responses`, {
+      const res = await fetch(submitUrl ?? `/api/forms/${form.id}/responses`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
       });
+      const result = await res.json() as { message?: string };
       if (!res.ok) {
-        const result = await res.json() as { message?: string };
         throw new Error(result.message ?? "Nộp phản hồi thất bại.");
       }
+      setServerMessage(submitUrl ? result.message ?? null : null);
       setSubmitted(true);
+      onSubmitted?.();
     } catch (e) {
       setError(e instanceof Error ? e.message : "Nộp phản hồi thất bại.");
     } finally {
@@ -84,7 +91,7 @@ export function FormViewer({ form, prefill = {}, isAuthenticated }: Props) {
     return (
       <div className="panel" style={{ textAlign: "center", padding: "3rem" }}>
         <h2>Đã nộp thành công!</h2>
-        <p>{form.confirmation_message ?? "Cảm ơn bạn đã điền biểu mẫu."}</p>
+        <p>{serverMessage ?? form.confirmation_message ?? "Cảm ơn bạn đã điền biểu mẫu."}</p>
       </div>
     );
   }
@@ -202,7 +209,7 @@ export function FormViewer({ form, prefill = {}, isAuthenticated }: Props) {
 
       <div className="inline full">
         <button className="primary" disabled={submitting}>
-          {submitting ? "Đang nộp…" : "Nộp phản hồi"}
+          {submitting ? "Đang nộp…" : submitLabel ?? "Nộp phản hồi"}
         </button>
       </div>
     </form>

@@ -357,3 +357,66 @@ Schema chặn trường trạng thái do client tự gửi, kết thúc trước
 `npm run lint` toàn repo PASS; `tsc --noEmit` PASS. Không chạy lại Playwright, toàn bộ pgTAP, build, db reset theo yêu cầu.
 
 **Nguyên nhân Storage (đã xác minh):** `storage-api v1.72.1` (05/10) tạo `idx_objects_current_version` trên `(bucket_id, name)`; CLI nâng lên `v1.79.36` (09/10) có cùng migration 0066 nhưng nội dung mới `(bucket_id, name COLLATE "C")`. Migration 66 đã ghi là chạy nên không chạy lại (và có `IF NOT EXISTS`), DB giữ index cũ trong khi code mới dùng `ON CONFLICT … COLLATE "C"` → `42P10`. Đã thay index local bằng đúng định nghĩa upstream. DB tạo mới bằng image hiện tại không bị lỗi này; cloud do Supabase quản lý.
+
+## UC7 — Đăng ký tham gia chương trình — 15/10/2026
+
+| Kiểm thử | Lệnh | Kết quả |
+|---|---|---|
+| pgTAP UC7 (`007_program_registrations.sql`) | `supabase test db supabase/tests/007_program_registrations.sql` | 50/50 PASS (DB local, rollback) |
+| pgTAP hồi quy biểu mẫu + quyền (`004`, `002`) vì `evaluate_audience_rule`/`submit_form_response` thay đổi | `supabase test db supabase/tests/004_forms.sql supabase/tests/002_authorization_workflow.sql` | 24/24 PASS |
+| Tranh chấp đồng thời (nhiều phiên commit thật) | `scripts/race-program-registration.sh supabase_db_uc7-race` trên stack tách biệt `uc7-race` (19/19 migration chạy từ đầu), đã gỡ sau khi chạy | 7/7 PASS |
+| Vitest UC7 + biểu mẫu | `npx vitest run tests/program-registrations.test.ts tests/forms-validation.test.ts` | 31/31 PASS |
+| Lint, typecheck (toàn repo) | `npm run lint`, `npm run typecheck` | PASS |
+
+Rủi ro được nhắm:
+- **Sai quyền theo đơn vị:** BTC Khoa khác, Văn phòng, sinh viên không cấu hình/mở/duyệt; BTC Khoa khác không thấy đăng ký (`REGISTRATION_NOT_FOUND`); không INSERT trực tiếp (42501).
+- **Chương trình chưa duyệt:** không cấu hình/mở được.
+- **Sai đối tượng:** sinh viên Khoa khác bị `AUDIENCE_NOT_MET`.
+- **Trùng:** `ALREADY_REGISTERED`, kể cả 5 lần gửi đồng thời (chỉ 1 bản ghi).
+- **Suất cuối:** 20 phiên đồng thời tranh 5 chỗ cho đúng 5 người được nhận. Hai BTC duyệt đồng thời cho 1 chỗ: phiên sau chờ khóa rồi nhận `QUOTA_FULL`.
+- **Giới hạn nhóm:** chỗ dành cho ngành A2 không cấp cho ngành A1. Sau `quota_release_at`, chỗ dư được cấp; vẫn không vượt tổng.
+- **Lý do duyệt ngoại lệ:** duyệt người 90 điểm khi còn người 100 điểm trả `SKIP_REASON_REQUIRED`. Khi có lý do: được duyệt, lịch sử lưu cờ và lý do. Từ chối phải có lý do.
+- **Riêng tư uy tín:** sinh viên không đọc `reputation_adjustments`, không gọi được `reputation_score`, không xem danh sách hay lịch sử. Nhận theo thứ tự thì không trả điểm uy tín.
+- **Mẫu đăng ký:** thiếu câu bắt buộc thì bị chặn; mẫu đã gắn chương trình không nhận phản hồi rời.
+- **Audit:** cấu hình, đăng ký và duyệt ngoại lệ đều có `request_id`.
+
+Chưa chạy:
+- Trình duyệt/Playwright và E2E HTTP cho UC7: giao diện mới chỉ qua typecheck và lint.
+- Toàn bộ Vitest, build: để CI của PR chạy.
+- Toàn bộ pgTAP: CI không có Postgres. Các file 001, 003, 005, 006 không chạy lại.
+- Đối chứng âm (bỏ khóa để chứng minh script phát hiện vượt chỉ tiêu).
+- Supabase cloud.
+
+## UC7 — Sửa theo review PR #3 — 16/10/2026
+
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `007` (thêm 17 assertion cho hai quy tắc sửa) | 67/67 PASS |
+| Vitest `program-registrations` | 15/15 PASS |
+| Luồng UI trên Chrome (dev server local, `scratchpad/e2e/uc7-browser.mjs`, không commit) | 15/15 PASS, chạy 2 lần trên 2 chương trình đã duyệt |
+| Lint, typecheck toàn repo | PASS |
+
+Học kỳ cấu hình được:
+- Không còn `semester_key_for`.
+- Học kỳ có ngày lẻ do người dùng nhập được nhận diện đúng.
+- Khoản trừ của học kỳ trước không tính vào học kỳ này, nhưng tính đúng khi xét một thời điểm trong học kỳ trước.
+- Thời điểm chưa có học kỳ cấu hình thì 100 điểm.
+- Học kỳ chồng ngày bị từ chối (23P01).
+
+Cạnh tranh cùng suất (chương trình 2 chỗ: 1 chỗ dành ngành A2, 1 chỗ chung):
+- Duyệt SV 90 điểm khi SV 100 điểm cùng ngành A1 đang chờ chỗ chung: phải có lý do.
+- Khi chỉ còn SV 100 điểm ngành A2 (được xếp vào nhóm A2): duyệt SV 90 điểm không cần lý do và không ghi là duyệt ngoại lệ.
+- Danh sách hiện đúng suất cho từng người chờ.
+
+Luồng UI:
+- BTC cấu hình (Khoa CNKT, 1 chỗ, BTC duyệt) → lưu → mở. Form cấu hình bị khóa khi đang mở.
+- Hai SV xem điều kiện và gửi → "Chờ BTC duyệt"; SV không thấy chữ "uy tín"; SV mở trang danh sách BTC nhận 404.
+- BTC thấy "Chung · #1/#2" và duyệt #1 không cần lý do. Duyệt người thứ hai báo hết chỗ. Từ chối có lý do. Lịch sử hiển thị.
+- SV thấy "Đã xác nhận" / "Không được duyệt" kèm lý do.
+- CSV chỉ có người được nhận, không có cột uy tín.
+
+Ảnh chụp phát hiện 2 lỗi hiển thị mà assertion DOM bỏ sót, đã sửa và chạy lại:
+- Lặp chữ "Khoa Khoa".
+- Checkbox bị kéo rộng 100%.
+
+Chưa chạy: Playwright/pgTAP UC6, toàn bộ Vitest/build (để CI), Supabase cloud.
