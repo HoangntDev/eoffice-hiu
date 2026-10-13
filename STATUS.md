@@ -1,3 +1,59 @@
+# Cập nhật — 13/10/2026 (UC8 điểm danh QR lượt)
+
+**Trạng thái:**
+- Nhánh `feat/program-attendance` tạo từ `main` mới nhất (đã có PR #3 UC7 merge), đã push. Commit tính năng: `aa3457a`.
+- **Chưa mở PR** vì máy không có `gh`, nên CI chưa chạy.
+- Chưa merge. Không gọi là release hay CR-01. Không đụng Supabase cloud.
+- Luồng đăng ký UC7 đã merge không bị sửa. Chỉ thêm mục "Điểm danh" trên trang chương trình.
+
+**Ghi chú ngày:** hôm nay là 13/10/2026. Các mục STATUS trước ghi 14–16/10 là sai ngày. Tên migration `202610150003` giữ để xếp sau `202610150002` đã merge.
+
+## Đã làm
+- **Migration `202610150003_program_attendance.sql`** (đã áp lên DB local bằng `supabase migration up --local`):
+  - Bảng: kế hoạch, lượt, bí mật QR (client không đọc được), bản ghi điểm danh, lịch sử.
+  - RPC: `save_attendance_plan`, `set_attendance_session_status`, `issue_attendance_qr`, `check_in_attendance`, `program_attendance_preview`.
+- **QR:**
+  - Token ký HMAC-SHA256 gồm lượt, lần mở và thời điểm phát theo giờ server; hết hạn sau 30 giây.
+  - Mở lại lượt thì mã của lần mở trước hết hiệu lực.
+  - QR được sinh dạng SVG tại server (thêm thư viện `qrcode@1.5.4`).
+- **Quy tắc điểm:**
+  - 4 quy tắc: đủ lượt bắt buộc; ít nhất một lượt; cộng từng lượt; theo bậc số lượt (có thể kèm lượt bắt buộc).
+  - Điểm luôn là số nguyên và không vượt điểm tối đa.
+  - Trạng thái tham gia: Hoàn thành / Có tham gia / Đăng ký nhưng không tham gia.
+- **Khóa quy tắc:** sau khi mở lượt đầu tiên, chỉ faculty_manager được điều chỉnh, phải ghi lý do; lịch sử lưu cấu hình trước/sau. Mở lại lượt cũng phải ghi lý do.
+- **Không trừ điểm uy tín.** Sinh viên chỉ thấy các lượt mình đã điểm danh.
+- **Trang:**
+  - `/programs/{id}/attendance` (BTC)
+  - `/programs/{id}/attendance/{sid}/qr` (màn hình chiếu QR)
+  - `/attend/{sid}?t=…` (sinh viên mở sau khi quét)
+- **Tài liệu:** `docs/requirements/program-attendance.md`, UC8 trong `mvp-scope.md`, mục UC8 trong `docs/testing/test-report.md`.
+
+## Kết quả chạy thật
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `008`: QR còn hạn/hết hạn, sai lượt, sai chữ ký/sửa hạn, lượt đóng, chưa được nhận, quét trùng, mở lại lượt (mã cũ hết hiệu lực, cờ bổ sung, không tạo lượt mới), giới hạn điểm tối đa ở cả 4 quy tắc, khóa quy tắc, quyền, không trừ uy tín | 55/55 PASS |
+| Vitest `program-attendance` | 7/7 PASS |
+| Luồng UI Chrome: BTC lập kế hoạch → mở lượt → hiện QR → SV (viewport điện thoại) quét → quét trùng / SV bị từ chối đăng ký / mã quá 30 giây / mã mới / lượt đã đóng → BTC xem bảng điểm dự kiến; QR được giải mã từ ảnh chụp màn hình | 14/14 PASS |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+Lỗi tìm thấy và đã sửa trong lúc chạy:
+- Trang QR và trang `/attend` trả 404 do embed `event_programs` sai quan hệ khóa ngoại.
+- Ảnh chụp cho thấy QR lệch trái và ô điểm của lượt rơi xuống dòng.
+
+## Giới hạn còn lại
+- QR là mã chung: trong 30 giây, người có mặt có thể gửi mã cho người vắng. Không chặn được nếu không dùng QR cá nhân, mà phương án này đã bị loại.
+- Trang đăng nhập bỏ qua `next`: sinh viên chưa đăng nhập phải đăng nhập rồi quét lại.
+- Chưa xuất CSV điểm dự kiến; Đơn đề nghị cấp điểm thuộc UC sau. BTC không sửa tay bản ghi điểm danh.
+- Chưa có kiểm thử đồng thời nhiều phiên cho điểm danh. Đã có `unique` và khóa `FOR SHARE`, nhưng chưa chạy script tranh chấp.
+- Chưa chạy E2E UC6/UC7, toàn bộ Vitest/build ở local, các pgTAP khác.
+- DB local có thêm dữ liệu điểm danh thử trên 2 chương trình CNKT (không có trong repo).
+
+## Bạn cần làm
+1. Mở PR tại https://github.com/HoangntDev/eoffice-hiu/pull/new/feat/program-attendance (base `main`). Tiêu đề: `feat: UC8 điểm danh QR lượt và điểm dự kiến đề nghị`.
+2. Chờ CI; chỉ merge khi xanh.
+
+---
+
 # Cập nhật — 16/10/2026 (UC7: sửa theo review PR #3)
 
 **Trạng thái:**
