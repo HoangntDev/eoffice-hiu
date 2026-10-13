@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { documentKindLabels, documentKinds, type DocumentKind } from "@/modules/program-acceptance/schemas";
 
-async function send(url: string, init: RequestInit): Promise<string> {
+export async function send(url: string, init: RequestInit): Promise<string> {
   const response = await fetch(url, init);
   const result = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -14,10 +14,10 @@ async function send(url: string, init: RequestInit): Promise<string> {
   return result.message ?? "Đã lưu.";
 }
 
-const postJson = (url: string, body: unknown) =>
+export const postJson = (url: string, body: unknown) =>
   send(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
 
-function useAction() {
+export function useAction() {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");

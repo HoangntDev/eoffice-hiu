@@ -469,3 +469,19 @@ Luồng UI: đóng lượt/đăng ký → BTC khóa → cảnh báo chưa có h�
 Hai bước đọc sai ở lần chạy chính: script lấy phần tử `role=alert` đầu tiên, trùng với route announcer của Next nên ra chuỗi rỗng.
 - **B4 (hồ sơ thiếu):** chạy lại riêng trên chương trình `78312b4a`, UI hiện "Hồ sơ còn thiếu: Đơn đề nghị, Báo cáo kết quả, Ảnh minh chứng.", rồi mở khóa có lý do.
 - **B10 (thiếu học kỳ):** log server ghi `review_rejected` với `TERM_NOT_CONFIGURED`. Không chụp được dòng thông báo trên UI, vì học kỳ đã được tạo ngay sau đó nên không lặp lại được.
+
+## UC10 — Đăng bài sau nghiệm thu — 13/10/2026
+
+Nhánh `feat/program-publication` (tạo từ `feat/program-acceptance`), stack Supabase local (không cloud). Migration `202610170001_program_publication.sql` áp bằng `supabase migration up --local` (không `db reset`).
+
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `010_program_publication.sql`: chưa nghiệm thu → chưa có bài, Ban/Khoa bị `PROGRAM_NOT_ACCEPTED`; nghiệm thu → Chờ đăng bài + mốc lịch sử; quyền (SV, BTC, Văn phòng, Đoàn Trường, trưởng ban khác bị `FORBIDDEN`; trưởng ban và CTV Ban Tuyên giáo được); RLS (SV không đọc bản nháp, BTC đọc bài của Khoa mình); MSSV trong đề xuất/bài bị chặn; thiếu tiêu đề/nội dung/ảnh → không xuất bản E-Office; ảnh chưa tải lên; xuất bản lặp; sửa sau xuất bản cần lý do; thiếu URL Facebook → không Đã đăng bài; URL trống, không phải Facebook, thời gian tương lai, trước nghiệm thu; hoàn tất và hoàn tất lặp; Khoa không đề xuất sau khi đăng; lịch sử đủ 8 mốc đúng thứ tự, giữ lý do, chỉ thêm; khách đọc bài qua `public_program_posts`, không đọc bảng; cột công khai không có MSSV/điểm danh/hồ sơ/uy tín | 45/45 PASS |
+| pgTAP `009` (chạy lại vì UC10 thêm trigger vào `program_acceptances`) | 64/64 PASS |
+| Vitest `tests/program-publication.test.ts` (chỉ tệp này; toàn bộ Vitest để CI chạy) | 5/5 PASS |
+| Luồng UI Chrome (`2026990004` BTC, `2026990003` Ban Tuyên giáo — vai trò cấp trên DB local, `2026990006` Văn phòng, `2026990005` SV, khách) | 22/22 PASS ở lần chạy thứ hai; lần đầu dừng ở bước C9 vì script bắt trùng hai nút "Lưu bài"/"Lưu bài Facebook" (lỗi selector, không phải lỗi ứng dụng) |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+Luồng UI: chương trình `815085fe` (đã nghiệm thu ở UC9) hiện "Chờ đăng bài" → BTC gửi đề xuất, không có trình biên tập, gọi API xuất bản bị 403 → SV mở trang biên tập bị 404 → Ban xuất bản chương trình chưa nghiệm thu `78312b4a` bị 409 → Ban thấy hàng đợi, sinh bản nháp từ dữ liệu (không có MSSV), chèn MSSV bị chặn, lưu → thiếu ảnh nên chưa có nút xuất bản → tải ảnh → xuất bản E-Office (`/news/815085fe…`), vẫn Chờ đăng bài → hoàn tất bị chặn vì thiếu URL Facebook → nhập URL và thời gian → Đã đăng bài, lịch sử 8 dòng → Văn phòng chỉ xem → khách thấy bài ở `/news`, bài không có MSSV, ảnh đại diện tải được (`image/png`), bài không tồn tại 404.
+
+Không chạy lại E2E UC6–UC9. Không chạy build và toàn bộ Vitest (để CI).

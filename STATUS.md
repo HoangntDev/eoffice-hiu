@@ -1,3 +1,54 @@
+# Cập nhật — 13/10/2026 (UC10 đăng bài sau nghiệm thu)
+
+Báo cáo đầy đủ: `docs/reports/2026-10-13-uc10-dang-bai.md`.
+
+Nhánh `feat/program-publication` tạo từ `feat/program-acceptance` (`c261c39`) vì PR #5 (UC9) chưa merge. Đây là nhánh phụ thuộc UC9: nếu mở PR thì base là `feat/program-acceptance`, chưa merge vào `main`. Đã push. Không gọi là release hay CR-01. Không đụng Supabase cloud. Không `db reset`.
+
+## Đã làm
+- **Migration `202610170001_program_publication.sql`** (áp lên DB local bằng `supabase migration up --local`):
+  - Thêm đơn vị **Ban Tuyên giáo – Truyền thông** (`PROPAGANDA_MEDIA`); trưởng ban và cộng tác viên của Ban là người duy nhất được biên tập, xuất bản.
+  - Bảng bài đăng (giá trị hiện hành), đề xuất của Khoa (chỉ thêm), lịch sử chỉnh sửa (chỉ thêm, lưu nguyên giá trị mỗi phiên bản, người, lý do, `request_id`).
+  - Trigger trên `program_acceptances`: nghiệm thu xong → "Chờ đăng bài". Hàm UC6–UC9 không bị sửa.
+  - Bucket riêng tư cho ảnh đại diện; ảnh công khai chỉ đọc qua route máy chủ khi bài đã xuất bản.
+  - Cổng công khai đọc qua `public_program_posts()` với 10 cột an toàn.
+- **Luồng:**
+  1. Khoa (BTC) gửi nội dung đề xuất.
+  2. Ban tự viết, sinh bản nháp từ dữ liệu chương trình (chỉ số liệu tổng hợp), hoặc dùng đề xuất; biên tập, đặt ảnh đại diện.
+  3. Ban xuất bản bài E-Office (`/news/{id}`).
+  4. Ban đăng Facebook tay, nhập URL và thời gian thực tế (chưa có Facebook API).
+  5. Ban đánh dấu "Đã đăng bài"; hệ thống chặn nếu thiếu tiêu đề, nội dung, ảnh, bài E-Office, URL hay thời gian Facebook.
+  6. Sửa sau khi đã lên E-Office phải có lý do. Tiêu đề/nội dung có dãy 10 chữ số (dạng MSSV) bị chặn.
+- **Trang:** `/publications` (hàng đợi), `/programs/{id}/publication`, `/news`, `/news/{id}`, mục "Đăng bài" trên trang chương trình, link "Tin hoạt động" và "Đăng bài" trên thanh điều hướng.
+- **Tài liệu:** `docs/requirements/program-publication.md` (có mục quyết định cần xác nhận), UC10 trong `mvp-scope.md`, mục UC10 trong `docs/testing/test-report.md`.
+
+## Kết quả chạy thật
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `010`: quyền xuất bản (SV, BTC, Văn phòng, Đoàn Trường, ban khác bị chặn; trưởng ban và CTV Ban Tuyên giáo được), chưa nghiệm thu, thiếu dữ liệu E-Office, thiếu URL Facebook, URL/thời gian sai, MSSV, lý do khi sửa, lặp, lịch sử chỉ thêm, RLS, cổng công khai | 45/45 PASS |
+| pgTAP `009` (chạy lại vì thêm trigger vào bảng nghiệm thu UC9; test DB, không phải E2E) | 64/64 PASS |
+| Vitest `program-publication` (chỉ tệp mới) | 5/5 PASS |
+| Luồng UI Chrome: BTC đề xuất → Ban sinh nháp, biên tập, ảnh, xuất bản E-Office → thiếu URL Facebook bị chặn → nhập Facebook → Đã đăng bài → Văn phòng xem → khách đọc `/news` | 22/22 PASS ở lần chạy thứ hai (lần đầu script bắt trùng tên nút, đã sửa selector) |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+Không chạy lại E2E UC6–UC9. Toàn bộ Vitest và build để CI chạy.
+
+## Giới hạn còn lại
+- **CI chưa chạy** cho nhánh này (chưa mở PR). Nhánh phụ thuộc UC9: chỉ merge sau khi PR #5 đã merge.
+- **Quyết định tự đặt cần xác nhận:**
+  - Thêm đơn vị Ban Tuyên giáo – Truyền thông; cả trưởng ban và CTV được xuất bản.
+  - Hai bước: E-Office trước, Facebook sau, rồi bấm hoàn tất.
+  - Sửa sau khi đăng cần lý do; không có gỡ bài.
+  - Khoa chỉ gửi đề xuất đến khi Đã đăng bài.
+  - Trạng thái đăng bài nằm ở bảng riêng, không thêm vào `event_programs.status`.
+- Không kiểm tra URL Facebook có thật. Chỉ chặn MSSV dạng 10 chữ số; họ tên hay nội dung ảnh do Ban tự duyệt.
+- Nội dung văn bản thuần, một ảnh; chưa có thông báo khi bài được đăng.
+- **Dữ liệu thử chỉ ở DB local** (không commit):
+  - Tài khoản `2026990003` được cấp `committee_manager` Ban Tuyên giáo.
+  - Chương trình `815085fe` đã "Đã đăng bài" (bài E-Office, Facebook giả `https://www.facebook.com/doantruonghiu/posts/123456`, 2 đề xuất của Khoa). Lịch sử chỉ thêm nên không xóa được qua ứng dụng.
+
+## Việc của người dùng
+Khi PR #5 đã merge (hoặc muốn review sớm), mở PR tại https://github.com/HoangntDev/eoffice-hiu/compare/feat/program-acceptance...feat/program-publication với base `feat/program-acceptance`. Chờ CI xanh rồi mới merge.
+
 # Cập nhật — 13/10/2026 (UC9 nghiệm thu, uy tín, khiếu nại)
 
 Báo cáo đầy đủ: `docs/reports/2026-10-13-uc9-nghiem-thu.md`.

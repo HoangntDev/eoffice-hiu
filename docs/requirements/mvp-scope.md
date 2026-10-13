@@ -61,6 +61,10 @@ Chỉ Văn phòng được yêu cầu bổ sung, từ chối hoặc nghiệm thu
 
 Sinh viên khiếu nại đến hết học kỳ. BTC chấp nhận thì hệ thống bổ sung điểm danh đúng lượt, hoàn +5 một lần và tính lại thành snapshot mới; sổ uy tín chỉ thêm, không sửa hay xóa. Có thêm trạng thái hủy chương trình (không trừ) và màn hình học kỳ cho Đoàn Trường/Văn phòng. Sinh viên không xem uy tín. Chi tiết: `docs/requirements/program-acceptance.md`.
 
+### UC10 — Đăng bài sau nghiệm thu (13/10/2026)
+
+Văn phòng nghiệm thu xong thì chương trình sang "Chờ đăng bài". Chỉ Ban Tuyên giáo – Truyền thông biên tập và xuất bản; Khoa gửi nội dung đề xuất; Ban tự viết hoặc dùng bản nháp sinh từ dữ liệu chương trình rồi biên tập. Bài E-Office do hệ thống xuất bản tại `/news/{id}`; bài Facebook do Ban đăng tay rồi nhập URL và thời gian thực tế (chưa có Facebook API). Chỉ "Đã đăng bài" khi đủ tiêu đề, nội dung, ảnh đại diện, bài E-Office, URL và thời gian Facebook; mọi chỉnh sửa có lịch sử. Bài công khai không chứa MSSV, danh sách điểm danh, hồ sơ ký hay điểm uy tín. Chi tiết: `docs/requirements/program-publication.md`.
+
 ## NFR đo được
 
 1. 100% mutation xác thực server; mutation đặc quyền kiểm tra scope ở Route Handler/RPC và RLS. pgTAP kiểm truy cập trái phép.
