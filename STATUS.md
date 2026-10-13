@@ -1,3 +1,85 @@
+# Cập nhật — 15/10/2026 (UC7 đăng ký tham gia chương trình)
+
+**Trạng thái:**
+- Nhánh `feat/program-registrations` tạo từ `main` mới nhất (sau khi PR #2 UC6 đã merge), đã push. Commit tính năng: `c1f40fb`.
+- **Chưa mở PR** vì máy không có `gh`, nên **CI chưa chạy**.
+- Chưa merge, chưa đụng Supabase cloud.
+- Không gọi đây là CR-01 hoặc v1.1.
+
+## Đã làm
+- **Migration `202610150001_program_registrations.sql`** (đã áp lên DB local chính bằng `supabase migration up --local`; dữ liệu cũ giữ nguyên):
+  - Bảng `program_registration_settings`, `program_registration_quotas`, `program_registrations`, `program_registration_history` (append-only), `reputation_adjustments` (sổ uy tín nội bộ).
+  - RPC `save_program_registration_settings`, `set_program_registration_status`, `register_for_program`, `decide_program_registration`, `program_registration_summary`, `list_program_registrations`.
+  - Mọi thao tác chiếm chỗ đều khóa hàng cấu hình `FOR UPDATE`.
+  - Tái sử dụng `forms`/`form_responses`: thân `submit_form_response` cũ chuyển sang `submit_form_response_internal`. Mẫu đã gắn chương trình không nhận phản hồi rời.
+  - `evaluate_audience_rule` thêm loại `major` (ngành). Điều kiện Đoàn viên giờ chỉ tính người có `status = 'recognized'`; trước đây tính cả người đã bị thu hồi.
+- **API:**
+  - `PUT /api/event-programs/{id}/registration`
+  - `POST …/registration/status`
+  - `GET|POST …/registrations`
+  - `POST …/registrations/{rid}/decision`
+  - `GET …/registrations/export?status=`
+- **Giao diện:**
+  - Phần "Đăng ký tham gia" trên `/programs/{id}`: BTC cấu hình, mở và đóng đăng ký; sinh viên xem điều kiện, điền mẫu (dùng lại `FormViewer`) và xem kết quả.
+  - Trang `/programs/{id}/registrations`: BTC duyệt hoặc từ chối, xem gợi ý theo uy tín và lịch sử, xuất CSV.
+- **Tài liệu:**
+  - `docs/requirements/program-registrations.md` (mới)
+  - UC7 trong `mvp-scope.md`
+  - Mục UC7 trong `docs/testing/test-report.md`
+
+## Kết quả chạy thật
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `007_program_registrations.sql` (sai quyền/đơn vị, chưa duyệt, sai đối tượng, trùng, nhóm chỉ tiêu, chuyển chỉ tiêu dư, lý do duyệt ngoại lệ, riêng tư uy tín, mẫu, audit) | 50/50 PASS |
+| pgTAP hồi quy `004_forms`, `002_authorization_workflow` | 24/24 PASS |
+| `scripts/race-program-registration.sh` trên stack tách biệt `uc7-race` (19/19 migration chạy từ đầu, đã gỡ) | 7/7 PASS: 20 phiên tranh 5 chỗ → đúng 5; 5 lần gửi trùng đồng thời → 1 bản ghi; 2 BTC duyệt suất cuối → 1 được, phiên sau chờ khóa rồi `QUOTA_FULL` |
+| Vitest `program-registrations` + `forms-validation` | 31/31 PASS |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+## Chưa làm / chưa chạy
+- Chưa kiểm thử UI UC7 trên trình duyệt hay qua E2E HTTP; mới qua typecheck và lint. Toàn bộ Vitest và build để CI chạy.
+- Chưa chạy lại Playwright, test UC6 và pgTAP 001/003/005/006.
+- Chưa chạy đối chứng âm: bỏ khóa để chứng minh script phát hiện vượt chỉ tiêu.
+- Điểm uy tín: chưa có luồng ghi. Việc trừ 5 điểm và hoàn điểm thuộc UC điểm danh/nghiệm thu, nên hiện mọi sinh viên có 100 điểm.
+- Giả định học kỳ cần xác nhận: HK1 tháng 8–12, HK2 tháng 1–5, HK3 tháng 6–7.
+- Giới hạn hiện tại:
+  - Không sửa cấu hình khi đang mở; phải đóng trước.
+  - Người bị từ chối không đăng ký lại được.
+  - Văn phòng không xem danh sách đăng ký của Khoa.
+  - Phần kiểm tra ngoại lệ uy tín so với mọi người chờ duyệt còn có thể xếp chỗ, kể cả khác nhóm.
+
+## Bạn cần làm
+1. Mở PR tại https://github.com/HoangntDev/eoffice-hiu/pull/new/feat/program-registrations (base `main`), dán tiêu đề và nội dung bên dưới. Hoặc chạy `brew install gh && gh auth login` để Claude tự mở PR và theo dõi CI.
+2. Chờ CI (lint, typecheck, Vitest toàn repo, build). Chỉ merge khi CI xanh.
+3. Xác nhận giả định học kỳ ở trên.
+
+**Tiêu đề PR:** `feat: UC7 đăng ký tham gia chương trình`
+
+**Nội dung PR:**
+
+````markdown
+## Tóm tắt
+- BTC (Đoàn Khoa sở hữu chương trình đã được Văn phòng duyệt) cấu hình và mở/đóng đăng ký: đối tượng, số chỗ hoặc không giới hạn, nhận theo thứ tự hoặc xét duyệt, chỉ tiêu Khoa/ngành/Đoàn viên với hạn chuyển chỉ tiêu dư, mẫu đăng ký lấy từ biểu mẫu đã có.
+- Sinh viên xem điều kiện, điền mẫu, nhận xác nhận hoặc chờ duyệt. Không có chức năng tự hủy.
+- DB chặn trùng, sai đối tượng, vượt chỉ tiêu, kể cả khi đồng thời (khóa hàng cấu hình).
+- BTC duyệt/từ chối, xem danh sách, xuất CSV. Duyệt vượt người uy tín cao hơn phải có lý do. Sinh viên không xem được điểm hay lịch sử uy tín.
+- Đăng ký chưa phải điểm danh: không ghi tham gia/hoàn thành, không trừ điểm.
+
+## Kiểm thử
+- [x] pgTAP `007_program_registrations.sql` 50/50; hồi quy `004`, `002` PASS (local)
+- [x] Tranh chấp đồng thời `scripts/race-program-registration.sh` 7/7 trên stack local tách biệt
+- [x] Vitest UC7 + biểu mẫu 31/31; lint, typecheck PASS
+- [ ] CI của PR (Vitest toàn repo, build)
+- [ ] Kiểm thử trình duyệt UC7
+- [ ] Supabase cloud
+
+Tài liệu: `docs/requirements/program-registrations.md`, `docs/testing/test-report.md`.
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+````
+
+---
+
 # Cập nhật — 14/10/2026 (mô tả PR UC6)
 
 **Trạng thái:** nhánh `feat/event-program-plans` đã push. **Chưa mở PR** vì máy không có `gh` CLI → **CI chưa chạy**. Chưa merge, chưa đụng cloud.
