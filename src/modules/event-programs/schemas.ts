@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const eventProgramStatuses = ["draft", "submitted", "needs_changes", "approved", "rejected"] as const;
+export const eventProgramStatuses = ["draft", "submitted", "needs_changes", "approved", "rejected", "cancelled"] as const;
 export type EventProgramStatus = (typeof eventProgramStatuses)[number];
 
 const optionalText = (max: number) =>
@@ -45,6 +45,7 @@ export const statusLabels: Record<EventProgramStatus, string> = {
   needs_changes: "Cần chỉnh sửa",
   approved: "Đã chấp thuận",
   rejected: "Bị từ chối",
+  cancelled: "Đã hủy",
 };
 
 export const requiredFieldLabels: Record<string, string> = {

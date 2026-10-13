@@ -62,7 +62,7 @@ export default async function ProgramsPage() {
   const viewer = await loadEventProgramViewer(supabase, user.id);
   const managedIds = viewer.managedOrgs.map((org) => org.id);
 
-  const [approved, mine, queue] = await Promise.all([
+  const [approved, mine, queue, acceptanceQueue] = await Promise.all([
     supabase.from("event_programs").select(columns).eq("status", "approved").order("starts_at", { ascending: true }).limit(200),
     managedIds.length > 0
       ? supabase.from("event_programs").select(columns).in("owner_org_id", managedIds).order("updated_at", { ascending: false }).limit(200)
@@ -70,7 +70,15 @@ export default async function ProgramsPage() {
     viewer.isReviewer
       ? supabase.from("event_programs").select(columns).eq("status", "submitted").order("submitted_at", { ascending: true }).limit(200)
       : Promise.resolve({ data: [] }),
+    viewer.isReviewer
+      ? supabase.from("program_acceptances").select("program_id, submission_count, submitted_at, event_programs(title, organization_units(name))")
+        .eq("status", "submitted").order("submitted_at", { ascending: true }).limit(200)
+      : Promise.resolve({ data: [] }),
   ]);
+  const acceptanceRows = (acceptanceQueue.data ?? []) as unknown as Array<{
+    program_id: string; submission_count: number; submitted_at: string | null;
+    event_programs: { title: string; organization_units: { name: string } | null } | null;
+  }>;
 
   return (
     <main className="page">
@@ -90,6 +98,29 @@ export default async function ProgramsPage() {
         <section className="panel">
           <h2>Chờ Văn phòng xét duyệt</h2>
           <ProgramTable rows={(queue.data ?? []) as unknown as Row[]} empty="Không có kế hoạch nào đang chờ xét." showStatus={false} />
+        </section>
+      )}
+
+      {viewer.isReviewer && (
+        <section className="panel">
+          <h2>Hồ sơ nghiệm thu chờ xét</h2>
+          {acceptanceRows.length === 0 ? <p className="muted">Không có hồ sơ nghiệm thu nào đang chờ.</p> : (
+            <div className="table-wrap">
+              <table>
+                <thead><tr><th>Chương trình</th><th>Đơn vị</th><th>Nộp lúc</th><th></th></tr></thead>
+                <tbody>
+                  {acceptanceRows.map((row) => (
+                    <tr key={row.program_id}>
+                      <td>{row.event_programs?.title ?? "—"}{row.submission_count > 1 && <><br /><span className="muted">Lần nộp {row.submission_count}</span></>}</td>
+                      <td>{row.event_programs?.organization_units?.name ?? "—"}</td>
+                      <td>{formatVietnamDateTime(row.submitted_at)}</td>
+                      <td><Link className="button secondary small" href={`/programs/${row.program_id}/acceptance`}>Xét</Link></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       )}
 

@@ -9,7 +9,9 @@ import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { statusLabels, type EventProgramStatus } from "@/modules/event-programs/schemas";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { availableActions } from "@/modules/event-programs/workflow";
+import { ReasonAction } from "@/components/acceptance-actions";
 import { AttendanceSection } from "./attendance-section";
+import { ParticipationSection } from "./participation-section";
 import { RegistrationSection } from "./registration-section";
 
 type Program = EventProgramFormValues & {
@@ -44,6 +46,7 @@ const actionLabels: Record<string, string> = {
   changes_requested: "Văn phòng yêu cầu chỉnh sửa",
   rejected: "Văn phòng từ chối",
   approved: "Văn phòng chấp thuận",
+  cancelled: "Hủy chương trình",
 };
 
 const roleLabels: Record<string, string> = {
@@ -81,6 +84,15 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
     hasSubmitted: history.some((h) => h.action === "submitted" && h.actor_user_id === user.id),
   });
   const lastFeedback = [...history].reverse().find((h) => h.action === "changes_requested" || h.action === "rejected");
+  // Hủy: BCH Đoàn Khoa (faculty_manager) sở hữu hoặc Văn phòng, trước khi nghiệm thu (RPC kiểm lại).
+  const { data: acceptance } = isManager || viewer.isReviewer
+    ? await supabase.from("program_acceptances").select("status").eq("program_id", id).maybeSingle()
+    : { data: null };
+  const { data: managerGrant } = isManager
+    ? await supabase.from("role_grants").select("id").eq("user_id", user.id).eq("organization_id", program.owner_org_id)
+      .eq("role_code", "faculty_manager").is("revoked_at", null).limit(1).maybeSingle()
+    : { data: null };
+  const canCancel = program.status === "approved" && acceptance?.status !== "accepted" && (Boolean(managerGrant) || viewer.isReviewer);
 
   return (
     <main className="page">
@@ -97,6 +109,9 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
 
       {program.status === "needs_changes" && lastFeedback?.reason && (
         <p className="notice warning">Văn phòng yêu cầu chỉnh sửa: {lastFeedback.reason}</p>
+      )}
+      {program.status === "cancelled" && (
+        <p className="notice error">Chương trình đã hủy: {(program as unknown as { cancel_reason: string | null }).cancel_reason}</p>
       )}
       {program.status === "rejected" && lastFeedback?.reason && (
         <p className="notice error">Lý do từ chối: {lastFeedback.reason}</p>
@@ -120,6 +135,23 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
       )}
       {program.status === "approved" && (
         <AttendanceSection supabase={supabase} userId={user.id} programId={program.id} isManager={isManager} />
+      )}
+      {program.status === "approved" && !isManager && (
+        <ParticipationSection supabase={supabase} programId={program.id} />
+      )}
+      {program.status === "approved" && (isManager || (viewer.isReviewer && acceptance)) && (
+        <section className="panel inline">
+          <h2>Nghiệm thu</h2>
+          <Link className="button secondary" href={`/programs/${program.id}/acceptance`}>Hồ sơ nghiệm thu</Link>
+        </section>
+      )}
+      {canCancel && (
+        <section className="panel">
+          <h2>Hủy chương trình</h2>
+          <p className="muted">Chương trình hủy không được nghiệm thu và không ai bị trừ điểm uy tín. Các lượt và đăng ký đang mở sẽ đóng.</p>
+          <ReasonAction url={`/api/event-programs/${program.id}/cancel`} reasonLabel="Lý do hủy (bắt buộc, tối thiểu 10 ký tự)"
+            choices={[{ value: null, label: "Hủy chương trình" }]} />
+        </section>
       )}
 
       {actions.canEdit && (

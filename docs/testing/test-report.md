@@ -451,3 +451,21 @@ Luồng UI:
 Lần chạy đầu phát hiện trang QR và trang `/attend` trả 404: embed `event_programs` sai quan hệ khóa ngoại. Đã sửa và chạy lại. Ảnh chụp phát hiện QR lệch trái và ô điểm của lượt rơi xuống dòng; đã sửa.
 
 Chưa chạy: E2E UC6/UC7, toàn bộ Vitest và build (để CI), pgTAP các file khác, kiểm thử đồng thời nhiều phiên cho điểm danh, Supabase cloud.
+
+## UC9 — Nghiệm thu, uy tín, khiếu nại — 13/10/2026
+
+Nhánh `feat/program-acceptance`, stack Supabase local (không cloud). Migration `202610160001_program_acceptance.sql` áp bằng `supabase migration up --local` (không `db reset`).
+
+| Kiểm thử | Kết quả |
+|---|---|
+| pgTAP `009_program_acceptance.sql`: khóa (quyền, lượt còn mở, chặn mở lượt/đổi quy tắc/nhận đăng ký sau khóa), hồ sơ thiếu (3 thành phần, thiếu minh chứng), phiên bản tệp, báo cáo phải PDF, quyền nghiệm thu (BTC, người nộp có vai trò Văn phòng), lý do yêu cầu bổ sung, thiếu học kỳ, học kỳ chồng ngày, -5 đúng đối tượng (0 lượt bị trừ; 1 lượt 0 điểm, chờ duyệt, bị từ chối không trừ), nghiệm thu lặp, chạy lại bước trừ = 0, sổ và snapshot chỉ thêm, học kỳ đã dùng không đổi ngày, không hủy sau nghiệm thu, quyền riêng tư (SV không đọc sổ/snapshot, BTC không đọc sổ), khiếu nại (lượt chưa mở, trùng, SV tự xử lý, chờ duyệt), hoàn +5 đúng một lần qua 2 khiếu nại, khiếu nại bị từ chối không hoàn, snapshot v1 giữ nguyên, hạn khiếu nại hết học kỳ, chương trình hủy không trừ, audit có request_id | 64/64 PASS |
+| pgTAP `005`, `007`, `008` (chạy lại vì migration đổi ràng buộc `event_programs` và thêm trigger vào bảng UC7/UC8) | 157/157 PASS |
+| Vitest `tests/program-acceptance.test.ts` (chỉ tệp này; toàn bộ Vitest để CI chạy) | 6/6 PASS |
+| Luồng UI Chrome (`2026990004` BTC, `2026990006` Văn phòng, `2026990001` Đoàn Trường, `2026990005` SV viewport điện thoại) | 20/22 PASS ở lần chạy chính; B4 chạy lại riêng PASS; B10 chỉ kiểm qua log server (xem dưới) |
+| Lint, typecheck toàn repo (1 lần) | PASS |
+
+Luồng UI: đóng lượt/đăng ký → BTC khóa → cảnh báo chưa có học kỳ → bảng: SV vắng = "Đăng ký nhưng không tham gia" → CSV + bản xem trước → tải Đơn đề nghị 2 lần, báo cáo, ảnh minh chứng → nộp → Văn phòng thấy hồ sơ trong hàng đợi → nghiệm thu bị chặn vì thiếu học kỳ → Đoàn Trường thêm HK1 2026-2027 → Văn phòng nghiệm thu, sổ ghi -5 → SV xem kết quả (không có chữ "uy tín") và khiếu nại lượt Đầu giờ → BTC chấp nhận → bảng "Đầu giờ (bổ sung qua khiếu nại)", snapshot v2 → Văn phòng thấy -5 và +5 → SV thấy "Có tham gia".
+
+Hai bước đọc sai ở lần chạy chính: script lấy phần tử `role=alert` đầu tiên, trùng với route announcer của Next nên ra chuỗi rỗng.
+- **B4 (hồ sơ thiếu):** chạy lại riêng trên chương trình `78312b4a`, UI hiện "Hồ sơ còn thiếu: Đơn đề nghị, Báo cáo kết quả, Ảnh minh chứng.", rồi mở khóa có lý do.
+- **B10 (thiếu học kỳ):** log server ghi `review_rejected` với `TERM_NOT_CONFIGURED`. Không chụp được dòng thông báo trên UI, vì học kỳ đã được tạo ngay sau đó nên không lặp lại được.
