@@ -1,5 +1,7 @@
 # Cập nhật — 13/10/2026 (UC8 điểm danh QR lượt)
 
+Báo cáo đầy đủ: `docs/reports/2026-10-13-uc8-diem-danh.md`.
+
 **Trạng thái:**
 - Nhánh `feat/program-attendance` tạo từ `main` mới nhất (đã có PR #3 UC7 merge), đã push. Commit tính năng: `aa3457a`.
 - **Chưa mở PR** vì máy không có `gh`, nên CI chưa chạy.
