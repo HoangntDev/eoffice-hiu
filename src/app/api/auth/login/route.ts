@@ -5,7 +5,7 @@ import { enforceAuthRateLimit } from "@/lib/auth/rate-limit";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 import { loginSchema } from "@/modules/auth-account/schemas";
 
-const GENERIC_LOGIN_MESSAGE = "Không thể đăng nhập. MSSV/PIN có thể không đúng; nếu tài khoản đang chờ tạo PIN, hãy kiểm tra Gmail đã xác minh.";
+const GENERIC_LOGIN_MESSAGE = "Không thể đăng nhập. MSSV/PIN có thể không đúng; nếu tài khoản đang chờ tạo PIN, hãy kiểm tra email sinh viên HIU.";
 
 export async function POST(request: Request) {
   try {

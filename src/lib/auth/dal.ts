@@ -21,7 +21,7 @@ export async function requireUser(): Promise<{ user: User; supabase: SupabaseCli
     .eq("user_id", session.user.id)
     .maybeSingle();
   if (error || account?.status !== "active") {
-    throw new HttpError(403, "ACCOUNT_SETUP_INCOMPLETE", "Hãy hoàn tất xác minh Gmail và tạo PIN trước.");
+    throw new HttpError(403, "ACCOUNT_SETUP_INCOMPLETE", "Hãy hoàn tất xác minh email sinh viên HIU và tạo PIN trước.");
   }
   return session;
 }

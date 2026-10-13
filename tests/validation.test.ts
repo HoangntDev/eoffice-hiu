@@ -16,9 +16,12 @@ describe("student account validation", () => {
   it("rejects the future 11-digit format today", () => {
     expect(studentCodeSchema.safeParse("01234567890").success).toBe(false);
   });
-  it("requires a Gmail address at registration", () => {
+  it("requires a @student.hiu.vn email matching the MSSV at registration", () => {
+    // MSSV 0123456789 → email number must end with "012" + "6789"
     expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"student@example.com" }).success).toBe(false);
-    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"student@gmail.com" }).success).toBe(true);
+    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0126789@gmail.com" }).success).toBe(false);
+    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0129999@student.hiu.vn" }).success).toBe(false);
+    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0126789@student.hiu.vn" }).success).toBe(true);
   });
   it("accepts only a six-digit PIN", () => {
     expect(pinSchema.safeParse("012345").success).toBe(true);

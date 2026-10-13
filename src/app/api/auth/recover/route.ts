@@ -5,7 +5,7 @@ import { enforceAuthRateLimit } from "@/lib/auth/rate-limit";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 import { recoverSchema } from "@/modules/auth-account/schemas";
 
-const GENERIC_MESSAGE = "Nếu tài khoản hợp lệ, hướng dẫn khôi phục PIN sẽ được gửi tới Gmail đã xác minh.";
+const GENERIC_MESSAGE = "Nếu tài khoản hợp lệ, hướng dẫn khôi phục PIN sẽ được gửi tới email sinh viên HIU đã xác minh.";
 
 export async function POST(request: Request) {
   try {

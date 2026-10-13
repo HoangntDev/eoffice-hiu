@@ -1,6 +1,6 @@
 # Phạm vi MVP — Prompt 01 + Prompt 02
 
-Trạng thái: nền tảng, UC1–UC2 (Prompt 01) và UC3–UC5 (Prompt 02); chưa phải release v1.0, INC-01 hay CR-01.
+Trạng thái: nền tảng, UC1–UC2 (Prompt 01), UC3–UC5 (Prompt 02) và UC6 (kế hoạch chương trình, nhánh `feat/event-program-plans`); chưa phải release v1.0, INC-01 hay CR-01.
 
 ## Actor và use case
 
@@ -17,7 +17,17 @@ Khoa, Ngành, Lớp/Chi đoàn dùng UUID bất biến và phiên bản `dateran
 
 ### UC2 — Tiếp nhận/công nhận Đoàn viên (Prompt 01)
 
-SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi mới tạo PIN đúng 6 chữ số, sau đó mới vào profile cơ bản. SIGN IN chỉ nhận MSSV + PIN; SIGN OUT hủy session và trang bảo vệ kiểm tra lại session/trạng thái tài khoản. Khôi phục PIN dùng Gmail đã xác minh nhưng Gmail không phải tên đăng nhập. Profile cơ bản chỉ có trường đã chốt và server suy cơ cấu từ Lớp; hồ sơ Đoàn không phải điều kiện hoàn tất tài khoản. Hồ sơ Đoàn tách căn cước/Đoàn/trình độ; lời khai không tự tạo tư cách. Sinh viên sửa cùng `user_id + cycle_key` ở `draft/needs_changes`. Sự kiện Sổ chỉ snapshot họ tên, MSSV, ngày; rút Sổ không đổi tư cách. CTV phải được phân công và hoàn tất checklist bắt buộc; Văn phòng chỉ công nhận sau lần nhận Sổ còn hiệu lực. API danh sách không trả CCCD/địa chỉ.
+SIGN UP chỉ nhận MSSV 10 số và một email sinh viên `@student.hiu.vn` khớp MSSV (phần số trước `@` phải kết thúc bằng 3 chữ số đầu + 4 chữ số cuối của MSSV); phải xác minh email rồi mới tạo PIN đúng 6 chữ số, sau đó mới vào profile cơ bản. SIGN IN chỉ nhận MSSV + PIN; SIGN OUT hủy session và trang bảo vệ kiểm tra lại session/trạng thái tài khoản. Khôi phục PIN dùng email đã xác minh nhưng email không phải tên đăng nhập. Profile cơ bản chỉ có trường đã chốt và server suy cơ cấu từ Lớp; hồ sơ Đoàn không phải điều kiện hoàn tất tài khoản. Hồ sơ Đoàn tách căn cước/Đoàn/trình độ; lời khai không tự tạo tư cách. Sinh viên sửa cùng `user_id + cycle_key` ở `draft/needs_changes`. Sự kiện Sổ chỉ snapshot họ tên, MSSV, ngày; rút Sổ không đổi tư cách. CTV phải được phân công và hoàn tất checklist bắt buộc; Văn phòng chỉ công nhận sau lần nhận Sổ còn hiệu lực. API danh sách không trả CCCD/địa chỉ.
+
+#### Thay đổi quy tắc email — 13/10/2026
+
+Người dùng quyết định đổi email xác thực từ **Gmail** (Prompt 01) sang **email sinh viên HIU `@student.hiu.vn`**. Migration `202610130002_student_email_domain.sql` đổi CHECK của `account_emails`, `email_change_requests`, `pending_account_registrations` và RPC `reserve_account_registration`; `registerSchema`/`changeEmailSchema` kiểm tra cùng quy tắc ở server.
+
+Tác động tới tài khoản Gmail cũ:
+- CHECK mới dùng `NOT VALID`: dòng Gmail đã có **không bị xóa hay chặn**; tài khoản Gmail cũ vẫn đăng nhập MSSV + PIN và khôi phục PIN qua Gmail đó.
+- Mọi đăng ký mới, đổi email và **mọi cập nhật trên dòng `account_emails`** phải dùng `@student.hiu.vn`. Muốn chuyển một tài khoản cũ sang email sinh viên thì dùng luồng đổi email (xác nhận email mới trước khi thay).
+- Ở DB tạo mới (`db reset`) không có dòng Gmail nào. Chạy `VALIDATE CONSTRAINT` chỉ sau khi mọi tài khoản đã chuyển email.
+- Đổi email chỉ kiểm tra tên miền, chưa kiểm tra số khớp MSSV (email mới vẫn phải được xác nhận qua hộp thư).
 
 ### UC3 — Thư viện mẫu biểu mẫu (Prompt 02)
 
@@ -30,6 +40,10 @@ SIGN UP chỉ nhận MSSV 10 số và một Gmail; phải xác minh Gmail rồi 
 ### UC5 — Thu nhận phản hồi và xuất CSV (Prompt 02)
 
 Người phù hợp (theo audience) nộp qua RPC `submit_form_response`; INSERT trực tiếp vào `form_responses` bị thu hồi quyền. Phản hồi ghi `questions_snapshot` tại thời điểm nộp, `form_version int` và `identity_snapshot` tùy chọn. Xuất CSV UTF-8 BOM, cột ổn định theo `question_id`, nhãn lựa chọn được giải mã từ questions (không xuất option ID thô). RLS hạn chế GET phản hồi cho đơn vị quản lý form; sinh viên không xem phản hồi của người khác.
+
+### UC6 — Quản lý kế hoạch chương trình sự kiện (13/10/2026)
+
+Đoàn Khoa (`faculty_manager`/`faculty_executive` trên `faculty_union`) lập bản nháp, khai báo thông tin, tải PDF kế hoạch đã ký rồi gửi Văn phòng. Chỉ Văn phòng (`office`) yêu cầu chỉnh sửa/từ chối có lý do hoặc chấp thuận; người đã nộp không tự xét duyệt. Khi bị yêu cầu chỉnh sửa, Đoàn Khoa sửa tiếp đúng hồ sơ và nộp lại. Lịch sử append-only lưu người thao tác, vai trò, thời điểm, lý do. Chỉ `approved` được hiển thị như chương trình đã duyệt. Chi tiết: `docs/requirements/event-programs.md`. Chưa gồm QR điểm danh, điểm rèn luyện, mượn phòng.
 
 ## NFR đo được
 

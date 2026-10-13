@@ -63,8 +63,8 @@ export function StudentProfileForm() {
   if (loading) return <p className="notice">Đang tải hồ sơ và danh mục…</p>;
   return <div className="panel">
     {error && <p className="notice error" role="alert">{error}</p>}
-    <div className="form-grid" style={{marginBottom:20}}><label>MSSV<input value={account?.student_code ?? ""} readOnly /></label><label>Gmail đã xác minh<input value={email?.email ?? ""} readOnly /></label></div>
-    {!email?.verified_at && <p className="notice warning">Gmail chưa được ghi nhận xác minh. Hãy dùng liên kết trong email trước khi hoàn tất hồ sơ.</p>}
+    <div className="form-grid" style={{marginBottom:20}}><label>MSSV<input value={account?.student_code ?? ""} readOnly /></label><label>Email sinh viên HIU<input value={email?.email ?? ""} readOnly /></label></div>
+    {!email?.verified_at && <p className="notice warning">Email sinh viên HIU chưa được ghi nhận xác minh. Hãy dùng liên kết trong email trước khi hoàn tất hồ sơ.</p>}
     {catalog.length === 0 && <p className="notice warning">Chưa có danh mục Lớp. Vui lòng báo Đoàn Khoa/Đoàn Trường bổ sung; sinh viên không tự tạo lớp chính thức.</p>}
     <form className="form-grid" onSubmit={submit}>
       <label className="full">Họ và tên<input name="fullName" required defaultValue={profile.full_name ?? ""} /></label>

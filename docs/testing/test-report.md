@@ -242,3 +242,118 @@ Playwright 1.63.0 + headless Chrome. Script: `pw_write_flow.mjs` trong scratchpa
 | F-UI-21 | CSV header: `Thời gian nộp,Email người nộp,Bạn có muốn tham gia?` | PASS |
 
 **Kết quả: G6 COMPLETE** — 12/12 PASS. Toàn bộ write flow qua UI xác minh thành công.
+
+## UC6 — Quản lý kế hoạch chương trình sự kiện — 13/10/2026
+
+Nhánh `feat/event-program-plans`. Dữ liệu tổng hợp: tài khoản `2026990003` (sinh viên), `2026990004` (BCH Đoàn Khoa CNKT), `2026990005` (BCH Đoàn Khoa Dược), `2026990006` (Văn phòng), Gmail `e2e.*@gmail.com`, PIN chỉ dùng local. Không deploy, không push cloud, không `db reset`.
+
+### pgTAP — `supabase/tests/005_event_programs.sql` (35 assertion)
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| EP-DB-01 | Đoàn Khoa A tạo bản nháp cho Khoa mình | lives_ok | PASS |
+| EP-DB-02 | Đoàn Khoa A tạo cho Khoa B → `FORBIDDEN` | `FORBIDDEN` | PASS |
+| EP-DB-03 | Đoàn Khoa B sửa hồ sơ Khoa A → `FORBIDDEN` | `FORBIDDEN` | PASS |
+| EP-DB-04 | RLS: Khoa B không đọc bản nháp Khoa A | 0 dòng | PASS |
+| EP-DB-05 | Sinh viên tạo kế hoạch → `FORBIDDEN` | `FORBIDDEN` | PASS |
+| EP-DB-06 | RLS: sinh viên không thấy hồ sơ chưa chấp thuận | 0 dòng | PASS |
+| EP-DB-07 | RLS: Văn phòng không thấy bản nháp chưa gửi | 0 dòng | PASS |
+| EP-DB-08 | Gửi khi thiếu trường → `MISSING_REQUIRED_FIELDS:…` | đúng | PASS (sau sửa lỗi, xem dưới) |
+| EP-DB-09 | Kết thúc trước bắt đầu → `ENDS_BEFORE_STARTS` | đúng | PASS |
+| EP-DB-10 | Khai đủ thông tin | lives_ok | PASS |
+| EP-DB-11 | Gửi khi chưa có PDF → `PLAN_DOCUMENT_REQUIRED` | đúng | PASS |
+| EP-DB-12 | Storage RLS: Khoa B tải PDF vào hồ sơ Khoa A → 42501 | 42501 | PASS |
+| EP-DB-13 | Storage RLS: Khoa A tải PDF vào hồ sơ mình | lives_ok | PASS |
+| EP-DB-14 | Ghi nhận tệp không có trong Storage → `DOCUMENT_NOT_UPLOADED` | đúng | PASS |
+| EP-DB-15 | Ghi nhận PDF đã ký | lives_ok | PASS |
+| EP-DB-16 | `UPDATE event_programs SET status='approved'` trực tiếp → 42501 | 42501 | PASS |
+| EP-DB-17 | `INSERT` lịch sử giả trực tiếp → 42501 | 42501 | PASS |
+| EP-DB-18 | Văn phòng duyệt bản nháp chưa gửi → `INVALID_TRANSITION` | đúng | PASS |
+| EP-DB-19 | Đoàn Khoa gửi → `submitted` | `submitted` | PASS |
+| EP-DB-20 | Sửa khi chờ duyệt → `PROGRAM_NOT_EDITABLE` | đúng | PASS |
+| EP-DB-21 | Sinh viên duyệt → `FORBIDDEN` | `FORBIDDEN` | PASS |
+| EP-DB-22 | Yêu cầu sửa với lý do ngắn → `REASON_REQUIRED` | đúng | PASS |
+| EP-DB-23 | Văn phòng yêu cầu chỉnh sửa → `needs_changes` | `needs_changes` | PASS |
+| EP-DB-24 | Đoàn Khoa sửa tiếp hồ sơ `needs_changes` | lives_ok | PASS |
+| EP-DB-25 | Nộp lại cùng hồ sơ → `submission_count = 2` | 2 | PASS |
+| EP-DB-26 | Từ chối không lý do → `REASON_REQUIRED` | đúng | PASS |
+| EP-DB-27 | Văn phòng chấp thuận → `approved` | `approved` | PASS |
+| EP-DB-28 | Xét lại hồ sơ đã chấp thuận → `INVALID_TRANSITION` | đúng | PASS |
+| EP-DB-29 | Lịch sử chuyển trạng thái `{draft,submitted,needs_changes,submitted,approved}` | khớp | PASS |
+| EP-DB-30 | Lịch sử ghi vai trò `office` của người chấp thuận | `office` | PASS |
+| EP-DB-31 | Sinh viên thấy chương trình đã chấp thuận | 1 dòng | PASS |
+| EP-DB-32 | Sinh viên không đọc PDF của chương trình đã chấp thuận | 0 dòng | PASS |
+| EP-DB-33 | Người vừa là Đoàn Khoa vừa là Văn phòng tự duyệt hồ sơ mình nộp → `SELF_REVIEW_FORBIDDEN` | đúng | PASS |
+| EP-DB-34 | `school_admin` xét duyệt kế hoạch → `FORBIDDEN` (chỉ Văn phòng, 13/10) | `FORBIDDEN` | PASS |
+| EP-DB-35 | RLS: `school_admin` không thấy hồ sơ đang chờ Văn phòng | 0 dòng | PASS |
+
+**Lỗi phát hiện nhờ test:** EP-DB-08 lần đầu trả `malformed array literal: "summary"` vì `text[] || 'summary'` bị hiểu là array literal; sửa bằng `array_append`. EP-DB-06 ban đầu đếm toàn bảng nên fail sau khi chạy E2E (sinh viên được phép thấy 3 chương trình đã chấp thuận); sửa test để chỉ đếm hồ sơ chưa chấp thuận.
+
+### Unit — `tests/event-programs.test.ts` (18 test)
+
+Schema chặn trường trạng thái do client tự gửi, kết thúc trước bắt đầu, tiêu đề ngắn; lý do bắt buộc ≥ 10 ký tự khi yêu cầu sửa/từ chối; PDF phải đúng đuôi + MIME + magic `%PDF-`, ≤ 5MB, tên tệp bỏ thư mục/ký tự điều khiển; quy đổi giờ Việt Nam; quy tắc hiển thị thao tác; ánh xạ mã lỗi RPC và không lộ lỗi DB lạ. 18/18 PASS.
+
+### E2E HTTP — `next start` cổng 3001 + Supabase local (28 bước)
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| E01 | Đoàn Khoa A tạo nháp → 201 | 201 | PASS |
+| E02–E03 | Khoa B sửa → 403; xem → 404 | 403; 404 | PASS |
+| E04 | Sinh viên tạo → 403 | 403 | PASS |
+| E05 | Gửi thiếu trường → 422 liệt kê 7 trường bằng tiếng Việt | 422 | PASS |
+| E06 | Kết thúc trước bắt đầu → 422 gắn trường `endsAt` | 422 | PASS |
+| E07–E08 | Khai đủ → 200; gửi chưa PDF → 422 | 200; 422 | PASS |
+| E09 | Tệp ZIP/DOCX đổi đuôi `.pdf` → 422 `NOT_PDF` | 422 | PASS |
+| E10 | Khoa B tải PDF vào hồ sơ Khoa A → 403 (Storage RLS) | 403 | PASS |
+| E11 | PDF 6MB → 413 trước khi đọc body | 413 | PASS |
+| E12 | Khoa A tải PDF hợp lệ → 201 + SHA-256 | 201 | PASS (sau workaround môi trường, xem dưới) |
+| E13 | Văn phòng xem nháp chưa gửi → 404 | 404 | PASS |
+| E14–E15 | Gửi → 200 `submitted`; sửa khi chờ → 409 | 200; 409 | PASS |
+| E16–E17 | Sinh viên / Đoàn Khoa khác duyệt → 403 | 403; 403 | PASS |
+| E18–E19 | Yêu cầu sửa không lý do → 422; có lý do → 200 `needs_changes` | 422; 200 | PASS |
+| E20–E21 | Sửa tiếp → 200; nộp lại → 200 `submitted` | 200; 200 | PASS |
+| E22–E24 | Từ chối lý do ngắn → 422; chấp thuận → 200; xét lại → 409 | 422; 200; 409 | PASS |
+| E25 | Sinh viên xem chi tiết đã duyệt: `approved`, 0 PDF, 0 lịch sử | `approved 2 docs 0 history 0` | PASS |
+| E26 | Văn phòng mở PDF → 307 signed URL; tải về SHA-256 trùng bản gốc | 307; SHA khớp `c896da11e829…` | PASS |
+| E27 | Sinh viên mở PDF → 404 | 404 | PASS |
+| E28 | Lịch sử 8 mục, đủ người thao tác + vai trò | khớp | PASS |
+| LOG-01 | `request_id` trong log JSON khớp `audit_events.request_id` (actor, role grant, org) | khớp `77486fea…` | PASS |
+
+**Sự cố môi trường khi kiểm thử (không phải lỗi UC6):** E12 lần đầu trả 403; log JSON + log container `storage-api v1.79.36` cho thấy lỗi `42P10 there is no unique or exclusion constraint matching the ON CONFLICT specification`. Storage API dùng `ON CONFLICT (bucket_id, name COLLATE "C") WHERE archived_at IS NULL` nhưng index nội bộ `idx_objects_current_version` không có `COLLATE "C"` trên DB `en_US.UTF-8`, nên mọi upload ở local đều hỏng. Workaround **chỉ ở local**, không đưa vào migration: `create unique index if not exists idx_objects_current_version_c on storage.objects (bucket_id, name collate "C") where archived_at is null;` (chạy bằng `supabase_admin`). Cần kiểm lại trên Supabase cloud trước khi dùng thật.
+
+### Browser — Playwright 1.60 + Google Chrome headless (14 bước, thao tác qua UI)
+
+| ID | Expected | Kết quả |
+|---|---|---|
+| UI-01–02 | Tạo nháp qua form → trang chi tiết; giờ hiển thị đúng giờ Việt Nam | PASS |
+| UI-03 | Bấm gửi khi chưa có PDF → thông báo lỗi PDF | PASS |
+| UI-04 | Tải PDF + gửi → form sửa biến mất | PASS |
+| UI-05 | Đoàn Khoa B mở URL hồ sơ Khoa A → 404 | PASS |
+| UI-06–07 | Hàng đợi Văn phòng có hồ sơ; yêu cầu sửa không lý do bị chặn | PASS |
+| UI-08–09 | Đoàn Khoa thấy lý do, sửa tiếp, nộp lại cùng URL, "Đã nộp 2 lần" | PASS |
+| UI-10 | Lịch sử hiển thị người thao tác, vai trò, lý do | PASS |
+| UI-11–13 | Sinh viên thấy chương trình đã duyệt; không có nút lập kế hoạch, PDF, lịch sử, form duyệt | PASS |
+| UI-14 | Viewport 390px không cuộn ngang | PASS |
+
+Ảnh chụp và script (`uc6.sh`, `uc6-browser.mjs`) nằm trong scratchpad của phiên, không commit.
+
+### Lệnh xác nhận cuối
+
+`npx tsc --noEmit` PASS · ESLint trên toàn bộ file UC6 PASS · `vitest` 48/52 (4 fail có sẵn trong `auth-ui.test.tsx`/`validation.test.ts` thuộc thay đổi UI chưa commit, không liên quan UC6) · `supabase test db` 74/74 PASS · `supabase db lint --local` không còn cảnh báo về UC6 · `npm run build` PASS. `npm run lint` toàn repo còn 10 lỗi có sẵn trong `account-security-panel.tsx` và `union-application-form.tsx` (thay đổi chưa commit, có từ trước UC6).
+
+**Chưa kiểm thử:** `supabase db reset` từ đầu với migration mới (không chạy để giữ dữ liệu local); Storage trên Supabase cloud; PDF > 10MB đi qua proxy thật trên Vercel; đọc PDF bằng trình xem trong trình duyệt (chỉ kiểm tra SHA-256 khi tải về).
+
+
+## Ổn định UC6 + email sinh viên — 13/10/2026 (lượt 2)
+
+| ID | Expected | Actual | Kết quả |
+|---|---|---|---|
+| EP-DB-34/35 | Chỉ role `office` trên đơn vị `office` xét duyệt; `school_admin` bị từ chối và không thấy hồ sơ chờ | đúng | PASS (`supabase test db supabase/tests/005_event_programs.sql` 35/35) |
+| ACC-01 | `reserve_account_registration`: email `@student.hiu.vn` khớp MSSV (3 số đầu + 4 số cuối) → nhận; Gmail → từ chối; sai số → từ chối | t / f / f | PASS |
+| ACC-02 | pgTAP 002, 003 với fixture email sinh viên (+2 assertion Gmail/sai MSSV) | ok | PASS |
+| UT-AUTH | `auth-ui.test.tsx` theo luồng WIP (đăng nhập 2 bước MSSV → PIN, ô PIN dạng chấm); `validation.test.ts` theo quy tắc email sinh viên | 11/11 | PASS |
+| STG-01 | Câu `ON CONFLICT (bucket_id, name COLLATE "C") WHERE archived_at IS NULL` của Storage chạy được sau khi đưa index local về định nghĩa upstream | `ON_CONFLICT_OK` (rollback) | PASS |
+
+`npm run lint` toàn repo PASS; `tsc --noEmit` PASS. Không chạy lại Playwright, toàn bộ pgTAP, build, db reset theo yêu cầu.
+
+**Nguyên nhân Storage (đã xác minh):** `storage-api v1.72.1` (05/10) tạo `idx_objects_current_version` trên `(bucket_id, name)`; CLI nâng lên `v1.79.36` (09/10) có cùng migration 0066 nhưng nội dung mới `(bucket_id, name COLLATE "C")`. Migration 66 đã ghi là chạy nên không chạy lại (và có `IF NOT EXISTS`), DB giữ index cũ trong khi code mới dùng `ON CONFLICT … COLLATE "C"` → `42P10`. Đã thay index local bằng đúng định nghĩa upstream. DB tạo mới bằng image hiện tại không bị lỗi này; cloud do Supabase quản lý.

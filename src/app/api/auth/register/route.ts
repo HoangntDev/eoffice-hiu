@@ -38,7 +38,7 @@ export async function POST(request: Request) {
 
     await limiter.record(true);
     return NextResponse.json({
-      message: "Đã gửi email xác thực. Hãy mở liên kết trong Gmail, sau đó tạo PIN 6 chữ số.",
+      message: "Đã gửi email xác thực. Hãy mở liên kết trong email sinh viên HIU, sau đó tạo PIN 6 chữ số.",
     }, { status: 201 });
   } catch (error) {
     return apiError(error);

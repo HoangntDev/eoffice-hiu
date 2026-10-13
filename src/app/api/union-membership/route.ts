@@ -41,7 +41,7 @@ export async function PUT(request: Request) {
     });
     if (error) {
       const known = error.message.includes("BASIC_PROFILE_OR_VERIFIED_GMAIL_REQUIRED")
-        ? "Hãy hoàn tất hồ sơ sinh viên và xác minh Gmail trước khi nộp."
+        ? "Hãy hoàn tất hồ sơ sinh viên và xác minh email sinh viên HIU trước khi nộp."
         : error.message.includes("APPLICATION_NOT_EDITABLE")
           ? "Hồ sơ đang được xử lý nên chưa thể sửa."
           : "Không thể lưu hồ sơ. Hãy kiểm tra các trường bắt buộc và danh mục.";

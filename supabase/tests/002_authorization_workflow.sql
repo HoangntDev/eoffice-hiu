@@ -2,10 +2,10 @@ begin;
 select plan(10);
 
 insert into auth.users(id, email) values
-  ('10000000-0000-4000-8000-000000000001', 'admin-test@gmail.com'),
-  ('10000000-0000-4000-8000-000000000002', 'office-test@gmail.com'),
-  ('10000000-0000-4000-8000-000000000003', 'ctv-test@gmail.com'),
-  ('10000000-0000-4000-8000-000000000004', 'student-test@gmail.com');
+  ('10000000-0000-4000-8000-000000000001', 'admin0000001@student.hiu.vn'),
+  ('10000000-0000-4000-8000-000000000002', 'office0000002@student.hiu.vn'),
+  ('10000000-0000-4000-8000-000000000003', 'ctv0000003@student.hiu.vn'),
+  ('10000000-0000-4000-8000-000000000004', 'student0000004@student.hiu.vn');
 
 insert into public.accounts(user_id, student_code, status) values
   ('10000000-0000-4000-8000-000000000001', '0000000001', 'active'),
