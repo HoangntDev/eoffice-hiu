@@ -10,7 +10,10 @@ export default defineConfig({
   test: {
     environment: "node",
     coverage: {
-      reporter: ["text", "json-summary"],
+      provider: "v8",
+      // Tính trên toàn bộ src/, kể cả file chưa có test, để số liệu không bị phóng đại.
+      include: ["src/**/*.{ts,tsx}"],
+      reporter: ["text", "json-summary", "html"],
     },
   },
 });

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Báo cáo HTML của npm run test:coverage.
+    "coverage/**",
   ]),
 ]);
 
