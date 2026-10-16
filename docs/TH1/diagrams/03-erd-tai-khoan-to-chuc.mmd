@@ -1,0 +1,29 @@
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
+erDiagram
+  direction TB
+  email_change_requests["email_change<br/>_requests"]
+  pin_recovery_authorizations["pin_recovery<br/>_authorizations"]
+  student_profiles["student<br/>_profiles"]
+  organization_units["organization<br/>_units"]
+  accounts ||--o{ account_emails : "email đã xác minh"
+  accounts ||--o{ email_change_requests : "đổi email"
+  accounts ||--o{ pin_recovery_authorizations : "khôi phục PIN"
+  accounts ||--o| student_profiles : "hồ sơ"
+  classes ||--o{ student_profiles : "lớp"
+  faculties ||--o{ programs : "Khoa có Ngành"
+  programs ||--o{ classes : "Ngành có Lớp"
+  cohorts ||--o{ classes : "Khóa"
+  faculties ||--o{ organization_units : "Đoàn Khoa"
+  classes ||--o{ organization_units : "Chi đoàn"
+  organization_units ||--o{ organization_units : "trực thuộc"
+  accounts ||--o{ role_grants : "được cấp"
+  organization_units ||--o{ role_grants : "tại đơn vị"

@@ -1,37 +1,43 @@
+---
+config:
+  sequence:
+    actorMargin: 8
+    width: 70
+    height: 50
+    mirrorActors: false
+    messageMargin: 16
+    boxMargin: 6
+---
 sequenceDiagram
   autonumber
-  actor BTC as BTC (Đoàn Khoa)
+  actor BTC
+  participant QR as Trang QR
   actor SV as Sinh viên
-  participant QRP as Trang chiếu QR<br/>attendance-qr-display.tsx
-  participant APIQR as POST /api/attendance/<br/>sessions/{sid}/qr
-  participant PX as src/proxy.ts
-  participant AP as /attend/[sessionId]/page.tsx<br/>+ AttendanceCheckIn
-  participant API as POST /api/attendance/check-in
-  participant RPC as RPC check_in_attendance<br/>(PL/pgSQL, security definer)
-  participant DB as Bảng PostgreSQL
-
-  BTC->>QRP: Mở lượt, chiếu QR
+  participant PX as proxy
+  participant AP as Trang<br/>/attend
+  participant API
+  participant RPC
+  participant DB
+  BTC->>QR: Mở lượt,<br/>chiếu QR
   loop mỗi ~30 giây
-    QRP->>APIQR: lấy mã mới
-    APIQR->>RPC: rpc issue_attendance_qr(p_session_id)
-    RPC->>DB: đọc program_attendance_secrets, kiểm quyền BTC
-    RPC-->>QRP: token = sid.generation.issued_ms.HMAC(32 hex)
+    QR->>API: POST …/qr
+    API->>RPC: issue_<br/>attendance_qr
+    RPC->>DB: đọc secret,<br/>kiểm quyền
+    RPC-->>QR: token ký HMAC
   end
-  SV->>PX: GET /attend/{sid}?t=token (quét QR)
+  SV->>PX: GET /attend/<br/>{sid}?t=…
   alt chưa đăng nhập
-    PX-->>SV: 307 /login?next=/attend/{sid} (mất ?t= — K1)
-  else đã đăng nhập, tài khoản active
-    PX->>AP: render trang
-    AP->>API: fetch POST {sessionId, token} (một lần khi tải)
-    API->>API: checkInSchema.parse (Zod) + requireUser()
-    API->>RPC: supabase.rpc("check_in_attendance", p_session_id, p_token, p_request_id)
-    RPC->>RPC: auth.uid() ≠ null, tách và kiểm token, WRONG_SESSION
-    RPC->>DB: SELECT program_attendance_sessions … FOR SHARE
-    RPC->>RPC: so chữ ký HMAC (attendance_token_signature), lượt đang mở, hạn 30 s theo giờ server
-    RPC->>DB: SELECT program_registrations (status = accepted)
-    RPC->>DB: INSERT program_attendance_records (unique session_id + user_id)
-    RPC->>DB: write_audit → audit_events
-    RPC-->>API: {record_id, session_label, supplementary}
-    API-->>AP: 201 + thông báo (lỗi: attendanceRpcError → 401/403/404/409/410/422)
-    AP-->>SV: "Đã điểm danh lượt …"
+    PX-->>SV: 307 /login,<br/>mất ?t= (K1)
+  else đã đăng nhập
+    PX->>AP: render
+    AP->>API: POST<br/>check-in
+    API->>API: Zod,<br/>requireUser
+    API->>RPC: check_in_<br/>attendance
+    RPC->>DB: khóa lượt<br/>FOR SHARE
+    RPC->>RPC: HMAC, lượt mở,<br/>≤ 30 s
+    RPC->>DB: đăng ký<br/>accepted?
+    RPC->>DB: INSERT bản ghi<br/>+ audit
+    RPC-->>API: record_id
+    API-->>AP: 201 / 4xx
+    AP-->>SV: Đã điểm danh
   end

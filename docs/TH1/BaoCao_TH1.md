@@ -149,6 +149,32 @@ $ git log --first-parent --no-merges --oneline course-baseline..main
 
 Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qua merge commit của PR. Lệnh thứ hai rỗng, nghĩa là **không có commit nào được đẩy thẳng vào `main`**.
 
+## 3.6 Cấu trúc repository và `.gitignore`
+
+| Thành phần | Thư mục |
+|---|---|
+| Source | `src/` (Next.js: trang và route API trong `src/app`, `src/components`, `src/modules`, `src/lib`, `src/proxy.ts`) và `supabase/migrations/` (21 migration: schema, RLS, RPC — nơi chứa nghiệp vụ chính) |
+| Tests | `tests/` (Vitest, 9 file) và `supabase/tests/` (pgTAP, 8 file) |
+| Tài liệu TH1 | `docs/TH1/` (báo cáo `.md`/`.docx`, `build-docx.sh`, `diagrams/`, `evidence/`) |
+| Khác | `docs/requirements/` (đặc tả nghiệp vụ), `scripts/`, `data/` (CSV danh mục), `.github/workflows/ci.yml` |
+
+`.gitignore` loại khỏi repo:
+
+| Mẫu | Loại |
+|---|---|
+| `/node_modules` | dependency cài bằng `npm ci` |
+| `/.next/`, `/out/`, `/build`, `*.tsbuildinfo`, `next-env.d.ts` | sản phẩm build, file sinh tự động |
+| `/coverage` | báo cáo `npm run test:coverage` |
+| `.env*` (trừ `!.env.example`) | biến môi trường thật, gồm `.env.local`; chỉ commit file mẫu |
+| `.vercel` | cấu hình liên kết Vercel |
+| `*.pem`, `.idea/`, `.DS_Store`, log debug | khóa, cấu hình IDE, file rác hệ điều hành |
+
+Kiểm tra secret trong lịch sử (16/10/2026, log: `evidence/security/secret-scan.txt`):
+- `git ls-files` và `git log --all --name-only`: file `.env*` duy nhất từng được commit là `.env.example`. Giá trị trong đó là chuỗi giữ chỗ `replace-with-…`.
+- Tìm trên toàn bộ diff của mọi nhánh (`git log --all -p`) theo mẫu JWT, `sb_secret_`, `sk_live`, `ghp_`, `AKIA`, private key: **0 kết quả**.
+- gitleaks v8.21.2 (Docker) quét 46 commit: 25 cảnh báo `generic-api-key`, **tất cả** nằm ở `evidence/sonarqube/sonar-issues.json`, trường `"key"` là UUID của issue SonarQube. Đây là cảnh báo sai, không phải secret.
+- Mật khẩu và token SonarQube local không nằm trong repo.
+
 # 4. Khảo sát hệ thống
 
 ## 4.1 Kiến trúc tổng quát
@@ -164,6 +190,18 @@ Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qu
 ## 4.2 Sơ đồ Use Case (hệ thống hiện có trên `main`)
 
 ```mermaid
+---
+config:
+  themeVariables:
+    fontSize: "20px"
+  flowchart:
+    nodeSpacing: 12
+    rankSpacing: 60
+    padding: 6
+    subGraphTitleMargin:
+      top: 8
+      bottom: 16
+---
 flowchart LR
   SV["👤 Sinh viên"]
   BTC["👤 BCH Đoàn Khoa / BTC<br/>(faculty_manager, faculty_executive)"]
@@ -201,96 +239,190 @@ flowchart LR
 ## 4.3 Sequence — luồng điểm danh QR (đã lần theo trong code)
 
 ```mermaid
+---
+config:
+  sequence:
+    actorMargin: 8
+    width: 70
+    height: 50
+    mirrorActors: false
+    messageMargin: 16
+    boxMargin: 6
+---
 sequenceDiagram
   autonumber
-  actor BTC as BTC (Đoàn Khoa)
+  actor BTC
+  participant QR as Trang QR
   actor SV as Sinh viên
-  participant QRP as Trang chiếu QR<br/>attendance-qr-display.tsx
-  participant APIQR as POST /api/attendance/<br/>sessions/{sid}/qr
-  participant PX as src/proxy.ts
-  participant AP as /attend/[sessionId]/page.tsx<br/>+ AttendanceCheckIn
-  participant API as POST /api/attendance/check-in
-  participant RPC as RPC check_in_attendance<br/>(PL/pgSQL, security definer)
-  participant DB as Bảng PostgreSQL
-
-  BTC->>QRP: Mở lượt, chiếu QR
+  participant PX as proxy
+  participant AP as Trang<br/>/attend
+  participant API
+  participant RPC
+  participant DB
+  BTC->>QR: Mở lượt,<br/>chiếu QR
   loop mỗi ~30 giây
-    QRP->>APIQR: lấy mã mới
-    APIQR->>RPC: rpc issue_attendance_qr(p_session_id)
-    RPC->>DB: đọc program_attendance_secrets, kiểm quyền BTC
-    RPC-->>QRP: token = sid.generation.issued_ms.HMAC(32 hex)
+    QR->>API: POST …/qr
+    API->>RPC: issue_<br/>attendance_qr
+    RPC->>DB: đọc secret,<br/>kiểm quyền
+    RPC-->>QR: token ký HMAC
   end
-  SV->>PX: GET /attend/{sid}?t=token (quét QR)
+  SV->>PX: GET /attend/<br/>{sid}?t=…
   alt chưa đăng nhập
-    PX-->>SV: 307 /login?next=/attend/{sid} (mất ?t= — K1)
-  else đã đăng nhập, tài khoản active
-    PX->>AP: render trang
-    AP->>API: fetch POST {sessionId, token} (một lần khi tải)
-    API->>API: checkInSchema.parse (Zod) + requireUser()
-    API->>RPC: supabase.rpc("check_in_attendance", p_session_id, p_token, p_request_id)
-    RPC->>RPC: auth.uid() ≠ null, tách và kiểm token, WRONG_SESSION
-    RPC->>DB: SELECT program_attendance_sessions … FOR SHARE
-    RPC->>RPC: so chữ ký HMAC (attendance_token_signature), lượt đang mở, hạn 30 s theo giờ server
-    RPC->>DB: SELECT program_registrations (status = accepted)
-    RPC->>DB: INSERT program_attendance_records (unique session_id + user_id)
-    RPC->>DB: write_audit → audit_events
-    RPC-->>API: {record_id, session_label, supplementary}
-    API-->>AP: 201 + thông báo (lỗi: attendanceRpcError → 401/403/404/409/410/422)
-    AP-->>SV: "Đã điểm danh lượt …"
+    PX-->>SV: 307 /login,<br/>mất ?t= (K1)
+  else đã đăng nhập
+    PX->>AP: render
+    AP->>API: POST<br/>check-in
+    API->>API: Zod,<br/>requireUser
+    API->>RPC: check_in_<br/>attendance
+    RPC->>DB: khóa lượt<br/>FOR SHARE
+    RPC->>RPC: HMAC, lượt mở,<br/>≤ 30 s
+    RPC->>DB: đăng ký<br/>accepted?
+    RPC->>DB: INSERT bản ghi<br/>+ audit
+    RPC-->>API: record_id
+    API-->>AP: 201 / 4xx
+    AP-->>SV: Đã điểm danh
   end
 ```
 
 **Các file lần theo trong luồng:**
 
-| Bước | File |
+Tên participant trong sơ đồ được rút gọn; file tương ứng:
+
+| Participant / bước | File |
 |---|---|
-| Chiếu QR | `src/app/programs/[id]/attendance/[sessionId]/qr/`, `src/components/attendance-qr-display.tsx` |
-| Cấp mã | `src/app/api/attendance/sessions/[sessionId]/qr/route.ts` → RPC `issue_attendance_qr` |
-| Chặn đăng nhập | `src/proxy.ts` (tiền tố `/attend`) |
-| Trang sinh viên | `src/app/attend/[sessionId]/page.tsx`, `src/components/attendance-check-in.tsx` |
-| API | `src/app/api/attendance/check-in/route.ts`, `src/lib/auth/dal.ts` (`requireUser`), `src/lib/http.ts`, `src/lib/log.ts` |
+| Trang QR (chiếu QR) | `src/app/programs/[id]/attendance/[sessionId]/qr/`, `src/components/attendance-qr-display.tsx` |
+| API — cấp mã | `src/app/api/attendance/sessions/[sessionId]/qr/route.ts` → RPC `issue_attendance_qr` |
+| proxy | `src/proxy.ts` (tiền tố `/attend`) |
+| Trang /attend | `src/app/attend/[sessionId]/page.tsx`, `src/components/attendance-check-in.tsx` |
+| API — check-in | `src/app/api/attendance/check-in/route.ts`, `src/lib/auth/dal.ts` (`requireUser`), `src/lib/http.ts`, `src/lib/log.ts` |
 | Kiểm tra vào / ánh xạ lỗi | `src/modules/program-attendance/schemas.ts` (`checkInSchema`), `src/modules/program-attendance/errors.ts` |
-| Nghiệp vụ | `supabase/migrations/202610150003_program_attendance.sql` (hàm `check_in_attendance`) |
+| RPC, DB | `supabase/migrations/202610150003_program_attendance.sql` (hàm `issue_attendance_qr`, `check_in_attendance`; bảng `program_attendance_*`, `audit_events`) |
 | Kiểm thử | `supabase/tests/008_program_attendance.sql` (55 assertion), `tests/program-attendance.test.ts`, `tests/core-business-baseline.test.ts` |
 
 ## 4.4 ERD (dựng từ migrations trên `main`)
 
-Toàn bộ 52 bảng được trích tự động từ các câu `create table` và `references` trong 21 migration. Sơ đồ dưới đây vẽ các bảng lõi. Danh sách đầy đủ theo nhóm nằm ngay sau sơ đồ.
+Toàn bộ 52 bảng được trích tự động từ các câu `create table` và `references` trong 21 migration. Ba sơ đồ dưới đây vẽ các bảng lõi theo nhóm; danh sách đầy đủ theo nhóm nằm sau sơ đồ.
+
+Để sơ đồ đọc được khi in A4 dọc:
+- Tên bảng dài được ngắt dòng tại dấu `_` (ví dụ `program_registration`↵`_settings`); tên bảng không đổi.
+- Bảng dùng chung (`accounts`, `organization_units`, `role_grants`) được vẽ lại ở sơ đồ cần đến để mỗi sơ đồ đọc độc lập.
+- Một số liên kết chéo nhóm không vẽ, nhưng có trong migration: `organization_units → forms`, `accounts → form_responses`, `forms → program_registration_settings` (mẫu đăng ký), `accounts → reputation_adjustments` và `event_programs → reputation_adjustments` (sổ uy tín).
+
+**ERD 1 — Tài khoản, danh mục học vụ, tổ chức (UC1, UC2)**
 
 ```mermaid
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
 erDiagram
+  direction TB
+  email_change_requests["email_change<br/>_requests"]
+  pin_recovery_authorizations["pin_recovery<br/>_authorizations"]
+  student_profiles["student<br/>_profiles"]
+  organization_units["organization<br/>_units"]
   accounts ||--o{ account_emails : "email đã xác minh"
+  accounts ||--o{ email_change_requests : "đổi email"
+  accounts ||--o{ pin_recovery_authorizations : "khôi phục PIN"
   accounts ||--o| student_profiles : "hồ sơ"
   classes ||--o{ student_profiles : "lớp"
   faculties ||--o{ programs : "Khoa có Ngành"
   programs ||--o{ classes : "Ngành có Lớp"
   cohorts ||--o{ classes : "Khóa"
+  faculties ||--o{ organization_units : "Đoàn Khoa"
+  classes ||--o{ organization_units : "Chi đoàn"
   organization_units ||--o{ organization_units : "trực thuộc"
   accounts ||--o{ role_grants : "được cấp"
   organization_units ||--o{ role_grants : "tại đơn vị"
+```
+
+**ERD 2 — Hồ sơ Đoàn viên và biểu mẫu (UC2–UC5)**
+
+```mermaid
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
+erDiagram
+  direction TB
+  union_applications["union<br/>_applications"]
+  union_identity_details["union_identity<br/>_details"]
+  union_qualification_details["union<br/>_qualification<br/>_details"]
+  reference_options["reference<br/>_options"]
+  membership_application_checks["membership<br/>_application<br/>_checks"]
+  membership_review_checklist_items["membership<br/>_review<br/>_checklist<br/>_items"]
+  membership_reviews["membership<br/>_reviews"]
+  union_memberships["union<br/>_memberships"]
+  paper_book_events["paper_book<br/>_events"]
+  form_template_versions["form_template<br/>_versions"]
+  form_response_answers["form_response<br/>_answers"]
   accounts ||--o{ union_applications : "nộp"
+  union_applications ||--o| union_identity_details : "lý lịch"
+  union_applications ||--o| union_qualification_details : "trình độ"
+  reference_options ||--o{ union_qualification_details : "danh mục"
+  union_applications ||--o{ membership_application_checks : "checklist"
+  membership_review_checklist_items ||--o{ membership_application_checks : "mục"
   union_applications ||--o{ membership_reviews : "xét"
   union_applications ||--o| union_memberships : "công nhận"
+  union_applications ||--o{ paper_book_events : "Sổ Đoàn"
   form_templates ||--o{ form_template_versions : "phiên bản"
-  organization_units ||--o{ forms : "sở hữu"
   form_template_versions ||--o{ forms : "dựa trên"
   forms ||--o{ form_responses : "nhận"
   form_responses ||--o{ form_response_answers : "câu trả lời"
+```
+
+**ERD 3 — Chương trình, đăng ký, điểm danh và kiểm toán (UC6–UC8)**
+
+```mermaid
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
+erDiagram
+  direction TB
+  organization_units["organization<br/>_units"]
+  event_program_documents["event_program<br/>_documents"]
+  event_program_history["event_program<br/>_history"]
+  program_registration_settings["program<br/>_registration<br/>_settings"]
+  program_attendance_plans["program<br/>_attendance<br/>_plans"]
+  program_registration_quotas["program<br/>_registration<br/>_quotas"]
+  program_registrations["program<br/>_registrations"]
+  program_attendance_sessions["program<br/>_attendance<br/>_sessions"]
+  program_attendance_secrets["program<br/>_attendance<br/>_secrets"]
+  program_attendance_records["program<br/>_attendance<br/>_records"]
   organization_units ||--o{ event_programs : "Đoàn Khoa lập"
   event_programs ||--o{ event_program_documents : "PDF kế hoạch"
   event_programs ||--o{ event_program_history : "lịch sử xét"
-  event_programs ||--o| program_registration_settings : "cấu hình đăng ký"
+  event_programs ||--o| program_registration_settings : "cấu hình"
+  event_programs ||--o| program_attendance_plans : "kế hoạch"
   program_registration_settings ||--o{ program_registration_quotas : "chỉ tiêu"
   program_registration_settings ||--o{ program_registrations : "đăng ký"
-  accounts ||--o{ program_registrations : "đăng ký"
-  forms ||--o{ program_registration_settings : "mẫu đăng ký"
-  event_programs ||--o| program_attendance_plans : "kế hoạch điểm danh"
+  program_registration_quotas ||--o{ program_registrations : "thuộc nhóm"
   program_attendance_plans ||--o{ program_attendance_sessions : "lượt"
   program_attendance_sessions ||--|| program_attendance_secrets : "bí mật HMAC"
   program_attendance_sessions ||--o{ program_attendance_records : "bản ghi"
   program_registrations ||--o{ program_attendance_records : "của đăng ký"
-  accounts ||--o{ reputation_adjustments : "sổ uy tín"
+  accounts ||--o{ program_registrations : "sinh viên"
   accounts ||--o{ audit_events : "người thao tác"
+  role_grants ||--o{ audit_events : "vai trò"
 ```
 
 | Nhóm | Bảng |
@@ -311,47 +443,53 @@ Lưu ý: bảng `programs` là **Ngành đào tạo**, còn chương trình sự
 Số cạnh được đếm từ các câu `import "@/…"` trong `src/` (script đếm chạy ngày 16/10/2026).
 
 ```mermaid
+---
+config:
+  layout: elk
+  themeVariables:
+    fontSize: "24px"
+  flowchart:
+    nodeSpacing: 18
+    rankSpacing: 36
+    padding: 6
+---
 flowchart TB
-  subgraph UI["Trình bày"]
-    PAGES["src/app/** (pages)"]
-    COMP["src/components"]
-  end
-  subgraph API["API (route handlers)"]
-    ROUTES["src/app/api/**"]
-  end
-  subgraph DOMAIN["Nghiệp vụ phía TS — src/modules"]
-    MAUTH["auth-account"]
-    MEP["event-programs"]
-    MREG["program-registrations"]
-    MATT["program-attendance"]
-    MFORM["forms"]
-    MOTH["organization-catalog,<br/>student-profile, union-membership"]
-  end
-  subgraph LIB["Hạ tầng — src/lib"]
-    LAUTH["lib/auth (dal, rate-limit)"]
-    LHTTP["lib/http"]
-    LSB["lib/supabase"]
-    LLOG["lib/log"]
-    LENV["lib/env"]
-  end
   PX["src/proxy.ts"]
-  DB[("PostgreSQL: RPC + RLS<br/>supabase/migrations")]
+  PAGES["src/app/** (trang)"]
+  ROUTES["src/app/api/** (route)"]
+  COMP["src/components"]
+  subgraph MOD["src/modules"]
+    MEP["event-programs"]
+    MFORM["forms"]
+    MREG["program-<br/>registrations"]
+    MATT["program-<br/>attendance"]
+    MAUTH["auth-account"]
+    MOTH["catalog, profile,<br/>union-membership"]
+  end
+  subgraph LIB["src/lib"]
+    LAUTH["auth"]
+    LHTTP["http"]
+    LLOG["log"]
+    LSB["supabase"]
+    LENV["env"]
+  end
+  DB[("PostgreSQL<br/>RPC + RLS")]
 
   PAGES -->|30| COMP
-  PAGES -->|16| LSB
   PAGES -->|12| MEP
   PAGES -->|7| MFORM
+  PAGES -->|16| LSB
   COMP --> MEP & MFORM & MREG & MATT
+  ROUTES -->|9| MEP
+  ROUTES -->|9| MFORM
+  ROUTES -->|11| MREG
+  ROUTES -->|7| MATT
+  ROUTES -->|10| MAUTH
+  ROUTES --> MOTH
   ROUTES -->|48| LAUTH
   ROUTES -->|47| LHTTP
   ROUTES -->|13| LLOG
   ROUTES -->|12| LSB
-  ROUTES -->|11| MREG
-  ROUTES -->|10| MAUTH
-  ROUTES -->|9| MEP
-  ROUTES -->|9| MFORM
-  ROUTES -->|7| MATT
-  ROUTES --> MOTH
   MREG -->|3| MFORM
   MEP & MREG & MATT --> LHTTP
   LAUTH --> LSB & LHTTP & LENV
@@ -364,7 +502,7 @@ Một số phụ thuộc đáng chú ý:
 
 - **`program-registrations` → `forms`** (3 import): điều kiện đối tượng (`audienceRuleSchema`) và câu hỏi đăng ký dùng lại kiểu dữ liệu của biểu mẫu. Đổi cấu trúc `audience_rule` sẽ ảnh hưởng đồng thời UC4 và UC7.
 - **Mọi route API phụ thuộc `lib/auth` (48) và `lib/http` (47)**. Đây là hai điểm có nhiều module phụ thuộc vào nhất: sửa `requireUser` hay `apiError` sẽ ảnh hưởng toàn bộ API.
-- **Các module `errors.ts` phụ thuộc `lib/http` (`HttpError`)**. Hợp đồng giữa TS và SQL là các mã lỗi dạng chuỗi (`raise exception 'QR_EXPIRED'`) được so khớp bằng `includes`. Đổi tên mã lỗi trong SQL mà không sửa `errors.ts` thì lỗi sẽ rơi về 500.
+- **Các module `errors.ts` phụ thuộc `lib/http` (`HttpError`)**. Hợp đồng giữa TS và SQL là các mã lỗi dạng chuỗi (`raise exception 'QR_EXPIRED'`) được so khớp bằng `includes`. Đổi tên mã lỗi trong SQL mà không sửa `errors.ts` thì lỗi sẽ rơi về 500. Phân tích chi tiết ở finding F2 (mục 5.2).
 - **Không module nào ở `src/modules` phụ thuộc ngược lên `src/app` hay `src/components`**: các tầng không phụ thuộc vòng.
 
 ## 4.6 Lịch sử một file quan trọng
@@ -424,12 +562,25 @@ Kết quả lưu ở `evidence/sonarqube/`: log scanner, `sonar-measures.json`, 
 - *Rủi ro bảo trì:* Ý đồ "đây là nút submit" chỉ ngầm hiểu. Người sau có thể thêm một nút thao tác phụ (ví dụ "Thêm lượt") vào cùng form mà quên ghi `type="button"`. Khi đó bấm nút sẽ nộp form, gọi API lưu kế hoạch ngoài ý muốn. Với kế hoạch điểm danh đã khóa, việc này dẫn tới lỗi `AMEND_REASON_REQUIRED`, gây khó hiểu cho người dùng.
 - *Quyết định:* **Chưa xử lý trong TH1** vì TH1 không sửa code. Đề xuất một PR `refactor` riêng: thêm `type="submit"`/`type="button"` tường minh cho 19 vị trí và bật rule ESLint `react/button-has-type` để chặn tái phát. Chi phí ước tính khoảng 40 phút (SonarQube tính 2 phút mỗi issue). Rủi ro thấp: chỉ đổi thuộc tính, hành vi giữ nguyên.
 
-**F2 — `typescript:S9379` "Remove this autoFocus attribute" (3 issue, Reliability/Medium + Maintainability/Low)**
+**F2 — Hợp đồng mã lỗi SQL↔TS so khớp bằng `message.includes(code)` theo thứ tự mảng (quan sát thủ công; SonarQube không phát hiện)**
 
-- *Vị trí:* `src/components/auth-form-v2.tsx:141` (ô MSSV ở form đăng nhập), `auth-form-v2.tsx:201`, `src/components/pin-setup-form.tsx:109`.
-- *Vấn đề:* `autoFocus` đưa con trỏ thẳng vào ô nhập khi trang tải. Người dùng trình đọc màn hình sẽ bỏ qua tiêu đề và hướng dẫn phía trên. Trên điện thoại, bàn phím có thể bật lên che nội dung.
-- *Rủi ro bảo trì:* Thấp về kỹ thuật, nhưng là nợ về khả năng truy cập (accessibility). Ba vị trí này là các trang dùng nhiều nhất (đăng nhập, tạo PIN).
-- *Quyết định:* **Chưa xử lý, giữ có chủ đích.** Trang đăng nhập/tạo PIN chỉ có một nhiệm vụ, nên `autoFocus` giúp người dùng bàn phím nhập nhanh. Sẽ xem lại khi có yêu cầu kiểm định accessibility hoặc khi có phản hồi từ người dùng thật. Nếu giữ, ghi nhận là *Accepted* trên SonarQube kèm lý do.
+- *Vị trí:*
+  - `src/modules/program-attendance/errors.ts:28` (21 mã), `src/modules/program-registrations/errors.ts:39` (32 mã), `src/modules/event-programs/errors.ts:26` (13 mã, cộng nhánh riêng `MISSING_REQUIRED_FIELDS:` ở dòng 21). 14 route handler trong `src/app/api/**` gọi ba hàm này.
+  - Trên `main` (baseline) có 3 module dùng mẫu này. Module thứ tư, `src/modules/program-acceptance/errors.ts`, nằm trên nhánh UC9 chưa merge và dùng cùng mẫu; TH1 không sửa nhánh đó.
+- *Vấn đề:*
+  - SQL phát lỗi nghiệp vụ bằng `raise exception 'MÃ'` (235 câu `raise exception '…'` trong migrations), không đặt `errcode` riêng, nên mọi lỗi đều có SQLSTATE mặc định `P0001`. Mã lỗi chỉ nằm trong chuỗi `message`.
+  - TS lấy mã bằng `known.find(([code]) => message.includes(code))`: chọn **mã đầu tiên trong mảng là chuỗi con của message**. Khi một mã là chuỗi con của mã khác, thứ tự trong mảng quyết định kết quả.
+  - Ví dụ: trong `program-attendance/errors.ts`, `AMEND_FORBIDDEN` (dòng 5) phải đứng trước `FORBIDDEN` (dòng 6). Nếu đảo hai dòng, lỗi `AMEND_FORBIDDEN` (`202610150003_program_attendance.sql:286`, "chỉ BCH Đoàn Khoa được điều chỉnh quy tắc") sẽ trả về `code: "FORBIDDEN"` với thông báo chung "Bạn không có quyền…". HTTP vẫn 403 nhưng sai mã và sai hướng dẫn cho người dùng.
+  - Script kiểm tra cả 3 file tìm thấy 5 cặp "mã chứa mã", hiện **đều đúng thứ tự**: `SELF_REVIEW_FORBIDDEN`, `OWNER_CHANGE_FORBIDDEN` ⊃ `FORBIDDEN` (event-programs); `AMEND_FORBIDDEN` ⊃ `FORBIDDEN` (attendance); `SELF_DECISION_FORBIDDEN` ⊃ `FORBIDDEN`, `SKIP_REASON_REQUIRED` ⊃ `REASON_REQUIRED` (registrations).
+- *Rủi ro bảo trì:*
+  - Quy tắc "mã dài đứng trước" không được ghi ở đâu, cũng không có kiểu dữ liệu hay rule lint nào bảo vệ. Thêm mã mới (ví dụ `DELETE_FORBIDDEN`) vào sau `FORBIDDEN`, hoặc sắp xếp lại mảng theo bảng chữ cái, sẽ đổi hành vi trong khi lint và typecheck vẫn xanh.
+  - Đổi tên mã trong SQL mà quên sửa TS thì lỗi rơi về 500 `INTERNAL_ERROR`. Hai phía không có kiểm tra đối chiếu tự động.
+  - CR sau này (kể cả UC9/UC10) sẽ tiếp tục thêm mã, nên rủi ro tăng dần.
+- *Quyết định:* **Chưa sửa trong TH1** vì TH1 không sửa code. Hành vi hiện tại đã được chốt bằng test: `tests/core-business-baseline.test.ts:244–247` (`AMEND_FORBIDDEN` không bị nhận nhầm thành `FORBIDDEN`) và `tests/event-programs.test.ts:116–117` (`SELF_REVIEW_FORBIDDEN`). Đề xuất một PR `refactor` riêng, chọn một trong hai hướng:
+  1. **So khớp chính xác theo mã đã tách:** tách mã khỏi message (phần chữ in hoa trước dấu `:` hoặc khoảng trắng), rồi tra trong `Record<string, …>`. Kết quả không còn phụ thuộc thứ tự mảng. Không đụng SQL, chi phí thấp.
+  2. **Dùng SQLSTATE/ERRCODE riêng:** `raise exception using errcode = '…', message = 'AMEND_FORBIDDEN'` và ánh xạ theo `error.code`. Cần migration mới cho các hàm RPC, phạm vi lớn hơn.
+
+  Hướng 1 phù hợp hơn cho bước đầu. Các test ở trên là lưới an toàn khi refactor. Nên thêm một test đối chiếu: mọi mã trong `raise exception` của migrations đều có trong bảng `known` tương ứng.
 
 **F3 — Độ phức tạp tập trung trong component "minified" (số đo SonarQube + quan sát thủ công)**
 
@@ -446,12 +597,15 @@ Kết quả lưu ở `evidence/sonarqube/`: log scanner, `sonar-measures.json`, 
 
   Không gộp vào CR-01 để PR CR-01 giữ đúng "một PR một việc".
 
-Ba issue `Web:PageWithoutTitleCheck` ở `supabase/templates/*.html` thuộc mẫu email Auth, không phải trang web. Đây là cảnh báo không áp dụng (false positive), nên không xử lý.
+**Các finding khác đã xem, không chọn**
+
+- `typescript:S9379` "Remove this autoFocus attribute" (3 issue: `src/components/auth-form-v2.tsx:141`, `:201`, `src/components/pin-setup-form.tsx:109`): giữ có chủ đích vì trang đăng nhập/tạo PIN chỉ có một nhiệm vụ; xem lại khi có yêu cầu kiểm định accessibility.
+- `Web:PageWithoutTitleCheck` (3 issue ở `supabase/templates/*.html`): đây là mẫu email Auth, không phải trang web, nên là cảnh báo không áp dụng (false positive).
 
 ## 5.3 Nhận xét bảo trì khác
 
 - **Nghiệp vụ nằm trong SQL** giúp quyền và tính đúng đắn được bảo đảm tại một chỗ (RLS, RPC, khóa hàng), tránh trùng lặp ở client. Đổi lại, công cụ phân tích tĩnh và coverage TS không thấy phần này, nên pgTAP là lưới an toàn chính. Việc pgTAP chưa chạy trên CI (K3) là rủi ro lớn nhất cho bảo trì.
-- **Hợp đồng lỗi dạng chuỗi giữa SQL và TS** (mục 4.5) chưa có kiểm tra tự động hai phía.
+- **Hợp đồng lỗi dạng chuỗi giữa SQL và TS** (mục 4.5, F2) chưa có kiểm tra tự động hai phía.
 - **Tên dễ nhầm và di sản:** `programs` (Ngành) với `event_programs`; cột/tham số `gmail` dù quy tắc đã là `@student.hiu.vn` (ghi chú trong `schemas.ts` và migration `202610130002`).
 - **Tài liệu:** README đã được cập nhật (PR #8). `docs/requirements/mvp-scope.md` vẫn còn tiêu đề "Prompt 01 + Prompt 02".
 
@@ -519,6 +673,38 @@ Log: `evidence/coverage/coverage-before.log`, `coverage-after.log`, `coverage-su
 - Logic thuần TS (`src/modules`) đạt ~87% dòng.
 - **Nghiệp vụ chính nằm trong PostgreSQL RPC: ~9.000 dòng SQL, so với ~7.600 dòng TS.** Phần này được bảo vệ bằng **pgTAP 205 assertion**, nhưng v8 coverage không đo được. Vì vậy baseline kiểm thử phải báo cáo cả hai số: coverage Vitest và số assertion pgTAP.
 
+## 6.4 Vùng đã/chưa được bảo vệ và ưu tiên cho CR
+
+**Đã được bảo vệ bằng test tự động**
+
+| Vùng | Test | Số liệu (16/10/2026) |
+|---|---|---|
+| `src/modules/*/schemas.ts`, `src/modules/*/errors.ts` | Vitest (`tests/`) | `src/modules` 87,18% dòng; 3 module cốt lõi 92,70%; cả 3 file `errors.ts` 100% dòng |
+| RPC và RLS trong `supabase/migrations/` | pgTAP (`supabase/tests/`) | 205 assertion; **chỉ chạy local**, chưa có trên CI (K3) |
+
+**Chưa được bảo vệ** (coverage 0% theo `coverage-summary-after.json`, không có test tự động khác)
+
+| Vùng | Vì sao quan trọng |
+|---|---|
+| `src/proxy.ts` | Cổng đăng nhập của mọi trang được bảo vệ; tầng 1 của K1 |
+| `src/app/api/auth/login/route.ts`, `src/app/login/page.tsx` | Tầng 2–3 của K1 (bỏ qua `next`, luôn trả `/onboarding/profile`) |
+| Route handler `src/app/api/**` (47 file, 0/737 dòng) | Nơi gọi RPC và ánh xạ lỗi; cần DB thật mới test có ý nghĩa |
+| `src/components/membership-review-console.tsx`, `src/components/organization-console.tsx` | Xét duyệt Đoàn viên và phân quyền; code "minified", độ phức tạp cao (F3) |
+
+**Ưu tiên**
+
+- **Khi sửa K1:** viết test trước cho ba tầng, rồi mới sửa:
+  - `proxy.ts` giữ cả query string (`?t=`) trong `next`;
+  - trang `/login` đọc `next` và chỉ nhận đường dẫn nội bộ bắt đầu bằng `/` (chống open redirect);
+  - API login trả `next` đã kiểm tra thay cho giá trị cố định.
+
+  Thêm một kịch bản end-to-end tối thiểu: quét QR khi chưa đăng nhập → đăng nhập → quay lại đúng `/attend/{sid}?t=…`.
+- **Khi làm CR-01** (nội dung chốt ở mục 8):
+  - Trước khi sửa file nào trong bảng "chưa được bảo vệ", thêm test chốt hành vi hiện tại của phần sẽ sửa.
+  - Nếu CR đụng RPC/RLS, bổ sung pgTAP tương ứng.
+  - Nếu CR thêm mã lỗi mới, thêm test ánh xạ lỗi (F2).
+  - Ưu tiên đưa pgTAP lên CI (K3) để thay đổi SQL của CR được kiểm tra trên mỗi PR.
+
 # 7. Vấn đề gặp phải và cách xử lý
 
 | Vấn đề | Cách xử lý |
@@ -532,6 +718,7 @@ Log: `evidence/coverage/coverage-before.log`, `coverage-after.log`, `coverage-su
 | Token phân tích SonarQube không đọc được API kết quả (`Insufficient privileges`) | Dùng tài khoản admin local để đọc số đo và issue; mật khẩu và token chỉ nằm trong scratchpad, không commit |
 | `sonar-issues.json` chứa email tác giả commit | Xóa trường `author` trước khi đưa vào `evidence/` |
 | Popup quảng cáo che ảnh chụp SonarQube | Script Playwright bấm "Dismiss" trước khi chụp; xem lại từng ảnh |
+| Sơ đồ sequence/ERD/module ban đầu có tỉ lệ 2,4–3,5:1; khi in A4 dọc chữ chỉ còn ~2–3 pt | Tách ERD thành 3 sơ đồ, ngắt dòng tên bảng dài, rút gọn nhãn sequence, đổi bố cục module; nâng `mermaid-cli` lên 11.12.0 (hỗ trợ `direction` cho ERD); đặt khổ A4 dọc cho `.docx` và co ảnh vừa khung chữ (`build-docx.sh`); xuất PDF bằng LibreOffice trong Docker để xem từng trang |
 | Máy chưa có `pandoc` | Chạy `pandoc` bằng Docker image `pandoc/core` (xem `docs/TH1/build-docx.sh`); sơ đồ Mermaid được render ra PNG bằng image `minlag/mermaid-cli` |
 
 **Sử dụng Claude Code (trợ lý AI) trong TH1.** Sinh viên dùng Claude Code (model Claude Opus 5.5) chạy trong terminal của repo.
@@ -574,7 +761,8 @@ Sinh viên đọc lại báo cáo trước khi merge PR mục D.
   1. pgTAP chưa chạy trên CI (K3).
   2. Lỗi mất `?t=` khi quét QR lúc chưa đăng nhập (K1).
   3. Hai component "minified" có độ phức tạp cao, không có test (F3).
-  4. Thiếu thuộc tính `type` tường minh cho nút (F1).
+  4. Hợp đồng mã lỗi SQL↔TS phụ thuộc thứ tự mảng (F2).
+  5. Thiếu thuộc tính `type` tường minh cho nút (F1).
 
 **Kết luận:** Hệ thống ở trạng thái đủ ổn định để làm baseline cho các thay đổi sau. Mốc so sánh cho CR-01 là:
 - Vitest 109 test, coverage `src/` 12,51% dòng / `src/modules` 87,18% dòng.

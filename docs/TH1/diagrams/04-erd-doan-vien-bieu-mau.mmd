@@ -1,0 +1,36 @@
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
+erDiagram
+  direction TB
+  union_applications["union<br/>_applications"]
+  union_identity_details["union_identity<br/>_details"]
+  union_qualification_details["union<br/>_qualification<br/>_details"]
+  reference_options["reference<br/>_options"]
+  membership_application_checks["membership<br/>_application<br/>_checks"]
+  membership_review_checklist_items["membership<br/>_review<br/>_checklist<br/>_items"]
+  membership_reviews["membership<br/>_reviews"]
+  union_memberships["union<br/>_memberships"]
+  paper_book_events["paper_book<br/>_events"]
+  form_template_versions["form_template<br/>_versions"]
+  form_response_answers["form_response<br/>_answers"]
+  accounts ||--o{ union_applications : "nộp"
+  union_applications ||--o| union_identity_details : "lý lịch"
+  union_applications ||--o| union_qualification_details : "trình độ"
+  reference_options ||--o{ union_qualification_details : "danh mục"
+  union_applications ||--o{ membership_application_checks : "checklist"
+  membership_review_checklist_items ||--o{ membership_application_checks : "mục"
+  union_applications ||--o{ membership_reviews : "xét"
+  union_applications ||--o| union_memberships : "công nhận"
+  union_applications ||--o{ paper_book_events : "Sổ Đoàn"
+  form_templates ||--o{ form_template_versions : "phiên bản"
+  form_template_versions ||--o{ forms : "dựa trên"
+  forms ||--o{ form_responses : "nhận"
+  form_responses ||--o{ form_response_answers : "câu trả lời"
