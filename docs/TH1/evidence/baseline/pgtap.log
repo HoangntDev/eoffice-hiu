@@ -1,0 +1,14 @@
+Connecting to local database...
+./supabase/tests/001_business_rules.sql ........... ok
+./supabase/tests/002_authorization_workflow.sql ... ok
+./supabase/tests/003_account_lifecycle.sql ........ ok
+./supabase/tests/004_forms.sql .................... ok
+./supabase/tests/005_event_programs.sql ........... ok
+./supabase/tests/006_bootstrap_template_seed.sql .. ok
+./supabase/tests/007_program_registrations.sql .... ok
+./supabase/tests/008_program_attendance.sql ....... ok
+All tests successful.
+Files=8, Tests=205,  0 wallclock secs ( 0.06 usr  0.01 sys +  0.11 cusr  0.05 csys =  0.23 CPU)
+Result: PASS
+A new version of Supabase CLI is available: v2.121.0 (currently installed v2.117.0)
+We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli

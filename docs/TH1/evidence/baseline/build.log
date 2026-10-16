@@ -1,0 +1,100 @@
+npm notice run hiu-youth-e-office@0.1.0 build
+npm notice run next build
+▲ Next.js 16.3.6 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 1500ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.9s
+  Running TypeScript ...
+  Finished TypeScript in 6.7s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/49) ...
+  Generating static pages using 15 workers (12/49) 
+  Generating static pages using 15 workers (24/49) 
+  Generating static pages using 15 workers (36/49) 
+✓ Generating static pages using 15 workers (49/49) in 291ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /account/recover-pin
+├ ƒ /account/security
+├ ƒ /api/account/email
+├ ƒ /api/account/pin
+├ ƒ /api/account/verify-pin
+├ ƒ /api/admin/student-code
+├ ƒ /api/attendance/check-in
+├ ƒ /api/attendance/sessions/[sessionId]/qr
+├ ƒ /api/attendance/sessions/[sessionId]/status
+├ ƒ /api/auth/create-pin
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/recover
+├ ƒ /api/auth/register
+├ ƒ /api/auth/resend-signup
+├ ƒ /api/auth/reset-pin
+├ ƒ /api/catalog
+├ ƒ /api/event-programs
+├ ƒ /api/event-programs/[id]
+├ ƒ /api/event-programs/[id]/attendance
+├ ƒ /api/event-programs/[id]/documents
+├ ƒ /api/event-programs/[id]/documents/[documentId]
+├ ƒ /api/event-programs/[id]/registration
+├ ƒ /api/event-programs/[id]/registration/status
+├ ƒ /api/event-programs/[id]/registrations
+├ ƒ /api/event-programs/[id]/registrations/[registrationId]/decision
+├ ƒ /api/event-programs/[id]/registrations/export
+├ ƒ /api/event-programs/[id]/review
+├ ƒ /api/event-programs/[id]/submit
+├ ƒ /api/forms
+├ ƒ /api/forms/[id]
+├ ƒ /api/forms/[id]/export
+├ ƒ /api/forms/[id]/responses
+├ ƒ /api/forms/[id]/status
+├ ƒ /api/forms/templates
+├ ƒ /api/forms/templates/[id]
+├ ƒ /api/forms/templates/[id]/publish
+├ ƒ /api/organization/access
+├ ƒ /api/organization/catalog
+├ ƒ /api/organization/units
+├ ƒ /api/reference-options
+├ ƒ /api/student-profile
+├ ƒ /api/students
+├ ƒ /api/union-membership
+├ ƒ /api/union-membership/assignment
+├ ƒ /api/union-membership/checklist
+├ ƒ /api/union-membership/checklist-definition
+├ ƒ /api/union-membership/paper-book
+├ ƒ /api/union-membership/review
+├ ƒ /attend/[sessionId]
+├ ƒ /auth/confirm
+├ ƒ /auth/recover
+├ ƒ /forms
+├ ƒ /forms/[id]
+├ ƒ /forms/[id]/edit
+├ ƒ /forms/[id]/responses
+├ ƒ /forms/new
+├ ƒ /forms/templates
+├ ƒ /forms/templates/[id]
+├ ƒ /forms/templates/new
+├ ƒ /login
+├ ƒ /office/membership
+├ ƒ /onboarding/profile
+├ ƒ /organization
+├ ƒ /programs
+├ ƒ /programs/[id]
+├ ƒ /programs/[id]/attendance
+├ ƒ /programs/[id]/attendance/[sessionId]/qr
+├ ƒ /programs/[id]/registrations
+├ ƒ /programs/new
+├ ƒ /register
+├ ƒ /signup/create-pin
+└ ƒ /union-membership
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+

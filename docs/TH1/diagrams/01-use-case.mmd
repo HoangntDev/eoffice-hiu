@@ -1,0 +1,32 @@
+flowchart LR
+  SV["👤 Sinh viên"]
+  BTC["👤 BCH Đoàn Khoa / BTC<br/>(faculty_manager, faculty_executive)"]
+  CTV["👤 CTV<br/>(collaborator)"]
+  VP["👤 Văn phòng Đoàn – Hội<br/>(office)"]
+  DT["👤 Đoàn Trường<br/>(school_admin)"]
+  BAN["👤 Trưởng Ban<br/>(committee_manager)"]
+
+  subgraph EO["HIU Youth E-Office"]
+    U1(["UC1 Quản lý danh mục học vụ<br/>và cơ cấu tổ chức"])
+    U2a(["UC2 Đăng ký tài khoản MSSV + email<br/>@student.hiu.vn, tạo PIN, đăng nhập"])
+    U2b(["UC2 Khai hồ sơ Đoàn viên"])
+    U2c(["UC2 Checklist, đề xuất hồ sơ"])
+    U2d(["UC2 Công nhận / từ chối,<br/>ghi nhận Sổ Đoàn"])
+    U3(["UC3 Thư viện mẫu biểu mẫu"])
+    U4(["UC4 Tạo / phát hành / đóng biểu mẫu"])
+    U5(["UC5 Trả lời biểu mẫu, xuất CSV"])
+    U6a(["UC6 Lập và nộp kế hoạch chương trình"])
+    U6b(["UC6 Xét duyệt kế hoạch"])
+    U7a(["UC7 Cấu hình và duyệt đăng ký"])
+    U7b(["UC7 Đăng ký tham gia"])
+    U8a(["UC8 Cấu hình lượt, chiếu QR,<br/>xem điểm dự kiến đề nghị"])
+    U8b(["UC8 Quét QR điểm danh"])
+    UP(["Phân quyền theo tổ chức"])
+  end
+
+  SV --- U2a & U2b & U5 & U7b & U8b
+  BTC --- U6a & U7a & U8a
+  CTV --- U2c
+  VP --- U2d & U6b & U4 & U5
+  DT --- U1 & U3 & UP
+  BAN --- U4 & U5 & UP

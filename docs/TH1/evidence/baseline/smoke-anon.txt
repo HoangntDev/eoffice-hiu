@@ -1,0 +1,9 @@
+/                  200 -> 
+/login             200 -> 
+/signup            404 -> 
+/register          200 -> 
+/forms             200 -> 
+/programs          307 -> http://localhost:3002/login?next=%2Fprograms
+/office            307 -> http://localhost:3002/login?next=%2Foffice
+/organization      307 -> http://localhost:3002/login?next=%2Forganization
+/attend?t=abc123   307 -> http://localhost:3002/login?next=%2Fattend
