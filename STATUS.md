@@ -1,3 +1,5 @@
+> Từ tag `course-baseline` (16/10/2026), STATUS.md không ghi nhật ký mới; mọi thay đổi sau baseline xem tại [`docs/TH1/`](docs/TH1/).
+
 # Cập nhật — 13/10/2026 (UC8 điểm danh QR lượt)
 
 Báo cáo đầy đủ: `docs/reports/2026-10-13-uc8-diem-danh.md`.
