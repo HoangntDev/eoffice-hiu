@@ -131,7 +131,7 @@ Quy trình (ghi trong `CLAUDE.md`):
 | A — README | #7 | `docs/7-readme-baseline` | #8 | quality: pass (1m4s) | Đã merge `46721db` |
 | B — CLAUDE.md | #9 | `chore/9-claude-md-rules` | #10 | quality: pass (48s) | Đã merge `97744b6` |
 | C — Test + coverage | #11 | `test/11-baseline-coverage` | #12 | quality: pass (1m3s) | Đã merge `8253341` |
-| D — Báo cáo TH1 | #13 | `docs/13-th1-report` | PR của mục D | — | Chờ sinh viên đọc lại rồi mới merge |
+| D — Báo cáo TH1 | #13 | `docs/13-th1-report` | #14 | xem PR | Chờ sinh viên đọc lại rồi mới merge |
 
 ## 3.5 Kiểm chứng lịch sử `main` sau baseline
 
