@@ -13,7 +13,8 @@
     "test:db": "supabase test db",
     "db:reset": "supabase db reset",
     "catalog:import": "node scripts/import-academic-catalog.mjs",
-    "admin:bootstrap": "node scripts/bootstrap-school-admin.mjs"
+    "admin:bootstrap": "node scripts/bootstrap-school-admin.mjs",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -37,11 +38,12 @@
     "@types/qrcode": "1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "5.0.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "jsdom": "^30.1.1",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^5.0.2"
+    "vitest": "5.0.2"
   }
 }
