@@ -29,7 +29,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               </span>
             </Link>
             {viewer ? (
-              <AccountMenu studentCode={viewer.studentCode} email={viewer.email} />
+              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} />
             ) : (
               <div className="header-user">
                 <Link href="/register" className="header-link">Tạo tài khoản</Link>

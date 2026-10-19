@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LogoutButton } from "@/components/logout-button";
+import { nameInitials } from "@/lib/auth/roles";
 
 const items = [
   { href: "/account", label: "Tổng quan tài khoản" },
@@ -13,7 +14,9 @@ const items = [
 ];
 
 // Menu tài khoản ở góc trên bên phải: bấm để mở, đóng khi chọn mục, bấm ra ngoài hoặc nhấn Esc.
-export function AccountMenu({ studentCode, email }: { studentCode: string | null; email: string | null }) {
+type Props = { fullName: string | null; studentCode: string | null; email: string | null };
+
+export function AccountMenu({ fullName, studentCode, email }: Props) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -34,7 +37,7 @@ export function AccountMenu({ studentCode, email }: { studentCode: string | null
     };
   }, [open]);
 
-  const label = studentCode ?? "Tài khoản";
+  const name = fullName ?? (studentCode ? `MSSV ${studentCode}` : "Tài khoản");
   return (
     <div className="account-menu" ref={rootRef}>
       <button
@@ -44,14 +47,18 @@ export function AccountMenu({ studentCode, email }: { studentCode: string | null
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >
-        <span className="account-avatar" aria-hidden>{label.slice(-2)}</span>
-        <span className="account-menu-label">{label}</span>
+        <span className="account-avatar" aria-hidden>{nameInitials(fullName, studentCode)}</span>
+        <span className="account-menu-label">
+          <span className="account-menu-name">{name}</span>
+          {fullName && studentCode && <span className="account-menu-code">{studentCode}</span>}
+        </span>
         <span className="account-menu-caret" aria-hidden>▾</span>
       </button>
       {open && (
         <div className="account-menu-panel" role="menu">
           <div className="account-menu-head">
-            <strong>{studentCode ? `MSSV ${studentCode}` : "Tài khoản"}</strong>
+            <strong>{name}</strong>
+            {fullName && studentCode && <span>MSSV {studentCode}</span>}
             {email && <span>{email}</span>}
           </div>
           {items.map((item) => (

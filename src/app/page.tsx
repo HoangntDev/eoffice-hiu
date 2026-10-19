@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MyTasks } from "@/components/my-tasks";
 import { getViewer } from "@/lib/auth/viewer";
 
 const features = [
@@ -34,9 +35,30 @@ const guides = [
 
 export default async function Home() {
   const viewer = await getViewer();
+  if (viewer) {
+    return (
+      <main className="portal-main">
+        <div className="portal-banner portal-banner--compact">
+          <div className="portal-banner-inner">
+            <p className="portal-banner-eyebrow">Văn phòng điện tử Đoàn – Hội HIU</p>
+            <h1 className="portal-banner-title">Xin chào{viewer.fullName ? `, ${viewer.fullName}` : ""}</h1>
+            {!viewer.fullName && (
+              <p className="portal-banner-sub">Hãy <Link href="/onboarding/profile">hoàn thiện hồ sơ sinh viên</Link> để dùng đầy đủ chức năng.</p>
+            )}
+          </div>
+        </div>
+        <div className="portal-body portal-body--single">
+          <div className="portal-content">
+            <MyTasks viewer={viewer} />
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Chưa đăng nhập: giữ trang giới thiệu.
   return (
     <main className="portal-main">
-      {/* Banner */}
       <div className="portal-banner">
         <div className="portal-banner-inner">
           <p className="portal-banner-eyebrow">Cổng nghiệp vụ chính thức</p>
@@ -45,21 +67,16 @@ export default async function Home() {
             Hệ thống quản lý hồ sơ Đoàn viên, biểu mẫu sự kiện và cơ cấu tổ chức
             dành cho sinh viên và cán bộ Đoàn Trường HIU.
           </p>
-          {!viewer && (
-            <div className="portal-banner-actions">
-              <Link className="portal-btn-primary" href="/login">Đăng nhập hệ thống</Link>
-              <Link className="portal-btn-ghost" href="/register">Tạo tài khoản</Link>
-            </div>
-          )}
+          <div className="portal-banner-actions">
+            <Link className="portal-btn-primary" href="/login">Đăng nhập hệ thống</Link>
+            <Link className="portal-btn-ghost" href="/register">Tạo tài khoản</Link>
+          </div>
         </div>
       </div>
 
-      {/* Content */}
       <div className="portal-body portal-body--single">
-        {/* Main content */}
         <div className="portal-content">
-          {/* Feature cards — chỉ giới thiệu cho người chưa đăng nhập; đã đăng nhập thì dùng menu */}
-          {!viewer && <section className="portal-section">
+          <section className="portal-section">
             <h2 className="portal-section-title">Giới thiệu chức năng</h2>
             <div className="portal-card-grid">
               {features.map((f) => (
@@ -69,9 +86,8 @@ export default async function Home() {
                 </Link>
               ))}
             </div>
-          </section>}
+          </section>
 
-          {/* Guide */}
           <section className="portal-section">
             <h2 className="portal-section-title">Hướng dẫn sử dụng</h2>
             <div className="panel">

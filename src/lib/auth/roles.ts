@@ -15,3 +15,13 @@ export function navAccess(roles: readonly string[]): NavAccess {
     membershipReview: roles.some((role) => (MEMBERSHIP_REVIEW_ROLES as readonly string[]).includes(role)),
   };
 }
+
+// Chữ viết tắt trên avatar: chữ đầu của họ và của tên ("Nguyễn Thanh Hoàng" → "NH").
+// Chưa có họ tên thì dùng 2 số cuối MSSV.
+export function nameInitials(fullName: string | null, studentCode: string | null): string {
+  const words = (fullName ?? "").trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return (studentCode ?? "?").slice(-2);
+  const first = words[0][0];
+  const last = words.length > 1 ? words[words.length - 1][0] : "";
+  return (first + last).toLocaleUpperCase("vi-VN");
+}

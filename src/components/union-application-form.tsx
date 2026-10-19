@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { applicationStatusLabel } from "@/modules/union-membership/labels";
 
 type Option = { id: string; category: string; code: string; label: string; parent_code?: string | null };
 type Existing = {
@@ -113,7 +114,7 @@ export function UnionApplicationForm() {
   return (
     <div className="panel">
       {existing.application?.status && (
-        <p>Trạng thái: <span className="status">{existing.application.status}</span></p>
+        <p>Trạng thái: <span className="status">{applicationStatusLabel(existing.application.status)}</span></p>
       )}
       {existing.application?.decision_reason && (
         <p className="notice warning">Yêu cầu xử lý: {existing.application.decision_reason}</p>

@@ -9,6 +9,7 @@ import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { loadFormPrefill } from "@/modules/forms/prefill";
 import type { Question } from "@/modules/forms/schemas";
 import { describeAudience } from "@/modules/program-registrations/audience";
+import { blockReasonLabels, registrationBlockReason, type BlockReason } from "@/modules/program-registrations/eligibility";
 import {
   registrationStatusLabels, settingsStatusLabels, type RegistrationStatus,
 } from "@/modules/program-registrations/schemas";
@@ -24,7 +25,7 @@ type Summary = {
 type Props = {
   supabase: SupabaseClient;
   userId: string;
-  program: { id: string; owner_org_id: string };
+  program: { id: string; owner_org_id: string; ends_at?: string | null };
   isManager: boolean;
 };
 
@@ -82,8 +83,37 @@ export async function RegistrationSection({ supabase, userId, program, isManager
   }
 
   if (!settings || settings.status === "draft") {
-    return managerPanel;
+    if (isManager) return managerPanel;
+    return (
+      <section className="panel stack">
+        <h2>Đăng ký tham gia</h2>
+        <p className="inline">
+          <span className="status reg-blocked">{blockReasonLabels[settings ? "not_open" : "not_configured"]}</span>
+          <span className="muted">Ban tổ chức chưa mở đăng ký trên hệ thống cho chương trình này.</span>
+        </p>
+      </section>
+    );
   }
+
+  const { data: audienceOk } = own
+    ? { data: null }
+    : await supabase.rpc("evaluate_audience_rule", { p_rule: settings.audience_rule, p_user_id: userId });
+  const blockReason = own ? null : registrationBlockReason({
+    settingsStatus: settings.status as "open" | "closed",
+    closesAt: settings.closes_at,
+    programEndsAt: program.ends_at ?? null,
+    capacity: summary?.capacity ?? null,
+    accepted: summary?.accepted ?? 0,
+    requiresApproval: settings.requires_approval,
+    audienceOk: typeof audienceOk === "boolean" ? audienceOk : null,
+  });
+  const blockDetail: Record<BlockReason, string> = {
+    not_configured: "Ban tổ chức chưa cấu hình đăng ký.",
+    not_open: "Ban tổ chức chưa mở đăng ký.",
+    closed: settings.closes_at ? `Hạn đăng ký đã hết lúc ${formatVietnamDateTime(settings.closes_at)}.` : "Ban tổ chức đã đóng đăng ký.",
+    full: `Đã đủ ${summary?.capacity ?? 0} chỗ theo thứ tự đăng ký.`,
+    audience: `Chương trình dành cho: ${describeAudience(settings.audience_rule, names)}. Nếu bạn thuộc đối tượng, kiểm tra Lớp trong hồ sơ sinh viên.`,
+  };
 
   let studentPanel;
   if (own) {
@@ -91,7 +121,7 @@ export async function RegistrationSection({ supabase, userId, program, isManager
     studentPanel = (
       <div className="stack">
         <p className="inline">
-          <span className="status">{registrationStatusLabels[status]}</span>
+          <span className={`status reg-${status}`}>{registrationStatusLabels[status]}</span>
           <span className="muted">Đăng ký lúc {formatVietnamDateTime(own.registered_at as string)}</span>
         </p>
         {status === "pending" && <p className="muted">Ban tổ chức sẽ xét duyệt; kết quả hiển thị tại đây.</p>}
@@ -99,8 +129,13 @@ export async function RegistrationSection({ supabase, userId, program, isManager
         {status === "rejected" && own.decision_reason && <p className="notice error">Lý do: {own.decision_reason as string}</p>}
       </div>
     );
-  } else if (settings.status !== "open" || (settings.closes_at && new Date(settings.closes_at) <= new Date())) {
-    studentPanel = <p className="muted">Chương trình hiện không nhận đăng ký.</p>;
+  } else if (blockReason) {
+    studentPanel = (
+      <p className="inline">
+        <span className="status reg-blocked">{blockReasonLabels[blockReason]}</span>
+        <span className="muted">{blockDetail[blockReason]}</span>
+      </p>
+    );
   } else {
     type RegistrationForm = { id: string; title: string; description: string | null; questions: Question[] };
     let form: RegistrationForm | null = null;
