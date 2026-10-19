@@ -1,4 +1,5 @@
 import { createUserSupabase } from "@/lib/supabase/server";
+import { AccessDenied } from "@/components/access-denied";
 import { FormEditor } from "@/components/form-editor";
 
 export default async function NewFormPage() {
@@ -14,6 +15,9 @@ export default async function NewFormPage() {
     ? await supabase.from("organization_units").select("id, name, unit_type").in("id", orgIds)
     : { data: [] };
   const orgs = (orgData ?? []) as Array<{ id: string; name: string; unit_type: string }>;
+  if (orgs.length === 0) {
+    return <AccessDenied title="Tạo biểu mẫu" reason="Chỉ cán bộ Đoàn – Hội có vai trò tại một đơn vị mới tạo được biểu mẫu." />;
+  }
 
   return (
     <main className="page">

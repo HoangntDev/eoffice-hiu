@@ -8,6 +8,7 @@ import { createUserSupabase } from "@/lib/supabase/server";
 import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { statusLabels, type EventProgramStatus } from "@/modules/event-programs/schemas";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
+import { displayOrgName } from "@/modules/organization-catalog/display";
 import { availableActions } from "@/modules/event-programs/workflow";
 import { AttendanceSection } from "./attendance-section";
 import { RegistrationSection } from "./registration-section";
@@ -86,7 +87,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
     <main className="page">
       <div className="page-header">
         <div>
-          <p className="eyebrow"><Link href="/programs">Chương trình sự kiện</Link> · {program.organization_units?.name}</p>
+          <p className="eyebrow"><Link href="/programs">Chương trình sự kiện</Link> · {displayOrgName(program.organization_units?.name)}</p>
           <h1>{program.title}</h1>
           <p className="inline">
             <EventProgramStatusBadge status={program.status} />

@@ -14,6 +14,12 @@ export function fromVietnamInputValue(value: string): string | null {
   return `${value}:00+07:00`;
 }
 
+export function formatVietnamDate(isoDate: string | null | undefined): string {
+  if (!isoDate) return "—";
+  const [y, m, d] = isoDate.slice(0, 10).split("-");
+  return d && m && y ? `${d}/${m}/${y}` : isoDate;
+}
+
 export function formatVietnamDateTime(iso: string | null | undefined): string {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh", dateStyle: "short", timeStyle: "short" });

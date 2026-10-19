@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { MyTasks } from "@/components/my-tasks";
+import { getViewer } from "@/lib/auth/viewer";
 
 const features = [
   {
@@ -31,10 +33,32 @@ const guides = [
   "Điền biểu mẫu sự kiện do Đoàn – Hội phát hành",
 ];
 
-export default function Home() {
+export default async function Home() {
+  const viewer = await getViewer();
+  if (viewer) {
+    return (
+      <main className="portal-main">
+        <div className="portal-banner portal-banner--compact">
+          <div className="portal-banner-inner">
+            <p className="portal-banner-eyebrow">Văn phòng điện tử Đoàn – Hội HIU</p>
+            <h1 className="portal-banner-title">Xin chào{viewer.fullName ? `, ${viewer.fullName}` : ""}</h1>
+            {!viewer.fullName && (
+              <p className="portal-banner-sub">Hãy <Link href="/onboarding/profile">hoàn thiện hồ sơ sinh viên</Link> để dùng đầy đủ chức năng.</p>
+            )}
+          </div>
+        </div>
+        <div className="portal-body portal-body--single">
+          <div className="portal-content">
+            <MyTasks viewer={viewer} />
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Chưa đăng nhập: giữ trang giới thiệu.
   return (
     <main className="portal-main">
-      {/* Banner */}
       <div className="portal-banner">
         <div className="portal-banner-inner">
           <p className="portal-banner-eyebrow">Cổng nghiệp vụ chính thức</p>
@@ -50,33 +74,8 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Content: sidebar + main */}
-      <div className="portal-body">
-        {/* Sidebar */}
-        <aside className="portal-sidebar">
-          <div className="sidebar-section">
-            <h2 className="sidebar-title">Chức năng chính</h2>
-            <ul className="sidebar-links">
-              {features.map((f) => (
-                <li key={f.href}>
-                  <Link href={f.href}>{f.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="sidebar-section">
-            <h2 className="sidebar-title">Liên kết nhanh</h2>
-            <ul className="sidebar-links">
-              <li><Link href="/forms">Danh sách biểu mẫu</Link></li>
-              <li><Link href="/office/membership">Xét duyệt hồ sơ</Link></li>
-              <li><Link href="/account/security">Đổi PIN</Link></li>
-            </ul>
-          </div>
-        </aside>
-
-        {/* Main content */}
+      <div className="portal-body portal-body--single">
         <div className="portal-content">
-          {/* Feature cards */}
           <section className="portal-section">
             <h2 className="portal-section-title">Giới thiệu chức năng</h2>
             <div className="portal-card-grid">
@@ -89,7 +88,6 @@ export default function Home() {
             </div>
           </section>
 
-          {/* Guide */}
           <section className="portal-section">
             <h2 className="portal-section-title">Hướng dẫn sử dụng</h2>
             <div className="panel">

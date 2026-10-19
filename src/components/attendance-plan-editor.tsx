@@ -17,7 +17,6 @@ type TierRow = { key: string; minSessions: string; points: string };
 
 let seq = 0;
 const nextKey = () => `k${++seq}`;
-const checkboxLabel = { display: "flex", gap: "0.5rem", alignItems: "center" } as const;
 
 type Props = { programId: string; initial: AttendancePlanValues | null; locked: boolean; canAmend: boolean };
 
@@ -111,8 +110,8 @@ export function AttendancePlanEditor({ programId, initial, locked, canAmend }: P
                 onChange={(event) => updateSession(row.key, { points: event.target.value })} />
             )}
             {(ruleType === "all_required" || ruleType === "tiers") && (
-              <label style={checkboxLabel}>
-                <input type="checkbox" style={{ width: "auto" }} checked={row.isRequired}
+              <label>
+                <input type="checkbox" checked={row.isRequired}
                   onChange={(event) => updateSession(row.key, { isRequired: event.target.checked })} /> Bắt buộc
               </label>
             )}
@@ -153,8 +152,8 @@ export function AttendancePlanEditor({ programId, initial, locked, canAmend }: P
               Thêm bậc
             </button>
           </div>
-          <label style={checkboxLabel}>
-            <input type="checkbox" name="tiersRequireRequired" style={{ width: "auto" }}
+          <label>
+            <input type="checkbox" name="tiersRequireRequired"
               defaultChecked={initial?.tiers_require_required ?? false} /> Phải có mặt đủ các lượt bắt buộc
           </label>
         </fieldset>

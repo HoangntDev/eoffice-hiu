@@ -21,6 +21,7 @@ export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const protectedPath = [
     "/onboarding",
+    "/account",
     "/account/security",
     "/account/recover-pin",
     "/signup/create-pin",

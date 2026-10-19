@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import type { Question } from "@/modules/forms/schemas";
 
 interface FormData {
@@ -102,7 +103,7 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
 
       {form.closes_at && (
         <p className="notice full muted">
-          Đóng nhận phản hồi: {new Date(form.closes_at).toLocaleString("vi-VN")}
+          Đóng nhận phản hồi: {formatVietnamDateTime(form.closes_at)}
         </p>
       )}
 
@@ -162,9 +163,9 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
             />
           )}
           {q.type === "single_choice" && (
-            <div>
+            <div className="choice-list">
               {(q.options ?? []).map((opt) => (
-                <label key={opt.id} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem" }}>
+                <label key={opt.id}>
                   <input
                     type="radio"
                     name={q.id}
@@ -179,9 +180,9 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
             </div>
           )}
           {q.type === "multi_choice" && (
-            <div>
+            <div className="choice-list">
               {(q.options ?? []).map((opt) => (
-                <label key={opt.id} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem" }}>
+                <label key={opt.id}>
                   <input
                     type="checkbox"
                     checked={((answers[q.id] as string[]) ?? []).includes(opt.id)}

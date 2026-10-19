@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { LogoutButton } from "@/components/logout-button";
-import { createUserSupabase } from "@/lib/supabase/server";
+import { AccountMenu } from "@/components/account-menu";
+import { getViewer } from "@/lib/auth/viewer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const supabase = await createUserSupabase();
-  const { data } = await supabase.auth.getUser();
+  const viewer = await getViewer();
   return (
     <html lang="vi">
       <body>
@@ -29,10 +28,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 <span className="brand-sub">Văn phòng điện tử Đoàn – Hội</span>
               </span>
             </Link>
-            {data.user && (
+            {viewer ? (
+              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} />
+            ) : (
               <div className="header-user">
-                <span className="user-label">Đã đăng nhập</span>
-                <LogoutButton />
+                <Link href="/register" className="header-link">Tạo tài khoản</Link>
+                <Link href="/login" className="header-login">Đăng nhập</Link>
               </div>
             )}
           </div>
@@ -40,19 +41,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <nav className="header-nav" aria-label="Điều hướng chính">
             <Link href="/">Trang chủ</Link>
             <Link href="/forms">Biểu mẫu</Link>
-            {data.user ? (
+            {viewer && (
               <>
-                <Link href="/onboarding/profile">Hồ sơ</Link>
                 <Link href="/programs">Chương trình</Link>
-                <Link href="/union-membership">Đoàn viên</Link>
-                <Link href="/organization">Cơ cấu</Link>
-                <Link href="/office/membership">Xử lý hồ sơ</Link>
-                <Link href="/account/security">Tài khoản</Link>
-              </>
-            ) : (
-              <>
-                <Link href="/register">Tạo tài khoản</Link>
-                <Link href="/login" className="nav-login-btn">Đăng nhập</Link>
+                {viewer.access.organization && <Link href="/organization">Cơ cấu</Link>}
+                {viewer.access.membershipReview && <Link href="/office/membership">Xử lý hồ sơ</Link>}
               </>
             )}
           </nav>

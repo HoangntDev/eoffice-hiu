@@ -14,6 +14,7 @@
     "db:reset": "supabase db reset",
     "catalog:import": "node scripts/import-academic-catalog.mjs",
     "admin:bootstrap": "node scripts/bootstrap-school-admin.mjs",
+    "demo:seed": "node scripts/seed-demo.mjs",
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
