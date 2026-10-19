@@ -610,3 +610,7 @@ tr:hover td { background: var(--surface-2); }
   table.cards-on-mobile td.cell-action { padding-top: 8px; }
   table.cards-on-mobile td.cell-action .button { width: 100%; justify-content: center; }
 }
+@media (max-width: 640px) {
+  table.cards-on-mobile td.cell-action .inline { width: 100%; }
+  table.cards-on-mobile td.cell-action .inline .button { flex: 1; justify-content: center; }
+}

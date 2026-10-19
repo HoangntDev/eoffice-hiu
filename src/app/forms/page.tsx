@@ -7,16 +7,26 @@ const statusLabels: Record<string, string> = {
   closed: "Đã đóng", archived: "Lưu trữ",
 };
 
+function formPeriod(opensAt: string | null, closesAt: string | null) {
+  const date = (iso: string) => new Date(iso).toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+  if (opensAt && closesAt) return `${date(opensAt)} – ${date(closesAt)}`;
+  if (closesAt) return `Đến ${date(closesAt)}`;
+  if (opensAt) return `Từ ${date(opensAt)}`;
+  return "Không giới hạn";
+}
+
 export default async function FormsPage() {
   const supabase = await createUserSupabase();
 
   const { data: { user } } = await supabase.auth.getUser();
 
   let forms: Array<Record<string, unknown>> = [];
+  // Đơn vị người dùng có vai trò: chỉ những đơn vị này mới tạo/quản lý biểu mẫu.
+  let orgIds: string[] = [];
   if (user) {
     const { data: grants } = await supabase
       .from("role_grants").select("organization_id").is("revoked_at", null).eq("user_id", user.id);
-    const orgIds = (grants ?? []).map((g) => g.organization_id as string);
+    orgIds = (grants ?? []).map((g) => g.organization_id as string);
 
     const { data } = orgIds.length > 0
       ? await supabase.from("forms")
@@ -44,7 +54,7 @@ export default async function FormsPage() {
           <h1>Biểu mẫu</h1>
           <p className="lead">Danh sách biểu mẫu đang mở và biểu mẫu bạn quản lý.</p>
         </div>
-        {user && (
+        {orgIds.length > 0 && (
           <Link className="button primary" href="/forms/new">
             Tạo biểu mẫu
           </Link>
@@ -55,7 +65,7 @@ export default async function FormsPage() {
         <p className="notice">Chưa có biểu mẫu nào đang mở.</p>
       ) : (
         <div className="table-wrap">
-          <table>
+          <table className="cards-on-mobile">
             <thead>
               <tr>
                 <th>Tiêu đề</th>
@@ -70,23 +80,22 @@ export default async function FormsPage() {
                 const orgName = displayOrgName((f.organization_units as { name: string } | null)?.name);
                 return (
                   <tr key={f.id as string}>
-                    <td>{f.title as string}</td>
-                    <td>{orgName}</td>
-                    <td>
+                    <td className="cell-title">{f.title as string}</td>
+                    <td data-label="Đơn vị">{orgName}</td>
+                    <td data-label="Trạng thái">
                       <span className={`badge badge-${f.status as string}`}>
                         {statusLabels[f.status as string] ?? f.status as string}
                       </span>
                     </td>
-                    <td>
-                      {f.opens_at ? new Date(f.opens_at as string).toLocaleDateString("vi-VN") : "—"}
-                      {f.closes_at ? ` → ${new Date(f.closes_at as string).toLocaleDateString("vi-VN")}` : ""}
-                    </td>
-                    <td>
+                    <td data-label="Thời gian">{formPeriod(f.opens_at as string | null, f.closes_at as string | null)}</td>
+                    <td className="cell-action">
                       <div className="inline" style={{ gap: "0.5rem" }}>
                         {f.status === "published" && (
                           <Link href={`/forms/${f.id as string}`} className="button primary small">Điền</Link>
                         )}
-                        <Link href={`/forms/${f.id as string}/edit`} className="button secondary small">Quản lý</Link>
+                        {orgIds.includes(f.owner_org_id as string) && (
+                          <Link href={`/forms/${f.id as string}/edit`} className="button secondary small">Quản lý</Link>
+                        )}
                       </div>
                     </td>
                   </tr>
