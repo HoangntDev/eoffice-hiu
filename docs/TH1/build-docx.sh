@@ -49,7 +49,8 @@ const sized = out.replace(/(!\[[^\]]*\]\([^)]+\))(?!\{)/g, "$1{width=16cm}");
 fs.writeFileSync(".build/BaoCao_TH1.docx.md", sized);
 JS
 
-docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/data" -w /data pandoc/core:3.6 \
+# Gắn cả repo để báo cáo dùng được ảnh ở thư mục ngoài docs/TH1 nếu cần.
+docker run --rm -u "$(id -u):$(id -g)" -v "$(cd ../.. && pwd):/repo" -w /repo/docs/TH1 pandoc/core:3.6 \
   .build/BaoCao_TH1.docx.md -f markdown+lists_without_preceding_blankline -o BaoCao_TH1.docx \
   --resource-path=.:.build --toc --toc-depth=2 -M toc-title="Mục lục"
 
