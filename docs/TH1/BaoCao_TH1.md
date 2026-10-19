@@ -10,7 +10,7 @@ lang: vi
 |---|---|
 | Môn học | Phát triển, vận hành, bảo trì phần mềm |
 | Giảng viên | Hoàng Ngọc Long |
-| Sinh viên | Nguyễn Thanh Hoàng — MSSV ____ — Lớp ____ |
+| Sinh viên | Nguyễn Thanh Hoàng — MSSV 2211110012 — Lớp TH22DH-CN1 |
 | Đề tài (Final Project) | HIU Youth E-Office — Văn phòng Đoàn – Hội điện tử Trường ĐH Quốc tế Hồng Bàng |
 | Bài | TH1 — Thiết lập baseline, khảo sát hệ thống, đánh giá bảo trì, baseline kiểm thử |
 | Hạn nộp | 23:59 ngày 19/10/2026 |
@@ -131,7 +131,7 @@ Quy trình (ghi trong `CLAUDE.md`):
 | A — README | #7 | `docs/7-readme-baseline` | #8 | quality: pass (1m4s) | Đã merge `46721db` |
 | B — CLAUDE.md | #9 | `chore/9-claude-md-rules` | #10 | quality: pass (48s) | Đã merge `97744b6` |
 | C — Test + coverage | #11 | `test/11-baseline-coverage` | #12 | quality: pass (1m3s) | Đã merge `8253341` |
-| D — Báo cáo TH1 | #13 | `docs/13-th1-report` | #14 | xem PR | Chờ sinh viên đọc lại rồi mới merge |
+| D — Báo cáo TH1 | #13 | `docs/13-th1-report` | #14 | quality: pass (1m20s) | Đã merge `6467a31` |
 
 ## 3.5 Kiểm chứng lịch sử `main` sau baseline
 
