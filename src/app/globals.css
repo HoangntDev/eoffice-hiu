@@ -106,18 +106,6 @@ button, input, select, textarea { font: inherit; }
   color: #fff;
   border-bottom-color: rgba(255,255,255,.4);
 }
-.header-nav .nav-login-btn {
-  margin-left: auto;
-  background: rgba(255,255,255,.15);
-  border-radius: 6px;
-  height: 28px;
-  margin-block: 6px;
-  font-weight: 700;
-  color: #fff;
-  border-bottom: none;
-  padding: 0 14px;
-}
-.header-nav .nav-login-btn:hover { background: rgba(255,255,255,.25); }
 
 /* ════════════════════════════════════════════
    PORTAL LANDING PAGE
@@ -512,19 +500,47 @@ tr:hover td { background: var(--surface-2); }
   .page-header { align-items: flex-start; flex-direction: column; }
 }
 
-/* ── Menu Tài khoản (menu con) ───────────────── */
-.nav-menu { position: relative; display: inline-flex; }
-.nav-menu-panel {
-  display: none;
-  position: absolute; top: 100%; left: 0; z-index: 30;
-  min-width: 190px; padding: 6px 0;
-  background: var(--blue-dark);
-  border-radius: 0 0 8px 8px;
-  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+/* ── Góc trên phải: menu tài khoản / đăng nhập ── */
+.header-link { color: rgba(255,255,255,.8); font-size: 13px; font-weight: 500; }
+.header-link:hover { color: #fff; }
+.header-login {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 14px;
+  border-radius: 6px; background: #fff; color: var(--blue-dark);
+  font-size: 13px; font-weight: 700;
 }
-.nav-menu:hover .nav-menu-panel,
-.nav-menu:focus-within .nav-menu-panel { display: flex; flex-direction: column; }
-.header-nav .nav-menu-panel a { height: 36px; border-bottom: 0; }
+.header-login:hover { background: #eef4fc; }
+.account-menu { position: relative; }
+.account-menu-trigger {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 34px; padding: 0 10px 0 4px; border-radius: 999px;
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+  color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.account-menu-trigger:hover, .account-menu-trigger[aria-expanded="true"] { background: rgba(255,255,255,.2); }
+.account-avatar {
+  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: #fff; color: var(--blue-dark); font-size: 11px; font-weight: 800;
+}
+.account-menu-caret { font-size: 10px; opacity: .7; }
+.account-menu-panel {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 40;
+  min-width: 240px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: 0 12px 28px rgba(0,0,0,.18);
+  display: flex; flex-direction: column;
+}
+.account-menu-head {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 10px 10px; margin-bottom: 4px; border-bottom: 1px solid var(--line);
+}
+.account-menu-head strong { color: var(--ink); font-size: 14px; }
+.account-menu-head span { color: var(--muted); font-size: 12px; word-break: break-all; }
+.account-menu-panel a {
+  padding: 8px 10px; border-radius: 6px; color: var(--ink-2); font-size: 13.5px; text-decoration: none;
+}
+.account-menu-panel a:hover, .account-menu-panel a[aria-current="page"] { background: var(--blue-tint); color: var(--blue-dark); }
+.account-menu-foot { margin-top: 4px; padding: 6px 4px 2px; border-top: 1px solid var(--line); }
+.account-menu-foot .nav-button { width: 100%; }
 
 /* ── Trang chủ một cột, trang Tài khoản ─────── */
 .portal-body--single { grid-template-columns: 1fr; }
@@ -536,8 +552,7 @@ tr:hover td { background: var(--surface-2); }
 .account-links .card { display: block; color: inherit; text-decoration: none; }
 
 @media (max-width: 860px) {
-  /* Trước đây menu bị ẩn hẳn trên điện thoại; giờ cho cuộn ngang. Menu con không mở được bằng chạm,
-     nên "Tài khoản" dẫn tới trang tổng quan có đủ các mục con. */
+  /* Trước đây menu bị ẩn hẳn trên điện thoại; giờ cho cuộn ngang. */
   .header-nav { display: flex; flex-wrap: nowrap; overflow-x: auto; }
-  .nav-menu-panel { display: none !important; }
+  .account-menu-label, .header-link { display: none; }
 }

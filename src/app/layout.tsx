@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { LogoutButton } from "@/components/logout-button";
+import { AccountMenu } from "@/components/account-menu";
 import { getViewer } from "@/lib/auth/viewer";
 import "./globals.css";
 
@@ -28,10 +28,12 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
                 <span className="brand-sub">Văn phòng điện tử Đoàn – Hội</span>
               </span>
             </Link>
-            {viewer && (
+            {viewer ? (
+              <AccountMenu studentCode={viewer.studentCode} email={viewer.email} />
+            ) : (
               <div className="header-user">
-                <span className="user-label">{viewer.studentCode ? `MSSV ${viewer.studentCode}` : "Đã đăng nhập"}</span>
-                <LogoutButton />
+                <Link href="/register" className="header-link">Tạo tài khoản</Link>
+                <Link href="/login" className="header-login">Đăng nhập</Link>
               </div>
             )}
           </div>
@@ -39,25 +41,11 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <nav className="header-nav" aria-label="Điều hướng chính">
             <Link href="/">Trang chủ</Link>
             <Link href="/forms">Biểu mẫu</Link>
-            {viewer ? (
+            {viewer && (
               <>
                 <Link href="/programs">Chương trình</Link>
                 {viewer.access.organization && <Link href="/organization">Cơ cấu</Link>}
                 {viewer.access.membershipReview && <Link href="/office/membership">Xử lý hồ sơ</Link>}
-                <div className="nav-menu">
-                  <Link href="/account" className="nav-menu-trigger">Tài khoản</Link>
-                  <div className="nav-menu-panel">
-                    <Link href="/account">Tổng quan</Link>
-                    <Link href="/onboarding/profile">Hồ sơ sinh viên</Link>
-                    <Link href="/union-membership">Hồ sơ Đoàn viên</Link>
-                    <Link href="/account/security">Đổi PIN</Link>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <Link href="/register">Tạo tài khoản</Link>
-                <Link href="/login" className="nav-login-btn">Đăng nhập</Link>
               </>
             )}
           </nav>
