@@ -2,7 +2,7 @@ import Link from "next/link";
 import { EventProgramStatusBadge } from "@/components/event-program-status";
 import type { Viewer } from "@/lib/auth/viewer";
 import { createUserSupabase } from "@/lib/supabase/server";
-import { formatVietnamDateTime } from "@/modules/event-programs/dates";
+import { formatVietnamDate, formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { registrationStatusLabels, type RegistrationStatus } from "@/modules/program-registrations/schemas";
 import { applicationStatusLabel, REVIEW_QUEUE_STATUSES } from "@/modules/union-membership/labels";
@@ -92,7 +92,7 @@ export async function MyTasks({ viewer }: { viewer: Viewer }) {
           </header>
           <p className="inline">
             <span className={`status union-${unionStatus ?? "none"}`}>{applicationStatusLabel(unionStatus)}</span>
-            {isMember && membership?.recognized_on && <span className="muted">Công nhận ngày {membership.recognized_on}</span>}
+            {isMember && membership?.recognized_on && <span className="muted">Công nhận ngày {formatVietnamDate(membership.recognized_on)}</span>}
           </p>
           {unionStatus === "needs_changes" && application?.decision_reason && (
             <p className="notice warning">Cần bổ sung: {application.decision_reason}</p>

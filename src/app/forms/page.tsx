@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createUserSupabase } from "@/lib/supabase/server";
+import { displayOrgName } from "@/modules/organization-catalog/display";
 
 const statusLabels: Record<string, string> = {
   draft: "Bản nháp", published: "Đang mở", paused: "Tạm dừng",
@@ -66,7 +67,7 @@ export default async function FormsPage() {
             </thead>
             <tbody>
               {forms.map((f) => {
-                const orgName = (f.organization_units as { name: string } | null)?.name ?? "—";
+                const orgName = displayOrgName((f.organization_units as { name: string } | null)?.name);
                 return (
                   <tr key={f.id as string}>
                     <td>{f.title as string}</td>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import type { Question } from "@/modules/forms/schemas";
 
 interface FormData {
@@ -102,7 +103,7 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
 
       {form.closes_at && (
         <p className="notice full muted">
-          Đóng nhận phản hồi: {new Date(form.closes_at).toLocaleString("vi-VN")}
+          Đóng nhận phản hồi: {formatVietnamDateTime(form.closes_at)}
         </p>
       )}
 

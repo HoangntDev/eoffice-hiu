@@ -597,3 +597,16 @@ tr:hover td { background: var(--surface-2); }
 .status.union-none, .status.union-draft { background: #eef1f5; color: var(--ink-2); }
 .status.reg-blocked { background: #eef1f5; color: var(--ink-2); }
 .status.reg-open { background: var(--blue-light); color: var(--blue-dark); }
+
+/* Bảng dạng thẻ trên điện thoại: mỗi dòng thành một thẻ, nhãn cột lấy từ data-label. */
+@media (max-width: 640px) {
+  table.cards-on-mobile thead { display: none; }
+  table.cards-on-mobile, table.cards-on-mobile tbody, table.cards-on-mobile tr, table.cards-on-mobile td { display: block; width: 100%; }
+  table.cards-on-mobile tr { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  table.cards-on-mobile td { border: 0; padding: 3px 0; }
+  table.cards-on-mobile td.cell-title { font-weight: 600; padding-bottom: 6px; }
+  table.cards-on-mobile td[data-label] { display: flex; gap: 12px; justify-content: space-between; align-items: center; }
+  table.cards-on-mobile td[data-label]::before { content: attr(data-label); color: var(--muted); font-size: 12px; flex: none; }
+  table.cards-on-mobile td.cell-action { padding-top: 8px; }
+  table.cards-on-mobile td.cell-action .button { width: 100%; justify-content: center; }
+}

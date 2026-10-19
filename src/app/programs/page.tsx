@@ -4,6 +4,7 @@ import { EventProgramStatusBadge } from "@/components/event-program-status";
 import { createUserSupabase } from "@/lib/supabase/server";
 import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
+import { displayOrgName } from "@/modules/organization-catalog/display";
 import { blockReasonLabels, registrationBlockReason } from "@/modules/program-registrations/eligibility";
 import { registrationStatusLabels, type RegistrationStatus } from "@/modules/program-registrations/schemas";
 
@@ -28,7 +29,7 @@ function ProgramTable({ rows, empty, showStatus = true, mine }: { rows: Row[]; e
   if (rows.length === 0) return <p className="muted">{empty}</p>;
   return (
     <div className="table-wrap">
-      <table>
+      <table className="cards-on-mobile">
         <thead>
           <tr>
             <th>Chương trình</th>
@@ -42,19 +43,19 @@ function ProgramTable({ rows, empty, showStatus = true, mine }: { rows: Row[]; e
         <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
-              <td>{row.title}{row.location ? <><br /><span className="muted">{row.location}</span></> : null}</td>
-              <td>{row.organization_units?.name ?? "—"}</td>
-              <td>{formatVietnamDateTime(row.starts_at)}</td>
+              <td className="cell-title">{row.title}{row.location ? <><br /><span className="muted">{row.location}</span></> : null}</td>
+              <td data-label="Đơn vị">{displayOrgName(row.organization_units?.name)}</td>
+              <td data-label="Thời gian">{formatVietnamDateTime(row.starts_at)}</td>
               {showStatus && (
-                <td>
+                <td data-label="Trạng thái">
                   <EventProgramStatusBadge status={row.status} />
                   {row.submission_count > 1 && <><br /><span className="muted">Lần nộp {row.submission_count}</span></>}
                 </td>
               )}
               {mine && (
-                <td>{mine.has(row.id) ? <span className={`status ${mine.get(row.id)!.tone}`}>{mine.get(row.id)!.label}</span> : <span className="muted">—</span>}</td>
+                <td data-label="Đăng ký của tôi">{mine.has(row.id) ? <span className={`status ${mine.get(row.id)!.tone}`}>{mine.get(row.id)!.label}</span> : <span className="muted">—</span>}</td>
               )}
-              <td><Link className="button secondary small" href={`/programs/${row.id}`}>Xem</Link></td>
+              <td className="cell-action"><Link className="button secondary small" href={`/programs/${row.id}`}>Xem</Link></td>
             </tr>
           ))}
         </tbody>
