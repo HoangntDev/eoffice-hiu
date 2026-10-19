@@ -14,10 +14,10 @@ lang: vi
 | Đề tài (Final Project) | HIU Youth E-Office — Văn phòng Đoàn – Hội điện tử Trường ĐH Quốc tế Hồng Bàng |
 | Bài | TH1 — Thiết lập baseline, khảo sát hệ thống, đánh giá bảo trì, baseline kiểm thử |
 | Hạn nộp | 23:59 ngày 19/10/2026 |
-| Ngày thực hiện | 16/10/2026 (lấy bằng lệnh `date`) |
+| Ngày thực hiện | 16–20/10/2026 (lấy bằng lệnh `date`) |
 | Repository | https://github.com/HoangntDev/eoffice-hiu |
 | Baseline | Tag `course-baseline` → commit `5a34ede` trên `main` |
-| Milestone | `TH1` (issue #7, #9, #11, #13) |
+| Milestone | `TH1`: issue #7, #9, #11, #13, #15, #17, #19; PR #8, #10, #12, #14, #16, #18, #20 |
 
 # 2. Mục tiêu và phạm vi
 
@@ -109,7 +109,7 @@ K1–K5 có từ baseline. K6–K9 phát hiện sau, khi kiểm thử tay giao d
 | K3 | pgTAP (205 assertion) chưa chạy trên CI. CI chưa upload kết quả test/coverage làm artifact. Comment trong `ci.yml` còn ghi "41 tests" | `.github/workflows/ci.yml` | Lỗi trong RPC/RLS chỉ được phát hiện khi chạy local |
 | K4 | README lệch thực tế: ghi "Gmail" thay vì `@student.hiu.vn`, còn cách gọi "Prompt 01/02" | README tại `course-baseline` | **Đã xử lý** trong PR #8 (issue #7) |
 | K5 | Tên migration `202610140001`–`202610150003` mang ngày 14–15/10, nhưng được tạo và commit lần đầu ngày 13/10/2026 | `git log --diff-filter=A` cho từng file | Tên không phản ánh ngày thật. Không đổi tên được vì đã áp lên DB. Quy tắc mới trong `CLAUDE.md` (PR #10) |
-| K6 | **Radio/checkbox ở trang điền biểu mẫu** bị kéo giãn hết bề ngang, nhãn bị đẩy sang mép phải | Kiểm thử tay; ảnh `docs/TH2/evidence/ui/truoc/dien-bieu-mau-*.png`. Nguyên nhân gốc: quy tắc chung `input { width: 100% }` trong `globals.css` áp cả lên radio/checkbox | **Đã xử lý** trong PR #18 (issue #17): sửa CSS gốc cho mọi radio/checkbox, bỏ các style inline vá tạm |
+| K6 | **Radio/checkbox ở trang điền biểu mẫu** bị kéo giãn hết bề ngang, nhãn bị đẩy sang mép phải | Kiểm thử tay; ảnh `docs/TH1/evidence/ui/truoc/dien-bieu-mau-*.png`. Nguyên nhân gốc: quy tắc chung `input { width: 100% }` trong `globals.css` áp cả lên radio/checkbox | **Đã xử lý** trong PR #18 (issue #17): sửa CSS gốc cho mọi radio/checkbox, bỏ các style inline vá tạm |
 | K7 | **Menu không theo quyền:** mọi tài khoản đều thấy "Cơ cấu" và "Xử lý hồ sơ". Sinh viên thấy nút "Tạo biểu mẫu" và "Quản lý". Trang chủ lặp lại menu và nút đăng nhập. "Tài khoản" nằm trên thanh menu, mở ra là form đổi PIN | Kiểm thử tay với tài khoản không có vai trò quản lý; ảnh `truoc/trang-chu-*.png` | **Đã xử lý** trong PR #18. Quyền thật vẫn do RPC/RLS kiểm tra; trước đây chỉ là hiển thị sai |
 | K8 | **Dữ liệu rác trong DB local đang dùng:** biểu mẫu "G6 UI Write Test Form", chương trình "Hội trại kỹ năng CNKT 01182/74567", tài khoản test chưa có họ tên. Không dùng để trình bày được | Ảnh `truoc/chuong-trinh-danh-sach-desktop.png`, `truoc/dien-bieu-mau-desktop.png` | **Xử lý một phần** trong PR #18: thêm `npm run demo:seed` và hướng dẫn dựng DB demo trên stack tách biệt (`docs/TH2/demo-data.md`). DB đang dùng **chưa dọn**, vì không được reset |
 | K9 | Bảng chương trình/biểu mẫu bị bóp hẹp trên điện thoại (mất nút "Xem"). Sinh viên không biết vì sao không đăng ký được (chỉ thấy "không nhận đăng ký") | Ảnh `truoc/chuong-trinh-*-mobile.png` | **Đã xử lý** trong PR #18: bảng dạng thẻ trên điện thoại; nêu lý do đã đóng, hết chỗ hoặc sai đối tượng |
@@ -138,31 +138,30 @@ Quy trình (ghi trong `CLAUDE.md`):
 | B — CLAUDE.md | #9 | `chore/9-claude-md-rules` | #10 | quality: pass (48s) | Đã merge `97744b6` |
 | C — Test + coverage | #11 | `test/11-baseline-coverage` | #12 | quality: pass (1m3s) | Đã merge `8253341` |
 | D — Báo cáo TH1 | #13 | `docs/13-th1-report` | #14 | quality: pass (1m20s) | Đã merge `6467a31` |
-| D2 — Điền MSSV, lớp | #15 | `docs/15-th1-thong-tin-sv` | #16 | quality: pass (1m18s) | Đã merge `2713860` |
-
-Sau khi nộp TH1, phần sửa giao diện thuộc Milestone `TH2` và theo cùng quy trình:
-
-| Mục | Issue | Branch | PR | CI | Kết quả |
-|---|---|---|---|---|---|
-| E — Sửa giao diện, dữ liệu demo | #17 | `fix/17-ui-polish` | #18 | quality: pass (1m0s) | Đã merge `bd06583` |
+| E — Điền MSSV, lớp | #15 | `docs/15-th1-thong-tin-sv` | #16 | quality: pass (1m18s) | Đã merge `2713860` |
+| F — Sửa giao diện, dữ liệu demo (K6–K9) | #17 | `fix/17-ui-polish` | #18 | quality: pass (1m0s) | Đã merge `bd06583` |
+| G — Cập nhật báo cáo | #19 | `docs/19-th1-report-ui` | #20 | chờ CI xanh rồi mới merge | PR cập nhật báo cáo này |
 
 ## 3.5 Kiểm chứng lịch sử `main` sau baseline
 
-Hai lệnh dưới đây chạy ngày 16/10/2026 trên `origin/main`, **trước khi mở PR mục D**:
+Hai lệnh dưới đây chạy ngày 20/10/2026 trên `origin/main` (`bd06583`), **chạy trước khi merge PR #20**:
 
 ```
-$ git log --first-parent --oneline course-baseline..main
+$ git log --first-parent --oneline course-baseline..origin/main
+bd06583 Merge pull request #18 from HoangntDev/fix/17-ui-polish
+2713860 Merge pull request #16 from HoangntDev/docs/15-th1-thong-tin-sv
+6467a31 Merge pull request #14 from HoangntDev/docs/13-th1-report
 8253341 Merge pull request #12 from HoangntDev/test/11-baseline-coverage
 97744b6 Merge pull request #10 from HoangntDev/chore/9-claude-md-rules
 46721db Merge pull request #8 from HoangntDev/docs/7-readme-baseline
 
-$ git log --first-parent --no-merges --oneline course-baseline..main
+$ git log --first-parent --no-merges --oneline course-baseline..origin/main
 (không có dòng nào)
 ```
 
-Ảnh chụp Terminal thật của hai lệnh trên, chụp **trước khi merge PR #14** (khớp bản text):
+Ảnh chụp Terminal thật của hai lệnh trên, chụp **trước khi merge PR #20** (khớp bản text):
 
-![Hai lệnh git log trên origin/main trước khi merge PR #14](evidence/git-log-first-parent.png)
+![Hai lệnh git log trên origin/main trước khi merge PR #20](evidence/git-log-first-parent.png)
 
 Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qua merge commit của PR. Lệnh thứ hai rỗng, nghĩa là **không có commit nào được đẩy thẳng vào `main`**.
 
@@ -746,7 +745,7 @@ Log: `evidence/coverage/coverage-before.log`, `coverage-after.log`, `coverage-su
 | `sonar-issues.json` chứa email tác giả commit | Xóa trường `author` trước khi đưa vào `evidence/` |
 | Popup quảng cáo che ảnh chụp SonarQube | Script Playwright bấm "Dismiss" trước khi chụp; xem lại từng ảnh |
 | Sơ đồ sequence/ERD/module ban đầu có tỉ lệ 2,4–3,5:1; khi in A4 dọc chữ chỉ còn ~2–3 pt | Tách ERD thành 3 sơ đồ, ngắt dòng tên bảng dài, rút gọn nhãn sequence, đổi bố cục module; nâng `mermaid-cli` lên 11.12.0 (hỗ trợ `direction` cho ERD); đặt khổ A4 dọc cho `.docx` và co ảnh vừa khung chữ (`build-docx.sh`); xuất PDF bằng LibreOffice trong Docker để xem từng trang |
-| Kiểm thử tay giao diện thấy radio/checkbox lệch (K6), menu hiện cả mục không có quyền (K7), dữ liệu rác (K8), bảng vỡ trên điện thoại (K9) | Sửa trong PR #18 (issue #17). Chụp ảnh trước/sau bằng Playwright trên bản build production, desktop 1366 px và mobile 390 px, rồi xem lại từng ảnh trước khi merge. Lỗi phụ thấy khi xem ảnh (giờ UTC ở hạn biểu mẫu, "Đoàn Khoa Khoa", mã trạng thái tiếng Anh) cũng được sửa trong cùng PR. Danh sách đủ 38 ảnh: `docs/TH2/evidence/ui/README.md` |
+| Kiểm thử tay giao diện thấy radio/checkbox lệch (K6), menu hiện cả mục không có quyền (K7), dữ liệu rác (K8), bảng vỡ trên điện thoại (K9) | Sửa trong PR #18 (issue #17). Chụp ảnh trước/sau bằng Playwright trên bản build production, desktop 1366 px và mobile 390 px, rồi xem lại từng ảnh trước khi merge. Lỗi phụ thấy khi xem ảnh (giờ UTC ở hạn biểu mẫu, "Đoàn Khoa Khoa", mã trạng thái tiếng Anh) cũng được sửa trong cùng PR. Danh sách đủ 38 ảnh: `docs/TH1/evidence/ui/README.md` |
 | Không thể dọn dữ liệu rác bằng `db reset` vì DB đang dùng | Viết `scripts/seed-demo.mjs`. Script chỉ chạy với Supabase local, cần cờ `--confirm-demo`, không đọc `.env.local` và từ chối khi DB đã có tài khoản; đã thử với DB đang dùng và bị từ chối đúng. Dữ liệu demo dựng trên stack tách biệt (cổng 553xx) |
 | Máy chưa có `pandoc` | Chạy `pandoc` bằng Docker image `pandoc/core` (xem `docs/TH1/build-docx.sh`); sơ đồ Mermaid được render ra PNG bằng image `minlag/mermaid-cli` |
 
@@ -754,25 +753,25 @@ Log: `evidence/coverage/coverage-before.log`, `coverage-after.log`, `coverage-su
 
 Trang điền biểu mẫu (K6), trước:
 
-![Trước: radio bị kéo giãn, nhãn nằm ở mép phải](../TH2/evidence/ui/truoc/dien-bieu-mau-desktop.png){width=15cm}
+![Trước: radio bị kéo giãn, nhãn nằm ở mép phải](evidence/ui/truoc/dien-bieu-mau-desktop.png){width=15cm}
 
 Sau:
 
-![Sau: radio/checkbox nằm sát nhãn bên trái](../TH2/evidence/ui/sau/dien-bieu-mau-desktop.png){width=15cm}
+![Sau: radio/checkbox nằm sát nhãn bên trái](evidence/ui/sau/dien-bieu-mau-desktop.png){width=15cm}
 
 Trang chủ khi đã đăng nhập (K7), trước:
 
-![Trước: menu có Cơ cấu, Xử lý hồ sơ, Tài khoản; trang chủ lặp menu và nút đăng nhập](../TH2/evidence/ui/truoc/trang-chu-sinh-vien-desktop.png){width=15cm}
+![Trước: menu có Cơ cấu, Xử lý hồ sơ, Tài khoản; trang chủ lặp menu và nút đăng nhập](evidence/ui/truoc/trang-chu-sinh-vien-desktop.png){width=15cm}
 
 Sau:
 
-![Sau: menu theo quyền, tài khoản ở góc phải, khối Việc của tôi](../TH2/evidence/ui/sau/trang-chu-sinh-vien-desktop.png){width=15cm}
+![Sau: menu theo quyền, tài khoản ở góc phải, khối Việc của tôi](evidence/ui/sau/trang-chu-sinh-vien-desktop.png){width=15cm}
 
 Danh sách chương trình trên điện thoại (K8, K9):
 
 | Trước | Sau |
 |:---:|:---:|
-| ![](../TH2/evidence/ui/truoc/chuong-trinh-danh-sach-mobile.png){height=10cm} | ![](../TH2/evidence/ui/sau/chuong-trinh-danh-sach-mobile.png){height=10cm} |
+| ![](evidence/ui/truoc/chuong-trinh-danh-sach-mobile.png){height=10cm} | ![](evidence/ui/sau/chuong-trinh-danh-sach-mobile.png){height=10cm} |
 
 **Sử dụng Claude Code (trợ lý AI) trong TH1.** Sinh viên dùng Claude Code (model Claude Opus 5.5) chạy trong terminal của repo.
 
@@ -798,14 +797,14 @@ Các ràng buộc giao cho trợ lý (cũng ghi trong `CLAUDE.md`):
 - Không commit secret.
 - Không merge khi CI đỏ.
 
-Sinh viên đọc lại báo cáo trước khi merge PR mục D.
+Sinh viên đọc lại báo cáo trước khi merge PR #14 và PR #20.
 
 # 8. Nhận xét, kết luận và ý tưởng CR-01
 
 **Nhận xét**
 
 - Baseline `course-baseline` (UC1–UC8) tái lập được từ đầu: 21 migration áp sạch; lint, typecheck và build PASS; Vitest 74/74; pgTAP 205/205.
-- Quy trình Git của môn đã áp dụng cho cả 4 mục của Milestone TH1. `git log --first-parent --no-merges course-baseline..main` rỗng.
+- Quy trình Git của môn đã áp dụng cho cả 7 PR của Milestone TH1 (#8, #10, #12, #14, #16, #18, #20). `git log --first-parent --no-merges course-baseline..main` rỗng.
 - Điểm mạnh về bảo trì:
   - Quyền và nghiệp vụ tập trung trong DB, có pgTAP dày (205 assertion).
   - Không có lỗ hổng hay hotspot trên SonarQube.
