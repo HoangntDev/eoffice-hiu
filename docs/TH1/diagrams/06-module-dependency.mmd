@@ -1,0 +1,53 @@
+---
+config:
+  layout: elk
+  themeVariables:
+    fontSize: "24px"
+  flowchart:
+    nodeSpacing: 18
+    rankSpacing: 36
+    padding: 6
+---
+flowchart TB
+  PX["src/proxy.ts"]
+  PAGES["src/app/** (trang)"]
+  ROUTES["src/app/api/** (route)"]
+  COMP["src/components"]
+  subgraph MOD["src/modules"]
+    MEP["event-programs"]
+    MFORM["forms"]
+    MREG["program-<br/>registrations"]
+    MATT["program-<br/>attendance"]
+    MAUTH["auth-account"]
+    MOTH["catalog, profile,<br/>union-membership"]
+  end
+  subgraph LIB["src/lib"]
+    LAUTH["auth"]
+    LHTTP["http"]
+    LLOG["log"]
+    LSB["supabase"]
+    LENV["env"]
+  end
+  DB[("PostgreSQL<br/>RPC + RLS")]
+
+  PAGES -->|30| COMP
+  PAGES -->|12| MEP
+  PAGES -->|7| MFORM
+  PAGES -->|16| LSB
+  COMP --> MEP & MFORM & MREG & MATT
+  ROUTES -->|9| MEP
+  ROUTES -->|9| MFORM
+  ROUTES -->|11| MREG
+  ROUTES -->|7| MATT
+  ROUTES -->|10| MAUTH
+  ROUTES --> MOTH
+  ROUTES -->|48| LAUTH
+  ROUTES -->|47| LHTTP
+  ROUTES -->|13| LLOG
+  ROUTES -->|12| LSB
+  MREG -->|3| MFORM
+  MEP & MREG & MATT --> LHTTP
+  LAUTH --> LSB & LHTTP & LENV
+  LSB --> LENV
+  LSB -.-> DB
+  PX -.-> DB

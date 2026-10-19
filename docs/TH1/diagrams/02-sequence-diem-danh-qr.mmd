@@ -1,0 +1,43 @@
+---
+config:
+  sequence:
+    actorMargin: 8
+    width: 70
+    height: 50
+    mirrorActors: false
+    messageMargin: 16
+    boxMargin: 6
+---
+sequenceDiagram
+  autonumber
+  actor BTC
+  participant QR as Trang QR
+  actor SV as Sinh viên
+  participant PX as proxy
+  participant AP as Trang<br/>/attend
+  participant API
+  participant RPC
+  participant DB
+  BTC->>QR: Mở lượt,<br/>chiếu QR
+  loop mỗi ~30 giây
+    QR->>API: POST …/qr
+    API->>RPC: issue_<br/>attendance_qr
+    RPC->>DB: đọc secret,<br/>kiểm quyền
+    RPC-->>QR: token ký HMAC
+  end
+  SV->>PX: GET /attend/<br/>{sid}?t=…
+  alt chưa đăng nhập
+    PX-->>SV: 307 /login,<br/>mất ?t= (K1)
+  else đã đăng nhập
+    PX->>AP: render
+    AP->>API: POST<br/>check-in
+    API->>API: Zod,<br/>requireUser
+    API->>RPC: check_in_<br/>attendance
+    RPC->>DB: khóa lượt<br/>FOR SHARE
+    RPC->>RPC: HMAC, lượt mở,<br/>≤ 30 s
+    RPC->>DB: đăng ký<br/>accepted?
+    RPC->>DB: INSERT bản ghi<br/>+ audit
+    RPC-->>API: record_id
+    API-->>AP: 201 / 4xx
+    AP-->>SV: Đã điểm danh
+  end

@@ -1,0 +1,12 @@
+/onboarding/profile  200 
+/union-membership    200 
+/organization        200 
+/office              404 
+/forms               200 
+/forms/templates     200 
+/programs            200 
+/programs/new        200 
+/attend?t=abc123     404 
+anon  /attend/<id>?t=abc  307 -> http://localhost:3002/login?next=%2Fattend%2F00000000-0000-4000-8000-0000000000aa
+auth  /office/membership  200
+auth  /attend/<id>?t=abc  200

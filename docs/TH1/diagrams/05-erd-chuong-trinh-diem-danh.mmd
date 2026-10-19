@@ -1,0 +1,37 @@
+---
+config:
+  themeVariables:
+    fontSize: "22px"
+  themeCSS: ".edgeLabel, .edgeLabel p, .edgeLabel span { font-size: 20px !important; }"
+  er:
+    fontSize: 22
+    nodeSpacing: 14
+    rankSpacing: 40
+---
+erDiagram
+  direction TB
+  organization_units["organization<br/>_units"]
+  event_program_documents["event_program<br/>_documents"]
+  event_program_history["event_program<br/>_history"]
+  program_registration_settings["program<br/>_registration<br/>_settings"]
+  program_attendance_plans["program<br/>_attendance<br/>_plans"]
+  program_registration_quotas["program<br/>_registration<br/>_quotas"]
+  program_registrations["program<br/>_registrations"]
+  program_attendance_sessions["program<br/>_attendance<br/>_sessions"]
+  program_attendance_secrets["program<br/>_attendance<br/>_secrets"]
+  program_attendance_records["program<br/>_attendance<br/>_records"]
+  organization_units ||--o{ event_programs : "Đoàn Khoa lập"
+  event_programs ||--o{ event_program_documents : "PDF kế hoạch"
+  event_programs ||--o{ event_program_history : "lịch sử xét"
+  event_programs ||--o| program_registration_settings : "cấu hình"
+  event_programs ||--o| program_attendance_plans : "kế hoạch"
+  program_registration_settings ||--o{ program_registration_quotas : "chỉ tiêu"
+  program_registration_settings ||--o{ program_registrations : "đăng ký"
+  program_registration_quotas ||--o{ program_registrations : "thuộc nhóm"
+  program_attendance_plans ||--o{ program_attendance_sessions : "lượt"
+  program_attendance_sessions ||--|| program_attendance_secrets : "bí mật HMAC"
+  program_attendance_sessions ||--o{ program_attendance_records : "bản ghi"
+  program_registrations ||--o{ program_attendance_records : "của đăng ký"
+  accounts ||--o{ program_registrations : "sinh viên"
+  accounts ||--o{ audit_events : "người thao tác"
+  role_grants ||--o{ audit_events : "vai trò"
