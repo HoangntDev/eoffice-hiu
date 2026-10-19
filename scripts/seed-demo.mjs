@@ -57,7 +57,11 @@ const refs = await q(db.from("reference_options").select("id, category, code, la
   .in("category", ["education_level", "specialization", "political_theory", "it_level", "foreign_language", "occupation"]), "reference_options");
 const province = await q(db.from("reference_options").select("code, label").eq("category", "province").ilike("label", "%Hồ Chí Minh%").limit(1).single(), "tỉnh/thành");
 const ward = await q(db.from("reference_options").select("code, label").eq("category", "ward").eq("parent_code", province.code).ilike("label", "%Bến Thành%").limit(1).single(), "phường/xã");
-const ref = (category) => refs.find((r) => r.category === category)?.id ?? fail(`thiếu danh mục ${category}`);
+// Giá trị hợp lý cho sinh viên đại học đang học; mã không có thì lấy mục đầu tiên của danh mục.
+const preferred = { education_level: "thpt", specialization: "chua_qua", it_level: "co_ban", foreign_language: "en_b1", occupation: null, political_theory: null };
+const ref = (category) =>
+  (refs.find((r) => r.category === category && r.code === preferred[category]) ?? refs.find((r) => r.category === category))?.id
+  ?? fail(`thiếu danh mục ${category}`);
 
 // ── Tài khoản ────────────────────────────────────────────────────────────────
 // Email: phần số = 3 chữ số đầu + 4 chữ số cuối của MSSV (quy tắc @student.hiu.vn).
