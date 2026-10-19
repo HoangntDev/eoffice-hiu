@@ -191,7 +191,7 @@ export function FormEditor({ form, orgs, templates }: Props) {
         <input type="datetime-local" value={closesAt} onChange={(e) => setClosesAt(e.target.value)} />
       </label>
 
-      <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+      <label>
         <input type="checkbox" checked={allowMultiple} onChange={(e) => setAllowMultiple(e.target.checked)} />
         Cho phép nộp nhiều lần
       </label>
@@ -227,7 +227,7 @@ export function FormEditor({ form, orgs, templates }: Props) {
                 Mô tả
                 <input value={q.description ?? ""} onChange={(e) => updateQuestion(qIndex, { description: e.target.value || null })} />
               </label>
-              <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <label>
                 <input type="checkbox" checked={q.required} onChange={(e) => updateQuestion(qIndex, { required: e.target.checked })} />
                 Bắt buộc
               </label>

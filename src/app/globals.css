@@ -299,13 +299,24 @@ button:disabled { cursor: not-allowed; opacity: .5; }
 .form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
 .form-grid .full { grid-column: 1/-1; }
 label { display: grid; gap: 5px; font-size: 13px; font-weight: 600; color: var(--ink-2); }
-input, select, textarea {
+/* Radio/checkbox không dùng kiểu ô nhập chữ: trước đây `width: 100%` kéo giãn nút và đẩy nhãn sang phải. */
+input:not([type="radio"]):not([type="checkbox"]), select, textarea {
   width: 100%; border: 1px solid var(--line-2); border-radius: 7px;
   padding: 9px 12px; background: var(--surface); color: var(--ink);
   box-shadow: var(--sh-xs); transition: border-color .15s, box-shadow .15s; font-size: 13.5px;
 }
 textarea { min-height: 90px; resize: vertical; }
-input:focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,85,179,.1); }
+input[type="radio"], input[type="checkbox"] {
+  flex: none; width: 16px; height: 16px; margin: 0; accent-color: var(--blue); cursor: pointer;
+}
+input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+/* Nhãn bọc radio/checkbox: nút và chữ nằm sát nhau, canh trái. */
+label:has(> input[type="radio"]), label:has(> input[type="checkbox"]) {
+  display: flex; align-items: center; justify-content: flex-start; gap: 8px;
+  font-weight: 500; font-size: 13.5px; color: var(--ink); cursor: pointer;
+}
+.choice-list { display: grid; gap: 6px; }
+input:not([type="radio"]):not([type="checkbox"]):focus, select:focus, textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,85,179,.1); }
 fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin: 0 0 16px; }
 legend { padding: 0 6px; font-weight: 700; font-size: 13px; }
 
@@ -512,15 +523,18 @@ tr:hover td { background: var(--surface-2); }
 .account-menu { position: relative; }
 .account-menu-trigger {
   display: inline-flex; align-items: center; gap: 8px;
-  height: 34px; padding: 0 10px 0 4px; border-radius: 999px;
+  height: 40px; padding: 0 12px 0 4px; border-radius: 999px;
   background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
   color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
 }
 .account-menu-trigger:hover, .account-menu-trigger[aria-expanded="true"] { background: rgba(255,255,255,.2); }
 .account-avatar {
-  display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
-  background: #fff; color: var(--blue-dark); font-size: 11px; font-weight: 800;
+  display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%;
+  background: #fff; color: var(--blue-dark); font-size: 12px; font-weight: 800; letter-spacing: .02em;
 }
+.account-menu-label { display: grid; text-align: left; line-height: 1.15; }
+.account-menu-name { font-size: 13px; font-weight: 700; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-menu-code { font-size: 11px; font-weight: 500; opacity: .75; }
 .account-menu-caret { font-size: 10px; opacity: .7; }
 .account-menu-panel {
   position: absolute; right: 0; top: calc(100% + 8px); z-index: 40;
@@ -556,3 +570,30 @@ tr:hover td { background: var(--surface-2); }
   .header-nav { display: flex; flex-wrap: nowrap; overflow-x: auto; }
   .account-menu-label, .header-link { display: none; }
 }
+
+/* ── Trang chủ đã đăng nhập: Việc của tôi ───── */
+.portal-banner--compact { padding-top: 24px; padding-bottom: 24px; }
+.portal-banner--compact .portal-banner-title { margin-bottom: 0; }
+.portal-banner--compact .portal-banner-sub { margin: 8px 0 0; }
+.portal-banner-sub a { color: #fff; }
+.task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+.task-card { margin: 0; display: grid; gap: 12px; }
+.task-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.task-card-head h3 { margin: 0; font-size: 15px; }
+.task-more { font-size: 13px; white-space: nowrap; }
+.task-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.task-list li { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; align-items: center; }
+.task-list li .muted { grid-column: 1; font-size: 12.5px; }
+.task-list li .status { grid-column: 2; grid-row: 1 / span 2; }
+.task-stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.task-stats li, .task-stats li a { display: grid; gap: 2px; padding: 10px 12px; border-radius: 8px; background: var(--blue-tint); color: var(--ink); text-decoration: none; }
+.task-stats li:has(> a) { padding: 0; background: none; }
+.task-stats strong { font-size: 22px; color: var(--blue-dark); }
+.task-stats span { font-size: 12.5px; color: var(--ink-2); }
+.task-line { justify-content: space-between; margin: 0; }
+.status.reg-accepted, .status.union-recognized { background: #e3f4e8; color: #1d6b38; }
+.status.reg-pending, .status.union-submitted, .status.union-collaborator_recommended, .status.union-office_review { background: #fff4d6; color: #7a5508; }
+.status.reg-rejected, .status.union-rejected, .status.union-needs_changes { background: var(--danger-bg); color: var(--danger); }
+.status.union-none, .status.union-draft { background: #eef1f5; color: var(--ink-2); }
+.status.reg-blocked { background: #eef1f5; color: var(--ink-2); }
+.status.reg-open { background: var(--blue-light); color: var(--blue-dark); }

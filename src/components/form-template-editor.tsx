@@ -212,7 +212,7 @@ export function FormTemplateEditor({ template }: Props) {
                 Mô tả / hướng dẫn điền
                 <input value={q.description ?? ""} onChange={(e) => updateQuestion(qIndex, { description: e.target.value || null })} />
               </label>
-              <label style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+              <label>
                 <input type="checkbox" checked={q.required} onChange={(e) => updateQuestion(qIndex, { required: e.target.checked })} />
                 Bắt buộc trả lời
               </label>

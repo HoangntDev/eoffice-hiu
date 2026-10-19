@@ -162,9 +162,9 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
             />
           )}
           {q.type === "single_choice" && (
-            <div>
+            <div className="choice-list">
               {(q.options ?? []).map((opt) => (
-                <label key={opt.id} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem" }}>
+                <label key={opt.id}>
                   <input
                     type="radio"
                     name={q.id}
@@ -179,9 +179,9 @@ export function FormViewer({ form, prefill = {}, isAuthenticated, submitUrl, sub
             </div>
           )}
           {q.type === "multi_choice" && (
-            <div>
+            <div className="choice-list">
               {(q.options ?? []).map((opt) => (
-                <label key={opt.id} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: "0.25rem" }}>
+                <label key={opt.id}>
                   <input
                     type="checkbox"
                     checked={((answers[q.id] as string[]) ?? []).includes(opt.id)}
