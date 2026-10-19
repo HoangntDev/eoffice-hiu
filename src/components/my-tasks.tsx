@@ -127,7 +127,7 @@ export async function MyTasks({ viewer }: { viewer: Viewer }) {
 
         {(programViewer.isReviewer || viewer.access.membershipReview) && (
           <article className="panel task-card">
-            <header className="task-card-head"><h3>Văn phòng: việc chờ xét</h3></header>
+            <header className="task-card-head"><h3>Việc chờ xét duyệt</h3></header>
             <ul className="task-stats">
               {programViewer.isReviewer && (
                 <li><Link href="/programs"><strong>{(submitted ?? []).length}</strong><span>Kế hoạch chờ xét</span></Link></li>
