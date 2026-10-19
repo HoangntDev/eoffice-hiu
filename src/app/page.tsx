@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getViewer } from "@/lib/auth/viewer";
 
 const features = [
   {
@@ -31,7 +32,8 @@ const guides = [
   "Điền biểu mẫu sự kiện do Đoàn – Hội phát hành",
 ];
 
-export default function Home() {
+export default async function Home() {
+  const viewer = await getViewer();
   return (
     <main className="portal-main">
       {/* Banner */}
@@ -43,41 +45,21 @@ export default function Home() {
             Hệ thống quản lý hồ sơ Đoàn viên, biểu mẫu sự kiện và cơ cấu tổ chức
             dành cho sinh viên và cán bộ Đoàn Trường HIU.
           </p>
-          <div className="portal-banner-actions">
-            <Link className="portal-btn-primary" href="/login">Đăng nhập hệ thống</Link>
-            <Link className="portal-btn-ghost" href="/register">Tạo tài khoản</Link>
-          </div>
+          {!viewer && (
+            <div className="portal-banner-actions">
+              <Link className="portal-btn-primary" href="/login">Đăng nhập hệ thống</Link>
+              <Link className="portal-btn-ghost" href="/register">Tạo tài khoản</Link>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Content: sidebar + main */}
-      <div className="portal-body">
-        {/* Sidebar */}
-        <aside className="portal-sidebar">
-          <div className="sidebar-section">
-            <h2 className="sidebar-title">Chức năng chính</h2>
-            <ul className="sidebar-links">
-              {features.map((f) => (
-                <li key={f.href}>
-                  <Link href={f.href}>{f.title}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="sidebar-section">
-            <h2 className="sidebar-title">Liên kết nhanh</h2>
-            <ul className="sidebar-links">
-              <li><Link href="/forms">Danh sách biểu mẫu</Link></li>
-              <li><Link href="/office/membership">Xét duyệt hồ sơ</Link></li>
-              <li><Link href="/account/security">Đổi PIN</Link></li>
-            </ul>
-          </div>
-        </aside>
-
+      {/* Content */}
+      <div className="portal-body portal-body--single">
         {/* Main content */}
         <div className="portal-content">
-          {/* Feature cards */}
-          <section className="portal-section">
+          {/* Feature cards — chỉ giới thiệu cho người chưa đăng nhập; đã đăng nhập thì dùng menu */}
+          {!viewer && <section className="portal-section">
             <h2 className="portal-section-title">Giới thiệu chức năng</h2>
             <div className="portal-card-grid">
               {features.map((f) => (
@@ -87,7 +69,7 @@ export default function Home() {
                 </Link>
               ))}
             </div>
-          </section>
+          </section>}
 
           {/* Guide */}
           <section className="portal-section">

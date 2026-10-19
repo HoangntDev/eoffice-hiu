@@ -510,5 +510,34 @@ tr:hover td { background: var(--surface-2); }
   .form-grid { grid-template-columns: 1fr; }
   .form-grid .full { grid-column: auto; }
   .page-header { align-items: flex-start; flex-direction: column; }
-  .header-nav { display: none; }
+}
+
+/* ── Menu Tài khoản (menu con) ───────────────── */
+.nav-menu { position: relative; display: inline-flex; }
+.nav-menu-panel {
+  display: none;
+  position: absolute; top: 100%; left: 0; z-index: 30;
+  min-width: 190px; padding: 6px 0;
+  background: var(--blue-dark);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.2);
+}
+.nav-menu:hover .nav-menu-panel,
+.nav-menu:focus-within .nav-menu-panel { display: flex; flex-direction: column; }
+.header-nav .nav-menu-panel a { height: 36px; border-bottom: 0; }
+
+/* ── Trang chủ một cột, trang Tài khoản ─────── */
+.portal-body--single { grid-template-columns: 1fr; }
+.portal-body--single .portal-content { padding-left: 0; }
+.account-facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 20px; margin: 0; }
+.account-facts dt { color: var(--muted); font-size: 13.5px; }
+.account-facts dd { margin: 0; font-weight: 600; }
+.account-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.account-links .card { display: block; color: inherit; text-decoration: none; }
+
+@media (max-width: 860px) {
+  /* Trước đây menu bị ẩn hẳn trên điện thoại; giờ cho cuộn ngang. Menu con không mở được bằng chạm,
+     nên "Tài khoản" dẫn tới trang tổng quan có đủ các mục con. */
+  .header-nav { display: flex; flex-wrap: nowrap; overflow-x: auto; }
+  .nav-menu-panel { display: none !important; }
 }
