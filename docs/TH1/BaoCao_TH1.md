@@ -10,7 +10,7 @@ lang: vi
 |---|---|
 | Môn học | Phát triển, vận hành, bảo trì phần mềm |
 | Giảng viên | Hoàng Ngọc Long |
-| Sinh viên | [TÔI SẼ ĐIỀN: họ tên] — MSSV [TÔI SẼ ĐIỀN] — Lớp [TÔI SẼ ĐIỀN] |
+| Sinh viên | Nguyễn Thanh Hoàng — MSSV ____ — Lớp ____ |
 | Đề tài (Final Project) | HIU Youth E-Office — Văn phòng Đoàn – Hội điện tử Trường ĐH Quốc tế Hồng Bàng |
 | Bài | TH1 — Thiết lập baseline, khảo sát hệ thống, đánh giá bảo trì, baseline kiểm thử |
 | Hạn nộp | 23:59 ngày 19/10/2026 |
@@ -146,6 +146,10 @@ $ git log --first-parent --oneline course-baseline..main
 $ git log --first-parent --no-merges --oneline course-baseline..main
 (không có dòng nào)
 ```
+
+Ảnh chụp Terminal thật của hai lệnh trên, chụp **trước khi merge PR #14** (khớp bản text):
+
+![Hai lệnh git log trên origin/main trước khi merge PR #14](evidence/git-log-first-parent.png)
 
 Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qua merge commit của PR. Lệnh thứ hai rỗng, nghĩa là **không có commit nào được đẩy thẳng vào `main`**.
 
@@ -520,6 +524,16 @@ aefda8c 2026-09-29 feat(app): implement prompt 01 operational flows
 
 Mỗi use case mới đều sửa file này, chủ yếu để thêm tiền tố vào danh sách `protectedPath`. Đây là điểm dễ xung đột khi nhiều nhánh song song (UC9/UC10 cũng sửa). Commit UC8 `aa3457a` thêm `/attend` nhưng không giữ query string khi chuyển hướng, và đó là nguồn gốc của K1.
 
+## 4.7 Bằng chứng từ IDE (Rider)
+
+**Find Usages `requireUser()`.** Rider tìm được 101 usages: 99 trong `src/app`, trong đó 95 ở `src/app/api`. Gần như mọi route handler đều đi qua `lib/auth`, đúng như sơ đồ 4.5: `lib/auth` là điểm phụ thuộc tập trung, sửa chữ ký hàm này sẽ ảnh hưởng toàn bộ tầng API.
+
+![Find Usages requireUser() trong Rider: 101 usages](evidence/ide/find-usages-requireUser.png)
+
+**Call Hierarchy "Callers of `attendanceRpcError`".** Hàm được gọi từ 4 route handler: `POST check-in`, `POST sessions/[sessionId]/status`, `POST sessions/[sessionId]/qr`, `PUT event-programs/[id]/attendance`, cùng với test. Đây là bước cuối của sequence 4.3 (RPC lỗi → ánh xạ mã lỗi → HTTP), và cũng là phạm vi chịu ảnh hưởng của finding F2: ánh xạ `message.includes` sai thứ tự sẽ trả mã sai ở cả 4 route.
+
+![Call Hierarchy attendanceRpcError trong Rider: 4 route handler và test](evidence/ide/call-hierarchy-attendanceRpcError.png)
+
 # 5. Đánh giá khả năng bảo trì
 
 ## 5.1 SonarQube Community (Docker)
@@ -769,4 +783,4 @@ Sinh viên đọc lại báo cáo trước khi merge PR mục D.
 - pgTAP 205 assertion.
 - SonarQube: 25 Reliability, 3 Maintainability, 0 Security.
 
-**Ý tưởng CR-01 dự kiến:** [TÔI SẼ ĐIỀN]
+**Ý tưởng CR-01 dự kiến:** CR-01 dự kiến theo hướng kỹ thuật nâng cao: bổ sung thông báo real-time trong ứng dụng (Supabase Realtime) khi kế hoạch chương trình được Văn phòng duyệt hoặc trả sửa và khi kết quả đăng ký của sinh viên thay đổi, thay cho việc người dùng phải tự tải lại trang để kiểm tra.
