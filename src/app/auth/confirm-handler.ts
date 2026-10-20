@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import type { EmailOtpType, User } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
+import { isProduction } from "@/lib/env";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 
 type ConfirmationFlow = "signup" | "finish-signup" | "recovery" | "change-email";
@@ -135,7 +136,7 @@ export async function handleConfirmation(request: NextRequest) {
   response.cookies.set("pin_recovery", recoveryToken, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction(),
     maxAge: 15 * 60,
     path: "/",
   });
