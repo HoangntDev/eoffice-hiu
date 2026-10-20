@@ -13,14 +13,16 @@ Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế
 | UC7 | Đăng ký tham gia chương trình | `/programs/{id}`, `/programs/{id}/registrations` |
 | UC8 | Điểm danh QR theo lượt, điểm rèn luyện dự kiến đề nghị | `/programs/{id}/attendance`, `/attend/{sessionId}?t=…` |
 
-Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). Báo cáo bài thực hành nằm ở [`docs/TH1/`](docs/TH1/).
+Bốn use case chính của bản phát hành v1.0.0 (dùng thống nhất trong test case và CHANGELOG): **UC-A** Hồ sơ Đoàn viên (thuộc UC2), **UC-B** Kế hoạch chương trình (UC6), **UC-C** Đăng ký tham gia (UC7), **UC-D** Điểm danh QR và điểm dự kiến đề nghị (UC8). Các UC còn lại là phần nền.
+
+Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). Báo cáo bài thực hành nằm ở [`docs/TH1/`](docs/TH1/) và [`docs/TH2/`](docs/TH2/). Lịch sử phiên bản: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Công nghệ
 
 | Thành phần | Phiên bản (theo `package-lock.json` / `supabase/config.toml`) |
 |---|---|
 | Node.js / npm | 24 / 12 (CI dùng Node 24) |
-| Next.js (App Router, `src/proxy.ts`) | 16.3.6 |
+| Next.js (App Router, `src/proxy.ts`) | 16.3.8 |
 | React / React DOM | 19.2.8 |
 | TypeScript | 5.9.3 |
 | Tailwind CSS | 4.3.3 |
@@ -35,20 +37,53 @@ Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). 
 
 Phần lớn nghiệp vụ nằm trong các hàm PostgreSQL (RPC) và chính sách RLS ở `supabase/migrations/`. Phía Next.js chủ yếu kiểm tra dữ liệu vào bằng Zod, gọi RPC và hiển thị.
 
-## Chạy local
+## Cài đặt và chạy từ môi trường mới
 
-Yêu cầu: Node.js 24, npm 12, Docker đang chạy và Supabase CLI.
+Cần cài trước:
+
+| Công cụ | Phiên bản | Kiểm tra |
+|---|---|---|
+| Git | bất kỳ | `git --version` |
+| Node.js / npm | 24 / 12 | `node -v`, `npm -v` |
+| Docker Desktop (đang chạy) | bản hiện hành | `docker info` |
+| Supabase CLI | ≥ 2.117 | `supabase --version` |
+
+Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 
 ```bash
+# 1. Lấy mã nguồn đúng phiên bản phát hành
+git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
+git switch --detach v1.0.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+
+# 2. Cài dependency đúng theo package-lock.json
 npm ci
-supabase start                 # dựng Postgres/Auth/Storage/Mailpit, áp toàn bộ supabase/migrations
-cp .env.example .env.local     # rồi điền key từ: supabase status -o env
-npm run dev                    # http://localhost:3000
+
+# 3. Dựng Supabase local: Postgres, Auth, Storage, Mailpit; áp toàn bộ supabase/migrations
+supabase start
+
+# 4. Tạo file cấu hình từ file mẫu rồi điền giá trị (xem mục "Biến môi trường")
+cp .env.example .env.local
+supabase status -o env                # API_URL, PUBLISHABLE_KEY, SERVICE_ROLE_KEY
+
+# 5a. Chạy chế độ phát triển
+npm run dev                           # http://localhost:3000
+
+# 5b. Hoặc build và chạy bản production
+npm run build && npm start            # http://localhost:3000 (đổi cổng: PORT=3100 npm start)
 ```
 
-`supabase db reset` xóa toàn bộ dữ liệu local. Chỉ dùng khi bạn chủ động muốn dựng lại DB từ đầu.
+Sau khi app chạy:
 
-Mailpit (http://127.0.0.1:54324) nhận email xác thực và khôi phục PIN khi chạy local.
+1. Tạo tài khoản đầu tiên tại `/register`. Mở email xác thực trong Mailpit (http://127.0.0.1:54324), rồi tạo PIN.
+2. Cấp quyền Đoàn Trường cho tài khoản đó (mục "Bootstrap Đoàn Trường" bên dưới).
+3. Import danh mục học vụ (mục "Import danh mục học vụ").
+4. Hoặc, để có ngay dữ liệu mẫu, dựng một stack demo riêng theo [`docs/TH2/demo-data.md`](docs/TH2/demo-data.md).
+
+Kiểm tra nhanh sau khi cài: [`docs/testing/smoke-test.md`](docs/testing/smoke-test.md). Cài từ gói phát hành (artifact) của GitHub Release, không cần build: [`docs/release/huong-dan-trien-khai.md`](docs/release/huong-dan-trien-khai.md).
+
+Nếu máy đã có một stack Supabase khác chạy ở cổng 543xx, đổi `project_id` và các cổng trong `supabase/config.toml` như ở `docs/TH2/demo-data.md`, rồi sửa `NEXT_PUBLIC_SUPABASE_URL` cho khớp.
+
+`supabase db reset` xóa toàn bộ dữ liệu local. Chỉ dùng khi bạn chủ động muốn dựng lại DB từ đầu.
 
 ## Build và kiểm thử
 
@@ -142,7 +177,7 @@ src/
   components/     Component React dùng chung (form, console, QR…)
   modules/        Schema Zod và mã lỗi theo nghiệp vụ (auth-account, event-programs,
                   program-registrations, program-attendance, forms, …)
-  lib/            Supabase client (server/browser), env, HTTP helper, rate limit
+  lib/            Supabase client phía server, env (cấu hình), log, HTTP helper, rate limit
   proxy.ts        Kiểm tra phiên đăng nhập và chặn trang cần đăng nhập
 supabase/
   migrations/     Schema, RLS, RPC theo thứ tự version (nguồn sự thật của nghiệp vụ)
@@ -151,7 +186,7 @@ supabase/
   config.toml     Cấu hình stack local
 tests/            Vitest (schema, component, importer)
 scripts/          Import danh mục, bootstrap admin, script kiểm thử đồng thời
-docs/             requirements/, operations/, testing/, reports/, TH1/
+docs/             requirements/, operations/, testing/, release/, reports/, TH1/, TH2/
 data/             CSV danh mục học vụ chính thức
 .github/workflows CI
 ```
