@@ -53,15 +53,24 @@ Mailpit (http://127.0.0.1:54324) nhận email xác thực và khôi phục PIN k
 ## Build và kiểm thử
 
 ```bash
+npm ci                # cài dependency đúng theo package-lock.json
 npm run lint          # ESLint
 npm run typecheck     # tsc --noEmit
 npm test              # Vitest (tests/)
-supabase test db      # pgTAP (supabase/tests/), cần supabase start
-npm run build         # next build
+npm run test:ci       # Vitest + JUnit (test-results/junit.xml) + coverage (coverage/)
+supabase test db      # pgTAP (supabase/tests/), cần Postgres local: supabase start hoặc supabase db start
+npm run build         # next build (bản production vào .next/)
 npm start             # chạy bản build
 ```
 
-CI (`.github/workflows/ci.yml`) chạy `npm ci`, lint, typecheck, test và build trên mỗi pull request và mỗi lần push vào `main`. pgTAP hiện chỉ chạy local.
+CI (`.github/workflows/ci.yml`) chạy trên `ubuntu-latest` khi có pull request vào `main` và khi push lên `main`, gồm hai job:
+
+| Job | Các bước | Artifact (giữ 7 ngày) |
+|---|---|---|
+| `build-test` | Node 24, `npm ci` → lint → typecheck → `npm run test:ci` → build | `vitest-results`: JUnit, coverage |
+| `pgtap` | Supabase CLI 2.117.0, `supabase db start` (Postgres + migrations + seed) → `supabase test db` | `pgtap-results`: log TAP |
+
+Hai job chạy độc lập; PR chỉ được merge khi cả hai xanh.
 
 ## Biến môi trường
 
