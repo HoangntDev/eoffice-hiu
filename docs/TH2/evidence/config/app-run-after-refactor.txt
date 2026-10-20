@@ -1,0 +1,7 @@
+# Tue Oct 20 15:16:29 +07 2026 — next start (build nhánh refactor/25), .env.local, LOG_LEVEL trống (production → info)
+GET / -> 200 
+GET /login -> 200 
+GET /forms -> 200 
+GET /programs -> 307 http://127.0.0.1:3100/login?next=%2Fprograms
+GET /attend/00000000-0000-0000-0000-000000000000?t=abc -> 307 http://127.0.0.1:3100/login?next=%2Fattend%2F00000000-0000-0000-0000-000000000000
+POST /api/auth/login (PIN sai) -> {"error":"INVALID_CREDENTIALS","message":"Không thể đăng nhập. MSSV/PIN có thể không đúng; nếu tài khoản đang chờ tạo PIN, hãy kiểm tra email sinh viên HIU."} 401

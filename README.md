@@ -83,6 +83,18 @@ Sao chép từ [`.env.example`](.env.example) sang `.env.local`. Không commit `
 | `SUPABASE_SERVICE_ROLE_KEY` | chỉ server | Service-role key; không bao giờ thêm tiền tố `NEXT_PUBLIC_` |
 | `AUTH_RATE_LIMIT_PEPPER` | chỉ server | Chuỗi ngẫu nhiên dài để băm định danh khi giới hạn tần suất đăng nhập/khôi phục |
 | `NEXT_PUBLIC_APP_URL` | trình duyệt + server | Origin của app, dùng trong link xác thực/khôi phục |
+| `LOG_LEVEL` | chỉ server | Mức log JSON: `debug`, `info`, `warn`, `error`. Để trống thì theo môi trường: dev → `debug`, production → `info`, test → `warn` |
+| `PORT` | chỉ server | Cổng của `npm start` / `next start` (mặc định 3000) |
+
+Tạo file cấu hình từ file mẫu:
+
+```bash
+cp .env.example .env.local
+supabase status -o env      # lấy API_URL, PUBLISHABLE_KEY (ANON_KEY), SERVICE_ROLE_KEY của stack local
+openssl rand -hex 32        # giá trị cho AUTH_RATE_LIMIT_PEPPER
+```
+
+Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc thì server báo `MISSING_ENV:<tên>`. Các biến `NEXT_PUBLIC_*` được nhúng vào bundle trình duyệt **lúc build**, nên phải có trước khi chạy `npm run build`. Bảng kê cấu hình và dependency: [`docs/TH2/config-dependency.md`](docs/TH2/config-dependency.md).
 
 ## Tài khoản và email sinh viên
 
