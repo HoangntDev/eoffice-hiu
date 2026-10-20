@@ -15,7 +15,8 @@
     "catalog:import": "node scripts/import-academic-catalog.mjs",
     "admin:bootstrap": "node scripts/bootstrap-school-admin.mjs",
     "demo:seed": "node scripts/seed-demo.mjs",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:ci": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-results/junit.xml"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",

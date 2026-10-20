@@ -4,18 +4,22 @@ on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   quality:
+    name: build-test
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # Env vars are CI-only placeholders for build/test compilation.
-    # No real Supabase instance is contacted during lint/typecheck/test/build.
-    # supabase test db (pgTAP, 41 tests) runs locally only — PostgreSQL is not
-    # available in this workflow.
+    # Giá trị giữ chỗ chỉ để build/test biên dịch được trên CI.
+    # Job này không gọi Supabase thật; pgTAP chạy ở job db-test bên dưới.
     env:
       NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
@@ -23,13 +27,48 @@ jobs:
       SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
       AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24 # theo package.json/README
           cache: npm
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm test
+      - name: Test (JUnit + coverage)
+        run: npm run test:ci
       - run: npm run build
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: vitest-results
+          path: |
+            test-results/
+            coverage/coverage-summary.json
+            coverage/index.html
+          retention-days: 7
+
+  db-test:
+    name: pgtap
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: supabase/setup-cli@v3
+        with:
+          version: 2.117.0 # cùng phiên bản CLI dùng local
+      - name: Start Postgres và áp migrations
+        run: supabase db start
+      - name: pgTAP (supabase test db)
+        run: |
+          mkdir -p test-results
+          set -o pipefail
+          supabase test db 2>&1 | tee test-results/pgtap.txt
+      - name: Upload pgTAP results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pgtap-results
+          path: test-results/
+          retention-days: 7
