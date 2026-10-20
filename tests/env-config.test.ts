@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { logLevel, optionalPublicSupabaseEnv } from "@/lib/env";
+import { appUrl, logLevel, optionalPublicSupabaseEnv, publicSupabaseEnv } from "@/lib/env";
 import { logEvent } from "@/lib/log";
 
 afterEach(() => {
@@ -46,5 +46,17 @@ describe("optionalPublicSupabaseEnv", () => {
     expect(optionalPublicSupabaseEnv()).toBeNull();
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:54321");
     expect(optionalPublicSupabaseEnv()).toEqual({ url: "http://127.0.0.1:54321", publishableKey: "k" });
+  });
+});
+
+describe("đọc cấu hình lúc chạy (không nhúng lúc build)", () => {
+  it("appUrl và publicSupabaseEnv đổi theo biến môi trường hiện tại", () => {
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "http://localhost:3200");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:55321");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "pk-demo");
+    expect(appUrl()).toBe("http://localhost:3200");
+    expect(publicSupabaseEnv()).toEqual({ url: "http://127.0.0.1:55321", publishableKey: "pk-demo" });
+    vi.stubEnv("NEXT_PUBLIC_APP_URL", "https://e-office.example");
+    expect(appUrl()).toBe("https://e-office.example");
   });
 });

@@ -1,0 +1,12 @@
+# 20/10/2026 — kiểm "build một lần, cấu hình lúc chạy" (issue #31)
+# 1. Build với giá trị giữ chỗ:
+#    NEXT_PUBLIC_SUPABASE_URL=http://placeholder.invalid:1 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=placeholder-pk
+#    NEXT_PUBLIC_APP_URL=http://placeholder.invalid ... npm run build   → ✓ Compiled successfully
+$ grep -rl "placeholder.invalid\|placeholder-pk" .next/server .next/static
+(không có kết quả — không giá trị nào bị nhúng vào bản build)
+$ grep -rl "55321\|localhost:3200" .next/server .next/static
+(không có kết quả)
+# 2. Chạy chính bản build đó với .env.local của stack demo (NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:55321, APP_URL=http://localhost:3200):
+GET /programs khách: 307 http://localhost:3200/login?next=%2Fprograms
+POST /api/auth/login (2211110101): {"message":"Đăng nhập thành công.","next":"/onboarding/profile"} 200
+GET /programs đã đăng nhập: 200 — trang có "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026" (dữ liệu stack demo)

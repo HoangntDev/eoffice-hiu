@@ -8,11 +8,11 @@ Issue #25, branch `refactor/25-externalize-config`. Thực hiện ngày 20/10/20
 
 | Mục cấu hình | Trước khi tách | Sau khi tách | Nhạy cảm | Theo môi trường |
 |---|---|---|---|---|
-| URL API Supabase (`NEXT_PUBLIC_SUPABASE_URL`) | Biến môi trường. Đọc qua `env.ts`, riêng `src/proxy.ts` đọc thẳng `process.env` | Biến môi trường, chỉ đọc qua `env.ts` (`publicSupabaseEnv`, `optionalPublicSupabaseEnv`) | Không | Dev: `http://127.0.0.1:54321`. CI: giá trị giữ chỗ. Stack demo: `:55321` |
+| URL API Supabase (`NEXT_PUBLIC_SUPABASE_URL`) | Biến môi trường. Đọc qua `env.ts`, riêng `src/proxy.ts` đọc thẳng `process.env` (bị Next nhúng lúc build) | Biến môi trường, chỉ đọc qua `env.ts` (`publicSupabaseEnv`, `optionalPublicSupabaseEnv`), **đọc lúc chạy** (issue #31) | Không | Dev: `http://127.0.0.1:54321`. CI: giá trị giữ chỗ. Stack demo: `:55321` |
 | Publishable key (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) | Như trên | Như trên | Thấp (công khai cho trình duyệt; quyền do RLS quyết định) | Mỗi stack Supabase một key |
 | Service-role key (`SUPABASE_SERVICE_ROLE_KEY`) | Biến môi trường, `env.ts` (`serverSupabaseEnv`) | Giữ nguyên, chỉ server | **Có** | Mỗi stack một key. CI dùng giá trị giữ chỗ, không cần secret thật |
 | Pepper giới hạn tần suất (`AUTH_RATE_LIMIT_PEPPER`) | Biến môi trường, `env.ts` | Giữ nguyên, chỉ server | **Có** | Mỗi môi trường một chuỗi ngẫu nhiên (`openssl rand -hex 32`) |
-| Origin của app (`NEXT_PUBLIC_APP_URL`) | Biến môi trường, mặc định `http://127.0.0.1:3000` | Giữ nguyên | Không | Dev: `127.0.0.1:3000`. Demo: `:3200` |
+| Origin của app (`NEXT_PUBLIC_APP_URL`) | Biến môi trường, mặc định `http://127.0.0.1:3000`; bị nhúng lúc build | Đọc lúc chạy (issue #31) | Không | Dev: `127.0.0.1:3000`. Demo: `:3200` |
 | **Logging level (`LOG_LEVEL`)** | `src/lib/log.ts` đọc thẳng `process.env`, không ghi trong tài liệu, luôn mặc định `info` | `env.ts` → `logLevel()`, có trong `.env.example` và README. Giá trị sai thì dùng mặc định | Không | Trống thì: **dev → `debug`, production → `info`, test → `warn`** |
 | Cookie `Secure` (`NODE_ENV`) | `confirm-handler.ts` đọc thẳng `process.env.NODE_ENV` | `env.ts` → `isProduction()` | Không | Production: bật `Secure`. Dev: tắt (HTTP local) |
 | Cổng chạy app (`PORT`) | Mặc định của Next (3000) | Giữ nguyên, ghi trong README | Không | Dev 3000; khi chạy song song thì đặt cổng khác |
@@ -20,6 +20,8 @@ Issue #25, branch `refactor/25-externalize-config`. Thực hiện ngày 20/10/20
 | Biến cho script seed demo (`DEMO_SUPABASE_URL`, `DEMO_SERVICE_ROLE_KEY`) | Biến môi trường, chỉ dùng cho `scripts/seed-demo.mjs`; không đọc `.env.local` | Giữ nguyên | Có | Chỉ dùng cho stack demo, script từ chối host không phải local |
 | Giới hạn PDF kế hoạch (5 MB) | Hằng số `MAX_PLAN_PDF_BYTES` | Giữ là hằng số | Không | Giống nhau. Đây là quy tắc nghiệp vụ, đặt cùng chỗ với ràng buộc của Storage bucket |
 | Thời hạn token QR (30 giây) | Trong RPC PostgreSQL (`supabase/migrations`) | Giữ trong DB | Không | Giống nhau. Đây là quy tắc nghiệp vụ đã chốt (kiểm theo giờ server) và có pgTAP kiểm tra |
+
+**Build một lần, cấu hình lúc chạy (issue #31).** Trước đây `appUrl()` và proxy đọc `process.env.NEXT_PUBLIC_…` theo tên viết sẵn, nên Next nhúng giá trị của máy build vào bản build. Nay `env.ts` đọc mọi biến bằng tên động. Đã kiểm: build với giá trị giữ chỗ, `.next/` không chứa giá trị nào; chạy chính bản build đó với `.env.local` của stack demo thì đăng nhập và xem chương trình được (`evidence/config/runtime-env-check.txt`). Nhờ vậy artifact v1.0.0 không bị gắn với một máy chủ Supabase cụ thể.
 
 Hai tham số cuối được cố ý giữ trong code hoặc DB. Lý do: đó là quy tắc nghiệp vụ có test kiểm tra (`CLAUDE.md`), không phải cấu hình theo môi trường. Nếu đưa ra biến môi trường thì có thể chạy lệch giữa các môi trường.
 
