@@ -1,0 +1,69 @@
+name: Change Request
+description: Đề xuất thay đổi (CR) cho hệ thống
+title: "CR-01-<TenCR>: <mô tả ngắn>"
+labels: ["change-request"]
+body:
+  - type: input
+    id: cr-id
+    attributes:
+      label: Mã CR
+      description: "Dạng CR-01-<TenCR>, viết liền không dấu."
+      placeholder: CR-01-TimKiemNgonNguTuNhien
+    validations:
+      required: true
+  - type: dropdown
+    id: huong
+    attributes:
+      label: Hướng CR
+      options:
+        - "Tích hợp AI"
+        - "Kỹ thuật nâng cao khác"
+    validations:
+      required: true
+  - type: textarea
+    id: trao-doi
+    attributes:
+      label: Trao đổi với giảng viên
+      placeholder: "Ngày, hình thức, nội dung đã thống nhất"
+    validations:
+      required: true
+  - type: textarea
+    id: hien-trang
+    attributes:
+      label: Hiện trạng và lý do thay đổi
+    validations:
+      required: true
+  - type: textarea
+    id: mong-muon
+    attributes:
+      label: Thay đổi mong muốn
+    validations:
+      required: true
+  - type: textarea
+    id: tieu-chi
+    attributes:
+      label: Tiêu chí chấp nhận (2–4 tiêu chí)
+      placeholder: |
+        1. Cho trước ...; khi ...; thì ...
+        2. Cho trước ...; khi ...; thì ...
+    validations:
+      required: true
+  - type: textarea
+    id: pham-vi
+    attributes:
+      label: Phạm vi dự kiến và ngoài phạm vi
+      placeholder: |
+        Trong phạm vi: ...
+        Ngoài phạm vi: ...
+    validations:
+      required: true
+  - type: checkboxes
+    id: tu-danh-gia
+    attributes:
+      label: Tự đánh giá phạm vi
+      options:
+        - label: Thay đổi hành vi hệ thống, không chỉ giao diện
+        - label: Có thành phần kỹ thuật nâng cao
+        - label: Tác động 2–4 thành phần (UI, nghiệp vụ, dữ liệu, cấu hình)
+        - label: Có ít nhất 1 quy tắc nghiệp vụ kiểm thử tự động được
+        - label: Hoàn thành được trước hạn TH4 (09/11)

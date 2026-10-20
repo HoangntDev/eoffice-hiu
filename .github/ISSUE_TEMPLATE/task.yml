@@ -1,0 +1,22 @@
+name: Task
+description: Công việc thông thường (tài liệu, cấu hình, CI, kiểm thử...)
+body:
+  - type: textarea
+    id: muc-tieu
+    attributes:
+      label: Mục tiêu và nội dung công việc
+      description: Việc cần làm, phạm vi, tài liệu hoặc use case liên quan.
+    validations:
+      required: true
+  - type: textarea
+    id: hoan-thanh
+    attributes:
+      label: Tiêu chí hoàn thành
+      placeholder: |
+        - [ ] ...
+        - [ ] CI xanh trên PR
+  - type: input
+    id: branch
+    attributes:
+      label: Branch dự kiến
+      placeholder: "<loại>/<số-issue>-<mô-tả-ngắn>"

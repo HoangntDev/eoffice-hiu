@@ -1,0 +1,47 @@
+name: Bug report / Sự cố
+description: Báo lỗi chức năng hoặc sự cố vận hành (INC)
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: loai
+    attributes:
+      label: Loại
+      description: Sự cố vận hành (INC) thì gắn thêm label "incident".
+      options: ["Lỗi chức năng", "Sự cố vận hành (INC)"]
+    validations:
+      required: true
+  - type: input
+    id: test-case
+    attributes:
+      label: Test case / use case liên quan
+      placeholder: "TC-UCD-03, UC-D Điểm danh QR"
+  - type: textarea
+    id: mo-ta
+    attributes:
+      label: Mô tả và các bước tái hiện
+      placeholder: |
+        Tiền điều kiện: ...
+        1. ...
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: ket-qua
+    attributes:
+      label: Kết quả mong đợi và kết quả thực tế
+      placeholder: |
+        Mong đợi: ...
+        Thực tế: ...
+    validations:
+      required: true
+  - type: input
+    id: phien-ban
+    attributes:
+      label: Phiên bản / môi trường
+      placeholder: "v1.0.0 hoặc commit abc1234, macOS, Chrome, Supabase local"
+  - type: textarea
+    id: bang-chung
+    attributes:
+      label: Bằng chứng (log, thông báo lỗi, ảnh chụp)
+      description: Không dán secret, token, PIN hay dữ liệu cá nhân thật.
+      render: text
