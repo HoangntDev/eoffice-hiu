@@ -1,0 +1,6 @@
+# 20/10/2026 15:36 — Playwright 1.49.1 (Chromium, Docker), web build 2ea826f (nhánh fix/28) cổng 3200, stack demo
+# Lệnh: node k1-ui.mjs <sessionId đang mở>
+1. Mở link QR khi chưa đăng nhập: /attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485388521.<chữ ký>
+2. Trang hiện tại: /login?next=%2Fattend%2Fee87c208-d33a-4eb5-992d-5416a81fd96c%3Ft%3Dee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485388521.<chữ ký>
+3. Sau khi đăng nhập (MSSV 2211110102 + PIN): /attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485388521.<chữ ký> — sau 3.8 giây
+4. Nội dung trang: Điểm danh: Buổi sáng | Đã điểm danh lượt "Buổi sáng".

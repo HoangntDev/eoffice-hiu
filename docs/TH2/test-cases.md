@@ -27,8 +27,9 @@ Tài khoản, danh mục, cơ cấu tổ chức và biểu mẫu động là ph�
   |---|---|---|---|
   | 1 | 20/10/2026 | 13/15 PASS | Có một lỗi dữ liệu test (xem bên dưới) |
   | 2 | 20/10/2026 | 14/15 PASS | Chạy lại trên DB demo vừa seed. Fail duy nhất: K1 |
+  | 3 | 20/10/2026 | **15/15 PASS** | Bản build `2ea826f` (nhánh `fix/28-giu-qr-khi-dang-nhap`, PR sửa K1), DB demo seed lại |
 
-  Log tương ứng: `evidence/test-run/run-1-truoc-sua-K1.log`, `evidence/test-run/run-2-truoc-sua-K1.log`.
+  Log tương ứng: `evidence/test-run/run-1-truoc-sua-K1.log`, `evidence/test-run/run-2-truoc-sua-K1.log`, `evidence/test-run/run-3-sau-sua-K1.log`. Kiểm thêm K1 qua giao diện thật (Playwright): `evidence/test-run/k1-ui/`.
 
 **Lỗi dữ liệu test ở lần 1.** TC-UCB-02 gửi `decision: "needs_changes"` và mong đợi HTTP 400. Thực tế, API nhận giá trị `request_changes` và trả lỗi validation bằng 422. Đây là lỗi khi soạn test case, không phải lỗi hệ thống. Đã sửa dữ liệu và kết quả mong đợi, reset DB demo, rồi chạy lại ở lần 2.
 
@@ -49,10 +50,10 @@ Tài khoản, danh mục, cơ cấu tổ chức và biểu mẫu động là ph�
 | TC-UCD-01 | UC-D | "Hiến máu" đã chấp thuận; An có đăng ký `accepted`. Quân lưu kế hoạch điểm danh (cộng điểm từng lượt: sáng 2, chiều 3, tối đa 5), mở lượt "Buổi sáng" và phát QR | An gửi điểm danh bằng token QR còn hạn | `sessionId` và token vừa phát | 201 điểm danh lượt "Buổi sáng". Điểm dự kiến đề nghị = 2 | 201 "Đã điểm danh lượt "Buổi sáng".". `attendance_expected_points` = 2 | Pass |
 | TC-UCD-02 | UC-D | An vừa điểm danh lượt sáng | An quét lại cùng mã | Token cũ, còn hạn | Bị từ chối vì đã điểm danh. DB vẫn 1 bản ghi | 409 `ALREADY_CHECKED_IN`. DB 1 bản ghi | Pass |
 | TC-UCD-03 | UC-D | Hân không có đăng ký "Hiến máu" | Hân quét QR lượt sáng | Token còn hạn | Bị từ chối vì chưa có đăng ký được nhận | 403 `REGISTRATION_NOT_ACCEPTED` | Pass |
-| TC-UCD-04 (K1) | UC-D | Lượt đang mở; Ngọc có đăng ký `accepted`; **chưa đăng nhập** | 1. Mở link QR `/attend/<id>?t=<token>`. 2. Bị chuyển tới trang đăng nhập. 3. Đăng nhập | Ngọc 2211110102 | Chuyển tới `/login?next=<đường dẫn kèm ?t=>`. Sau đăng nhập, API trả `next` là đúng link QR để quay lại điểm danh | 307 → `/login?next=%2Fattend%2F<id>`, **mất `?t=`**. Đăng nhập trả `next: "/onboarding/profile"` | **Fail**, Bug #28 |
+| TC-UCD-04 (K1) | UC-D | Lượt đang mở; Ngọc có đăng ký `accepted`; **chưa đăng nhập** | 1. Mở link QR `/attend/<id>?t=<token>`. 2. Bị chuyển tới trang đăng nhập. 3. Đăng nhập | Ngọc 2211110102 | Chuyển tới `/login?next=<đường dẫn kèm ?t=>`. Sau đăng nhập, API trả `next` là đúng link QR để quay lại điểm danh Lần 2: 307 → `/login?next=%2Fattend%2F<id>`, **mất `?t=`**; đăng nhập trả `next: "/onboarding/profile"`. Lần 3 (sau sửa): 307 → `/login?next=%2Fattend%2F<id>%3Ft%3D…`; đăng nhập trả `next` = đúng link QR. Giao diện: đăng nhập xong quay lại trang điểm danh, báo "Đã điểm danh lượt Buổi sáng" sau 3,8 giây | Lần 2: **Fail**, Bug #28. Lần 3: **Pass** sau khi sửa |
 | TC-UCD-05 | UC-D | Token QR phát hơn 30 giây trước | Ngọc gửi điểm danh bằng token cũ | Token phát lúc chuẩn bị, chờ 31 giây | Bị từ chối vì mã hết hạn, kiểm theo giờ server | 410 `QR_EXPIRED` "Mã QR đã hết hiệu lực…" | Pass |
 
-Tổng: 15 test case (UC-A 3, UC-B 3, UC-C 4, UC-D 5). Lần 2 có 14 Pass, 1 Fail (K1 → Bug #28).
+Tổng: 15 test case (UC-A 3, UC-B 3, UC-C 4, UC-D 5). Lần 2 có 14 Pass, 1 Fail (K1 → Bug #28). Lần 3, trên bản đã sửa K1: 15/15 Pass.
 
 ## Automated test chạy trên CI
 
@@ -62,7 +63,8 @@ Tổng: 15 test case (UC-A 3, UC-B 3, UC-C 4, UC-D 5). Lần 2 có 14 Pass, 1 Fa
 | pgTAP `005_event_programs.sql` | UC-B (nộp, duyệt, không tự duyệt hồ sơ mình nộp, lý do trả sửa) | Như trên | Job `pgtap` |
 | pgTAP `007_program_registrations.sql` | UC-C (đối tượng, chỉ tiêu, BTC duyệt, uy tín) | Như trên | Job `pgtap` |
 | pgTAP `008_program_attendance.sql` | UC-D (token ký HMAC, hạn 30 giây, trùng lượt, điểm dự kiến) | Như trên | Job `pgtap` |
-| Vitest `tests/*.test.ts` (validation, quyền hiển thị, lý do không đăng ký được, cấu hình) | UC-B, UC-C, UC-D ở tầng TypeScript | Dữ liệu tạo trong từng test, không dùng DB | Job `build-test` |
+| Vitest `tests/login-next-path.test.ts` (16 test, thêm cùng bản sửa K1) | UC-D: giữ `?t=` khi chuyển tới đăng nhập, chỉ nhận `next` nội bộ (chặn open redirect) | Dữ liệu là hằng số trong test, không dùng DB hay mạng | Job `build-test` |
+| Vitest `tests/*.test.ts` khác (validation, quyền hiển thị, lý do không đăng ký được, cấu hình) | UC-B, UC-C, UC-D ở tầng TypeScript | Dữ liệu tạo trong từng test, không dùng DB | Job `build-test` |
 
 pgTAP chạy trên CI từ PR #24, tổng 205 assertion trong 8 file. Các file độc lập với nhau, vì mỗi file rollback toàn bộ dữ liệu của mình. Vì vậy kết quả không phụ thuộc thứ tự chạy.
 

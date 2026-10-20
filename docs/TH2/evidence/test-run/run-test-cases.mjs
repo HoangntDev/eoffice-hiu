@@ -37,8 +37,11 @@ class Session {
 }
 
 const results = [];
+// Che chữ ký 32 hex của token QR (cả dạng thường và dạng đã mã hóa URL) trước khi ghi log.
+const redact = (text) => text.replace(/(\.[0-9]{10,16}\.)[0-9a-f]{32}/g, "$1<chữ ký>");
 function record(id, expected, actual, pass) {
   results.push({ id, pass });
+  actual = redact(actual);
   console.log(`\n### ${id} — ${pass ? "PASS" : "FAIL"}\nMong đợi: ${expected}\nThực tế:  ${actual}`);
 }
 const show = (r) => `HTTP ${r.status}${r.location ? ` → ${r.location}` : ""} ${r.json ? JSON.stringify(r.json) : ""}`.trim();

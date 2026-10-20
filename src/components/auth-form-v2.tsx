@@ -79,7 +79,7 @@ function PinDots({ value, pending }: { value: string; pending: boolean }) {
 /* ─────────────────────────────────────────────
    Login — two-step: MSSV → PIN
 ───────────────────────────────────────────── */
-function LoginForm({ initialError = "" }: { initialError?: string }) {
+function LoginForm({ initialError = "", next = "" }: { initialError?: string; next?: string }) {
   const router = useRouter();
   const [step, setStep] = useState<"mssv" | "pin">("mssv");
   const [studentCode, setStudentCode] = useState("");
@@ -110,7 +110,7 @@ function LoginForm({ initialError = "" }: { initialError?: string }) {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ studentCode, pin: pinValue }),
+        body: JSON.stringify(next ? { studentCode, pin: pinValue, next } : { studentCode, pin: pinValue }),
       });
       const result = await res.json();
       if (!res.ok) {
@@ -220,7 +220,7 @@ function LoginForm({ initialError = "" }: { initialError?: string }) {
 /* ─────────────────────────────────────────────
    Export
 ───────────────────────────────────────────── */
-export function AuthFormV2({ mode, initialError = "" }: { mode: "login" | "register" | "recover"; initialError?: string }) {
-  if (mode === "login") return <LoginForm initialError={initialError} />;
+export function AuthFormV2({ mode, initialError = "", next = "" }: { mode: "login" | "register" | "recover"; initialError?: string; next?: string }) {
+  if (mode === "login") return <LoginForm initialError={initialError} next={next} />;
   return <SingleStepForm mode={mode} initialError={initialError} />;
 }

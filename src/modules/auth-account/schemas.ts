@@ -25,6 +25,8 @@ export const registerSchema = z.object({
 export const loginSchema = z.object({
   studentCode: studentCodeSchema,
   pin: pinSchema,
+  // Đường dẫn quay lại; API chỉ dùng sau khi safeNextPath kiểm tra là nội bộ.
+  next: z.string().max(2048).optional(),
 }).strict();
 
 export const recoverSchema = z.object({ studentCode: studentCodeSchema }).strict();

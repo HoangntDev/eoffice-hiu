@@ -1,0 +1,67 @@
+# Chạy lúc 2026-10-20T08:35:03.282Z — BASE_URL=http://localhost:3200
+# Web build từ commit: 2ea826f
+
+### TC-UCA-01 — PASS
+Mong đợi: Ghi nhận Sổ Đoàn 200; công nhận 200 status=recognized; DB: hồ sơ recognized, union_memberships recognized
+Thực tế:  Sổ Đoàn: HTTP 200 {"id":"1e245d98-e617-4345-89f1-d6655ee2e3f0","message":"Đã ghi nhận tiếp nhận Sổ Đoàn."} | Công nhận: HTTP 200 {"status":"recognized","message":"Đã ghi nhận kết quả xử lý."} | DB: recognized|recognized
+
+### TC-UCA-02 — PASS
+Mong đợi: 422 REVIEW_FAILED, không công nhận khi Văn phòng chưa tiếp nhận Sổ Đoàn; DB giữ submitted
+Thực tế:  HTTP 422 {"error":"REVIEW_FAILED","message":"Chưa thể công nhận trước khi Văn phòng tiếp nhận Sổ Đoàn."} | DB: submitted
+
+### TC-UCA-03 — PASS
+Mong đợi: 403 FORBIDDEN với sinh viên không có vai trò xử lý; DB giữ submitted
+Thực tế:  HTTP 403 {"error":"FORBIDDEN","message":"Bạn không có vai trò xử lý hồ sơ."} | DB: submitted
+
+### TC-UCB-01 — PASS
+Mong đợi: Đoàn Khoa (người lập) không tự duyệt được: lỗi 403/422; DB giữ submitted
+Thực tế:  HTTP 403 {"error":"FORBIDDEN","message":"Bạn không có quyền thực hiện thao tác này với kế hoạch."} | DB: submitted
+
+### TC-UCB-02 — PASS
+Mong đợi: 422 VALIDATION_ERROR ở trường reason: trả sửa phải có lý do ≥ 10 ký tự; DB giữ submitted
+Thực tế:  HTTP 422 {"error":"VALIDATION_ERROR","message":"Dữ liệu chưa hợp lệ.","fields":{"reason":["Yêu cầu chỉnh sửa hoặc từ chối phải ghi lý do (tối thiểu 10 ký tự)."]}} | DB: submitted
+
+### TC-UCB-03 — PASS
+Mong đợi: 200 status=approved; DB approved
+Thực tế:  HTTP 200 {"status":"approved","message":"Đã chấp thuận kế hoạch."} | DB: approved
+
+### TC-UCC-01 — PASS
+Mong đợi: 201 status=accepted (không cần duyệt, còn chỗ); DB có 1 đăng ký accepted
+Thực tế:  HTTP 201 {"status":"accepted","registration_id":"ca6bc689-ca4c-4bb0-8743-aa6a906ed8c9","message":"Đăng ký thành công. Bạn đã được xác nhận tham gia."} | DB: accepted
+
+### TC-UCC-02 — PASS
+Mong đợi: Chương trình đủ chỉ tiêu (2/2): từ chối với lỗi hết chỗ; DB vẫn 2 đăng ký
+Thực tế:  HTTP 409 {"error":"REGISTRATION_FULL","message":"Chương trình đã đủ chỗ cho nhóm của bạn."} | DB: 2
+
+### TC-UCC-03 — PASS
+Mong đợi: SV Khoa Dược đăng ký chương trình chỉ cho Khoa CNKT: lỗi không thuộc đối tượng; DB không có đăng ký
+Thực tế:  HTTP 403 {"error":"AUDIENCE_NOT_MET","message":"Bạn không thuộc đối tượng được đăng ký chương trình này."} | DB: 0
+
+### TC-UCC-04 — PASS
+Mong đợi: BTC duyệt đăng ký chờ: 200 status=accepted; DB accepted
+Thực tế:  HTTP 200 {"status":"accepted","message":"Đã duyệt đăng ký."} | DB: accepted
+
+(Chuẩn bị UC-D) Lưu kế hoạch điểm danh: HTTP 200 {"message":"Đã lưu kế hoạch điểm danh."} | Mở lượt 1: HTTP 200 {"status":"open","message":"Đã mở lượt điểm danh."}
+(Chuẩn bị UC-D) Phát QR: HTTP 200, url=http://localhost:3200/attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485307196.<chữ ký>, ttl=30s
+
+### TC-UCD-01 — PASS
+Mong đợi: 201 điểm danh lượt "Buổi sáng"; điểm dự kiến đề nghị = 2
+Thực tế:  HTTP 201 {"record_id":"cfbed857-daa1-41fb-9f06-a368879e684b","session_label":"Buổi sáng","supplementary":false,"message":"Đã điểm danh lượt \"Buổi sáng\"."} | attendance_expected_points = 2
+
+### TC-UCD-02 — PASS
+Mong đợi: Quét lại cùng lượt: lỗi đã điểm danh (ALREADY_CHECKED_IN); DB vẫn 1 bản ghi
+Thực tế:  HTTP 409 {"error":"ALREADY_CHECKED_IN","message":"Bạn đã được ghi nhận điểm danh ở lượt này."} | DB: 1 bản ghi
+
+### TC-UCD-03 — PASS
+Mong đợi: SV chưa có đăng ký được nhận ở chương trình: từ chối (REGISTRATION_NOT_ACCEPTED)
+Thực tế:  HTTP 403 {"error":"REGISTRATION_NOT_ACCEPTED","message":"Bạn chưa có đăng ký được chấp nhận cho chương trình này."}
+
+### TC-UCD-04 (K1) — PASS
+Mong đợi: Chuyển tới /login?next=<đường dẫn có ?t=>; sau đăng nhập API trả next = đúng link QR để quay lại điểm danh
+Thực tế:  GET /attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485307684.<chữ ký> → HTTP 307 → /login?next=%2Fattend%2Fee87c208-d33a-4eb5-992d-5416a81fd96c%3Ft%3Dee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485307684.<chữ ký> | next=/attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485307684.<chữ ký> | đăng nhập: HTTP 200 {"message":"Đăng nhập thành công.","next":"/attend/ee87c208-d33a-4eb5-992d-5416a81fd96c?t=ee87c208-d33a-4eb5-992d-5416a81fd96c.1.1792485307684.<chữ ký>"}
+
+### TC-UCD-05 — PASS
+Mong đợi: Token QR phát quá 30 giây: từ chối (QR_EXPIRED), không ghi điểm danh
+Thực tế:  HTTP 410 {"error":"QR_EXPIRED","message":"Mã QR đã hết hiệu lực. Vui lòng quét mã mới đang hiển thị."}
+
+# Tổng: 15 TC, PASS 15, FAIL 0
