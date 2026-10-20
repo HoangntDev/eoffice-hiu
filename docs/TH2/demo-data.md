@@ -51,7 +51,7 @@ Script không đọc `.env.local`, nên không thể ghi nhầm vào stack chín
 
 ## 4. Chạy web với DB demo
 
-`NEXT_PUBLIC_*` được nhúng lúc build, nên dùng một bản build riêng trỏ vào stack demo:
+Cấu hình được đọc lúc chạy (từ issue #31), nên bản build nào cũng dùng được: chỉ cần `.env.local` trỏ vào stack demo. Cách dưới đây dùng worktree riêng để không đè `.env.local` của thư mục làm việc:
 
 ```bash
 git worktree add ../eoffice-web-demo HEAD && cd ../eoffice-web-demo && npm ci

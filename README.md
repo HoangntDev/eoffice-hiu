@@ -94,7 +94,7 @@ supabase status -o env      # lấy API_URL, PUBLISHABLE_KEY (ANON_KEY), SERVICE
 openssl rand -hex 32        # giá trị cho AUTH_RATE_LIMIT_PEPPER
 ```
 
-Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc thì server báo `MISSING_ENV:<tên>`. Các biến `NEXT_PUBLIC_*` được nhúng vào bundle trình duyệt **lúc build**, nên phải có trước khi chạy `npm run build`. Bảng kê cấu hình và dependency: [`docs/TH2/config-dependency.md`](docs/TH2/config-dependency.md).
+Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc thì server báo `MISSING_ENV:<tên>`. Mọi biến, kể cả `NEXT_PUBLIC_*`, được đọc **lúc chạy** ở server (app không có Supabase client phía trình duyệt). Vì vậy một bản build dùng được cho mọi môi trường: chỉ cần đổi `.env.local` rồi khởi động lại. Bảng kê cấu hình và dependency: [`docs/TH2/config-dependency.md`](docs/TH2/config-dependency.md).
 
 ## Tài khoản và email sinh viên
 
