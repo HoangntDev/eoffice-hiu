@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { loginPathFor } from "@/lib/auth/next-path";
 import { optionalPublicSupabaseEnv } from "@/lib/env";
 
 export async function proxy(request: NextRequest) {
@@ -44,7 +45,7 @@ export async function proxy(request: NextRequest) {
 
   if (protectedPath) {
     const userId = typeof claimsData?.claims?.sub === "string" ? claimsData.claims.sub : null;
-    if (claimsError || !userId) return redirect(`/login?next=${encodeURIComponent(pathname)}`);
+    if (claimsError || !userId) return redirect(loginPathFor(pathname, request.nextUrl.search));
     const { data: account } = await supabase.from("accounts").select("status").eq("user_id", userId).maybeSingle();
     if (pathname.startsWith("/signup/create-pin")) {
       if (account?.status === "active") return redirect("/onboarding/profile");

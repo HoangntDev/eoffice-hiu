@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { appUrl } from "@/lib/env";
 import { apiError, HttpError, readJson } from "@/lib/http";
+import { safeNextPath } from "@/lib/auth/next-path";
 import { enforceAuthRateLimit } from "@/lib/auth/rate-limit";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 import { loginSchema } from "@/modules/auth-account/schemas";
@@ -53,7 +54,7 @@ export async function POST(request: Request) {
     await limiter.record(!error);
     if (error) throw new HttpError(401, "INVALID_CREDENTIALS", GENERIC_LOGIN_MESSAGE);
 
-    return NextResponse.json({ message: "Đăng nhập thành công.", next: "/onboarding/profile" });
+    return NextResponse.json({ message: "Đăng nhập thành công.", next: safeNextPath(input.next) });
   } catch (error) {
     return apiError(error);
   }
