@@ -5,6 +5,10 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+### Fixed
+
+- Trang chủ khách không còn hai cặp nút Đăng nhập/Tạo tài khoản: hai nút chỉ nằm ở thanh đầu trang, và nay hiện cả trên điện thoại. Banner có nút "Xem biểu mẫu đang mở". Hướng dẫn rút còn 3 bước, không lặp ý với thẻ chức năng (#36).
+
 ## [1.0.0] - 2026-10-20
 
 Phiên bản phát hành đầu tiên của Final Project. Tính từ baseline `course-baseline`.
