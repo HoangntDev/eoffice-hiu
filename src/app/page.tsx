@@ -26,11 +26,9 @@ const features = [
 ];
 
 const guides = [
-  "Đăng ký tài khoản bằng MSSV 10 số (bắt đầu bằng 21, 22, 23…)",
-  "Xác minh qua email sinh viên HIU (@student.hiu.vn)",
-  "Thiết lập PIN 6 chữ số để đăng nhập",
-  "Khai báo hồ sơ Đoàn viên và theo dõi xét duyệt",
-  "Điền biểu mẫu sự kiện do Đoàn – Hội phát hành",
+  "Tạo tài khoản bằng MSSV và email @student.hiu.vn",
+  "Đặt PIN 6 số",
+  "Đăng nhập và dùng chức năng",
 ];
 
 export default async function Home() {
@@ -67,9 +65,9 @@ export default async function Home() {
             Hệ thống quản lý hồ sơ Đoàn viên, biểu mẫu sự kiện và cơ cấu tổ chức
             dành cho sinh viên và cán bộ Đoàn Trường HIU.
           </p>
+          {/* Đăng nhập / Tạo tài khoản đã có ở thanh đầu trang, không lặp lại ở đây. */}
           <div className="portal-banner-actions">
-            <Link className="portal-btn-primary" href="/login">Đăng nhập hệ thống</Link>
-            <Link className="portal-btn-ghost" href="/register">Tạo tài khoản</Link>
+            <Link className="portal-btn-ghost" href="/forms">Xem biểu mẫu đang mở</Link>
           </div>
         </div>
       </div>
@@ -86,21 +84,17 @@ export default async function Home() {
                 </Link>
               ))}
             </div>
+            <h3 className="guide-heading">Bắt đầu trong 3 bước</h3>
+            <ol className="guide-list guide-list--inline">
+              {guides.map((step, i) => (
+                <li key={i}>
+                  <span className="guide-num">{i + 1}</span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
           </section>
 
-          <section className="portal-section">
-            <h2 className="portal-section-title">Hướng dẫn sử dụng</h2>
-            <div className="panel">
-              <ol className="guide-list">
-                {guides.map((step, i) => (
-                  <li key={i}>
-                    <span className="guide-num">{i + 1}</span>
-                    <span>{step}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </section>
         </div>
       </div>
     </main>

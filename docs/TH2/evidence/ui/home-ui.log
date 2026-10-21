@@ -1,0 +1,18 @@
+[truoc] desktop khách, link đang hiện: Tạo tài khoản → /register | Đăng nhập → /login | Biểu mẫu → /forms | Đăng nhập hệ thống → /login | Tạo tài khoản → /register | Tài khoản sinh viênĐăng ký bằng MSSV 10 số và email sinh viên HIU. Đăng nhập bằng PIN 6 chữ số. → /register | Biểu mẫu sự kiệnTạo, phát hành biểu mẫu đăng ký; sinh viên nộp và quản lý kết quả CSV. → /forms
+[truoc] desktop khách, các bước: 1 Đăng ký tài khoản bằng MSSV 10 số (bắt đầu bằng 21, 22, 23…) | 2 Xác minh qua email sinh viên HIU (@student.hiu.vn) | 3 Thiết lập PIN 6 chữ số để đăng nhập | 4 Khai báo hồ sơ Đoàn viên và theo dõi xét duyệt | 5 Điền biểu mẫu sự kiện do Đoàn – Hội phát hành
+[truoc] desktop khách, cuộn ngang: false
+[truoc] desktop đã đăng nhập (2211110101): Xin chào, Nguyễn Văn An; có "Việc của tôi": true
+[truoc] mobile khách, link đang hiện: Đăng nhập → /login | Biểu mẫu → /forms | Đăng nhập hệ thống → /login | Tạo tài khoản → /register | Tài khoản sinh viênĐăng ký bằng MSSV 10 số và email sinh viên HIU. Đăng nhập bằng PIN 6 chữ số. → /register | Biểu mẫu sự kiệnTạo, phát hành biểu mẫu đăng ký; sinh viên nộp và quản lý kết quả CSV. → /forms
+[truoc] mobile khách, các bước: 1 Đăng ký tài khoản bằng MSSV 10 số (bắt đầu bằng 21, 22, 23…) | 2 Xác minh qua email sinh viên HIU (@student.hiu.vn) | 3 Thiết lập PIN 6 chữ số để đăng nhập | 4 Khai báo hồ sơ Đoàn viên và theo dõi xét duyệt | 5 Điền biểu mẫu sự kiện do Đoàn – Hội phát hành
+[truoc] mobile khách, cuộn ngang: false
+[truoc] mobile đã đăng nhập (2211110101): Xin chào, Nguyễn Văn An; có "Việc của tôi": true
+360px: scrollWidth=360, mép phải nút Đăng nhập=344, rộng "Tạo tài khoản"=77
+320px: scrollWidth=320, mép phải nút Đăng nhập=304, rộng "Tạo tài khoản"=77
+[sau] desktop khách, link đang hiện: Tạo tài khoản → /register | Đăng nhập → /login | Biểu mẫu → /forms | Xem biểu mẫu đang mở → /forms | Tài khoản sinh viênĐăng ký bằng MSSV 10 số và email sinh viên HIU. Đăng nhập bằng PIN 6 chữ số. → /register | Biểu mẫu sự kiệnTạo, phát hành biểu mẫu đăng ký; sinh viên nộp và quản lý kết quả CSV. → /forms
+[sau] desktop khách, các bước: 1 Tạo tài khoản bằng MSSV và email @student.hiu.vn | 2 Đặt PIN 6 số | 3 Đăng nhập và dùng chức năng
+[sau] desktop khách, cuộn ngang: false
+[sau] desktop đã đăng nhập (2211110101): Xin chào, Nguyễn Văn An; có "Việc của tôi": true
+[sau] mobile khách, link đang hiện: Tạo tài khoản → /register | Đăng nhập → /login | Biểu mẫu → /forms | Xem biểu mẫu đang mở → /forms | Tài khoản sinh viênĐăng ký bằng MSSV 10 số và email sinh viên HIU. Đăng nhập bằng PIN 6 chữ số. → /register | Biểu mẫu sự kiệnTạo, phát hành biểu mẫu đăng ký; sinh viên nộp và quản lý kết quả CSV. → /forms
+[sau] mobile khách, các bước: 1 Tạo tài khoản bằng MSSV và email @student.hiu.vn | 2 Đặt PIN 6 số | 3 Đăng nhập và dùng chức năng
+[sau] mobile khách, cuộn ngang: false
+[sau] mobile đã đăng nhập (2211110101): Xin chào, Nguyễn Văn An; có "Việc của tôi": true
