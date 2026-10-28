@@ -1,0 +1,51 @@
+$ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:56321 SUPABASE_SERVICE_ROLE_KEY=<ẩn> npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv" --apply
+npm notice run hiu-youth-e-office@1.0.0 catalog:import
+npm notice run node scripts/import-academic-catalog.mjs data/DSN LOPWS - Sheet1 (1).csv --apply
+ENOENT: no such file or directory, open '.env.local'
+
+$ DEMO_SUPABASE_URL=http://127.0.0.1:56321 DEMO_SERVICE_ROLE_KEY=<ẩn> npm run demo:seed -- --confirm-demo
+npm notice run hiu-youth-e-office@1.0.0 demo:seed
+npm notice run node scripts/seed-demo.mjs --confirm-demo
+file:///Users/nth/Developer/eoffice-smoke-v1.0.0/app/scripts/seed-demo.mjs:37
+  if (error) throw new Error(`${what}: ${error.message}`);
+                   ^
+
+Error: faculty CNKT: Cannot coerce the result to a single JSON object
+    at q (file:///Users/nth/Developer/eoffice-smoke-v1.0.0/app/scripts/seed-demo.mjs:37:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///Users/nth/Developer/eoffice-smoke-v1.0.0/app/scripts/seed-demo.mjs:52:17
+
+Node.js v24.16.0
+$ npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv" --apply   # đọc .env.local
+    "classes": 0,
+    "cohorts": 0,
+    "programs": 0,
+    "faculties": 0
+  },
+  "inserted": {
+    "classes": 347,
+    "cohorts": 6,
+    "programs": 51,
+    "faculties": 10
+  },
+  "rowCount": 347,
+  "conflicts": [],
+  "alreadyApplied": false
+}
+
+$ DEMO_SUPABASE_URL=http://127.0.0.1:56321 DEMO_SERVICE_ROLE_KEY=<ẩn> npm run demo:seed -- --confirm-demo
+npm notice run hiu-youth-e-office@1.0.0 demo:seed
+npm notice run node scripts/seed-demo.mjs --confirm-demo
+SEED_DEMO_OK
+┌─────────┬──────────────┬────────────────────┬──────────────┬──────────────────────────────────┐
+│ (index) │ MSSV         │ Họ tên             │ Lớp          │ Email                            │
+├─────────┼──────────────┼────────────────────┼──────────────┼──────────────────────────────────┤
+│ 0       │ '2211110101' │ 'Nguyễn Văn An'    │ 'TH22DH-CN1' │ 'an.nv2210101@student.hiu.vn'    │
+│ 1       │ '2211110102' │ 'Võ Thị Bích Ngọc' │ 'TH22DH-CN1' │ 'ngoc.vtb2210102@student.hiu.vn' │
+│ 2       │ '2211110103' │ 'Huỳnh Gia Hân'    │ 'TH22DH-CN2' │ 'han.hg2210103@student.hiu.vn'   │
+│ 3       │ '2241110104' │ 'Đặng Hoàng Phúc'  │ 'DS22DH-DS1' │ 'phuc.dh2240104@student.hiu.vn'  │
+│ 4       │ '2201110201' │ 'Lê Minh Quân'     │ 'TH22DH-CN2' │ 'quan.lm2200201@student.hiu.vn'  │
+│ 5       │ '2201110202' │ 'Trần Thị Mai'     │ 'TH22DH-CN1' │ 'mai.tt2200202@student.hiu.vn'   │
+│ 6       │ '2201110203' │ 'Phạm Quốc Bảo'    │ 'TH22DH-CN1' │ 'bao.pq2200203@student.hiu.vn'   │
+└─────────┴──────────────┴────────────────────┴──────────────┴──────────────────────────────────┘
+PIN của mọi tài khoản demo: 123456

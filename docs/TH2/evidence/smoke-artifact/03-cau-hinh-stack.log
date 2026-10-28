@@ -1,0 +1,14 @@
+$ sed -i '' -e 's/^project_id = .*/project_id = "eoffice-v100"/' -e 's/= 543\([0-9][0-9]\)$/= 563\1/' -e 's/^inspector_port = 8083/inspector_port = 8283/' supabase/config.toml
+$ grep -nE '^project_id|port = ' supabase/config.toml
+5:project_id = "eoffice-v100"
+10:port = 56321
+34:port = 56322
+36:shadow_port = 56320
+46:port = 56329
+96:port = 56323
+107:port = 56324
+109:# smtp_port = 56325
+110:# pop3_port = 56326
+239:# port = 587
+392:inspector_port = 8283
+401:port = 56327

@@ -22,4 +22,4 @@ Ghi kết quả vào bảng dưới (sao chép cho mỗi lần chạy) và lưu 
 
 | Ngày | Phiên bản / commit | Môi trường | Bước Fail | Người chạy |
 |---|---|---|---|---|
-| | | | | |
+| 29/10/2026 | Gói `v1.0.0` (`fe2b984`) | Gói Release cài ngoài repo, stack Supabase `eoffice-v100` (563xx), cổng 3300 | Không (8/8 PASS) – [log](../TH2/evidence/smoke-artifact/README.md) | Nguyễn Thanh Hoàng |

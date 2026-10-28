@@ -1,0 +1,25 @@
+BASE=http://localhost:3300
+
+## Bước 2 – Trang chủ
+$ curl -s -o /dev/null -w '%{http_code}' $BASE/
+200
+$ curl -s $BASE/ | grep -o 'Văn phòng điện tử Đoàn – Hội HIU' | head -1
+Văn phòng điện tử Đoàn – Hội HIU
+
+## Bước 3 – Kết nối Supabase/DB
+$ supabase status --workdir .
+Stopped services: [supabase_imgproxy_eoffice-v100 supabase_edge_runtime_eoffice-v100 supabase_analytics_eoffice-v100 supabase_vector_eoffice-v100 supabase_pooler_eoffice-v100]
+supabase_studio_eoffice-v100 Up About a minute (healthy)
+supabase_pg_meta_eoffice-v100 Up About a minute (healthy)
+supabase_storage_eoffice-v100 Up About a minute (healthy)
+$ curl -s -o /dev/null -w '%{http_code}' $BASE/forms
+200
+$ curl -s $BASE/forms | grep -oE '(Đăng ký|Phiếu|Khảo sát)[^<"]{3,80}' | sort -u | head
+Khảo sát nhu cầu bồi dưỡng kỹ năng mềm
+Khảo sát nhu cầu bồi dưỡng kỹ năng mềm\
+Phiếu đăng ký chiến sĩ Mùa hè xanh 2026
+Phiếu đăng ký chiến sĩ Mùa hè xanh 2026\
+
+## Bước 4 – Trang bảo vệ chặn khách
+$ curl -s -o /dev/null -w '%{http_code} %{redirect_url}' $BASE/programs
+307 http://localhost:3300/login?next=%2Fprograms

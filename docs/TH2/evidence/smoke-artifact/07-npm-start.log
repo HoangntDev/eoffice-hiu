@@ -1,0 +1,9 @@
+npm notice run hiu-youth-e-office@1.0.0 start
+npm notice run next start
+▲ Next.js 16.3.8
+- Local:         http://localhost:3300
+- Network:       http://<LAN-IP>:3300
+✓ Ready in 257ms
+✓ Running next.config.ts took 1656ms
+{"ts":"2026-10-28T17:37:57.046Z","level":"info","event":"program_registration.registered","requestId":"b248f8a6-c70b-45b6-ac96-4509818c289c","userId":"85aab5e4-799f-483f-bcc4-5b628e18be84","programId":"d740ad5f-a7fa-4344-9f56-c2e389c6596f","status":"accepted"}
+{"ts":"2026-10-28T17:38:18.857Z","level":"info","event":"program_registration.registered","requestId":"d1288655-8260-4e1c-8970-1346ea71ff85","userId":"10eb638a-395a-408a-abb5-b3e8c129797c","programId":"d740ad5f-a7fa-4344-9f56-c2e389c6596f","status":"accepted"}

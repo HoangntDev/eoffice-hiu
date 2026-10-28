@@ -1,0 +1,46 @@
+$ date
+Thu Oct 29 00:33:50 +07 2026
+$ shasum -a 256 ../dl/hiu-youth-e-office-v1.0.0.zip
+067ddf5361bdbc9065d4752f79a8586c73d4d33ee8c4ab3726f6ebd47bb9c8bf  ../dl/hiu-youth-e-office-v1.0.0.zip
+$ cat ../dl/hiu-youth-e-office-v1.0.0.zip.sha256
+067ddf5361bdbc9065d4752f79a8586c73d4d33ee8c4ab3726f6ebd47bb9c8bf  hiu-youth-e-office-v1.0.0.zip
+$ unzip -q ../dl/hiu-youth-e-office-v1.0.0.zip
+exit=0
+$ ls
+.env.example
+.github
+.gitignore
+.next
+.npmrc
+AGENTS.md
+BUILD-INFO.txt
+CHANGELOG.md
+CLAUDE.md
+HUONG-DAN-TRIEN-KHAI.md
+README.md
+STATUS.md
+data
+docs
+eslint.config.mjs
+next.config.ts
+package-lock.json
+package.json
+postcss.config.mjs
+public
+scripts
+src
+supabase
+tests
+tsconfig.json
+vitest.config.mts
+$ cat BUILD-INFO.txt
+HIU Youth E-Office — gói phát hành v1.0.0
+Tag:        v1.0.0
+Commit:     fe2b984f4b004265dc47d200cc7ede855fd5ea36
+Ngày build: 2026-10-20 17:56:19 +0700
+Node / npm: v24.16.0 / 12.0.2
+Next.js:    16.3.8 (npm run build, NODE_ENV=production)
+Build từ worktree sạch tại tag (git status rỗng), npm ci, biến môi trường là giá trị giữ chỗ.
+Cấu hình (Supabase URL/khóa, APP_URL, LOG_LEVEL...) đọc lúc chạy từ .env.local — xem HUONG-DAN-TRIEN-KHAI.md.
+Không chứa node_modules, .env.local, secret hay dữ liệu cá nhân.
+Không gồm báo cáo môn học (docs/TH1, docs/TH2/evidence): xem trên GitHub.
