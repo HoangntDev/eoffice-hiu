@@ -1,0 +1,19 @@
+$ git log --first-parent --oneline course-baseline..main
+d727856 Merge pull request #39 from HoangntDev/test/38-smoke-artifact-v1.0.0
+cf8c161 Merge pull request #36 from HoangntDev/fix/35-home-duplicate-auth
+fe2b984 Merge pull request #34 from HoangntDev/docs/33-release-notes
+caa2a92 Merge pull request #32 from HoangntDev/refactor/31-runtime-public-env
+634108d Merge pull request #30 from HoangntDev/fix/28-giu-qr-khi-dang-nhap
+5953e07 Merge pull request #29 from HoangntDev/test/27-use-case-tests
+15f0a5f Merge pull request #26 from HoangntDev/refactor/25-externalize-config
+5f56811 Merge pull request #24 from HoangntDev/ci/23-build-test-workflow
+044bfe3 Merge pull request #22 from HoangntDev/chore/21-issue-pr-templates
+69d7675 Merge pull request #20 from HoangntDev/docs/19-th1-report-ui
+bd06583 Merge pull request #18 from HoangntDev/fix/17-ui-polish
+2713860 Merge pull request #16 from HoangntDev/docs/15-th1-thong-tin-sv
+6467a31 Merge pull request #14 from HoangntDev/docs/13-th1-report
+8253341 Merge pull request #12 from HoangntDev/test/11-baseline-coverage
+97744b6 Merge pull request #10 from HoangntDev/chore/9-claude-md-rules
+46721db Merge pull request #8 from HoangntDev/docs/7-readme-baseline
+
+$ git log --first-parent --no-merges --oneline course-baseline..main
