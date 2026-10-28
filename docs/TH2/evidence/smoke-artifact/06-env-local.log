@@ -1,0 +1,8 @@
+$ cp .env.example .env.local   # điền API_URL, PUBLISHABLE_KEY, SERVICE_ROLE_KEY từ `supabase status -o env`, pepper từ `openssl rand -hex 32`
+$ grep -v "^#" .env.local | grep -v "^$" | sed -E "s/(KEY|PEPPER)=.*/\1=<ẩn>/"
+NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:56321
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<ẩn>
+SUPABASE_SERVICE_ROLE_KEY=<ẩn>
+AUTH_RATE_LIMIT_PEPPER=<ẩn>
+NEXT_PUBLIC_APP_URL=http://localhost:3300
+LOG_LEVEL=

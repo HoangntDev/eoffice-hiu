@@ -1,0 +1,7 @@
+$ docker run ... sh -c "npm i playwright@1.49.1 && node smoke-ui.mjs 2211110103 \"Huỳnh Gia Hân\""
+Thu Oct 29 00:38:11 +07 2026
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "HH Huỳnh Gia Hân 2211110103 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 7/11/26 Đang mở đăng ký Xem"
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 7/11/26 Đã xác nhận Xem"; "Việc của tôi" có chương trình: true
+[Bước 8] PASS – sau đăng xuất về "/", có nút Đăng nhập: true; mở /programs → /login?next=%2Fprograms
+exit=0

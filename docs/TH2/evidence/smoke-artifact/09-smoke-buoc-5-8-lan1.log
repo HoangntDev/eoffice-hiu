@@ -1,0 +1,19 @@
+$ docker run --rm --add-host=host.docker.internal:host-gateway -v "$PWD:/out" -w /out mcr.microsoft.com/playwright:v1.49.1-jammy sh -c "npm i playwright@1.49.1 && node smoke-ui.mjs"
+Thu Oct 29 00:37:50 +07 2026
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "ĐP Đặng Hoàng Phúc 2241110104 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 7/11/26 Đang mở đăng ký Xem"
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 7/11/26 Đã xác nhận Xem"; "Việc của tôi" có chương trình: true
+node:internal/modules/run_main:122
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_ABORTED at http://host.docker.internal:3300/programs
+Call log:
+  - navigating to "http://host.docker.internal:3300/programs", waiting until "load"
+
+    at /out/smoke-ui.mjs:53:12 {
+  name: 'Error'
+}
+
+Node.js v22.12.0
+exit=1
