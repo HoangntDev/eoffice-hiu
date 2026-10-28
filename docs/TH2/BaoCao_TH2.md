@@ -16,7 +16,7 @@ lang: vi
 | Hạn nộp | 23:59 ngày 26/10/2026. **Nộp trễ**: phần chính làm ngày 20–21/10/2026; issue CR-01, smoke test trên artifact và báo cáo này làm ngày 29/10/2026 (lấy bằng lệnh `date`) |
 | Repository | https://github.com/HoangntDev/eoffice-hiu |
 | Release | Tag `v1.0.0` → commit `fe2b984`; GitHub Release https://github.com/HoangntDev/eoffice-hiu/releases/tag/v1.0.0 |
-| Milestone | `TH2`: issue #21, #23, #25, #27, #28, #31, #33, #35, #38, #40; PR #22, #24, #26, #29, #30, #32, #34, #36, #39 và PR của báo cáo này |
+| Milestone | `TH2`: issue #21, #23, #25, #27, #28, #31, #33, #35, #38, #40, #42; PR #22, #24, #26, #29, #30, #32, #34, #36, #39, #41 và PR chèn ảnh của #42 |
 
 **Công nghệ chính** (theo `package-lock.json` và README):
 
@@ -93,7 +93,8 @@ Phần lớn nghiệp vụ nằm trong hàm PostgreSQL (RPC) và chính sách RL
 | [#33](https://github.com/HoangntDev/eoffice-hiu/issues/33) | CHANGELOG v1.0.0, hướng dẫn cài đặt | `docs/33-release-notes` | [#34](https://github.com/HoangntDev/eoffice-hiu/pull/34) | pass 1m28s / pass 2m45s | `fe2b984`, 20/10 (tag `v1.0.0`) |
 | [#35](https://github.com/HoangntDev/eoffice-hiu/issues/35) | Trang chủ khách lặp nút đăng nhập | `fix/35-home-duplicate-auth` | [#36](https://github.com/HoangntDev/eoffice-hiu/pull/36) | pass 1m18s / pass 1m49s | `cf8c161`, 21/10 |
 | [#38](https://github.com/HoangntDev/eoffice-hiu/issues/38) | Smoke test trên gói v1.0.0 | `test/38-smoke-artifact-v1.0.0` | [#39](https://github.com/HoangntDev/eoffice-hiu/pull/39) | pass 1m18s / pass 1m55s | `d727856`, 29/10 |
-| [#40](https://github.com/HoangntDev/eoffice-hiu/issues/40) | Báo cáo TH2 | `docs/40-th2-report` | PR của báo cáo này | chờ CI xanh rồi mới merge | — |
+| [#40](https://github.com/HoangntDev/eoffice-hiu/issues/40) | Báo cáo TH2 | `docs/40-th2-report` | [#41](https://github.com/HoangntDev/eoffice-hiu/pull/41) | pass 1m17s / pass 1m56s | `37873be`, 29/10 |
+| [#42](https://github.com/HoangntDev/eoffice-hiu/issues/42) | Chèn ảnh minh chứng vào báo cáo | `docs/42-th2-report-images` | PR của bản cập nhật này | chờ CI xanh rồi mới merge | — |
 
 Ngày merge tính theo giờ Việt Nam. Thời gian CI lấy từ `gh pr checks`. PR #22 chạy trước khi workflow mới vào `main`, nên chỉ có một job.
 
@@ -106,12 +107,12 @@ Issue #21 tạo trước khi có form (chính issue này thêm form), nên đư�
 | `.github/ISSUE_TEMPLATE/task.yml` | Mục tiêu và nội dung, tiêu chí hoàn thành, branch dự kiến |
 | `.github/ISSUE_TEMPLATE/bug_report.yml` | Loại, test case / use case liên quan, mô tả và các bước tái hiện, kết quả mong đợi và thực tế, phiên bản / môi trường, bằng chứng |
 | `.github/ISSUE_TEMPLATE/change_request.yml` | Mã `CR-01-<TenCR>`, hướng CR, trao đổi với giảng viên, hiện trạng, thay đổi mong muốn, tiêu chí Cho trước/Khi/Thì, phạm vi, tự đánh giá |
-| `.github/ISSUE_TEMPLATE/config.yml` | `blank_issues_enabled: false`: mọi issue phải đi qua form |
+| `.github/ISSUE_TEMPLATE/config.yml` | `blank_issues_enabled: false`: người đóng góp phải dùng form. GitHub vẫn để "Blank issue" cho maintainer (nhãn "Maintainers only" trong ảnh dưới); quy ước của repo là không dùng |
 | `.github/pull_request_template.md` | Mô tả, `Closes #`, cách kiểm thử, checklist trước khi merge |
 
 Đã tạo thêm hai label `incident` và `change-request`.
 
-[ẢNH: evidence/issue-forms.png – trang New issue của repo, hiện 3 form Task, Bug report, Change Request]
+![Trang New issue (github.com/HoangntDev/eoffice-hiu/issues/new/choose): 3 form Bug report, Change Request, Task](evidence/issue-forms.png)
 
 ## 3.4 Issue CR-01
 
@@ -122,11 +123,13 @@ Issue #21 tạo trước khi có form (chính issue này thêm form), nên đư�
 - **Tình trạng trao đổi với giảng viên:** sinh viên đã đề xuất hướng CR này. Tuần 20–24/10/2026 giảng viên bận nên lớp nghỉ, **chưa có phản hồi**. Trường "Trao đổi với giảng viên" của issue ghi đúng như vậy, không ghi là đã thống nhất. Sinh viên tiến hành theo đề xuất để kịp lịch TH3–TH4 và sẽ cập nhật issue khi có ý kiến của giảng viên.
 - Chưa tạo branch `cr/`, chưa sửa code.
 
-[ẢNH: evidence/cr-01-issue-37.png – issue #37 trên GitHub: tiêu đề, label change-request, Milestone TH4, trường "Trao đổi với giảng viên"]
+![Issue #37: tiêu đề, nhãn change-request, Milestone TH4, trường "Trao đổi với giảng viên" ghi chưa có phản hồi](evidence/cr-01-issue-37.png)
+
+Ảnh chụp phần đầu issue. Toàn văn AC1–AC7 và phạm vi xem tại link #37.
 
 ## 3.5 Kiểm chứng lịch sử `main` sau baseline
 
-Hai lệnh dưới đây chạy ngày 29/10/2026 trên `main` = `origin/main` = `d727856`, **trước khi merge PR của báo cáo này**. Output lưu ở `evidence/git-log-first-parent.txt`:
+Hai lệnh dưới đây chạy ngày 29/10/2026 trên `main` = `origin/main` = `d727856`, **trước khi merge PR #41** (báo cáo này). Output lưu ở `evidence/git-log-first-parent.txt`:
 
 ```
 $ git log --first-parent --oneline course-baseline..main
@@ -151,9 +154,11 @@ $ git log --first-parent --no-merges --oneline course-baseline..main
 (không có dòng nào)
 ```
 
-[ẢNH: evidence/git-log-first-parent.png – Terminal chạy hai lệnh trên, lệnh thứ hai không in dòng nào]
+![Terminal chạy hai lệnh trên d727856; lệnh thứ hai không in dòng nào](evidence/git-log-first-parent.png)
 
-Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qua merge commit của PR: 7 PR của TH1 và 9 PR của TH2. Lệnh thứ hai rỗng, nghĩa là **không có commit nào được đẩy thẳng vào `main`**. Không có tag nào bị xóa hay gắn lại: `course-baseline`, `v1.0-local` và `v1.0.0` trên origin vẫn trỏ đúng commit cũ.
+Ảnh chụp cửa sổ Terminal ngày 29/10/2026, chạy trên `d727856`, trước khi merge PR #41. Hai lệnh dùng `d727856` thay cho `main` để kết quả cố định đúng thời điểm đó.
+
+Lệnh thứ nhất cho thấy, tính từ baseline, `main` chỉ tiến lên qua merge commit của PR: 7 PR của TH1 và 9 PR của TH2 tính đến `d727856`. Sau đó `main` có thêm merge của PR #41 (`37873be`) và PR chèn ảnh của #42, cũng qua merge commit. Lệnh thứ hai rỗng, nghĩa là **không có commit nào được đẩy thẳng vào `main`**. Không có tag nào bị xóa hay gắn lại: `course-baseline`, `v1.0-local` và `v1.0.0` trên origin vẫn trỏ đúng commit cũ.
 
 # 4. Quản lý cấu hình và dependency
 
@@ -287,7 +292,9 @@ Lần chạy [40737995933](https://github.com/HoangntDev/eoffice-hiu/actions/run
 
 Artifact: `vitest-results` (13 614 byte) và `pgtap-results` (814 byte), hết hạn 04/11/2026. Artifact của các lần chạy ngày 20–21/10 đã hết hạn sau 7 ngày nên không còn tải được; số liệu của chúng vẫn xem được trong log (ví dụ lần chạy trên `main` sau PR #36: 142/142 và 205/205).
 
-[ẢNH: evidence/ci-run-xanh.png – trang Actions của lần chạy 40737995933: hai job build-test và pgtap màu xanh, mục Artifacts có vitest-results và pgtap-results]
+Trang lần chạy có 2 annotation thật của GitHub: nhãn `ubuntu-latest` chuyển sang Ubuntu 26 từ 19/10/2026. CI vẫn xanh; cần theo dõi khi runner đổi image (Node 24 và Supabase CLI được cài lại ở mỗi lần chạy).
+
+![Lần chạy 40737995933: hai job build-test, pgtap xanh; mục Artifacts có pgtap-results và vitest-results](evidence/ci-run-xanh.png)
 
 ## 5.4 CI đỏ
 
@@ -370,7 +377,11 @@ So với mốc TH1 (Vitest 74 test ở baseline, 109 test sau PR #12), Vitest t�
 | Release notes | Lấy từ CHANGELOG mục `[1.0.0]`, kèm link hướng dẫn triển khai, README và smoke test |
 | Hướng dẫn cài đặt | README mục "Cài đặt và chạy từ môi trường mới" (từ mã nguồn) và `docs/release/huong-dan-trien-khai.md` (từ gói đã build) |
 
-[ẢNH: evidence/release-v1.0.0.png – trang GitHub Release v1.0.0: tiêu đề, release notes, mục Assets có file .zip và .sha256]
+![Trang GitHub Release v1.0.0: tag, commit fe2b984, đầu release notes và SHA-256 của gói](evidence/release-v1.0.0.png)
+
+Mục Assets nằm cuối trang Release. Ảnh dưới chụp trang `releases/expanded_assets/v1.0.0` của GitHub: đây là phần GitHub nạp vào mục Assets, mở trực tiếp nên không có giao diện.
+
+![Assets của v1.0.0: hiu-youth-e-office-v1.0.0.zip (8,4 MB) và .zip.sha256, kèm mã nguồn zip/tar.gz](evidence/release-v1.0.0-assets.png){width=12cm}
 
 ## 6.5 Smoke test trên artifact
 
@@ -401,7 +412,9 @@ Ghi chú trung thực về lần chạy:
 - Lần chạy đầu của bước 5–8 (tài khoản 2241110104) có bước 5–7 PASS. Bước 8 dừng với `net::ERR_ABORTED`, do **script** mở `/programs` khi điều hướng sau đăng xuất chưa xong. Đã thêm `waitForLoadState("networkidle")` và chạy lại bằng một tài khoản khác, vì tài khoản đầu đã đăng ký ở lần 1. Log cả hai lần đều giữ trong `evidence/smoke-artifact/`.
 - Lần đầu nạp dữ liệu, `catalog:import` báo `ENOENT: ... '.env.local'`, do chạy trước bước tạo `.env.local`. Làm đúng thứ tự trong hướng dẫn triển khai (Cấu hình → Khởi tạo dữ liệu) thì chạy được.
 
-[ẢNH: evidence/smoke-artifact/smoke-dang-ky-thanh-cong.png – bản cài từ gói v1.0.0 ở http://localhost:3300: trang chương trình sau khi đăng ký, thanh trên có họ tên và MSSV]
+![Bản cài từ gói v1.0.0 tại http://localhost:3300 (tài khoản demo 2241110104): trang "Ngày hội Hiến máu" sau khi đăng ký, trạng thái Đã xác nhận](evidence/smoke-artifact/smoke-dang-ky-thanh-cong.png){width=14cm}
+
+Ảnh chụp bằng Playwright (`evidence/smoke-artifact/smoke-screenshot.mjs`) trên bản cài từ gói v1.0.0 tại `http://localhost:3300`, stack `eoffice-v100`. Trong container Playwright, địa chỉ này là `host.docker.internal:3300`. Đăng ký của tài khoản này được tạo ở lần chạy bước 5–8 đầu tiên (00:37 29/10/2026).
 
 # 7. Vấn đề gặp phải và cách xử lý
 
@@ -422,6 +435,8 @@ Ghi chú trung thực về lần chạy:
 | CI | Artifact chỉ giữ 7 ngày; đến 29/10 artifact của các lần chạy ngày 20–21/10 đã hết hạn | Lấy số liệu từ log CI; ảnh và artifact cho báo cáo dùng lần chạy ngày 29/10 (PR #39, còn đến 04/11) |
 | Giao diện | Sau phát hành, trang chủ khách có hai cặp nút Đăng nhập/Tạo tài khoản và mục hướng dẫn lặp ý | Bug #35, PR #36. Ghi vào `[Unreleased]`, không sửa mục `[1.0.0]` và tag `v1.0.0`. Ảnh trước/sau ở `evidence/ui/` |
 | Git, tiến độ | Giảng viên chưa phản hồi đề xuất CR-01 (lớp nghỉ tuần 20–24/10); issue CR-01 tạo trễ hạn 25/10 | Tạo #37 ngày 29/10, ghi đúng tình trạng "chưa có phản hồi" trong issue; sẽ cập nhật khi có ý kiến giảng viên |
+| Bằng chứng | Chụp màn hình bằng `screencapture` chỉ ra hình nền desktop: ứng dụng chạy lệnh chưa có quyền Screen Recording | Cấp quyền trong System Settings → Privacy & Security → Screen Recording, mở lại ứng dụng rồi chụp lại |
+| Bằng chứng | Không cuộn được trang GitHub để chụp phần dưới (macOS chặn gửi phím, trình duyệt tắt JavaScript từ AppleScript); `sips --cropOffset` cắt sai vùng | Chụp theo vùng màn hình (`screencapture -R`) bỏ thanh tab; mở URL có neo `#artifacts` cho trang CI và trang `expanded_assets` cho mục Assets của Release |
 
 Trang chủ khách trước và sau PR #36:
 
@@ -454,7 +469,7 @@ Ghi chú: công cụ tự thêm dòng ghi tên trợ lý AI vào mô tả PR #22
 
 **Nhận xét**
 
-- Quy trình Git của môn áp dụng cho cả 9 PR đã merge của Milestone TH2 và PR báo cáo này. `git log --first-parent --no-merges course-baseline..main` rỗng. Mọi issue tạo bằng issue form.
+- Quy trình Git của môn áp dụng cho mọi PR của Milestone TH2 (#22–#41 và PR chèn ảnh). `git log --first-parent --no-merges course-baseline..main` rỗng. Từ #23, mọi issue tạo bằng issue form.
 - CI mức A: lint, typecheck, build, Vitest (142 test) và pgTAP (205 assertion) chạy trên mỗi PR và mỗi lần push `main`; chưa có lần nào đỏ.
 - Cấu hình tách khỏi mã nguồn, không có secret trong lịch sử Git. Một bản build dùng cho mọi môi trường; smoke test trên gói tải từ Release đạt 8/8.
 - Kiểm thử tìm ra một lỗi thật (K1) và lỗi đó được sửa trước khi phát hành.
