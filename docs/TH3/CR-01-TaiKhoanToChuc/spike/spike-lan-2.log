@@ -1,0 +1,17 @@
+[S1] PASS – HTTP 200; organization_sessions(f25e608b-c678-4f9d-9c94-dba9fc9c14f4) = 55c16465-271d-4b8c-9b71-42481eff7088|718fdee3-287d-4545-a5d4-76596b6c0991
+[S2] PASS – current_org_unit_id = Đoàn Khoa đã chọn; save_event_program OK; history.actor = cán bộ A
+[S2b] PASS – phiên Đoàn Khoa A tạo chương trình cho Đoàn Khoa khác → FORBIDDEN
+[S3] PASS – login cá nhân 200; RPC save_event_program → FORBIDDEN; current_org_unit_id = null; has_active_role('office') = false; POST /api/event-programs → 403
+[S4] PASS – audit_events = actor cán bộ A | đơn vị | đơn vị thao tác | phiên tổ chức: đủ (718fdee3-287d-4545-a5d4-76596b6c0991|55c16465-271d-4b8c-9b71-42481eff7088|55c16465-271d-4b8c-9b71-42481eff7088|f25e608b-c678-4f9d-9c94-dba9fc9c14f4)
+[S4b] PASS – audit 'organization_session.started' cho phiên: 1
+[S5] PASS – nộp OK; A (phiên Văn phòng) duyệt → SELF_REVIEW_FORBIDDEN; B phiên cá nhân → FORBIDDEN; B phiên Văn phòng → approved
+[S6] PASS – 5 tình huống → 1 thông báo: 401 Không thể đăng nhập tài khoản tổ chức. Kiểm tra lại đơn vị, PIN tổ chức, MSSV và PIN cá nhân.
+[S6b] PASS – phiên tổ chức tạo cho tình huống sai: 0
+[S7] PASS – 5 lần sai → 401,401,401,401,401; lần 6 PIN đúng → 429; IP khác → 401; đơn vị khác cùng IP → 200
+[S8] PASS – Chi đoàn → ORG_ACCOUNT_UNIT_NOT_ALLOWED; Ban (school_committee) → ORG_ACCOUNT_UNIT_NOT_ALLOWED
+[S9] PASS – token cũ sau khi khóa tài khoản tổ chức → FORBIDDEN; sau đăng xuất → FORBIDDEN
+[S10] PASS – session_id trước/sau refresh: giống nhau; current_org_unit_id sau refresh = Văn phòng
+[S11] PASS – 10.000 lần gọi (ms): old=178 new=828 (old = thân hàm trước CR, new = has_active_role có kiểm phiên)
+
+Thời gian /api/admin/login thành công (ms): 228, 235, 268
+Kết quả: 14/14 PASS
