@@ -1,0 +1,51 @@
+Connecting to local database...
+supabase/tests/001_business_rules.sql ........... ok
+psql:supabase/tests/002_authorization_workflow.sql:29: ERROR:  MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+CONTEXT:  PL/pgSQL function enforce_role_grant_holder() line 8 at RAISE
+supabase/tests/002_authorization_workflow.sql ... 
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 10/10 subtests 
+supabase/tests/003_account_lifecycle.sql ........ ok
+psql:supabase/tests/004_forms.sql:29: ERROR:  MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+CONTEXT:  PL/pgSQL function enforce_role_grant_holder() line 8 at RAISE
+supabase/tests/004_forms.sql .................... 
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 14/14 subtests 
+psql:supabase/tests/005_event_programs.sql:31: ERROR:  MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+CONTEXT:  PL/pgSQL function enforce_role_grant_holder() line 8 at RAISE
+supabase/tests/005_event_programs.sql ........... 
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 35/35 subtests 
+supabase/tests/006_bootstrap_template_seed.sql .. ok
+psql:supabase/tests/007_program_registrations.sql:38: ERROR:  MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+CONTEXT:  PL/pgSQL function enforce_role_grant_holder() line 8 at RAISE
+supabase/tests/007_program_registrations.sql .... 
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 67/67 subtests 
+psql:supabase/tests/008_program_attendance.sql:22: ERROR:  MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+CONTEXT:  PL/pgSQL function enforce_role_grant_holder() line 8 at RAISE
+supabase/tests/008_program_attendance.sql ....... 
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 55/55 subtests 
+supabase/tests/009_account_types.sql ............ ok
+
+Test Summary Report
+-------------------
+supabase/tests/002_authorization_workflow.sql (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 10 tests but ran 0.
+supabase/tests/004_forms.sql                  (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 14 tests but ran 0.
+supabase/tests/005_event_programs.sql         (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 35 tests but ran 0.
+supabase/tests/007_program_registrations.sql  (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 67 tests but ran 0.
+supabase/tests/008_program_attendance.sql     (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 55 tests but ran 0.
+Files=9, Tests=42,  0 wallclock secs ( 0.04 usr  0.01 sys +  0.10 cusr  0.03 csys =  0.18 CPU)
+Result: FAIL
+error running container: exit 1
