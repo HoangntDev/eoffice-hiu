@@ -29,6 +29,14 @@ export const loginSchema = z.object({
   next: z.string().max(2048).optional(),
 }).strict();
 
+// SPIKE CR-01: đăng nhập tài khoản tổ chức (đơn vị + PIN tổ chức + MSSV + PIN cá nhân).
+export const organizationLoginSchema = z.object({
+  organizationId: z.string().uuid(),
+  organizationPin: pinSchema,
+  studentCode: studentCodeSchema,
+  pin: pinSchema,
+}).strict();
+
 export const recoverSchema = z.object({ studentCode: studentCodeSchema }).strict();
 
 export const changeEmailSchema = z.object({ gmail: studentEmailSchema }).strict();
