@@ -1,0 +1,225 @@
+Connecting to local database...
+supabase/tests/001_business_rules.sql ........... ok
+supabase/tests/002_authorization_workflow.sql ... ok
+supabase/tests/003_account_lifecycle.sql ........ ok
+supabase/tests/004_forms.sql .................... ok
+supabase/tests/005_event_programs.sql ........... ok
+supabase/tests/006_bootstrap_template_seed.sql .. ok
+supabase/tests/007_program_registrations.sql .... ok
+supabase/tests/008_program_attendance.sql ....... ok
+supabase/tests/009_account_types.sql ............ 
+# Failed test 1: "accounts có cột account_type"
+# Failed test 2: "accounts có cột organization_id"
+# Failed test 3: "có bảng thành viên đơn vị organization_members"
+# Failed test 5: "AC11: tài khoản tạo như trước mặc định là student"
+#         have: ERROR: column "account_type" does not exist
+#         want: student
+# Failed test 11: "tài khoản sinh viên không được gắn đơn vị"
+#       caught: 42703: column "organization_id" of relation "accounts" does not exist
+#       wanted: 23514
+# Failed test 12: "tài khoản tổ chức không có MSSV"
+#       caught: 42703: column "account_type" of relation "accounts" does not exist
+#       wanted: 23514
+# Failed test 13: "AC3: Ban (school_committee) bị DB chặn tạo tài khoản tổ chức"
+#       caught: 42703: column "account_type" of relation "accounts" does not exist
+#       wanted: P0001: ORG_ACCOUNT_UNIT_NOT_ALLOWED
+# Failed test 14: "AC3: Chi đoàn bị DB chặn khi chèn thẳng vào accounts"
+#       caught: 42703: column "account_type" of relation "accounts" does not exist
+#       wanted: P0001: ORG_ACCOUNT_UNIT_NOT_ALLOWED
+# Failed test 15: "AC3: Chi đoàn bị chặn khi tạo qua create_organization_account"
+#       caught: 42883: function public.create_organization_account(uuid, unknown) does not exist
+#       wanted: P0001: ORG_ACCOUNT_UNIT_NOT_ALLOWED
+# Failed test 16: "AC3: Đoàn Khoa có tài khoản tổ chức"
+#     died: 42703: column "account_type" of relation "accounts" does not exist
+#         CONTEXT:
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 17: "tài khoản tổ chức không có email sinh viên"
+#       caught: 23503: insert or update on table "account_emails" violates foreign key constraint "account_emails_user_id_fkey"
+#       wanted: P0001: STUDENT_EMAIL_ONLY_FOR_STUDENTS
+# Failed test 18: "không đổi được loại tài khoản"
+#       caught: 42703: column "account_type" of relation "accounts" does not exist
+#       wanted: P0001: ACCOUNT_TYPE_IMMUTABLE
+# Failed test 19: "AC3: đơn vị đã có tài khoản không đổi được sang loại không có tài khoản"
+#       caught: no exception
+#       wanted: P0001
+# Failed test 20: "AC6: không cấp vai trò quản lý cho tài khoản cá nhân"
+#       caught: no exception
+#       wanted: P0001
+# Failed test 21: "AC6: tài khoản tổ chức chỉ giữ vai trò của chính đơn vị"
+#       caught: 23503: insert or update on table "role_grants" violates foreign key constraint "role_grants_user_id_fkey"
+#       wanted: P0001: MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+# Failed test 22: "R-6: CTV không cấp cho tài khoản tổ chức"
+#       caught: 23503: insert or update on table "role_grants" violates foreign key constraint "role_grants_user_id_fkey"
+#       wanted: P0001: PERSONAL_ROLE_REQUIRES_STUDENT_ACCOUNT
+# Failed test 25: "sinh viên là thành viên đơn vị"
+#     died: 42P01: relation "public.organization_members" does not exist
+#         CONTEXT:
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 26: "tài khoản tổ chức không là thành viên đơn vị"
+#       caught: 42P01: relation "public.organization_members" does not exist
+#       wanted: P0001: MEMBER_MUST_BE_STUDENT_ACCOUNT
+# Looks like you failed 18 tests of 26
+Failed 18/26 subtests 
+supabase/tests/010_organization_accounts.sql .... 
+# Failed test 1: "có bảng organization_members"
+# Failed test 2: "có bảng organization_pins"
+# Failed test 3: "có bảng organization_login_challenges (phiên tạm bước 1)"
+# Failed test 4: "có bảng organization_session_officers (cán bộ của phiên)"
+# Failed test 5: "audit_events có cột officer_user_id"
+# Failed test 6: "audit_events có cột organization_session_id"
+# Failed test 7: "event_program_history có cột actor_officer_user_id"
+# Failed test 8: "có hàm start_organization_login(đơn vị, PIN)"
+# Failed test 9: "có hàm start_officer_session"
+# Failed test 10: "có hàm end_officer_session"
+# Failed test 11: "có hàm organization_session_ok"
+# Failed test 12: "có hàm list_organization_login_units"
+# Failed test 13: "có hàm manage_organization_account"
+# Failed test 14: "có hàm change_organization_pin"
+# Failed test 15: "có hàm migrate_management_grants_to_organizations"
+# Failed test 17: "AC10: bootstrap tạo tài khoản tổ chức Đoàn Trường"
+# Failed test 18: "AC10: người chạy bootstrap là thành viên Đoàn Trường"
+#         have: ERROR: relation "public.organization_members" does not exist
+#         want: 1
+# Failed test 19: "AC10/AC6: bootstrap không cấp school_admin cho tài khoản cá nhân"
+#         have: 1
+#         want: 0
+# Failed test 20: "AC6: chuyển đúng 4 vai trò quản lý của tài khoản cá nhân"
+#         have: ERROR: function public.migrate_management_grants_to_organizations() does not exist
+#         want: 4
+# Failed test 21: "AC6: không còn vai trò quản lý trên tài khoản cá nhân"
+#         have: 5
+#         want: 0
+# Failed test 22: "AC6: A, C thành thành viên Đoàn Khoa; A, B thành thành viên Văn phòng"
+#         have: ERROR: relation "public.organization_members" does not exist
+#         want: 4
+# Failed test 23: "AC6: tài khoản tổ chức Đoàn Khoa giữ vai trò faculty_manager"
+#         have: ERROR: column a.organization_id does not exist
+#         want: faculty_manager
+# Failed test 25: "AC6: tài khoản cá nhân của cán bộ bị từ chối khi tạo kế hoạch"
+#         have: c0b1dc16-6636-47da-a8b8-8e995aad29df
+#         want: ERROR: FORBIDDEN
+# Failed test 26: "AC1: bước 1 đúng PIN tạo phiên tạm"
+# Failed test 27: "AC1: phiên tạm trỏ về tài khoản tổ chức Đoàn Khoa"
+#         have: ERROR: function public.read_organization_login(unknown, boolean) does not exist
+#         want: NULL
+# Failed test 28: "AC1: A là thành viên còn hiệu lực của Đoàn Khoa"
+# Failed test 29: "AC1: bước 2 tạo phiên tổ chức có cán bộ"
+# Failed test 30: "AC1: phiên tổ chức biết cán bộ đang thao tác (hiện ở thanh trên cùng)"
+#         have: ERROR: function public.current_officer_user_id() does not exist
+#         want: a1000000-0000-4000-8000-000000000001
+# Failed test 31: "AC1: phiên tổ chức có cán bộ là phiên hợp lệ"
+#         have: ERROR: function public.organization_session_ok() does not exist
+#         want: true
+# Failed test 32: "AC2: dropdown chỉ có đơn vị đang hoạt động đã có tài khoản, không có Chi đoàn"
+#         have: ERROR: function public.list_organization_login_units() does not exist
+#         want: 00000000-0000-4000-8000-000000000001,00000000-0000-4000-8000-000000000002,d5301a73-0d4d-474e-ada5-08abb8bf7589
+# Failed test 33: "AC2: dropdown trả về cấp đơn vị để nhóm theo cấp"
+#         have: ERROR: function public.list_organization_login_units() does not exist
+#         want: faculty_union,office,school_union
+# Failed test 34: "AC4: sai PIN tổ chức không tạo phiên tạm"
+#         have: ERROR: function public.start_organization_login(unknown, unknown) does not exist
+#         want: null
+# Failed test 35: "AC4: tài khoản tổ chức bị khóa không tạo phiên tạm"
+#         have: ERROR: function public.start_organization_login(unknown, unknown) does not exist
+#         want: null
+# Failed test 36: "AC4: đơn vị không tồn tại không tạo phiên tạm"
+#         have: ERROR: function public.start_organization_login(uuid, unknown) does not exist
+#         want: null
+# Failed test 37: "AC4: cán bộ không thuộc đơn vị đã chọn bị từ chối"
+#         have: ERROR: function public.organization_member_for(unknown, unknown) does not exist
+#         want: null
+# Failed test 38: "AC4: cán bộ có tài khoản cá nhân không active bị từ chối"
+#         have: ERROR: function public.organization_member_for(unknown, unknown) does not exist
+#         want: null
+# Failed test 39: "AC4/R-4: bước 1 với đơn vị chưa có tài khoản tốn thời gian tương đương đơn vị có tài khoản"
+#     (test result was NULL)
+# Failed test 40: "AC5: ghi được lần thử org_login để giới hạn 5 lần/15 phút theo đơn vị + IP"
+#     died: 23514: new row for relation "auth_attempts" violates check constraint "auth_attempts_action_check"
+#         DETAIL:     Failing row contains (1, org_login, h-don-vi, h-ip, f, 2026-10-30 09:58:36.909358+00).
+#         SCHEMA:     public
+#         TABLE:      auth_attempts
+#         CONSTRAINT: auth_attempts_action_check
+#         CONTEXT:
+#             SQL statement " insert into public.auth_attempts(action, identifier_hash, ip_hash, succeeded) values ('org_login', 'h-don-vi', 'h-ip', false) "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 41: "AC7: phiên Đoàn Khoa F không tạo kế hoạch cho Đoàn Khoa F2"
+#         have: ERROR: UNAUTHENTICATED
+#         want: ERROR: FORBIDDEN
+# Failed test 42: "AC7: phiên Đoàn Khoa F tạo kế hoạch cho chính Đoàn Khoa F"
+# Failed test 44: "AC8: audit ghi tài khoản tổ chức, cán bộ A và phiên"
+#         have: ERROR: column "officer_user_id" does not exist
+#         want: NULL
+# Failed test 45: "AC8: lịch sử kế hoạch ghi cán bộ thao tác"
+#         have: ERROR: column "actor_officer_user_id" does not exist
+#         want: a1000000-0000-4000-8000-000000000001
+# Failed test 46: "AC8: người lập (A) không tự duyệt dù đăng nhập bằng phiên Văn phòng"
+#         have: ERROR: UNAUTHENTICATED
+#         want: ERROR: SELF_REVIEW_FORBIDDEN
+# Failed test 47: "AC8: cán bộ khác (B) của Văn phòng duyệt được"
+#         have: ERROR: UNAUTHENTICATED
+#         want: approved
+# Failed test 48: "AC10: Đoàn Trường tạo tài khoản tổ chức cho Đoàn Khoa"
+#         have: ERROR: function public.manage_organization_account(unknown, unknown, unknown, unknown) does not exist
+#         want: true
+# Failed test 49: "AC10: tài khoản mới đăng nhập được bằng PIN đã đặt"
+# Failed test 50: "AC10: đặt lại PIN có hiệu lực ngay, PIN cũ không dùng được"
+#         have: ERROR: function public.start_organization_login(unknown, unknown) does not exist
+#         want: true/true
+# Failed test 51: "AC10: tài khoản bị khóa không đăng nhập được"
+#         have: ERROR: function public.start_organization_login(unknown, unknown) does not exist
+#         want: null
+# Failed test 52: "AC10: mở khóa thì đăng nhập lại được"
+# Failed test 53: "AC10: đơn vị khác Đoàn Trường không quản lý được tài khoản tổ chức"
+#         have: ERROR: function public.manage_organization_account(unknown, unknown, unknown, unknown) does not exist
+#         want: ERROR: FORBIDDEN
+# Failed test 54: "AC10: đơn vị tự đổi PIN, PIN cũ không dùng được"
+#         have: ERROR: function public.start_organization_login(unknown, unknown) does not exist
+#         want: true/true
+# Failed test 55: "AC12: phiên tạm hết hạn sau 5 phút"
+#         have: ERROR: relation "public.organization_login_challenges" does not exist
+#         want: 300
+# Failed test 56: "AC12: phiên tạm dùng được một lần"
+#         have: ERROR: function public.read_organization_login(unknown, boolean) does not exist
+#         want: NULL
+# Failed test 57: "AC12: phiên tạm đã dùng không dùng lại được"
+#         have: ERROR: function public.read_organization_login(unknown, boolean) does not exist
+#         want: null
+# Failed test 58: "AC12: phiên tạm quá 5 phút không dùng được"
+#         have: ERROR: function public.read_organization_login(unknown, boolean) does not exist
+#         want: null|không có
+# Failed test 59: "AC13/AC14: đổi cán bộ kết thúc dòng cán bộ và xóa phiên Auth cũ"
+#         have: ERROR: relation "public.organization_session_officers" does not exist
+#         want: 1/0
+# Failed test 60: "AC14: token cũ sau khi đổi cán bộ không còn là phiên hợp lệ"
+#         have: ERROR: function public.organization_session_ok() does not exist
+#         want: false
+# Failed test 61: "AC14: token cũ đọc được bản nháp trước khi đổi cán bộ, sau khi đổi thì không"
+#         have: 0/0
+#         want: 1/0
+# Failed test 62: "AC13: sau khi đổi cán bộ, thao tác ghi audit theo cán bộ mới (C)"
+#         have: ERROR: column "officer_user_id" does not exist
+#         want: a1000000-0000-4000-8000-000000000003
+# Failed test 63: "AC14: phiên tổ chức chưa có cán bộ không đọc được bản nháp của đơn vị qua RLS"
+#         have: 0|0
+#         want: 1|0
+# Failed test 64: "AC14: phiên tổ chức chưa có cán bộ không đọc được audit"
+#         have: 0|0
+#         want: 1|0
+# Failed test 65: "AC14: phiên tổ chức chưa có cán bộ không ghi được"
+#         have: ERROR: UNAUTHENTICATED
+#         want: ERROR: FORBIDDEN
+# Failed test 66: "AC14: thu hồi thành viên làm phiên đang mở mất hiệu lực ngay"
+#         have: ERROR: function public.organization_session_ok() does not exist
+#         want: false
+# Looks like you failed 63 tests of 66
+Failed 63/66 subtests 
+
+Test Summary Report
+-------------------
+supabase/tests/009_account_types.sql          (Wstat: 0 Tests: 26 Failed: 18)
+  Failed tests:  1-3, 5, 11-22, 25-26
+supabase/tests/010_organization_accounts.sql  (Wstat: 0 Tests: 66 Failed: 63)
+  Failed tests:  1-15, 17-23, 25-42, 44-66
+Files=10, Tests=297,  1 wallclock secs ( 0.08 usr  0.02 sys +  0.13 cusr  0.06 csys =  0.29 CPU)
+Result: FAIL
+error running container: exit 1

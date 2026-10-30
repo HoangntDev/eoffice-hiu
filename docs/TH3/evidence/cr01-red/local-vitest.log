@@ -1,0 +1,561 @@
+npm notice run hiu-youth-e-office@1.0.0 npx
+npm notice run 'vitest' run
+
+ RUN  v5.0.2 /Users/nth/Developer/eoffice-spike-cr01
+
+ ❯ tests/organization-auth.test.ts (24 tests | 24 failed) 57ms
+   ❯ AC1: đăng nhập hai bước và thanh trên cùng (6)
+     × bước 1 nhận đơn vị + PIN tổ chức 6 số 19ms
+     × bước 1 từ chối PIN tổ chức không đủ 6 số 4ms
+     × bước 2 nhận MSSV 10 số + PIN cá nhân 6 số 2ms
+     × bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1) 1ms
+     × thanh trên cùng hiện đơn vị và cán bộ đang thao tác 3ms
+     × cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV 1ms
+   ❯ AC2: dropdown đơn vị nhóm theo cấp (1)
+     × chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn Trường → Văn phòng → Đoàn Khoa 2ms
+   ❯ AC4: mỗi bước sai đều trả một thông báo lỗi chung (2)
+     × mọi lý do cho cùng status, mã và câu thông báo 2ms
+     × thông báo không nói bước nào hay thông tin nào sai 2ms
+   ❯ AC5: giới hạn thử PIN tổ chức (1)
+     × 5 lần sai trong 15 phút, tính theo đơn vị + IP 2ms
+   ❯ AC9 (R7): phân luồng trang và menu theo loại đơn vị (10)
+     × khách vào /admin 1ms
+     × khách mở trang đăng nhập tổ chức 1ms
+     × sinh viên vào /admin/programs 1ms
+     × phiên tổ chức vào trang sinh viên /programs 1ms
+     × phiên tổ chức vào /union-membership 1ms
+     × phiên tổ chức vào /admin/programs 1ms
+     × sinh viên vào /programs (không đổi, R9) 1ms
+     × Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài khoản 1ms
+     × Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức 1ms
+     × Đoàn Trường thấy cơ cấu và tài khoản tổ chức 1ms
+   ❯ AC12: phiên tạm của bước 1 (1)
+     × cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút 2ms
+   ❯ AC13, AC14: đổi cán bộ và phiên chưa có cán bộ (3)
+     × phiên tổ chức chưa có cán bộ vào /admin thì về bước 2 1ms
+     × phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ 1ms
+     × sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được trang bước 2 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 24 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > bước 1 nhận đơn vị + PIN tổ chức 6 số
+AssertionError: expected { …(2) } to deeply equal { value: { …(2) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "organizationId": "00000000-0000-4000-8000-000000000002",
+-     "organizationPin": "246810",
+-   },
++   "error": "NOT_IMPLEMENTED: parseOrganizationLoginStep1",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:31:8
+     29|   it("bước 1 nhận đơn vị + PIN tổ chức 6 số", () => {
+     30|     expect(outcome(() => parseOrganizationLoginStep1({ organizationId:…
+     31|       .toEqual({ value: { organizationId: ORG_ID, organizationPin: "24…
+       |        ^
+     32|   });
+     33|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > bước 1 từ chối PIN tổ chức không đủ 6 số
+AssertionError: expected { …(2) } to match object { errorType: 'ZodError' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "errorType": "ZodError",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:36:20
+     34|   it("bước 1 từ chối PIN tổ chức không đủ 6 số", () => {
+     35|     const result = outcome(() => parseOrganizationLoginStep1({ organiz…
+     36|     expect(result).toMatchObject({ errorType: ZodError.name });
+       |                    ^
+     37|   });
+     38|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > bước 2 nhận MSSV 10 số + PIN cá nhân 6 số
+AssertionError: expected { …(2) } to deeply equal { value: { …(2) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "pin": "123456",
+-     "studentCode": "2201110202",
+-   },
++   "error": "NOT_IMPLEMENTED: parseOfficerLoginStep2",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:41:8
+     39|   it("bước 2 nhận MSSV 10 số + PIN cá nhân 6 số", () => {
+     40|     expect(outcome(() => parseOfficerLoginStep2({ studentCode: "220111…
+     41|       .toEqual({ value: { studentCode: "2201110202", pin: "123456" } }…
+       |        ^
+     42|   });
+     43|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)
+AssertionError: expected { …(2) } to match object { errorType: 'ZodError' }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "errorType": "ZodError",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:46:20
+     44|   it("bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)", () =…
+     45|     const result = outcome(() => parseOfficerLoginStep2({ studentCode:…
+     46|     expect(result).toMatchObject({ errorType: ZodError.name });
+       |                    ^
+     47|   });
+     48|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > thanh trên cùng hiện đơn vị và cán bộ đang thao tác
+AssertionError: expected { …(2) } to deeply equal { value: StringContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   "value": StringContaining "Văn phòng Đoàn – Hội",
++   "error": "NOT_IMPLEMENTED: organizationHeader",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:51:20
+     49|   it("thanh trên cùng hiện đơn vị và cán bộ đang thao tác", () => {
+     50|     const header = outcome(() => organizationHeader({ unitName: "Văn p…
+     51|     expect(header).toEqual({ value: expect.stringContaining("Văn phòng…
+       |                    ^
+     52|     expect(header).toEqual({ value: expect.stringContaining("Lê Thị Ma…
+     53|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC1: đăng nhập hai bước và thanh trên cùng > cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV
+AssertionError: expected { …(2) } to deeply equal { Object (value) }
+
+- Expected
++ Received
+
+  {
+-   "value": StringContaining "2201110201",
++   "error": "NOT_IMPLEMENTED: organizationHeader",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:57:8
+     55|   it("cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV", () => {
+     56|     expect(outcome(() => organizationHeader({ unitName: "Đoàn Khoa CNK…
+     57|       .toEqual({ value: expect.stringContaining("2201110201") });
+       |        ^
+     58|   });
+     59| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC2: dropdown đơn vị nhóm theo cấp > chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn Trường → Văn phòng → Đoàn Khoa
+AssertionError: expected { …(2) } to deeply equal { value: [ { …(3) }, { …(3) }, …(1) ] }
+
+- Expected
++ Received
+
+  {
+-   "value": [
+-     {
+-       "label": Any<String>,
+-       "level": "school_union",
+-       "units": [
+-         {
+-           "id": "s",
+-           "name": "Đoàn Trường",
+-         },
+-       ],
+-     },
+-     {
+-       "label": Any<String>,
+-       "level": "office",
+-       "units": [
+-         {
+-           "id": "o",
+-           "name": "Văn phòng Đoàn – Hội",
+-         },
+-       ],
+-     },
+-     {
+-       "label": Any<String>,
+-       "level": "faculty_union",
+-       "units": [
+-         {
+-           "id": "f1",
+-           "name": "Đoàn Khoa CNKT",
+-         },
+-       ],
+-     },
+-   ],
++   "error": "NOT_IMPLEMENTED: groupLoginUnits",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:74:20
+     72|   it("chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn T…
+     73|     const result = outcome(() => groupLoginUnits(units));
+     74|     expect(result).toEqual({
+       |                    ^
+     75|       value: [
+     76|         { level: "school_union", label: expect.any(String), units: [{ …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC4: mỗi bước sai đều trả một thông báo lỗi chung > mọi lý do cho cùng status, mã và câu thông báo
+AssertionError: expected { …(2) } to deeply equal { value: { status: 401, …(2) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "code": "INVALID_CREDENTIALS",
+-     "message": Any<String>,
+-     "status": 401,
+-   },
++   "error": "NOT_IMPLEMENTED: organizationLoginFailure",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:93:24
+     91|     const results = reasons.map((reason) => outcome(() => organization…
+     92|     expect(new Set(results.map((r) => JSON.stringify(r))).size).toBe(1…
+     93|     expect(results[0]).toEqual({ value: { status: 401, code: "INVALID_…
+       |                        ^
+     94|   });
+     95|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC4: mỗi bước sai đều trả một thông báo lỗi chung > thông báo không nói bước nào hay thông tin nào sai
+AssertionError: expected { …(2) } to have property "value.message"
+ ❯ tests/organization-auth.test.ts:98:20
+     96|   it("thông báo không nói bước nào hay thông tin nào sai", () => {
+     97|     const result = outcome(() => organizationLoginFailure("not_a_membe…
+     98|     expect(result).toHaveProperty("value.message");
+       |                    ^
+     99|     expect(JSON.stringify(result)).not.toMatch(/thành viên|MSSV không|…
+    100|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC5: giới hạn thử PIN tổ chức > 5 lần sai trong 15 phút, tính theo đơn vị + IP
+AssertionError: expected { …(2) } to deeply equal { Object (value) }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "org_login",
+-     "maxFailures": 5,
+-     "scope": [
+-       "organization",
+-       "ip",
+-     ],
+-     "windowMinutes": 15,
+-   },
++   "error": "NOT_IMPLEMENTED: orgLoginAttemptPolicy",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:106:8
+    104|   it("5 lần sai trong 15 phút, tính theo đơn vị + IP", () => {
+    105|     expect(outcome(() => orgLoginAttemptPolicy()))
+    106|       .toEqual({ value: { action: "org_login", maxFailures: 5, windowM…
+       |        ^
+    107|   });
+    108| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > khách vào /admin
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > sinh viên vào /admin/programs
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "redirect",
+-     "to": "/admin/login",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+    118|     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+    119|   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+    120|     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+       |                                                                 ^
+    121|   });
+    122|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > khách mở trang đăng nhập tổ chức
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > phiên tổ chức vào /admin/programs
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > sinh viên vào /programs (không đổi, R9)
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'next' } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "next",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+    118|     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+    119|   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+    120|     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+       |                                                                 ^
+    121|   });
+    122|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > phiên tổ chức vào trang sinh viên /programs
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > phiên tổ chức vào /union-membership
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "redirect",
+-     "to": "/admin",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+    118|     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+    119|   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+    120|     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+       |                                                                 ^
+    121|   });
+    122|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài khoản
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   "value": ArrayContaining [
+-     "/admin/programs",
+-   ],
++   "error": "NOT_IMPLEMENTED: adminMenuFor",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:125:18
+    123|   it("Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài kh…
+    124|     const menu = outcome(() => adminMenuFor("faculty_union"));
+    125|     expect(menu).toEqual({ value: expect.arrayContaining(["/admin/prog…
+       |                  ^
+    126|     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+    127|     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   "value": ArrayContaining [
+-     "/admin/reviews",
+-   ],
++   "error": "NOT_IMPLEMENTED: adminMenuFor",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:132:18
+    130|   it("Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức", () => {
+    131|     const menu = outcome(() => adminMenuFor("office"));
+    132|     expect(menu).toEqual({ value: expect.arrayContaining(["/admin/revi…
+       |                  ^
+    133|     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+    134|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC9 (R7): phân luồng trang và menu theo loại đơn vị > Đoàn Trường thấy cơ cấu và tài khoản tổ chức
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   "value": ArrayContaining [
+-     "/admin/organization",
+-     "/admin/accounts",
+-   ],
++   "error": "NOT_IMPLEMENTED: adminMenuFor",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:138:8
+    136|   it("Đoàn Trường thấy cơ cấu và tài khoản tổ chức", () => {
+    137|     expect(outcome(() => adminMenuFor("school_union")))
+    138|       .toEqual({ value: expect.arrayContaining(["/admin/organization",…
+       |        ^
+    139|   });
+    140| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC12: phiên tạm của bước 1 > cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút
+AssertionError: expected { …(2) } to deeply equal { value: { httpOnly: true, …(3) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "httpOnly": true,
+-     "maxAge": 300,
+-     "path": "/",
+-     "sameSite": "strict",
+-   },
++   "error": "NOT_IMPLEMENTED: pendingLoginCookieOptions",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:145:8
+    143|   it("cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút",…
+    144|     expect(outcome(() => pendingLoginCookieOptions()))
+    145|       .toEqual({ value: { httpOnly: true, sameSite: "strict", path: "/…
+       |        ^
+    146|   });
+    147| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC13, AC14: đổi cán bộ và phiên chưa có cán bộ > phiên tổ chức chưa có cán bộ vào /admin thì về bước 2
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "redirect",
+-     "to": "/admin/login/officer",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:154:8
+    152|   it("phiên tổ chức chưa có cán bộ vào /admin thì về bước 2", () => {
+    153|     expect(outcome(() => adminRouteDecision("/admin", noOfficer)))
+    154|       .toEqual({ value: { action: "redirect", to: "/admin/login/office…
+       |        ^
+    155|   });
+    156|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC13, AC14: đổi cán bộ và phiên chưa có cán bộ > phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "redirect",
+-     "to": "/admin/login/officer",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:159:8
+    157|   it("phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ", ()…
+    158|     expect(outcome(() => adminRouteDecision("/admin/reviews", noOffice…
+    159|       .toEqual({ value: { action: "redirect", to: "/admin/login/office…
+       |        ^
+    160|   });
+    161|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/24]⎯
+
+ FAIL  tests/organization-auth.test.ts > AC13, AC14: đổi cán bộ và phiên chưa có cán bộ > sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được trang bước 2
+AssertionError: expected { …(2) } to deeply equal { value: { action: 'next' } }
+
+- Expected
++ Received
+
+  {
+-   "value": {
+-     "action": "next",
+-   },
++   "error": "NOT_IMPLEMENTED: adminRouteDecision",
++   "errorType": "NotImplementedError",
+  }
+
+ ❯ tests/organization-auth.test.ts:163:90
+    161|
+    162|   it("sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được tran…
+    163|     expect(outcome(() => adminRouteDecision("/admin/login/officer", { …
+       |                                                                                          ^
+    164|   });
+    165| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/24]⎯
+
+
+ Test Files  1 failed | 13 passed (14)
+      Tests  24 failed | 142 passed (166)
+   Start at  16:59:49
+   Duration  2.76s (environment 32%, transform 30%, import 29%, tests 7%, worker 1%)
+
+  Transform  transforming modules took 2.90s · 30% of tracked time, re-done on every run
+             persist transforms across runs with fsModuleCache: true
+             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns
+
