@@ -1,0 +1,21 @@
+[M1] PASS – tài khoản tổ chức: 3 (trạng thái pending_pin); role_grants tổ chức: FACULTY_UNION:2fd4ac6c-10aa-4656-a718-3c32f5587dd6:faculty_manager,OFFICE:office,SCHOOL_UNION:school_admin; vai trò quản lý còn trên tài khoản cá nhân: 0; thành viên: 9990000001@FACULTY_UNION:2fd4ac6c-10aa-4656-a718-3c32f5587dd6:manager,9990000001@OFFICE:officer,9990000002@OFFICE:officer,9990000003@FACULTY_UNION:2fd4ac6c-10aa-4656-a718-3c32f5587dd6:executive,9990000005@SCHOOL_UNION:officer; CTV còn hiệu lực: 1; audit role.migrated_to_organization: 5
+[M1b] PASS – Đoàn Khoa không có vai trò quản lý nào → không tạo tài khoản tổ chức: đúng
+[M2] PASS – A đăng nhập cá nhân 200; save_event_program → FORBIDDEN
+[L1] PASS – bước 1 → 200, cookie org_login, không có phiên Auth; hạn phiên tạm 300 giây; POST /api/event-programs bằng phiên tạm → 401
+[L2] PASS – bước 2 → 200 next=/admin; save_event_program OK; history: actor = tài khoản tổ chức, officer = A, tên "Đoàn Khoa Khoa Spike CR-01 – 9990000001"; audit: tổ chức | A | đơn vị | phiên đủ
+[L2b] PASS – dùng lại phiên tạm đã dùng → 401
+[L2c] PASS – phiên Đoàn Khoa tạo chương trình cho Đoàn Khoa khác → FORBIDDEN
+[L3] PASS – 7 tình huống → 1 thông báo: 401 Không thể đăng nhập tài khoản tổ chức. Kiểm tra lại thông tin đã nhập.
+[L4] PASS – bước 2 sau khi phiên tạm hết hạn → 401, cùng thông báo chung
+[L5] PASS – đổi cán bộ → 200 next=/admin/login/officer; token của A sau khi đổi → OFFICER_REQUIRED; bước 2 với C (không PIN tổ chức) → 200; thao tác ghi officer = C
+[L6] PASS – A nộp bằng phiên Đoàn Khoa (OK); A duyệt bằng phiên Văn phòng → SELF_REVIEW_FORBIDDEN; B phiên Văn phòng → approved
+[L7] PASS – ghi bằng phiên tổ chức không có cán bộ → OFFICER_REQUIRED; đọc kế hoạch của đơn vị qua RLS vẫn được: 2 dòng (rủi ro đã ghi)
+[L8] PASS – signInWithPassword(email tổ chức, PIN tổ chức) → Invalid login credentials
+[L9] PASS – phiên đang mở của A sau khi thu hồi → OFFICER_REQUIRED; đăng nhập lại bước 2 → 401
+[L10] PASS – 5 lần sai → 401,401,401,401,401; lần 6 PIN đúng → 429; IP khác → 200
+[L11] PASS – Chi đoàn → ORG_ACCOUNT_UNIT_NOT_ALLOWED; Ban → ORG_ACCOUNT_UNIT_NOT_ALLOWED; cấp faculty_manager cho sinh viên → MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT
+[L12] PASS – sinh viên đăng nhập /login → 200; CTV đăng nhập cá nhân → 200, has_active_role('collaborator') = true
+
+Thời gian bước 1 (ms): 82, 90, 25, 93, 84, 78
+Thời gian bước 2 thành công (ms): 369, 404
+Kết quả: 17/17 PASS

@@ -13,4 +13,4 @@ chờ load < 8 rồi đo lại. Chỉ dùng các số đo sau khi dừng build:
 | has_active_role kiểm phiên, bản SQL (202610300001, bản sao pg_temp) | 5999, 5955 | ~0,60 |
 | has_active_role kiểm phiên, bản plpgsql (202610300002, hàm thật) | 864, 828, 1092 | ~0,08–0,11 |
 
-Dòng 1 và 3 lấy từ S11 trong spike-lan-1..3.log. Dòng 2 đo riêng bằng psql cùng điều kiện.
+Dòng 1 và 3 lấy từ S11 trong spike-lan-1-chay-1..3.log. Dòng 2 đo riêng bằng psql cùng điều kiện.
