@@ -1,0 +1,157 @@
+Connecting to local database...
+supabase/tests/001_business_rules.sql ........... ok
+supabase/tests/002_authorization_workflow.sql ... 
+# Failed test 3: "office records paper book receipt"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function record_paper_book_event(uuid,uuid,text,date,uuid) line 4 at RAISE
+#             SQL statement "select public.record_paper_book_event('10000000-0000-4000-8000-000000000004','30000000-0000-4000-8000-000000000001','received',current_date,'20000000-0000-4000-8000-000000000001')"
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 4: "office recognizes after receipt"
+#     died: P0001: PAPER_BOOK_NOT_RECEIVED
+#         CONTEXT:
+#             PL/pgSQL function review_union_application(uuid,text,text,uuid) line 35 at RAISE
+#             SQL statement "select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','Hồ sơ hợp lệ','20000000-0000-4000-8000-000000000001')"
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 5: "recognition creates membership"
+#         have: NULL
+#         want: recognized
+# Looks like you failed 3 tests of 10
+Failed 3/10 subtests 
+supabase/tests/003_account_lifecycle.sql ........ ok
+supabase/tests/004_forms.sql .................... 
+# Failed test 8: "school_admin can manage forms for school_union org"
+# Failed test 10: "school_admin can create form template"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function save_form_template(uuid,text,text,jsonb,jsonb,text) line 4 at RAISE
+#             SQL statement "
+#               select public.save_form_template(
+#                 null, 'Mẫu kiểm tra', 'Mô tả', '{"type":"hiu_student"}'::jsonb, '[]'::jsonb, 'draft')
+#             "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Looks like you failed 2 tests of 14
+Failed 2/14 subtests 
+psql:supabase/tests/005_event_programs.sql:146: ERROR:  PROGRAM_NOT_FOUND
+CONTEXT:  PL/pgSQL function submit_event_program(uuid,text) line 9 at RAISE
+supabase/tests/005_event_programs.sql ........... 
+# Failed test 1: "Đoàn Khoa A tạo bản nháp cho Khoa mình"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function save_event_program(uuid,uuid,text,text,text,timestamp with time zone,timestamp with time zone,integer,text,date,text) line 16 at RAISE
+#             SQL statement " insert into uc6_ctx values ('p1', public.save_event_program(null, (select v from uc6_ctx where k = 'org_a'),
+#                    'Ngày hội tình nguyện Khoa A', null, null, null, null, null, null, null, 'test-req')) "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 8: "Gửi khi thiếu trường bắt buộc bị chặn"
+#    error message: 'PROGRAM_NOT_FOUND'
+#    doesn't match: 'MISSING_REQUIRED_FIELDS:%'
+# Failed test 10: "Đoàn Khoa A khai báo đủ thông tin"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function save_event_program(uuid,uuid,text,text,text,timestamp with time zone,timestamp with time zone,integer,text,date,text) line 16 at RAISE
+#             SQL statement " select public.save_event_program((select v from uc6_ctx where k = 'p1'), null, 'Ngày hội tình nguyện Khoa A',
+#                    'Nội dung và mục tiêu chương trình', 'Hội trường A', '2026-11-20 08:00+07', '2026-11-20 11:00+07', 120,
+#                    '12/KH-ĐKA', '2026-10-12') "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 11: "Gửi khi chưa có PDF kế hoạch đã ký bị chặn"
+#       caught: P0001: PROGRAM_NOT_FOUND
+#       wanted: P0001: PLAN_DOCUMENT_REQUIRED
+# Failed test 13: "Storage RLS: Đoàn Khoa A tải PDF vào hồ sơ của mình"
+#     died: 42501: new row violates row-level security policy for table "objects"
+#         CONTEXT:
+#             SQL statement " insert into storage.objects (bucket_id, name)
+#                  values ('event-program-plans', (select v from uc6_ctx where k = 'p1')::text || '/' || (select v from uc6_ctx where k = 'obj1')::text || '.pdf') "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 14: "Không ghi nhận tệp chưa tồn tại trong Storage"
+#       caught: P0001: PROGRAM_NOT_FOUND
+#       wanted: P0001: DOCUMENT_NOT_UPLOADED
+# Failed test 15: "Ghi nhận PDF kế hoạch đã ký"
+#     died: P0001: PROGRAM_NOT_FOUND
+#         CONTEXT:
+#             PL/pgSQL function attach_event_program_document(uuid,text,text,integer,text,text) line 9 at RAISE
+#             SQL statement " select public.attach_event_program_document((select v from uc6_ctx where k = 'p1'),
+#                    (select v from uc6_ctx where k = 'p1')::text || '/' || (select v from uc6_ctx where k = 'obj1')::text || '.pdf',
+#                    'ke-hoach-da-ky.pdf', 2048, repeat('a', 64)) "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 18: "Văn phòng không duyệt bản nháp chưa gửi"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: INVALID_TRANSITION
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 25/35 subtests 
+supabase/tests/006_bootstrap_template_seed.sql .. ok
+psql:supabase/tests/007_program_registrations.sql:141: ERROR:  FORBIDDEN
+CONTEXT:  PL/pgSQL function set_program_registration_status(uuid,text,text) line 12 at RAISE
+supabase/tests/007_program_registrations.sql .... 
+# Failed test 11: "Chương trình chưa được Văn phòng duyệt thì không cấu hình/mở đăng ký"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: PROGRAM_NOT_APPROVED
+# Failed test 12: "Tổng chỉ tiêu nhóm không vượt sức chứa"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: QUOTAS_EXCEED_CAPACITY
+# Failed test 13: "BTC Khoa A lưu cấu hình chương trình đã duyệt"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function save_program_registration_settings(uuid,jsonb,integer,boolean,uuid,timestamp with time zone,timestamp with time zone,text,jsonb,text) line 16 at RAISE
+#             SQL statement " select public.save_program_registration_settings('a7000000-0000-4000-8000-0000000000aa',
+#               '{"type":"faculty","faculty_id":"c7000000-0000-4000-8000-00000000000a"}', 3, false, null, null, null, 'Mang thẻ SV',
+#               '[{"label":"Ngành A2","audience_rule":{"type":"major","program_id":"c7000000-0000-4000-8000-0000000000a2"},"seats":2}]',
+#               'uc7-req-settings') "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 54/67 subtests 
+psql:supabase/tests/008_program_attendance.sql:89: ERROR:  SESSION_NOT_FOUND
+CONTEXT:  PL/pgSQL function set_attendance_session_status(uuid,text,text,text) line 12 at RAISE
+supabase/tests/008_program_attendance.sql ....... 
+# Failed test 2: "Điểm một lượt không vượt điểm tối đa"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: INVALID_SESSION_POINTS
+# Failed test 3: "Điểm theo bậc không vượt điểm tối đa"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: INVALID_TIERS
+# Failed test 4: "Quy tắc đủ lượt bắt buộc cần ít nhất 1 lượt bắt buộc"
+#       caught: P0001: FORBIDDEN
+#       wanted: P0001: REQUIRED_SESSION_NEEDED
+# Failed test 5: "BTC lưu: tối đa 3 điểm, cộng từng lượt (0 + 2 + 2)"
+#     died: P0001: FORBIDDEN
+#         CONTEXT:
+#             PL/pgSQL function save_attendance_plan(uuid,integer,text,jsonb,boolean,jsonb,text,text) line 20 at RAISE
+#             SQL statement " select public.save_attendance_plan('a8000000-0000-4000-8000-0000000000aa', 3, 'sum_sessions', '[]', false,
+#               '[{"label":"Đầu giờ","points":0,"sort_order":0},{"label":"Giữa giờ","points":2,"sort_order":1},
+#                 {"label":"Cuối giờ","points":2,"sort_order":2}]', null, 'uc8-plan') "
+#             PL/pgSQL function lives_ok(text,text) line 14 at EXECUTE
+# Failed test 6: "3 lượt"
+#         have: 0
+#         want: 3
+# Failed test 7: "Sinh viên không lấy được QR"
+#       caught: P0001: SESSION_NOT_FOUND
+#       wanted: P0001: FORBIDDEN
+# Failed test 8: "Sinh viên không mở lượt"
+#       caught: P0001: SESSION_NOT_FOUND
+#       wanted: P0001: FORBIDDEN
+# Failed test 9: "Lượt chưa mở thì không phát QR"
+#       caught: P0001: SESSION_NOT_FOUND
+#       wanted: P0001: SESSION_NOT_OPEN
+Dubious, test returned 3 (wstat 768, 0x300)
+Failed 54/55 subtests 
+
+Test Summary Report
+-------------------
+supabase/tests/002_authorization_workflow.sql (Wstat: 0 Tests: 10 Failed: 3)
+  Failed tests:  3-5
+supabase/tests/004_forms.sql                  (Wstat: 0 Tests: 14 Failed: 2)
+  Failed tests:  8, 10
+supabase/tests/005_event_programs.sql         (Wstat: 768 (exited 3) Tests: 18 Failed: 8)
+  Failed tests:  1, 8, 10-11, 13-15, 18
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 35 tests but ran 18.
+supabase/tests/007_program_registrations.sql  (Wstat: 768 (exited 3) Tests: 16 Failed: 3)
+  Failed tests:  11-13
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 67 tests but ran 16.
+supabase/tests/008_program_attendance.sql     (Wstat: 768 (exited 3) Tests: 9 Failed: 8)
+  Failed tests:  2-9
+  Non-zero exit status: 3
+  Parse errors: Bad plan.  You planned 55 tests but ran 9.
+Files=8, Tests=91,  1 wallclock secs ( 0.06 usr  0.02 sys +  0.11 cusr  0.04 csys =  0.23 CPU)
+Result: FAIL
+error running container: exit 1
