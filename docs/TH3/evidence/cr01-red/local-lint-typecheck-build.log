@@ -1,0 +1,54 @@
+# Lint, typecheck, build trên branch cr/CR-01-TaiKhoanToChuc (commit fa1d4c9), máy local, 30/10/2026
+typecheck exit=0
+lint exit=0
+build exit=0
+
+## npm run typecheck
+npm notice run hiu-youth-e-office@1.0.0 typecheck
+npm notice run tsc --noEmit
+
+## npm run lint
+npm notice run hiu-youth-e-office@1.0.0 lint
+npm notice run eslint .
+
+## npm run build (cuối log)
+├ ƒ /api/organization/units
+├ ƒ /api/reference-options
+├ ƒ /api/student-profile
+├ ƒ /api/students
+├ ƒ /api/union-membership
+├ ƒ /api/union-membership/assignment
+├ ƒ /api/union-membership/checklist
+├ ƒ /api/union-membership/checklist-definition
+├ ƒ /api/union-membership/paper-book
+├ ƒ /api/union-membership/review
+├ ƒ /attend/[sessionId]
+├ ƒ /auth/confirm
+├ ƒ /auth/recover
+├ ƒ /forms
+├ ƒ /forms/[id]
+├ ƒ /forms/[id]/edit
+├ ƒ /forms/[id]/responses
+├ ƒ /forms/new
+├ ƒ /forms/templates
+├ ƒ /forms/templates/[id]
+├ ƒ /forms/templates/new
+├ ƒ /login
+├ ƒ /office/membership
+├ ƒ /onboarding/profile
+├ ƒ /organization
+├ ƒ /programs
+├ ƒ /programs/[id]
+├ ƒ /programs/[id]/attendance
+├ ƒ /programs/[id]/attendance/[sessionId]/qr
+├ ƒ /programs/[id]/registrations
+├ ƒ /programs/new
+├ ƒ /register
+├ ƒ /signup/create-pin
+└ ƒ /union-membership
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+
