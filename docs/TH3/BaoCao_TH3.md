@@ -466,6 +466,7 @@ Kiểm chứng ra sao:
 - Bản sửa được kiểm trên bản build thật và trên gói tải từ Release: smoke test 8/8, lặp lại kịch bản sự cố, diễn tập rollback.
 - Mọi số liệu lấy từ output lệnh thật, lưu ở `docs/TH3/evidence/` và `docs/TH3/INC-01-ThieuCauHinh/evidence/`; chỗ đo bằng mô phỏng (thời điểm phát hiện ở v1.0.0) ghi rõ là mô phỏng.
 - Trợ lý tự mở xem từng ảnh trước khi commit; một ảnh chụp sai đã bị loại.
+- Log và ảnh bằng chứng đã che IP mạng nội bộ thành `<LAN-IP>` như ở TH2 (issue #75): thay trong file log, tô lại vùng IP trong ảnh, rồi quét chữ (OCR) toàn bộ 31 ảnh của `docs/TH3` để chắc không còn IP dải riêng.
 - Sinh viên xem lại kết quả, diff và tài liệu. Ràng buộc giao cho trợ lý (ghi trong `CLAUDE.md`): không commit thẳng `main`, không merge khi CI đỏ, không xóa/gắn lại tag, không reset DB đang dùng, không đụng Supabase cloud, không deploy; mọi diễn tập và sự cố chỉ chạy trên stack tách biệt.
 - Không có dòng ghi tên trợ lý AI trong commit và mô tả PR của TH3 (kiểm 20 commit từ `e6a66db` đến `24e005a` bằng `git log … | grep -iE "co-authored-by|generated with"`: 0 dòng).
 

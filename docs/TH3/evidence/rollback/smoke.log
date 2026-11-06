@@ -1,7 +1,7 @@
 # Bước 1: npm start
 ▲ Next.js 16.3.8
 - Local:         http://localhost:3500
-- Network:       http://10.0.24.97:3500
+- Network:       http://<LAN-IP>:3500
 ✓ Ready in 193ms
 ✓ Running next.config.ts took 49ms
 # Bước 2: $BASE/ → 200

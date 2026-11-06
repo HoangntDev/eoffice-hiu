@@ -1,6 +1,6 @@
 ▲ Next.js 16.4.5
 - Local:         http://localhost:3500
-- Network:       http://192.168.100.21:3500
+- Network:       http://<LAN-IP>:3500
 ✓ Ready in 285ms
 ✓ Running next.config.ts took 68ms
 {"ts":"2026-11-06T03:22:45.849Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73801}
