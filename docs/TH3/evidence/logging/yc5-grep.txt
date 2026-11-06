@@ -1,0 +1,15 @@
+$ date
+Fri Nov  6 09:04:30 +07 2026
+$ ls -la logs/
+total 56
+drwxr-xr-x   4 <user> staff    128 Nov  6 08:53 .
+drwxr-xr-x  31 <user> staff    992 Nov  6 08:53 ..
+-rw-r--r--   1 <user> staff    421 Nov  6 08:53 .app-log-audit.json
+-rw-r--r--   1 <user> staff  23833 Nov  6 09:03 app-2026-11-06.log
+
+$ grep -niE "password|token|secret|apikey|pin" logs/*.log
+2:{"ts":"2026-11-06T01:54:49.055Z","level":"warn","source":"auth","event":"auth.login_failed","requestId":"c81d4353-f4cd-4f60-9c9f-a621fb892ee7","studentCode":"221***01","ip":"198.51.100.7","reason":"wrong_pin","status":401}
+45:{"ts":"2026-11-06T01:56:13.600Z","level":"warn","source":"supabase.user","event":"db.slow","operation":"auth.token","durationMs":153,"status":400,"thresholdMs":20}
+46:{"ts":"2026-11-06T01:56:13.614Z","level":"warn","source":"auth","event":"auth.login_failed","requestId":"4c58a36a-9bf5-4b81-b4c6-c35ce1a15389","studentCode":"221***01","ip":"198.51.100.7","reason":"wrong_pin","status":401}
+50:{"ts":"2026-11-06T01:56:14.129Z","level":"warn","source":"supabase.user","event":"db.slow","operation":"auth.token","durationMs":193,"status":200,"thresholdMs":20}
+(exit 0)

@@ -1,0 +1,9 @@
+
+ RUN  v5.0.2 /Users/nth/Developer/hiu-youth-e-office
+
+
+ Test Files  2 passed (2)
+      Tests  27 passed (27)
+   Start at  09:04:32
+   Duration  541ms (import 47%, transform 31%, tests 19%, worker 3%)
+

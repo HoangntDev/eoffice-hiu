@@ -118,7 +118,8 @@ Sao chép từ [`.env.example`](.env.example) sang `.env.local`. Không commit `
 | `SUPABASE_SERVICE_ROLE_KEY` | chỉ server | Service-role key; không bao giờ thêm tiền tố `NEXT_PUBLIC_` |
 | `AUTH_RATE_LIMIT_PEPPER` | chỉ server | Chuỗi ngẫu nhiên dài để băm định danh khi giới hạn tần suất đăng nhập/khôi phục |
 | `NEXT_PUBLIC_APP_URL` | trình duyệt + server | Origin của app, dùng trong link xác thực/khôi phục |
-| `LOG_LEVEL` | chỉ server | Mức log JSON: `debug`, `info`, `warn`, `error`. Để trống thì theo môi trường: dev → `debug`, production → `info`, test → `warn` |
+| `LOG_LEVEL` | chỉ server | Mức log JSON: `debug`, `info`, `warn`, `error`. Để trống thì theo môi trường: dev → `debug`, production → `info`, test → `warn`. Log ghi ra console và file `logs/app-YYYY-MM-DD.log` (xoay theo ngày, giữ 7 file) |
+| `DB_SLOW_MS` | chỉ server | Ngưỡng (ms) ghi log `db.slow` khi lời gọi database chậm. Trống thì 1000 |
 | `PORT` | chỉ server | Cổng của `npm start` / `next start` (mặc định 3000) |
 
 Tạo file cấu hình từ file mẫu:
