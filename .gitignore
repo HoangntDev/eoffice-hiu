@@ -47,3 +47,6 @@ next-env.d.ts
 
 # IDE
 .idea/
+
+# sao lưu dữ liệu (scripts/backup.sh) – có dữ liệu cá nhân, không commit
+/backups/

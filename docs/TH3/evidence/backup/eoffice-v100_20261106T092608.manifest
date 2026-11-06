@@ -1,0 +1,15 @@
+stack=eoffice-v100
+created_at=2026-11-06T02:26:09Z
+migration_version=202610150003
+schemas=public auth storage
+db_container=supabase_db_eoffice-v100
+storage_container=supabase_storage_eoffice-v100
+storage_path=/mnt
+dump_bytes=801877
+storage_files=3
+pg_dump_version=17.6
+ms_count=264
+ms_dump=391
+ms_storage=145
+ms_checksum=103
+ms_total=1146

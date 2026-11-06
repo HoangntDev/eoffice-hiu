@@ -1,0 +1,7 @@
+[09:26:11] Phục hồi eoffice-v100_20261106T092608 (stack nguồn eoffice-v100, tạo lúc 2026-11-06T02:26:09Z) vào stack eoffice-v100
+[09:26:11] Checksum khớp (5 file, 58 ms)
+[09:26:12] Postgres đã nạp lại (883 ms)
+[09:26:12] Storage: 3 file (310 ms)
+[09:26:12] Số bản ghi khớp lúc sao lưu: 54 bảng (170 ms)
+[09:26:12] Tổng thời gian phục hồi: 1680 ms (checksum 58, postgres 883, storage 310)
+[09:26:12] Tiếp theo: khởi động lại web nếu đã dừng, chạy smoke test (docs/testing/smoke-test.md).

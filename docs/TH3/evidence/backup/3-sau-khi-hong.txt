@@ -1,0 +1,51 @@
+### 2026-11-06 09:26:09 +0700 – 3-sau-khi-hong.txt
+## Số bản ghi các bảng chính
+            bang            | count 
+----------------------------+-------
+ auth.users                 |     7
+ accounts                   |     7
+ student_profiles           |     7
+ union_applications         |     3
+ event_programs             |     7
+ event_program_documents    |     3
+ program_registrations      |     9
+ program_attendance_records |     1
+ forms                      |     3
+ form_responses             |     0
+ audit_events               |    18
+ storage.objects            |     3
+(12 rows)
+
+## Bản ghi mẫu: kế hoạch chương trình
+    id    |    status     |                         title                          | dang_ky 
+----------+---------------+--------------------------------------------------------+---------
+ 6f49f3a6 | approved      | Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026     |       4
+ fe7bd5f2 | approved      | SAI DỮ LIỆU – Workshop “Viết CV và                     |       2
+ 74aaa90a | approved      | SAI DỮ LIỆU – Chiến dịch Tình nguy                     |       3
+ b758a3a1 | approved      | Giải bóng đá nam sinh viên Khoa CNKT mở rộng 2026      |       0
+ 3266408c | needs_changes | Hội thao truyền thống Khoa CNKT 2026 (dữ liệu thử TH3) |       0
+ abaedc56 | submitted     | Kế hoạch diễn tập sao lưu số 1 (dữ liệu thử)           |       0
+ ccab68ef | submitted     | Kế hoạch diễn tập sao lưu số 2 (dữ liệu thử)           |       0
+(7 rows)
+
+## Đăng ký theo chương trình và trạng thái
+               chuong_trinh               |  status  | count 
+------------------------------------------+----------+-------
+ Ngày hội Hiến máu tình nguyện “Giọt hồng | rejected |     4
+ SAI DỮ LIỆU – Chiến dịch Tình nguy       | accepted |     1
+ SAI DỮ LIỆU – Chiến dịch Tình nguy       | pending  |     1
+ SAI DỮ LIỆU – Chiến dịch Tình nguy       | rejected |     1
+ SAI DỮ LIỆU – Workshop “Viết CV và       | accepted |     2
+(5 rows)
+
+## Bản ghi mẫu: hồ sơ Đoàn viên
+    id    | cycle_key |          status          
+----------+-----------+--------------------------
+ 7fce0985 | 2026-2027 | recognized
+ 9d96c57f | 2026-2027 | needs_changes
+ d21bbd1b | 2026-2027 | collaborator_recommended
+(3 rows)
+
+## File PDF trong Storage (sha256 nội dung)
+ee246044085594a5  ./stub/stub/event-program-plans/abaedc56-05ac-453b-bd31-9e697b056848/c1a73f5e-b016-4f0e-b7
+e97e85073c50a6b4  ./stub/stub/event-program-plans/ccab68ef-9b46-41cd-a42f-8fdb9ec82128/5fded083-aac3-42ae-a1

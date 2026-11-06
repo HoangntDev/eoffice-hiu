@@ -1,0 +1,8 @@
+$ curl http://localhost:3400/ → 200
+$ curl http://localhost:3400/forms → 200
+$ curl http://localhost:3400/programs → 307 http://localhost:3400/login?next=%2Fprograms
+$ curl http://localhost:3400/api/health → {"app":"ok","db":"ok","version":"1.0.0"}
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "PB Phạm Quốc Bảo 2201110203 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 16/11/26 Đang mở đăng ký Xem"
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 16/11/26 Đã xác nhận Xem"; "Việc của tôi" có chương trình: true
+[Bước 8] PASS – sau đăng xuất về "/", có nút Đăng nhập: true; mở /programs → /login?next=%2Fprograms
