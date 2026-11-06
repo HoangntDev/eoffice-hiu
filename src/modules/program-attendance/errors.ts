@@ -24,7 +24,11 @@ const known: Array<[code: string, status: number, message: string]> = [
   ["SESSIONS_REQUIRED", 422, "Cần ít nhất một lượt điểm danh."],
 ];
 
+// Postgres 22P02: chuỗi không đúng cú pháp UUID trong token. Lớp phòng thủ khi token lọt qua kiểm tra định dạng (#61).
+const INVALID_UUID_SYNTAX = "invalid input syntax for type uuid";
+
 export function attendanceRpcError(message: string): HttpError {
+  if (message.includes(INVALID_UUID_SYNTAX)) message = "QR_INVALID";
   const match = known.find(([code]) => message.includes(code));
   if (match) return new HttpError(match[1], match[0], match[2]);
   return new HttpError(500, "INTERNAL_ERROR", "Không thể xử lý điểm danh. Vui lòng thử lại.");

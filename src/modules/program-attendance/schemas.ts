@@ -64,7 +64,9 @@ export type SaveAttendancePlanInput = z.infer<typeof saveAttendancePlanSchema>;
 export const setSessionStatusSchema = z.object({ status: z.enum(["open", "closed"]), reason }).strict();
 
 // <session uuid>.<generation>.<issued_ms>.<chữ ký 32 hex>; chữ ký và hạn chỉ kiểm ở database.
-export const attendanceTokenPattern = /^[0-9a-f-]{36}\.[0-9]{1,6}\.[0-9]{10,16}\.[0-9a-f]{32}$/;
+// Phần đầu phải đúng dạng UUID 8-4-4-4-12; trước đây [0-9a-f-]{36} cho chuỗi sai dạng lọt xuống DB và gây 500 (#61).
+export const attendanceTokenPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.[0-9]{1,6}\.[0-9]{10,16}\.[0-9a-f]{32}$/;
 
 export const checkInSchema = z.object({
   sessionId: z.uuid(),
