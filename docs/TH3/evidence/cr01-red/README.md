@@ -71,19 +71,23 @@ Ngoài ra, 15 assertion "cấu trúc" của 010 (`has_table`, `has_column`, `has
 | `local-lint-typecheck-build.log` | Mã thoát và output của lint, typecheck, build |
 | `ci-build-test.log`, `ci-pgtap.log` | Log hai job trong tab Checks của PR #50 (`gh run view 41037701934 --log`) |
 | `ci-artifacts/pgtap.txt`, `ci-artifacts/vitest-junit.xml` | Artifact kết quả test của run đó |
+| `*.png` | Ảnh chụp màn hình, xem mục cuối |
 
 Log đã bỏ mã màu ANSI và đường dẫn máy; không chứa khóa hay token. Dữ liệu test là MSSV giả `888…`.
 
-## Ảnh cần tự chụp
+## Ảnh chụp màn hình
 
-Lưu cùng thư mục, tên gợi ý trong ngoặc:
+Chụp ngày 06/11/2026 trên máy cá nhân (issue #53). Ảnh terminal chụp cửa sổ Terminal; ảnh GitHub chụp cửa sổ Cốc Cốc, đã bỏ thanh tab.
 
-1. **Terminal local, pgTAP** (`local-pgtap.png`): chạy `supabase test db --workdir ~/Developer/eoffice-spike-cr01`, chụp phần cuối có `Test Summary Report` (009: Failed 18, 010: Failed 63), dòng `001`–`008 ... ok` và `Result: FAIL`.
-2. **Terminal local, Vitest** (`local-vitest.png`): chạy `npx vitest run tests/organization-auth.test.ts` trong worktree, chụp một lỗi có `NOT_IMPLEMENTED` và dòng `Tests 24 failed`.
-3. **PR #50, đầu trang** (`pr50-draft.png`): nhãn Draft, tiêu đề `[WIP] …`, `Closes #37`, Milestone TH4.
-4. **PR #50, tab Checks** (`pr50-checks.png`): `build-test` và `pgtap` màu đỏ.
-5. **PR #50, chi tiết job `build-test`** (`pr50-build-test.png`): bước `Test (JUnit + coverage)` thất bại (`24 failed | 142 passed`), bước lint và typecheck xanh.
-6. **PR #50, chi tiết job `pgtap`** (`pr50-pgtap.png`): phần `Test Summary Report`.
-7. **PR #50, tab Commits** (`pr50-commits.png`): commit `test(cr01): add failing tests for CR-01 acceptance criteria (#37)`.
+| # | Tệp | Nội dung |
+|---|---|---|
+| 1 | ![](local-pgtap.png) `local-pgtap.png` | `supabase test db` trên stack tách biệt `eoffice-cr01-spike` (dựng lại từ worktree `~/Developer/eoffice-spike-cr01`). Output lọc bằng `grep` để vừa một màn hình: `001`–`008 ... ok`, ba lỗi đầu của `009` và `010`, `Test Summary Report` (009: Failed 18, 010: Failed 63), `Files=10, Tests=297`, `Result: FAIL` |
+| 2 | ![](local-vitest.png) `local-vitest.png` | `npx vitest run tests/organization-auth.test.ts`: lỗi `NOT_IMPLEMENTED: adminRouteDecision`, dòng `Tests 24 failed (24)` |
+| 3 | ![](pr50-draft.png) `pr50-draft.png` | PR #50: nhãn Draft, tiêu đề `[WIP] …`, `Closes #37`, Milestone TH4 |
+| 4 | ![](pr50-checks.png) `pr50-checks.png` | Tab Checks: `build-test` và `pgtap` đỏ, commit `fa1d4c9` |
+| 5 | ![](pr50-build-test.png) `pr50-build-test.png` | Job `build-test`: lint, typecheck xanh; `Test (JUnit + coverage)` đỏ; build bị bỏ qua |
+| 5b | ![](pr50-build-test-summary.png) `pr50-build-test-summary.png` | Cuối bước test của `build-test`: `Tests 24 failed \| 142 passed (166)`. Tách thành ảnh riêng vì không cuộn được trang trong một lần chụp |
+| 6 | ![](pr50-pgtap.png) `pr50-pgtap.png` | Job `pgtap`: `Test Summary Report`, `Result: FAIL` |
+| 7 | ![](pr50-commits.png) `pr50-commits.png` | Tab Commits: `test(cr01): add failing tests for CR-01 acceptance criteria (#37)` |
 
-Stack `eoffice-cr01-spike` vẫn đang chạy để chụp ảnh 1, 2. Chụp xong thì dừng bằng `supabase stop --workdir ~/Developer/eoffice-spike-cr01 --no-backup`.
+Kết quả trong ảnh 1, 2 (chạy lại 06/11) khớp số liệu ngày 30/10 ở trên. Chụp xong đã dừng stack bằng `supabase stop --workdir ~/Developer/eoffice-spike-cr01 --no-backup`.
