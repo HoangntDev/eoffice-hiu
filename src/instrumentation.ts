@@ -6,6 +6,10 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === "nodejs") {
     const { startFileLogging } = await import("@/lib/log-node");
     startFileLogging();
+    // INC-01: kiểm tra cấu hình bắt buộc ngay khi khởi động. Không chặn khởi động (người đã đăng nhập vẫn
+    // dùng được phần không cần biến bị thiếu) nhưng ghi config.invalid và /api/health trả 503.
+    const { verifyConfigAtStartup } = await import("@/lib/config-check");
+    void verifyConfigAtStartup();
   }
 }
 

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { errorFields, logEvent } from "@/lib/log";
 import { clientIp } from "@/lib/request-meta";
+import { configMessage } from "@/lib/user-messages";
 
 export class HttpError extends Error {
   constructor(
@@ -65,12 +66,14 @@ export async function apiError(error: unknown) {
   }
   const context = await requestContext();
   const reference = referenceFor(context);
-  if (error instanceof Error && error.message.startsWith("MISSING_ENV:")) {
-    logEvent("error", "config.missing_env", { source: "api", ...context, reference, variable: error.message.slice("MISSING_ENV:".length) });
-    return NextResponse.json(
-      { error: "SERVICE_NOT_CONFIGURED", message: `Dịch vụ chưa được cấu hình biến môi trường. Mã tham chiếu: ${reference}.`, reference },
-      { status: 503 },
-    );
+  // Thiếu (MISSING_ENV) hoặc sai (CONFIG_INVALID) cấu hình: log tên biến, người dùng thấy 503 kèm mã tham chiếu.
+  const config = error instanceof Error ? /^(MISSING_ENV|CONFIG_INVALID):(.+)$/.exec(error.message) : null;
+  if (config) {
+    const [, kind, variable] = config;
+    logEvent("error", kind === "MISSING_ENV" ? "config.missing_env" : "config.invalid", {
+      source: "api", ...context, reference, variable, problem: kind === "MISSING_ENV" ? "missing" : "rejected",
+    });
+    return NextResponse.json({ error: "SERVICE_NOT_CONFIGURED", message: configMessage(reference), reference }, { status: 503 });
   }
   logEvent("error", "api.unhandled_error", { source: "api", ...context, reference, ...errorFields(error) });
   return NextResponse.json(

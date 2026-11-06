@@ -20,10 +20,18 @@ export function publicSupabaseEnv() {
   };
 }
 
-// Proxy bỏ qua kiểm tra phiên khi chưa cấu hình Supabase, nên không ném lỗi.
+const PUBLIC_SUPABASE_VARS = ["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY"] as const;
+
+// Tên các biến Supabase công khai đang thiếu (proxy dùng để trả 503 rõ ràng, INC-01).
+export function missingPublicSupabaseVars(): string[] {
+  return PUBLIC_SUPABASE_VARS.filter((name) => !runtime(name)?.trim());
+}
+
+// Không ném lỗi; trả null khi thiếu. Đọc qua vòng lặp chứ không gọi runtime("NEXT_PUBLIC_…") với chuỗi cố định:
+// ở v1.0.0, bản build thay biểu thức đó bằng giá trị lúc build khi rút gọn điều kiện, nên hàm luôn trả object
+// và proxy ném lỗi "URL and Key are required" thay vì bỏ qua (INC-01, trường hợp K1c).
 export function optionalPublicSupabaseEnv() {
-  const url = runtime("NEXT_PUBLIC_SUPABASE_URL");
-  const publishableKey = runtime("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
+  const [url, publishableKey] = PUBLIC_SUPABASE_VARS.map((name) => runtime(name)?.trim() || undefined);
   return url && publishableKey ? { url, publishableKey } : null;
 }
 
