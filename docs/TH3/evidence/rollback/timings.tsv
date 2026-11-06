@@ -1,0 +1,6 @@
+buoc	bat_dau	ket_thuc	ms
+1. Quyết định rollback (kiểm schema, sao lưu)	16:40:36	16:40:37	1199
+2. Dừng bản mới v1.0.1	16:40:37	16:40:37	155
+3. Cài bản cũ v1.0.0 (tải, checksum, giải nén, npm ci, khởi động)	16:40:37	16:40:56	19255
+4. Smoke test 8 bước	16:40:56	16:41:08	11895
+Từ quyết định rollback tới smoke xong			32588
