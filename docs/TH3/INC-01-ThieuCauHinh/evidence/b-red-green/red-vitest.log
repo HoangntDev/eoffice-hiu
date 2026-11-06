@@ -1,0 +1,214 @@
+Fri Nov  6 09:58:09 +07 2026
+
+ RUN  v5.0.2 ~/Developer/hiu-youth-e-office
+
+ ❯ tests/inc-01-config.test.ts (10 tests | 9 failed) 52ms
+   ❯ K1a – thiếu AUTH_RATE_LIMIT_PEPPER (3)
+     × kiểm tra cấu hình báo đúng tên biến bị thiếu 12ms
+     × lúc khởi động ghi log error config.invalid có tên biến, không có giá trị 3ms
+     × /api/health trả 503, config: error, không lộ tên biến 7ms
+   ❯ K1b – SUPABASE_SERVICE_ROLE_KEY sai (3)
+     × thử khóa với Auth admin: 401/403 là bị từ chối, 200 là đúng, lỗi mạng là chưa xác định 2ms
+     × lúc khởi động khóa bị từ chối thì ghi config.invalid 2ms
+     × đăng nhập khi Supabase từ chối khóa: 503 SERVICE_NOT_CONFIGURED kèm mã tham chiếu, không phải 500 19ms
+   ❯ K1c – thiếu NEXT_PUBLIC_SUPABASE_URL (4)
+     × kiểm tra cấu hình báo thiếu NEXT_PUBLIC_SUPABASE_URL; URL sai dạng cũng bị báo 1ms
+     × trang: proxy trả 503 có câu thân thiện và mã tham chiếu, không ném lỗi thô 3ms
+     × API: proxy trả JSON 503 SERVICE_NOT_CONFIGURED 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1a – thiếu AUTH_RATE_LIMIT_PEPPER > kiểm tra cấu hình báo đúng tên biến bị thiếu
+AssertionError: expected [] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "problem": "missing",
+-     "variable": "AUTH_RATE_LIMIT_PEPPER",
+-   },
+- ]
++ []
+
+ ❯ tests/inc-01-config.test.ts:70:8
+     68|   it("kiểm tra cấu hình báo đúng tên biến bị thiếu", () => {
+     69|     expect(checkRequiredConfig({ ...VALID_ENV, AUTH_RATE_LIMIT_PEPPER:…
+     70|       .toEqual([{ variable: "AUTH_RATE_LIMIT_PEPPER", problem: "missin…
+       |        ^
+     71|     expect(checkRequiredConfig(VALID_ENV)).toEqual([]);
+     72|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1a – thiếu AUTH_RATE_LIMIT_PEPPER > lúc khởi động ghi log error config.invalid có tên biến, không có giá trị
+AssertionError: expected [] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "problem": "missing",
+-     "variable": "AUTH_RATE_LIMIT_PEPPER",
+-   },
+- ]
++ []
+
+ ❯ tests/inc-01-config.test.ts:77:22
+     75|     const lines = captureLogs();
+     76|     const problems = await verifyConfigAtStartup({ env: { ...VALID_ENV…
+     77|     expect(problems).toEqual([{ variable: "AUTH_RATE_LIMIT_PEPPER", pr…
+       |                      ^
+     78|     const line = lines.find((l) => l.event === "config.invalid");
+     79|     expect(line).toMatchObject({ level: "error", problems: [{ variable…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1a – thiếu AUTH_RATE_LIMIT_PEPPER > /api/health trả 503, config: error, không lộ tên biến
+AssertionError: expected 200 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 200
+
+ ❯ tests/inc-01-config.test.ts:88:29
+     86|     const response = await health(new Request("http://localhost/api/he…
+     87|     const body = await response.json();
+     88|     expect(response.status).toBe(503);
+       |                             ^
+     89|     expect(body).toMatchObject({ app: "error", config: "error", db: "o…
+     90|     expect(JSON.stringify(body)).not.toContain("PEPPER");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1b – SUPABASE_SERVICE_ROLE_KEY sai > thử khóa với Auth admin: 401/403 là bị từ chối, 200 là đúng, lỗi mạng là chưa xác định
+AssertionError: expected 'ok' to be 'rejected' // Object.is equality
+
+Expected: "rejected"
+Received: "ok"
+
+ ❯ tests/inc-01-config.test.ts:96:100
+     94| describe("K1b – SUPABASE_SERVICE_ROLE_KEY sai", () => {
+     95|   it("thử khóa với Auth admin: 401/403 là bị từ chối, 200 là đúng, lỗi…
+     96|     expect(await probeServiceRoleKey(VALID_ENV.NEXT_PUBLIC_SUPABASE_UR…
+       |                                                                                                    ^
+     97|     expect(await probeServiceRoleKey(VALID_ENV.NEXT_PUBLIC_SUPABASE_UR…
+     98|     expect(await probeServiceRoleKey(VALID_ENV.NEXT_PUBLIC_SUPABASE_UR…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1b – SUPABASE_SERVICE_ROLE_KEY sai > lúc khởi động khóa bị từ chối thì ghi config.invalid
+AssertionError: expected [] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "problem": "rejected",
+-     "variable": "SUPABASE_SERVICE_ROLE_KEY",
+-   },
+- ]
++ []
+
+ ❯ tests/inc-01-config.test.ts:107:22
+    105|     const fetchImpl = fetchStatus(403);
+    106|     const problems = await verifyConfigAtStartup({ env: VALID_ENV, fet…
+    107|     expect(problems).toEqual([{ variable: "SUPABASE_SERVICE_ROLE_KEY",…
+       |                      ^
+    108|     expect(lines.find((l) => l.event === "config.invalid")).toBeTruthy…
+    109|     expect(JSON.stringify(lines)).not.toContain(VALID_ENV.SUPABASE_SER…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1b – SUPABASE_SERVICE_ROLE_KEY sai > đăng nhập khi Supabase từ chối khóa: 503 SERVICE_NOT_CONFIGURED kèm mã tham chiếu, không phải 500
+AssertionError: expected 500 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 500
+
+ ❯ tests/inc-01-config.test.ts:121:29
+    119|     }));
+    120|     const body = await response.json();
+    121|     expect(response.status).toBe(503);
+       |                             ^
+    122|     expect(body).toMatchObject({ error: "SERVICE_NOT_CONFIGURED" });
+    123|     expect(body.message).toContain(`Mã tham chiếu: ${body.reference}`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1c – thiếu NEXT_PUBLIC_SUPABASE_URL > kiểm tra cấu hình báo thiếu NEXT_PUBLIC_SUPABASE_URL; URL sai dạng cũng bị báo
+AssertionError: expected [] to deeply equal [ { …(2) } ]
+
+- Expected
++ Received
+
+- [
+-   {
+-     "problem": "missing",
+-     "variable": "NEXT_PUBLIC_SUPABASE_URL",
+-   },
+- ]
++ []
+
+ ❯ tests/inc-01-config.test.ts:133:8
+    131|   it("kiểm tra cấu hình báo thiếu NEXT_PUBLIC_SUPABASE_URL; URL sai dạ…
+    132|     expect(checkRequiredConfig({ ...VALID_ENV, NEXT_PUBLIC_SUPABASE_UR…
+    133|       .toEqual([{ variable: "NEXT_PUBLIC_SUPABASE_URL", problem: "miss…
+       |        ^
+    134|     expect(checkRequiredConfig({ ...VALID_ENV, NEXT_PUBLIC_SUPABASE_UR…
+    135|       .toEqual([{ variable: "NEXT_PUBLIC_SUPABASE_URL", problem: "inva…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1c – thiếu NEXT_PUBLIC_SUPABASE_URL > trang: proxy trả 503 có câu thân thiện và mã tham chiếu, không ném lỗi thô
+AssertionError: expected 200 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 200
+
+ ❯ tests/inc-01-config.test.ts:142:29
+    140|     const response = await proxy(new NextRequest("http://localhost/log…
+    141|     const html = await response.text();
+    142|     expect(response.status).toBe(503);
+       |                             ^
+    143|     expect(response.headers.get("content-type")).toContain("text/html"…
+    144|     expect(html).toContain("Hệ thống tạm thời chưa sẵn sàng");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  tests/inc-01-config.test.ts > K1c – thiếu NEXT_PUBLIC_SUPABASE_URL > API: proxy trả JSON 503 SERVICE_NOT_CONFIGURED
+AssertionError: expected 200 to be 503 // Object.is equality
+
+- Expected
++ Received
+
+- 503
++ 200
+
+ ❯ tests/inc-01-config.test.ts:153:29
+    151|     captureLogs();
+    152|     const response = await proxy(new NextRequest("http://localhost/api…
+    153|     expect(response.status).toBe(503);
+       |                             ^
+    154|     expect(await response.json()).toMatchObject({ error: "SERVICE_NOT_…
+    155|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 1 passed (10)
+   Start at  09:58:11
+   Duration  565ms (import 59%, transform 27%, tests 13%, worker 1%)
+

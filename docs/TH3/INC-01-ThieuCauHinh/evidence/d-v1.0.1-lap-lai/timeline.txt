@@ -1,0 +1,28 @@
+10:21:53 K1a chuẩn bị: sao lưu stack
+10:21:55 K1a BẮT ĐẦU sự cố: npm start v1.0.1 với AUTH_RATE_LIMIT_PEPPER bị thiếu
+10:21:58 K1a PHÁT HIỆN qua log lúc khởi động (giờ UTC trong log: 03:21:56): {"ts":"2026-11-06T03:21:56.731Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}],"checked":4}
+10:21:58 K1a /api/health → {"app":"error","db":"ok","config":"error","version":"1.0.1"} HTTP 503
+10:22:05 K1a log liên quan tới thao tác người dùng:
+{"ts":"2026-11-06T03:22:01.612Z","level":"error","source":"api","event":"config.missing_env","requestId":"acabfa96-1d64-4783-a1e7-4ca842585d47","path":"/api/auth/login","ip":"::ffff:127.0.0.1","reference":"acabfa96","variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}
+10:22:05 K1a khắc phục: trả .env.local, khởi động lại
+10:22:09 K1a /api/health → {"app":"ok","db":"ok","config":"ok","version":"1.0.1"} HTTP 200
+10:22:16 K1a KHÔI PHỤC: 10:22:15 URL sau đăng nhập: /onboarding/profile
+10:22:16 K1b chuẩn bị: sao lưu stack
+10:22:18 K1b BẮT ĐẦU sự cố: npm start v1.0.1 với SUPABASE_SERVICE_ROLE_KEY sai
+10:22:22 K1b PHÁT HIỆN qua log lúc khởi động (giờ UTC trong log: 03:22:20): {"ts":"2026-11-06T03:22:20.201Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}],"checked":4}
+10:22:22 K1b /api/health → {"app":"error","db":"ok","config":"error","version":"1.0.1"} HTTP 503
+10:22:30 K1b log liên quan tới thao tác người dùng:
+{"ts":"2026-11-06T03:22:26.057Z","level":"error","source":"api","event":"config.invalid","requestId":"b736a9a5-1741-4b66-838d-b2550466c46b","path":"/api/auth/login","ip":"::ffff:127.0.0.1","reference":"b736a9a5","variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}
+10:22:30 K1b khắc phục: trả .env.local, khởi động lại
+10:22:34 K1b /api/health → {"app":"ok","db":"ok","config":"ok","version":"1.0.1"} HTTP 200
+10:22:42 K1b KHÔI PHỤC: 10:22:41 URL sau đăng nhập: /onboarding/profile
+10:22:42 K1c chuẩn bị: sao lưu stack
+10:22:44 K1c BẮT ĐẦU sự cố: npm start v1.0.1 với NEXT_PUBLIC_SUPABASE_URL bị thiếu
+10:22:48 K1c PHÁT HIỆN qua log lúc khởi động (giờ UTC trong log: 03:22:45): {"ts":"2026-11-06T03:22:45.857Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}],"checked":4}
+10:22:48 K1c /api/health → {"app":"error","db":"error","config":"error","version":"1.0.1"} HTTP 503
+10:22:51 K1c log liên quan tới thao tác người dùng:
+{"ts":"2026-11-06T03:22:50.766Z","level":"error","source":"proxy","event":"config.missing_env","requestId":"d37a4b5f-a33a-4b7d-a2b1-03c99734076d","reference":"d37a4b5f","path":"/login","variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}
+10:22:51 K1c khắc phục: trả .env.local, khởi động lại
+10:22:55 K1c /api/health → {"app":"ok","db":"ok","config":"ok","version":"1.0.1"} HTTP 200
+10:23:09 K1c KHÔI PHỤC: 10:23:08 URL sau đăng nhập: /onboarding/profile
+10:23:09 .env.local v1.0.1 khớp bản gốc

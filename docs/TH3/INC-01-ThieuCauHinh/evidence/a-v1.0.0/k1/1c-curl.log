@@ -1,0 +1,4 @@
+GET / → 500 body: Internal Server Error
+GET /login → 500 body: Internal Server Error
+GET /forms → 500 body: Internal Server Error
+GET /api/auth/login → 500 body: Internal Server Error

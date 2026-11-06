@@ -1,0 +1,17 @@
+$ date
+Fri Nov  6 10:20:35 +07 2026
+$ gh release download v1.0.1
+total 16320
+drwxr-xr-x  4 <user> staff      128 Nov  6 10:20 .
+drwxr-xr-x  4 <user> staff      128 Nov  6 10:20 ..
+-rw-r--r--  1 <user> staff  8349325 Nov  6 10:20 hiu-youth-e-office-v1.0.1.zip
+-rw-r--r--  1 <user> staff       96 Nov  6 10:20 hiu-youth-e-office-v1.0.1.zip.sha256
+$ shasum -a 256 -c hiu-youth-e-office-v1.0.1.zip.sha256
+hiu-youth-e-office-v1.0.1.zip: OK
+$ unzip -q ../dl/hiu-youth-e-office-v1.0.1.zip (trong app/)
+exit=0
+lrwxr-xr-x   1 <user> staff   26 Nov  6 10:20 winston-592a0a42b673a90a -> ../../node_modules/winston
+lrwxr-xr-x   1 <user> staff   44 Nov  6 10:20 winston-daily-rotate-file-cf5038a110a380df -> ../../node_modules/winston-daily-rotate-file
+$ npm ci
+
+Run `npm audit` for details.

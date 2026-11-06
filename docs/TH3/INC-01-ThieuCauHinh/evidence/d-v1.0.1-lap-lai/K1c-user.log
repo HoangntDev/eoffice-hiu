@@ -1,0 +1,1 @@
+10:22:50 GET http://host.docker.internal:3500/login → 503 | người dùng thấy: "Hệ thống tạm thời chưa sẵn sàng\n\nHệ thống tạm thời chưa sẵn sàng do lỗi cấu hình. Vui lòng thử lại sau hoặc báo Văn phòng Đoàn – Hội. Mã tham chiếu: d37a4b5f."

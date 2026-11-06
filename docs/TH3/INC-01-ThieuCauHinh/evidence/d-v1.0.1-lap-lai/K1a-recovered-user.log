@@ -1,0 +1,5 @@
+10:22:12 POST /api/auth/login → 200
+10:22:13 GET /api/student-profile → 200
+10:22:13 GET /api/catalog → 200
+10:22:15 URL sau đăng nhập: /onboarding/profile
+10:22:15 Người dùng thấy: ["Hồ sơ sinh viên cơ bản"]

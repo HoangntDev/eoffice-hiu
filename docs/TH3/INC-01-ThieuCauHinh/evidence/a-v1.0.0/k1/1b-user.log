@@ -1,0 +1,4 @@
+09:32:16 POST /api/auth/login → 500
+09:32:20 URL sau đăng nhập: /login
+09:32:20 Người dùng thấy: ["Không thể xử lý yêu cầu. Vui lòng thử lại."]
+POST /api/auth/login (curl) → {"error":"INTERNAL_ERROR","message":"Không thể xử lý yêu cầu. Vui lòng thử lại."}

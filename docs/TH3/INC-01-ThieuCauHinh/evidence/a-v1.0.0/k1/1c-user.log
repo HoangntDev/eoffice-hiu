@@ -1,0 +1,1 @@
+09:55:40 GET http://host.docker.internal:3300/login → 500 | người dùng thấy: "Internal Server Error"

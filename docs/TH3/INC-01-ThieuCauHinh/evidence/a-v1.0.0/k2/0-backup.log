@@ -1,0 +1,6 @@
+[09:32:58] Sao lưu stack eoffice-v100 → ~/Developer/hiu-youth-e-office/backups/eoffice-v100_20261106T093258.*
+[09:32:58] Đếm bản ghi: 54 bảng, migration 202610150003 (241 ms)
+[09:32:59] pg_dump: 788K (349 ms)
+[09:32:59] Storage: 3 file,  36K (117 ms)
+[09:32:59] Xong sau 1040 ms. Bản sao lưu: eoffice-v100_20261106T093258
+eoffice-v100_20261106T093258

@@ -1,0 +1,9 @@
+2026-11-06T03:04:19.4705655Z      × phần đầu 36 số 0, không phải UUID → 422 QR_INVALID, không gọi RPC 23ms
+2026-11-06T03:04:19.4707722Z      × phần đầu toàn dấu gạch → 422 QR_INVALID, không gọi RPC 1ms
+2026-11-06T03:04:19.4709609Z      × không đúng cấu trúc 4 phần → 422 QR_INVALID, không gọi RPC 5ms
+2026-11-06T03:04:19.4713469Z      × phòng thủ: database báo 22P02 (sai cú pháp UUID) thì ánh xạ thành 422 QR_INVALID 1ms
+2026-11-06T03:04:21.0085933Z AssertionError: expected 500 to be 422 // Object.is equality
+2026-11-06T03:04:21.0136491Z AssertionError: expected { error: 'VALIDATION_ERROR', …(2) } to match object { error: 'QR_INVALID' }
+2026-11-06T03:04:21.0154124Z AssertionError: expected 500 to be 422 // Object.is equality
+2026-11-06T03:04:21.0166541Z  Test Files  1 failed | 15 passed (16)
+2026-11-06T03:04:21.0168057Z       Tests  4 failed | 173 passed (177)
