@@ -2,7 +2,7 @@ npm notice run hiu-youth-e-office@1.0.1 start
 npm notice run next start
 ▲ Next.js 16.4.5
 - Local:         http://localhost:3500
-- Network:       http://192.168.100.21:3500
+- Network:       http://<LAN-IP>:3500
 ✓ Ready in 210ms
 ✓ Running next.config.ts took 1989ms
 {"ts":"2026-11-06T03:21:08.389Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73046}
