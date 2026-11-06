@@ -1,0 +1,10 @@
+Fri Nov  6 10:03:47 +07 2026
+
+ RUN  v5.0.2 ~/Developer/hiu-youth-e-office
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  10:03:48
+   Duration  440ms (import 59%, transform 32%, tests 7%, worker 2%)
+

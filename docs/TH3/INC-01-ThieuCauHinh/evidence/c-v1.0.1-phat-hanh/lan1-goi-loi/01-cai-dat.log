@@ -1,0 +1,26 @@
+$ date
+Fri Nov  6 10:18:37 +07 2026
+$ gh release download v1.0.1
+total 16320
+drwxr-xr-x  4 nth  staff      128 Nov  6 10:18 .
+drwxr-xr-x  4 nth  staff      128 Nov  6 10:18 ..
+-rw-r--r--  1 nth  staff  8348895 Nov  6 10:18 hiu-youth-e-office-v1.0.1.zip
+-rw-r--r--  1 nth  staff       96 Nov  6 10:18 hiu-youth-e-office-v1.0.1.zip.sha256
+$ shasum -a 256 -c hiu-youth-e-office-v1.0.1.zip.sha256
+hiu-youth-e-office-v1.0.1.zip: OK
+$ unzip -q ../dl/hiu-youth-e-office-v1.0.1.zip (trong app/)
+exit=0
+HIU Youth E-Office — gói phát hành v1.0.1
+Tag:        v1.0.1
+Commit:     fb5eb99a7c3e62b4ba445717cbdc79feae889adf
+Ngày build: 2026-11-06 10:17:49 +0700
+Node / npm: v24.16.0 / 12.0.2
+Next.js:    16.4.5 (npm run build, NODE_ENV=production)
+Build từ worktree sạch tại tag (git status rỗng), npm ci, biến môi trường là giá trị giữ chỗ.
+Cấu hình (Supabase URL/khóa, APP_URL, LOG_LEVEL, DB_SLOW_MS...) đọc lúc chạy từ .env.local — xem HUONG-DAN-TRIEN-KHAI.md.
+Lúc khởi động, ứng dụng kiểm tra cấu hình bắt buộc và ghi kết quả vào logs/app-YYYY-MM-DD.log (config.ok / config.invalid); /api/health báo trạng thái.
+Không chứa node_modules, .env.local, secret hay dữ liệu cá nhân.
+Không gồm báo cáo môn học (docs/TH1, docs/TH2/evidence, docs/TH3): xem trên GitHub.
+$ npm ci
+
+Run `npm audit` for details.

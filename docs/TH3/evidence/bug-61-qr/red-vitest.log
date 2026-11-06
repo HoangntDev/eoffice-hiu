@@ -1,0 +1,80 @@
+Fri Nov  6 10:03:14 +07 2026
+
+ RUN  v5.0.2 ~/Developer/hiu-youth-e-office
+
+ ❯ tests/qr-token-invalid.test.ts (5 tests | 4 failed) 27ms
+   ❯ token QR sai định dạng (#61) (5)
+     × phần đầu 36 số 0, không phải UUID → 422 QR_INVALID, không gọi RPC 18ms
+     × phần đầu toàn dấu gạch → 422 QR_INVALID, không gọi RPC 1ms
+     × không đúng cấu trúc 4 phần → 422 QR_INVALID, không gọi RPC 4ms
+     × phòng thủ: database báo 22P02 (sai cú pháp UUID) thì ánh xạ thành 422 QR_INVALID 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/qr-token-invalid.test.ts > token QR sai định dạng (#61) > phần đầu 36 số 0, không phải UUID → 422 QR_INVALID, không gọi RPC
+ FAIL  tests/qr-token-invalid.test.ts > token QR sai định dạng (#61) > phần đầu toàn dấu gạch → 422 QR_INVALID, không gọi RPC
+AssertionError: expected 500 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 500
+
+ ❯ tests/qr-token-invalid.test.ts:38:29
+     36|     rpc.mockResolvedValue({ data: null, error: { message: `invalid inp…
+     37|     const response = await post(token);
+     38|     expect(response.status).toBe(422);
+       |                             ^
+     39|     expect(await response.json()).toMatchObject({ error: "QR_INVALID" …
+     40|     expect(rpc).not.toHaveBeenCalled();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/qr-token-invalid.test.ts > token QR sai định dạng (#61) > không đúng cấu trúc 4 phần → 422 QR_INVALID, không gọi RPC
+AssertionError: expected { error: 'VALIDATION_ERROR', …(2) } to match object { error: 'QR_INVALID' }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "error": "QR_INVALID",
++   "error": "VALIDATION_ERROR",
+  }
+
+ ❯ tests/qr-token-invalid.test.ts:39:35
+     37|     const response = await post(token);
+     38|     expect(response.status).toBe(422);
+     39|     expect(await response.json()).toMatchObject({ error: "QR_INVALID" …
+       |                                   ^
+     40|     expect(rpc).not.toHaveBeenCalled();
+     41|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/qr-token-invalid.test.ts > token QR sai định dạng (#61) > phòng thủ: database báo 22P02 (sai cú pháp UUID) thì ánh xạ thành 422 QR_INVALID
+AssertionError: expected 500 to be 422 // Object.is equality
+
+- Expected
++ Received
+
+- 422
++ 500
+
+ ❯ tests/qr-token-invalid.test.ts:53:26
+     51|   it("phòng thủ: database báo 22P02 (sai cú pháp UUID) thì ánh xạ thàn…
+     52|     const error = attendanceRpcError('invalid input syntax for type uu…
+     53|     expect(error.status).toBe(422);
+       |                          ^
+     54|     expect(error.code).toBe("QR_INVALID");
+     55|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  10:03:15
+   Duration  449ms (import 63%, transform 26%, tests 9%, worker 2%)
+

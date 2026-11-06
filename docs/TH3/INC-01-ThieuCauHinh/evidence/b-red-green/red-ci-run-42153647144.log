@@ -1,0 +1,35 @@
+2026-11-06T02:59:19.8169559Z  ✓ tests/core-business-baseline.test.ts (35 tests) 40ms
+2026-11-06T02:59:19.8172564Z  ✓ tests/logging.test.ts (20 tests) 88ms
+2026-11-06T02:59:19.9342073Z      × kiểm tra cấu hình báo đúng tên biến bị thiếu 19ms
+2026-11-06T02:59:19.9371278Z      × lúc khởi động ghi log error config.invalid có tên biến, không có giá trị 3ms
+2026-11-06T02:59:19.9388989Z      × /api/health trả 503, config: error, không lộ tên biến 10ms
+2026-11-06T02:59:19.9392859Z      × thử khóa với Auth admin: 401/403 là bị từ chối, 200 là đúng, lỗi mạng là chưa xác định 3ms
+2026-11-06T02:59:19.9395095Z      × lúc khởi động khóa bị từ chối thì ghi config.invalid 2ms
+2026-11-06T02:59:19.9417338Z      × đăng nhập khi Supabase từ chối khóa: 503 SERVICE_NOT_CONFIGURED kèm mã tham chiếu, không phải 500 19ms
+2026-11-06T02:59:19.9421193Z      × kiểm tra cấu hình báo thiếu NEXT_PUBLIC_SUPABASE_URL; URL sai dạng cũng bị báo 1ms
+2026-11-06T02:59:19.9423504Z      × trang: proxy trả 503 có câu thân thiện và mã tham chiếu, không ném lỗi thô 5ms
+2026-11-06T02:59:19.9425793Z      × API: proxy trả JSON 503 SERVICE_NOT_CONFIGURED 1ms
+2026-11-06T02:59:19.9427476Z      ✓ /api/health vẫn được đi qua proxy để báo trạng thái 2ms
+2026-11-06T02:59:20.2793360Z  ✓ tests/forms-validation.test.ts (17 tests) 28ms
+2026-11-06T02:59:20.2928918Z  ✓ tests/event-programs.test.ts (18 tests) 24ms
+2026-11-06T02:59:20.2943796Z  ✓ tests/program-registrations.test.ts (15 tests) 34ms
+2026-11-06T02:59:20.5871922Z  ✓ tests/catalog-import-v2.test.mjs (5 tests) 14ms
+2026-11-06T02:59:20.7348086Z  ✓ tests/program-attendance.test.ts (7 tests) 23ms
+2026-11-06T02:59:20.8621341Z  ✓ tests/validation.test.ts (7 tests) 13ms
+2026-11-06T02:59:21.0736935Z  ✓ tests/env-config.test.ts (7 tests) 11ms
+2026-11-06T02:59:21.3616439Z  ✓ tests/login-next-path.test.ts (16 tests) 12ms
+2026-11-06T02:59:21.6014961Z  ✓ tests/registration-eligibility.test.ts (5 tests) 9ms
+2026-11-06T02:59:21.7069602Z  ✓ tests/student-profile-form.test.tsx (1 test) 116ms
+2026-11-06T02:59:21.8061424Z  ✓ tests/nav-access.test.ts (5 tests) 7ms
+2026-11-06T02:59:22.3421756Z  ✓ tests/auth-ui.test.tsx (4 tests) 258ms
+2026-11-06T02:59:22.9694458Z AssertionError: expected [] to deeply equal [ { …(2) } ]
+2026-11-06T02:59:22.9772566Z AssertionError: expected [] to deeply equal [ { …(2) } ]
+2026-11-06T02:59:22.9789369Z AssertionError: expected 200 to be 503 // Object.is equality
+2026-11-06T02:59:22.9803044Z AssertionError: expected 'ok' to be 'rejected' // Object.is equality
+2026-11-06T02:59:22.9817719Z AssertionError: expected [] to deeply equal [ { …(2) } ]
+2026-11-06T02:59:22.9835831Z AssertionError: expected 500 to be 503 // Object.is equality
+2026-11-06T02:59:22.9848884Z AssertionError: expected [] to deeply equal [ { …(2) } ]
+2026-11-06T02:59:22.9870243Z AssertionError: expected 200 to be 503 // Object.is equality
+2026-11-06T02:59:22.9883445Z AssertionError: expected 200 to be 503 // Object.is equality
+2026-11-06T02:59:22.9893314Z  Test Files  1 failed | 14 passed (15)
+2026-11-06T02:59:22.9894414Z       Tests  9 failed | 163 passed (172)

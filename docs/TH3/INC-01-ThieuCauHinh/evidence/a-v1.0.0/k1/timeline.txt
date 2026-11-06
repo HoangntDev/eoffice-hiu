@@ -1,0 +1,21 @@
+09:31:09 K1 chuẩn bị: sao lưu stack eoffice-v100
+09:31:10 đã chép .env.local → bản dự phòng (ngoài repo)
+09:31:10 mốc chuẩn: npm start v1.0.0 với cấu hình đúng
+09:31:12 web sẵn sàng
+09:31:36 K1a BẮT ĐẦU sự cố: khởi động v1.0.0 thiếu AUTH_RATE_LIMIT_PEPPER
+09:31:38 web báo Ready, trang chủ trả 200, /api/health v1.0.0: 404
+09:31:45 K1a PHÁT HIỆN: người dùng đăng nhập không được (xem 1a-user.log)
+09:32:02 K1a khắc phục: dừng web, trả .env.local từ bản dự phòng
+09:32:11 K1a KHÔI PHỤC xong: đăng nhập lại được
+09:32:11 K1b chuẩn bị: dừng web, đổi SUPABASE_SERVICE_ROLE_KEY thành giá trị sai
+09:32:11 K1b BẮT ĐẦU sự cố: khởi động v1.0.0 với service role key sai
+09:32:13 web Ready, trang chủ 200, /forms 200
+09:32:20 K1b PHÁT HIỆN: người dùng đăng nhập không được
+09:32:29 K1b khắc phục: dừng web, trả .env.local từ bản dự phòng
+09:32:38 K1b KHÔI PHỤC xong: đăng nhập lại được
+09:55:34 K1c chuẩn bị: sao lưu stack, chép .env.local
+09:55:36 K1c BẮT ĐẦU: khởi động v1.0.0 thiếu NEXT_PUBLIC_SUPABASE_URL
+09:55:37 web báo Ready
+09:55:40 K1c PHÁT HIỆN: mọi trang trả Internal Server Error
+09:55:48 K1c khắc phục: dừng web, trả .env.local
+09:55:56 K1c KHÔI PHỤC xong

@@ -23,3 +23,4 @@ Ghi kết quả vào bảng dưới (sao chép cho mỗi lần chạy) và lưu 
 | Ngày | Phiên bản / commit | Môi trường | Bước Fail | Người chạy |
 |---|---|---|---|---|
 | 29/10/2026 | Gói `v1.0.0` (`fe2b984`) | Gói Release cài ngoài repo, stack Supabase `eoffice-v100` (563xx), cổng 3300 | Không (8/8 PASS) – [log](../TH2/evidence/smoke-artifact/README.md) | Nguyễn Thanh Hoàng |
+| 06/11/2026 | Gói `v1.0.1` (`fb5eb99`) | Gói tải từ Release v1.0.1 (SHA-256 `0f4a744b…`), cài ngoài repo, stack `eoffice-v100`, cổng 3500 | Không (8/8 PASS), thêm `/api/health` = `config: ok`. Lần cài đầu với gói tải lên trước đó không khởi động được (thiếu symlink `.next/node_modules`), đã thay gói – [log](../TH3/INC-01-ThieuCauHinh/evidence/c-v1.0.1-phat-hanh/05-smoke.log) | Nguyễn Thanh Hoàng |

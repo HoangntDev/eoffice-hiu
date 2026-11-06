@@ -1,0 +1,13 @@
+▲ Next.js 16.4.5
+- Local:         http://localhost:3500
+- Network:       http://192.168.100.21:3500
+✓ Ready in 285ms
+✓ Running next.config.ts took 68ms
+{"ts":"2026-11-06T03:22:45.849Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73801}
+{"ts":"2026-11-06T03:22:45.857Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}],"checked":4}
+{"ts":"2026-11-06T03:22:46.274Z","level":"warn","source":"health","event":"health.db_unavailable","requestId":"653c3a0a-cf5e-4f42-abc5-6c66f4b3bdbf","errorMessage":"MISSING_ENV:NEXT_PUBLIC_SUPABASE_URL"}
+{"ts":"2026-11-06T03:22:46.275Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"653c3a0a-cf5e-4f42-abc5-6c66f4b3bdbf","problems":[{"variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}]}
+{"ts":"2026-11-06T03:22:48.362Z","level":"warn","source":"health","event":"health.db_unavailable","requestId":"adbbe138-c1dc-4e81-b9ce-c4c0ae62a191","errorMessage":"MISSING_ENV:NEXT_PUBLIC_SUPABASE_URL"}
+{"ts":"2026-11-06T03:22:48.363Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"adbbe138-c1dc-4e81-b9ce-c4c0ae62a191","problems":[{"variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}]}
+{"ts":"2026-11-06T03:22:50.766Z","level":"error","source":"proxy","event":"config.missing_env","requestId":"d37a4b5f-a33a-4b7d-a2b1-03c99734076d","reference":"d37a4b5f","path":"/login","variable":"NEXT_PUBLIC_SUPABASE_URL","problem":"missing"}
+{"ts":"2026-11-06T03:22:51.539Z","level":"info","source":"app","event":"app.stop","version":"1.0.1","nodeEnv":"production","signal":"SIGTERM","exitCode":143,"uptimeSec":6}

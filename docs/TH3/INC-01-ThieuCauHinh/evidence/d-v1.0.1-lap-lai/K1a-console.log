@@ -1,0 +1,11 @@
+▲ Next.js 16.4.5
+- Local:         http://localhost:3500
+- Network:       http://192.168.100.21:3500
+✓ Ready in 191ms
+✓ Running next.config.ts took 46ms
+{"ts":"2026-11-06T03:21:56.290Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73320}
+{"ts":"2026-11-06T03:21:56.731Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}],"checked":4}
+{"ts":"2026-11-06T03:21:56.759Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"6703c73e-c50d-463b-9fee-a725d7b8c641","problems":[{"variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}]}
+{"ts":"2026-11-06T03:21:58.818Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"67c1e2c3-93f4-4f45-af02-247224403fb0","problems":[{"variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}]}
+{"ts":"2026-11-06T03:22:01.612Z","level":"error","source":"api","event":"config.missing_env","requestId":"acabfa96-1d64-4783-a1e7-4ca842585d47","path":"/api/auth/login","ip":"::ffff:127.0.0.1","reference":"acabfa96","variable":"AUTH_RATE_LIMIT_PEPPER","problem":"missing"}
+{"ts":"2026-11-06T03:22:05.767Z","level":"info","source":"app","event":"app.stop","version":"1.0.1","nodeEnv":"production","signal":"SIGTERM","exitCode":143,"uptimeSec":10}
