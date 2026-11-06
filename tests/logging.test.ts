@@ -73,6 +73,12 @@ describe("che dữ liệu nhạy cảm", () => {
     expect(maskStudentCode(undefined)).toBe("***");
   });
 
+  it("không có MSSV thì bỏ trường, không ghi \"***\"", () => {
+    const line = JSON.parse(formatLogLine("warn", "auth.access_denied", { studentCode: null, userId: undefined, path: "/x" }));
+    expect(line).not.toHaveProperty("studentCode");
+    expect(line).not.toHaveProperty("userId");
+  });
+
   it("che email chỉ giữ ký tự đầu và tên miền", () => {
     expect(maskEmail("nguyenvana@student.hiu.vn")).toBe("n***@student.hiu.vn");
   });

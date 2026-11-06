@@ -45,7 +45,8 @@ function sanitize(value: unknown, depth: number): unknown {
     if (depth > 3) return "[…]";
     const out: Record<string, unknown> = {};
     for (const [key, item] of Object.entries(value)) {
-      if (FORBIDDEN_KEY.test(key)) continue;
+      if (FORBIDDEN_KEY.test(key) || item === undefined) continue;
+      if (STUDENT_CODE_KEY.test(key) && item === null) continue;
       out[key] = STUDENT_CODE_KEY.test(key) ? maskStudentCode(item) : sanitize(item, depth + 1);
     }
     return out;
