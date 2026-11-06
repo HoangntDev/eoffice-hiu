@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { configStatus } from "@/lib/config-check";
 import { logEvent, requestIdFrom } from "@/lib/log";
 import { createPublicSupabase } from "@/lib/supabase/server";
 import { APP_VERSION } from "@/lib/version";
@@ -22,8 +23,12 @@ export async function GET(request: Request) {
   } catch (error) {
     logEvent("warn", "health.db_unavailable", { requestId, errorMessage: error instanceof Error ? error.message : String(error) });
   }
+  // Cấu hình thiếu/sai (INC-01): báo "error" nhưng không trả tên biến; tên biến nằm trong log.
+  const config = configStatus();
+  if (!config.ok) logEvent("warn", "health.config_invalid", { requestId, problems: config.problems });
+  const healthy = db === "ok" && config.ok;
   return NextResponse.json(
-    { app: "ok", db, version: APP_VERSION },
-    { status: db === "ok" ? 200 : 503, headers: { "Cache-Control": "no-store" } },
+    { app: config.ok ? "ok" : "error", db, config: config.ok ? "ok" : "error", version: APP_VERSION },
+    { status: healthy ? 200 : 503, headers: { "Cache-Control": "no-store" } },
   );
 }
