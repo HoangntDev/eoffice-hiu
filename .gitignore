@@ -50,3 +50,6 @@ next-env.d.ts
 
 # sao lưu dữ liệu (scripts/backup.sh) – có dữ liệu cá nhân, không commit
 /backups/
+
+# gói phát hành do scripts/package-release.sh tạo – tải lên Release, không commit
+/dist/
