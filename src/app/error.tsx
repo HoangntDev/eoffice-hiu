@@ -1,16 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 // Lỗi chưa xử lý khi hiển thị trang: chỉ cho người dùng thấy câu thân thiện và mã tham chiếu.
 // Chi tiết kỹ thuật được ghi ở server (src/instrumentation.ts, sự kiện app.unhandled_error).
 // Mã tham chiếu = digest của lỗi phía server (trường reference trong log); nếu lỗi xảy ra khi
 // render lại ở trình duyệt thì không có digest, dùng 8 ký tự đầu của requestId (trường requestId).
+const noSubscribe = () => () => {};
+
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
-  const [requestId, setRequestId] = useState<string | null>(null);
-  useEffect(() => {
-    setRequestId(document.querySelector('meta[name="x-request-id"]')?.getAttribute("content") ?? null);
-  }, []);
+  const requestId = useSyncExternalStore(
+    noSubscribe,
+    () => document.querySelector('meta[name="x-request-id"]')?.getAttribute("content") ?? null,
+    () => null,
+  );
   const reference = error.digest ?? requestId?.slice(0, 8);
 
   return (
