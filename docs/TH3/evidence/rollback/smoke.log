@@ -1,0 +1,22 @@
+# Bước 1: npm start
+▲ Next.js 16.3.8
+- Local:         http://localhost:3500
+- Network:       http://10.0.24.97:3500
+✓ Ready in 193ms
+✓ Running next.config.ts took 49ms
+# Bước 2: $BASE/ → 200
+# Bước 3: supabase status: 0 dịch vụ running; /forms → 200, thấy biểu mẫu demo: 2 lần
+# Bước 4: $BASE/programs → 307 http://localhost:3500/login?next=%2Fprograms
+# Bước 5–8 (Playwright, tài khoản demo 2201110203)
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "PB Phạm Quốc Bảo 2201110203 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 16/11/26 Đang mở đăng ký Xem"
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 16/11/26 Đã xác nhận Xem"; "Việc của tôi" có chương trình: true
+[Bước 8] PASS – sau đăng xuất về "/", có nút Đăng nhập: true; mở /programs → /login?next=%2Fprograms
+
+# Ghi chú sửa bước 3 (16:41:34): lệnh đếm 'running' trong script sai – Supabase CLI 2.117 không in chữ 'running', nên in ra 0. Kiểm lại bằng trạng thái container:
+supabase_db_eoffice-v100: running healthy
+supabase_rest_eoffice-v100: running 
+supabase_auth_eoffice-v100: running healthy
+supabase_kong_eoffice-v100: running healthy
+supabase_storage_eoffice-v100: running healthy
+/forms trả 200 và hiện biểu mẫu demo lấy từ DB, nên bước 3 đạt.
