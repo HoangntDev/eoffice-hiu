@@ -69,4 +69,4 @@ Chạy checklist [`docs/testing/smoke-test.md`](../testing/smoke-test.md), rồi
 
 1. Dừng web.
 2. Giải nén gói của phiên bản trước vào một thư mục khác, chạy `npm ci`, rồi dùng lại `.env.local` cũ.
-3. Chỉ rollback được khi phiên bản trước **không** cần gỡ migration. Migration đã áp không tự gỡ được, nên trước khi nâng cấp phải sao lưu DB theo `docs/operations/`.
+3. Chỉ rollback được khi phiên bản trước **không** cần gỡ migration. Migration đã áp không tự gỡ được, nên trước khi nâng cấp phải sao lưu bằng `scripts/backup.sh <stack>` theo `docs/runbooks/backup-restore.md`.

@@ -194,4 +194,4 @@ data/             CSV danh mục học vụ chính thức
 
 ## Triển khai cloud
 
-Chưa triển khai. Việc dùng Supabase cloud hoặc Vercel cần được phê duyệt riêng. Xem [`docs/operations/`](docs/operations/) (backup/restore, môi trường local, release checklist).
+Chưa triển khai. Việc dùng Supabase cloud hoặc Vercel cần được phê duyệt riêng. Xem [`docs/operations/`](docs/operations/) (môi trường local, release checklist) và runbook sao lưu/phục hồi [`docs/runbooks/backup-restore.md`](docs/runbooks/backup-restore.md).

@@ -1,0 +1,6 @@
+[09:26:08] Sao lưu stack eoffice-v100 → <repo>/backups/eoffice-v100_20261106T092608.*
+[09:26:08] Đếm bản ghi: 54 bảng, migration 202610150003 (264 ms)
+[09:26:08] pg_dump: 784K (391 ms)
+[09:26:09] Storage: 3 file,  36K (145 ms)
+[09:26:09] Xong sau 1170 ms. Bản sao lưu: eoffice-v100_20261106T092608
+eoffice-v100_20261106T092608
