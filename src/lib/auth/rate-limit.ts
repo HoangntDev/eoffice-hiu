@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import { createAdminSupabase } from "@/lib/supabase/server";
 import { rateLimitPepper } from "@/lib/env";
 import { HttpError } from "@/lib/http";
+import { clientIp } from "@/lib/request-meta";
 
 export type AuthAction = "login" | "register" | "recover" | "pin_change";
 
@@ -11,16 +12,10 @@ function digest(value: string) {
   return createHash("sha256").update(rateLimitPepper()).update("\0").update(value).digest("hex");
 }
 
-function clientIp(request: Request) {
-  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
-    ?? request.headers.get("x-real-ip")
-    ?? "unknown";
-}
-
 export async function enforceAuthRateLimit(request: Request, action: AuthAction, identifier: string) {
   const admin = createAdminSupabase();
   const identifierHash = digest(identifier.toLowerCase());
-  const ipHash = digest(clientIp(request));
+  const ipHash = digest(clientIp(request.headers));
   const windowStart = new Date(Date.now() - 15 * 60_000).toISOString();
   const limit = action === "login" ? 8 : 5;
 

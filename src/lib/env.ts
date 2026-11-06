@@ -59,3 +59,10 @@ export function logLevel(): LogLevel {
   if (nodeEnv === "test") return "warn";
   return "debug";
 }
+
+// Lời gọi database (PostgREST, Auth, Storage) lâu hơn ngưỡng này bị ghi log warn "db.slow".
+export const DEFAULT_DB_SLOW_MS = 1000;
+export function dbSlowMs(): number {
+  const value = Number(runtime("DB_SLOW_MS"));
+  return Number.isFinite(value) && value > 0 ? value : DEFAULT_DB_SLOW_MS;
+}

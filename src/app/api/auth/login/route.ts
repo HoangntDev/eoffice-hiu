@@ -3,14 +3,21 @@ import { appUrl } from "@/lib/env";
 import { apiError, HttpError, readJson } from "@/lib/http";
 import { safeNextPath } from "@/lib/auth/next-path";
 import { enforceAuthRateLimit } from "@/lib/auth/rate-limit";
+import { logEvent, requestIdFrom } from "@/lib/log";
+import { clientIp } from "@/lib/request-meta";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 import { loginSchema } from "@/modules/auth-account/schemas";
 
 const GENERIC_LOGIN_MESSAGE = "Không thể đăng nhập. MSSV/PIN có thể không đúng; nếu tài khoản đang chờ tạo PIN, hãy kiểm tra email sinh viên HIU.";
 
 export async function POST(request: Request) {
+  const requestId = requestIdFrom(request);
+  let studentCode: string | undefined;
+  // Lý do thất bại chỉ ghi trong log; người dùng luôn nhận cùng một thông báo chung.
+  let failure = "unknown_account";
   try {
     const input = loginSchema.parse(await readJson(request));
+    studentCode = input.studentCode;
     const limiter = await enforceAuthRateLimit(request, "login", input.studentCode);
     const admin = createAdminSupabase();
 
@@ -32,6 +39,9 @@ export async function POST(request: Request) {
       emailVerified = Boolean(mapping?.verified_at);
     }
 
+    if (account?.status === "suspended") failure = "account_suspended";
+    else if (account && !email) failure = "email_missing";
+    else if (account && !emailVerified) failure = "email_unverified";
     if (!email || !emailVerified) {
       await limiter.record(false);
       throw new HttpError(401, "INVALID_CREDENTIALS", GENERIC_LOGIN_MESSAGE);
@@ -39,6 +49,7 @@ export async function POST(request: Request) {
 
     const supabase = await createUserSupabase();
     if (account?.status === "pending_pin") {
+      failure = "pending_pin";
       await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -50,12 +61,31 @@ export async function POST(request: Request) {
       throw new HttpError(401, "INVALID_CREDENTIALS", GENERIC_LOGIN_MESSAGE);
     }
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password: input.pin });
+    const { data: session, error } = await supabase.auth.signInWithPassword({ email, password: input.pin });
     await limiter.record(!error);
-    if (error) throw new HttpError(401, "INVALID_CREDENTIALS", GENERIC_LOGIN_MESSAGE);
+    if (error) {
+      failure = "wrong_pin";
+      throw new HttpError(401, "INVALID_CREDENTIALS", GENERIC_LOGIN_MESSAGE);
+    }
 
+    logEvent("info", "auth.login_succeeded", {
+      requestId,
+      userId: session.user?.id ?? account?.user_id,
+      studentCode: input.studentCode,
+      ip: clientIp(request.headers),
+      result: "ok",
+    });
     return NextResponse.json({ message: "Đăng nhập thành công.", next: safeNextPath(input.next) });
   } catch (error) {
+    if (error instanceof HttpError && (error.code === "INVALID_CREDENTIALS" || error.code === "TOO_MANY_ATTEMPTS")) {
+      logEvent("warn", "auth.login_failed", {
+        requestId,
+        studentCode,
+        ip: clientIp(request.headers),
+        reason: error.code === "TOO_MANY_ATTEMPTS" ? "rate_limited" : failure,
+        status: error.status,
+      });
+    }
     return apiError(error);
   }
 }

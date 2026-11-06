@@ -25,6 +25,9 @@
 .DS_Store
 *.pem
 
+# logs ứng dụng (winston) – có thể chứa IP, MSSV đã che; không commit
+/logs/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
