@@ -11,6 +11,8 @@ Phương án và spike lần 1 vẫn được giữ ở mục 2.6 và mục 6 đ
 
 Các điểm còn mở được chốt cùng ngày (issue #48, mục 2.9): đọc dữ liệu cũng đòi cán bộ, "Đổi cán bộ" thu hồi ngay phiên và token cũ (AC14), kiểm tra PIN giả ở bước 1, viết lại `bootstrap_school_admin`. Số hàm phải sửa, ước lượng và rủi ro ở các mục dưới đã tính các quyết định này.
 
+Cập nhật ngày 10/11/2026 khi bắt đầu hiện thực TH4 (mục 2.10): bổ sung công tắc database `ORG_ACCOUNTS_ENABLED`, giữ `role_grants` quản lý cá nhân để quay lui bằng công tắc, và đính chính Ban chỉ chưa làm trong giai đoạn này còn Chi đoàn không bao giờ có tài khoản tổ chức.
+
 ## 1. Thông tin CR
 
 - **Issue:** #37 (Milestone TH4, label `change-request`)
@@ -21,7 +23,7 @@ Các điểm còn mở được chốt cùng ngày (issue #48, mục 2.9): đọ
     - Bước 1 ở `/admin/login`: chọn đơn vị và nhập PIN tổ chức. Hệ thống tạo phiên tạm, hết hạn sau 5 phút, chưa thao tác được.
     - Bước 2 ở `/admin/login/officer`: nhập MSSV và PIN cá nhân của cán bộ là thành viên còn hiệu lực của đơn vị. Đúng thì vào `/admin`.
   - Nút "Đổi cán bộ" quay về bước 2 mà không nhập lại PIN tổ chức. Thanh trên cùng luôn hiện đơn vị và cán bộ.
-  - Quyền quản lý (`role_grants`) chuyển từ tài khoản cá nhân sang tài khoản tổ chức. Cán bộ trở thành thành viên đơn vị, chỉ dùng để xác thực.
+  - Tạo quyền quản lý (`role_grants`) tương ứng cho tài khoản tổ chức; giữ grant cá nhân để dùng khi `ORG_ACCOUNTS_ENABLED` tắt. Cán bộ trở thành thành viên đơn vị, chỉ dùng để xác thực phiên tổ chức.
   - RPC/RLS kiểm quyền giữ nguyên. `write_audit` ghi cán bộ thao tác. Quy tắc "người lập không tự duyệt" xét theo cán bộ.
   - Chức năng sinh viên giữ nguyên. CTV vẫn dùng tài khoản cá nhân.
 - **Thay cho:** hướng CR-01 cũ "Thông báo realtime" (đề xuất 29/10). Hướng đó chưa có tài liệu trong `docs/TH3/`; nay chuyển thành chức năng phát triển sau, không làm trong môn.
@@ -45,10 +47,11 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 
 | Thành phần | Loại | Thay đổi dự kiến | Rủi ro | Test kiểm chứng |
 |---|---|---|---|---|
-| `accounts` | dữ liệu | Thêm `account_type` (`student` mặc định, `organization`) và `organization_id` (duy nhất). `student_code` cho phép null **chỉ** khi là tài khoản tổ chức (viết lại check `accounts_student_code_current_rule`). Trigger mới: tài khoản tổ chức chỉ cho `school_union`, `office`, `faculty_union`; không đổi được loại | C (R-1) | pgTAP 009 (18 assertion trên spike) |
+| `accounts` | dữ liệu | Thêm `account_type` (`student` mặc định, `organization`) và `organization_id` (duy nhất). `student_code` cho phép null **chỉ** khi là tài khoản tổ chức (viết lại check `accounts_student_code_current_rule`). CR này cấp tài khoản cho `school_union`, `office`, `faculty_union`; `class_union` bị DB chặn vĩnh viễn, `school_committee` chỉ chưa triển khai trong giai đoạn này; không đổi được loại tài khoản | C (R-1) | pgTAP 009 |
 | `enforce_current_student_code_rule` (`202609290006`) | dữ liệu | Chỉ kiểm MSSV khi `account_type = 'student'` | TB | pgTAP 009 |
 | `account_emails` | dữ liệu | **Giữ** ràng buộc `@student.hiu.vn`. Trigger mới chặn dòng email cho tài khoản tổ chức. Email Auth của tài khoản tổ chức (`org-<id>@org.eoffice.invalid`) chỉ nằm trong `auth.users` | T | pgTAP 009 |
-| `role_grants` | dữ liệu | Trigger mới: vai trò `school_admin`, `office`, `faculty_manager`, `faculty_executive` chỉ cấp cho tài khoản tổ chức của chính đơn vị đó. `collaborator`, `committee_manager` chỉ cấp cho tài khoản sinh viên | C (R-2) | pgTAP 009; spike L11 |
+| `role_grants` | dữ liệu | Giữ grant quản lý cá nhân để quay lui. Khi `ORG_ACCOUNTS_ENABLED` bật, hàm kiểm quyền bỏ qua các grant cá nhân `school_admin`, `office`, `faculty_manager`, `faculty_executive`; grant của tài khoản tổ chức phải đúng đơn vị. `collaborator`, `committee_manager` tiếp tục có hiệu lực trên tài khoản sinh viên | C (R-2) | pgTAP 009, 010 (AC6) |
+| `feature_flags` (mới) | dữ liệu | Lưu `ORG_ACCOUNTS_ENABLED`; database đọc qua `feature_flag_enabled(text)`. Giá trị tắt giữ hành vi v1.0.0, giá trị bật kích hoạt phân quyền tài khoản tổ chức | C (R-2) | pgTAP 010 (AC6) |
 | `organization_units` | dữ liệu | Trigger mới: không đổi được `unit_type` sang loại không có tài khoản khi đơn vị đã có tài khoản tổ chức | TB (R-3) | pgTAP mới |
 | `organization_members` (mới) | dữ liệu | Cán bộ của đơn vị: `member_role` (`manager`, `executive`, `officer`), nguồn từ role grant cũ, thu hồi. Trigger: thành viên phải là tài khoản sinh viên | TB | pgTAP 009; spike L9 |
 | `organization_pins` (mới) | dữ liệu | PIN tổ chức băm bcrypt (`pgcrypto`, cost 10), tách khỏi mật khẩu Auth | TB (R-4) | spike L3, L8 |
@@ -57,14 +60,14 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 | `audit_events` | dữ liệu | Thêm `officer_user_id`, `organization_session_id`. `actor_user_id` là tài khoản tổ chức | T | spike L2, L5 |
 | `event_program_history`, `program_registration_history`, `program_attendance_history` | dữ liệu | Thêm `actor_officer_user_id`. `actor_name` hiển thị "Đơn vị – Cán bộ" | T | spike L2 |
 | `auth_attempts_action_check` | dữ liệu | Thêm action `org_login` | T | spike L10 |
-| Migration chuyển dữ liệu (mục 2.8) | dữ liệu | Chuyển `role_grants` quản lý của tài khoản cá nhân sang tài khoản tổ chức; đưa cán bộ vào `organization_members` | C (R-5) | spike M1, M1b, M2 |
-| Migration mới `2026103xxxxx_organization_accounts.sql` | dữ liệu | Version phải lớn hơn `202610170001` (cao nhất, ở `feat/program-publication`). Không sửa migration cũ | T | `supabase test db` trên stack tách biệt |
+| Migration chuyển dữ liệu (mục 2.8) | dữ liệu | Giữ grant quản lý cá nhân, tạo grant tương ứng cho tài khoản tổ chức và đưa cán bộ vào `organization_members` | C (R-5) | pgTAP 010; diễn tập trên stack tách biệt |
+| Migration mới `*_organization_accounts.sql` | dữ liệu | Version phải lớn hơn `202610300003` (cao nhất ở nhánh spike CR-01). Không sửa migration cũ | T | `supabase test db` trên stack tách biệt |
 
 ### 2.2. Nghiệp vụ: hàm và RPC/RLS
 
 | Thành phần | Loại | Thay đổi dự kiến | Rủi ro | Test kiểm chứng |
 |---|---|---|---|---|
-| `has_active_role`, `has_permission`, `event_program_manager_grant`, `event_program_reviewer_grant`, `can_access_application`, `user_can_manage_forms_for_org` | nghiệp vụ | Thêm một điều kiện chung `organization_session_ok()`: nếu `auth.uid()` là tài khoản tổ chức thì phiên phải có cán bộ còn hiệu lực và phiên Auth còn tồn tại; nếu không, hàm trả false/null. Phần còn lại giữ nguyên. Đây là cách đáp ứng quyết định R-7/R-11: RLS đọc và RPC đều đi qua các hàm này nên phiên không cán bộ không đọc, không ghi được. Tài khoản cá nhân vẫn tự bị từ chối vì không còn vai trò quản lý. `program_registration_manager_grant` đổi theo `event_program_manager_grant` | C (R-7) | pgTAP 010 (AC14); spike M2, L2c |
+| `has_active_role`, `has_permission`, `event_program_manager_grant`, `event_program_reviewer_grant`, `can_access_application`, `user_can_manage_forms_for_org` | nghiệp vụ | Đọc `ORG_ACCOUNTS_ENABLED`. Khi tắt, giữ hành vi v1.0.0. Khi bật, bỏ qua grant quản lý cá nhân; tài khoản tổ chức phải có `organization_session_ok()` (cán bộ còn hiệu lực và phiên Auth còn tồn tại). RLS đọc và RPC đều đi qua các hàm này nên phiên không cán bộ không đọc, không ghi được. `program_registration_manager_grant` đổi theo `event_program_manager_grant` | C (R-2, R-7) | pgTAP 010 (AC6, AC14); spike L2c |
 | 32 RPC quản lý (UC-A, UC-B, UC-C, UC-D, cơ cấu, biểu mẫu) và 26/27 policy RLS gọi hàm cổng | nghiệp vụ | **Không sửa.** `created_by`, `decided_by`, `granted_by`… nhận tài khoản tổ chức (là một dòng `accounts`, thỏa khóa ngoại) | TB (R-6) | pgTAP 002, 004, 005, 007, 008 (sau khi sửa fixture) |
 | Policy `audit_events_read_authorized` (`202609290003`) | nghiệp vụ | Policy cho người thao tác đọc audit của chính mình (`actor_user_id = auth.uid()`); với tài khoản tổ chức phải thêm `organization_session_ok()` | TB (R-7) | pgTAP 010 (AC14) |
 | `organization_session_ok()` (mới), `end_officer_session` (mới) | nghiệp vụ | `organization_session_ok()`: sinh viên → true; tài khoản tổ chức → có dòng `organization_session_officers` chưa kết thúc, thành viên còn hiệu lực, `auth.sessions` còn. `end_officer_session` kết thúc dòng cán bộ **và xóa `auth.sessions`** của phiên, nên token cũ (JWT còn hạn) mất quyền ngay | C (R-11) | pgTAP 010 (AC13, AC14) |
@@ -72,7 +75,7 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 | `review_event_program` (`202610130001`) | nghiệp vụ | Quy tắc tự duyệt so sánh `coalesce(actor_officer_user_id, actor_user_id)` với cán bộ hiện tại. Thân hàm còn lại giữ nguyên | TB | spike L6; TC-UCB-01 |
 | `fill_event_program_history_actor` (dùng cho 3 bảng lịch sử) | nghiệp vụ | Điền `actor_officer_user_id`, tên "Đơn vị – Cán bộ" | T | spike L2 |
 | `bootstrap_school_admin` (001, `202610140001`) | nghiệp vụ | Đang cấp `school_admin` cho tài khoản sinh viên, nên sẽ bị trigger `role_grants` mới chặn. Viết lại: tạo tài khoản tổ chức Đoàn Trường, đặt PIN, thêm người chạy làm thành viên. **Spike chưa làm** | TB | pgTAP 006 (sửa) |
-| `grant_role`, `revoke_role` | nghiệp vụ | Không sửa thân hàm. Nhánh Bí thư Đoàn Khoa cấp `faculty_executive` cho cá nhân không còn dùng (trigger chặn); thay bằng thêm thành viên `executive`. Đoàn Trường vẫn cấp CTV qua `grant_role` | TB (R-8) | pgTAP 002 (sửa) |
+| `grant_role`, `revoke_role` | nghiệp vụ | Giữ khả năng quản lý grant cá nhân để chế độ tắt hoạt động như v1.0.0. Khi công tắc bật, grant quản lý cá nhân vẫn còn dữ liệu nhưng bị hàm kiểm quyền bỏ qua; thành viên `executive` quyết định ai được xác thực bước 2. Đoàn Trường vẫn cấp CTV qua `grant_role` | TB (R-8) | pgTAP 002 (sửa) |
 | Hàm mới (service role): `start_organization_login`, `read_organization_login`, `organization_member_for`, `start_officer_session`, `end_officer_session`, `create_organization_account`, `set_organization_pin` | nghiệp vụ | Mới | TB | spike L1–L10 |
 | Hàm mới (phiên Đoàn Trường): tạo tài khoản tổ chức, đặt lại PIN, khóa/mở; thêm/thu hồi thành viên. Hàm mới (phiên của chính đơn vị): đổi PIN | nghiệp vụ | Mới, có audit. **Spike chưa làm** | TB | pgTAP mới |
 | Nhánh chưa merge `feat/program-acceptance` (`202610160001`), `feat/program-publication` (`202610170001`) | nghiệp vụ | Không sửa (CLAUDE.md). RPC dùng hàm cổng và `write_audit` sẽ tự đúng. Khi đưa vào baseline, fixture pgTAP của nhánh phải tạo tài khoản tổ chức | TB | Ghi chú khi merge |
@@ -104,8 +107,8 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 | `scripts/seed-demo.mjs` | cấu hình | Cấp vai trò cho tài khoản tổ chức demo (Đoàn Trường, Văn phòng, Đoàn Khoa CNKT), thêm Bảo, Mai, Quân làm thành viên. Lịch sử demo ghi `actor_user_id` = tài khoản tổ chức, `actor_officer_user_id` = cán bộ | TB | Chạy seed trên stack tách biệt |
 | pgTAP `002` (10), `004` (14), `005` (35), `007` (67), `008` (55) | test | Fixture đang cấp vai trò quản lý cho tài khoản sinh viên, nên trigger mới chặn ngay (spike: cả 5 file dừng ở fixture). Thêm helper tạo tài khoản tổ chức + thành viên + phiên có cán bộ (`act_as_org(org, officer)`, đặt `session_id` vào claims). Giữ `act_as` cho bước sinh viên; thêm assertion "tài khoản cá nhân bị từ chối" | C (R-10) | Job `pgtap` |
 | pgTAP `001` (9), `003` (10), `006` (5) | test | Spike: PASS không sửa. `006` sẽ phải sửa khi viết lại `bootstrap_school_admin` | T | Job `pgtap` |
-| pgTAP `009_account_types.sql` (mới) | test | Spike đã có 18 assertion: ràng buộc sinh viên cũ (MSSV, duy nhất, email `@student.hiu.vn`), tài khoản tổ chức (không MSSV, không email sinh viên, chặn Ban, không đổi loại), vai trò quản lý chỉ cho tài khoản tổ chức đúng đơn vị, CTV chỉ cho sinh viên, thành viên là sinh viên. Bổ sung: phiên tạm, đổi cán bộ, `OFFICER_REQUIRED`, tự duyệt theo cán bộ, migration dữ liệu | — | Job `pgtap` |
-| pgTAP `010_organization_accounts.sql` (mới) | test | Test RED cho đăng nhập hai bước, dropdown, lỗi chung, thời gian bước 1, phiên tạm, đổi cán bộ, đọc/ghi đòi cán bộ (AC14), tự duyệt theo cán bộ, quản lý tài khoản tổ chức, bootstrap, migration dữ liệu | — | Job `pgtap` |
+| pgTAP `009_account_types.sql` (mới) | test | 26 assertion: ràng buộc sinh viên cũ, tài khoản tổ chức, Chi đoàn bị chặn, grant quản lý cá nhân vẫn lưu được, grant tổ chức đúng đơn vị, CTV/trưởng Ban giữ trên cá nhân, thành viên là sinh viên | — | Job `pgtap` |
+| pgTAP `010_organization_accounts.sql` (mới) | test | 69 assertion sau commit RED `3812cbd`: đăng nhập hai bước, dropdown, lỗi chung, thời gian bước 1, phiên tạm, đổi cán bộ, AC6 ở cả hai trạng thái công tắc, đọc/ghi đòi cán bộ, tự duyệt theo cán bộ, quản lý tài khoản tổ chức, bootstrap và migration dữ liệu | — | Job `pgtap` |
 | Vitest `nav-access`, `auth-ui`, `login-next-path`, `validation` | test | Link đăng nhập tổ chức, `safeNextPath` cho `/admin/*`, schema hai bước, phân luồng proxy | T | Job `build-test` |
 | `docs/TH2/test-cases.md` + `run-test-cases.mjs` | test | Bước quản lý (Mai, Quân) đăng nhập hai bước. Thêm ca "cán bộ dùng tài khoản cá nhân → 403". Lần chạy mới ghi vào `docs/TH4/` | TB | 15 test case TH2 |
 | `docs/testing/smoke-test.md` | tài liệu | Bước 7 (sinh viên đăng ký UC-C) giữ nguyên. Thêm bước đăng nhập tổ chức hai bước, mở `/admin` | T | Smoke test v1.1.0 |
@@ -175,7 +178,7 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 
 ### 2.7. Ước lượng khối lượng
 
-Ước lượng cho một người, từ 30/10 đến hạn TH4 09/11.
+Ước lượng cho một người, từ 30/10 đến hạn TH4 23:59 ngày 11/11/2026.
 
 | Phần việc | Giờ |
 |---|---|
@@ -191,7 +194,7 @@ Rủi ro: T = Thấp, TB = Trung bình, C = Cao (lý do ở mục 4). "Spike Lx/
 
 Chênh lệch so với phương án lần 1 (40–54 giờ): phần SQL kiểm quyền ít hơn hẳn, nhưng thêm bước 2, "Đổi cán bộ", quản lý thành viên và migration dữ liệu.
 
-**Thứ tự cắt giảm nếu không kịp 09/11** (cắt từ trên xuống; phần giữ lại phải đủ cho UC-B, UC-C, UC-D chạy bằng phiên tổ chức):
+**Thứ tự cắt giảm nếu không kịp 11/11** (cắt từ trên xuống; phần giữ lại phải đủ cho UC-B, UC-C, UC-D chạy bằng phiên tổ chức):
 
 1. `/admin/settings` đổi PIN qua giao diện. Giữ hàm, đổi PIN bằng script.
 2. `/admin/accounts` giao diện. Tạo tài khoản, đặt lại PIN, khóa/mở, thêm/thu hồi thành viên bằng script service role. Migration dữ liệu đã tạo sẵn thành viên từ vai trò cũ.
@@ -211,7 +214,7 @@ Chênh lệch so với phương án lần 1 (40–54 giờ): phần SQL kiểm q
 - Migration dữ liệu.
 - pgTAP 005/007/008/009/010.
 
-Ô "Hoàn thành được trước hạn TH4" trong issue #37 để trống. Nếu không kịp 09/11: không merge PR CR-01 khi còn test thất bại, không gắn tag `v1.1.0`, nộp bài với PR đang mở và ghi rõ tiêu chí đã đạt, chưa đạt (Lab04 mục 4.6).
+Ô "Hoàn thành được trước hạn TH4" trong issue #37 để trống. Nếu không kịp 11/11: không merge PR CR-01 khi còn test thất bại, không gắn tag `v1.1.0`, nộp bài với PR đang mở và ghi rõ tiêu chí đã đạt, chưa đạt (Lab04 mục 4.6).
 
 ### 2.8. Kế hoạch chuyển dữ liệu
 
@@ -223,20 +226,22 @@ Chạy trong cùng migration mới, sau khi đã tạo bảng và trigger (spike
    - Đơn vị không có vai trò quản lý nào thì không tạo (spike M1b).
 3. **Mỗi role grant nguồn:**
    - Thêm cán bộ vào `organization_members`, với `member_role` lấy từ vai trò cũ (`faculty_manager` → `manager`, `faculty_executive` → `executive`, còn lại → `officer`) và `source_role_grant_id` trỏ về grant cũ.
-   - Thu hồi grant cũ (`revoked_at`, lý do thêm "CR-01: chuyển sang tài khoản tổ chức").
-   - Ghi `audit_events` action `role.migrated_to_organization`.
+   - Giữ nguyên grant cũ, không đặt `revoked_at`.
+   - Ghi `audit_events` cho việc sao chép quyền sang tài khoản tổ chức, không ghi nhận là đã thu hồi grant cá nhân.
 4. **Không chuyển:**
    - `collaborator` và `committee_manager`: vẫn ở tài khoản cá nhân.
    - Vai trò trên Ban, Chi đoàn.
    - Grant đã thu hồi.
 5. **Sau migration (vận hành):**
+   - `ORG_ACCOUNTS_ENABLED` mặc định tắt để hệ thống tiếp tục chạy như v1.0.0 trong lúc đặt PIN và xác minh tài khoản tổ chức.
    - Chạy `npm run admin:bootstrap` mới để đặt PIN cho tài khoản Đoàn Trường.
    - Đoàn Trường đặt PIN cho Văn phòng và các Đoàn Khoa.
    - Trước khi có PIN, tài khoản ở `pending_pin` và bước 1 trả lỗi chung.
-6. **Quay lui:** mỗi grant cũ còn nguyên dòng (chỉ bị thu hồi), có `source_role_grant_id` và audit, nên có thể viết migration bù để mở lại grant cá nhân và khóa tài khoản tổ chức. Không xóa dữ liệu.
+   - Chỉ bật công tắc sau khi kiểm thử GREEN và smoke test trên stack tách biệt.
+6. **Quay lui:** tắt `ORG_ACCOUNTS_ENABLED` để grant cá nhân có hiệu lực lại ngay, không đổi schema và không cần migration bù. Tài khoản tổ chức, thành viên và audit vẫn được giữ để điều tra hoặc bật lại.
 7. **Diễn tập:** chạy trên bản sao DB demo (stack tách biệt) trước khi release. Không chạy trên DB local đang dùng.
 
-Kết quả spike (M1): 6 grant còn hiệu lực trước migration. 5 grant quản lý được chuyển. Tạo 3 tài khoản tổ chức (Đoàn Khoa, Văn phòng, Đoàn Trường) ở `pending_pin` và 5 thành viên (cán bộ A ở cả Đoàn Khoa và Văn phòng). Còn 0 vai trò quản lý trên tài khoản cá nhân; CTV giữ nguyên; có 5 dòng audit. Sau migration, cán bộ A đăng nhập cá nhân gọi `save_event_program` → `FORBIDDEN`, RPC không sửa (M2).
+Kết quả spike (M1) bên dưới là bằng chứng lịch sử của thiết kế ngày 30/10: spike đã thu hồi grant cá nhân. Quyết định ngày 10/11 thay thế riêng bước đó; bản GREEN phải giữ grant cá nhân và dùng công tắc để vô hiệu/khôi phục hiệu lực.
 
 ### 2.9. Quyết định đã chốt (30/10/2026, issue #48)
 
@@ -276,6 +281,16 @@ Kết quả spike (M1): 6 grant còn hiệu lực trước migration. 5 grant qu
   - `display.ts`: `organizationHeader`, `groupLoginUnits`.
   - `policy.ts`: `orgLoginAttemptPolicy`, `organizationLoginFailure`, `pendingLoginCookieOptions`.
 
+### 2.10. Phát hiện khi hiện thực (10/11/2026, issue #37 / PR #50)
+
+| Phát hiện | Quyết định | Tác động |
+|---|---|---|
+| Cần quay lui nhanh về hành vi v1.0.0 mà không đổi schema | Thêm bảng `feature_flags` và hàm database `feature_flag_enabled(text)` với khóa `ORG_ACCOUNTS_ENABLED`; không dùng riêng biến môi trường Next.js | Hàm kiểm quyền, RPC và RLS đọc cùng một nguồn; smoke test phải kiểm cả trạng thái tắt và bật |
+| Thu hồi grant cá nhân làm công tắc tắt không thể phục hồi hành vi cũ | Migration không thu hồi `role_grants` cá nhân; chỉ tạo grant tổ chức và thành viên. Khi bật, hàm kiểm quyền bỏ qua grant quản lý cá nhân | Điều chỉnh AC6 và test RED trong commit `3812cbd`; kế hoạch mục 2.8 thay thế bước thu hồi cũ |
+| Mô tả cũ coi Ban và Chi đoàn đều bị cấm vĩnh viễn | Ban (`school_committee`) chỉ chưa làm trong giai đoạn này; Chi đoàn (`class_union`) không bao giờ có tài khoản tổ chức | Sửa issue #37, PR #50 và cách diễn đạt test/tài liệu; thiết kế không khóa đường mở rộng cho Ban ở migration sau |
+
+Lần chạy RED sau điều chỉnh trên stack tách biệt 573xx: `009_account_types.sql` có 17/26 FAIL; `010_organization_accounts.sql` có 65/69 FAIL. Hai file có tổng 95 assertion; các assertion mới đỏ vì chưa có bảng/hàm feature flag và quyền cá nhân chưa bị vô hiệu khi bật công tắc.
+
 ## 3. Dependency, dịch vụ và cấu hình mới
 
 - **Không thêm package npm.** Dùng `@supabase/ssr`, `@supabase/supabase-js`, `zod` hiện có.
@@ -285,6 +300,7 @@ Kết quả spike (M1): 6 grant còn hiệu lực trước migration. 5 grant qu
 - **Email nội bộ:** `org-<organization_id>@org.eoffice.invalid` (tên miền `.invalid` không nhận thư), chỉ trong `auth.users`.
 - **Biến môi trường:** không thêm. `AUTH_RATE_LIMIT_PEPPER` dùng chung cho băm định danh `org_login`.
 - **Cấu hình nghiệp vụ:** phiên tạm 5 phút, sai PIN tổ chức 5 lần/15 phút. Ghi vào Configuration Inventory (`docs/TH2/config-dependency.md`) khi hiện thực.
+- **Công tắc tính năng:** `ORG_ACCOUNTS_ENABLED` nằm trong database (`feature_flags`), không phải secret và không phải biến `NEXT_PUBLIC_*`.
 - **Vận hành:** thêm bước đặt PIN tổ chức sau migration (mục 2.8). Không đụng Supabase cloud trong môn.
 
 ## 4. Rủi ro và phương án xử lý
@@ -292,7 +308,7 @@ Kết quả spike (M1): 6 grant còn hiệu lực trước migration. 5 grant qu
 | Mã | Rủi ro | Mức | Phương án |
 |---|---|---|---|
 | R-1 | Viết lại check của `accounts` làm lỏng quy tắc MSSV cho sinh viên | Cao | Check mới vẫn bắt buộc MSSV hợp lệ khi `account_type = 'student'`. pgTAP 009 kiểm MSSV null, sai quy tắc, trùng; email Gmail; sinh viên gắn đơn vị (spike 18/18 PASS) |
-| R-2 | Cấp lại vai trò quản lý cho tài khoản cá nhân bằng đường khác | Cao | Trigger `role_grants_holder_rule` chặn ở DB, áp dụng cho cả SQL trực tiếp (spike L11) |
+| R-2 | Khi công tắc bật, grant quản lý cá nhân còn dữ liệu có thể vô tình được một hàm/policy dùng trực tiếp | Cao | Gom điều kiện vào hàm cổng và rà soát mọi chỗ đọc `role_grants`; pgTAP kiểm cả trạng thái tắt/bật và gọi thẳng RPC/RLS. Không dùng trigger thu hồi/chặn grant cá nhân vì cần đường quay lui |
 | R-3 | Đơn vị có tài khoản bị đổi `unit_type` sang loại không có tài khoản | Trung bình | Trigger trên `organization_units` |
 | R-4 | Dò PIN tổ chức, hoặc lộ đơn vị nào đã có tài khoản | Trung bình | 5 lần/15 phút (spike L10), thông báo chung (L3). **Phát hiện khi spike:** bước 1 với đơn vị chưa có tài khoản trả lời trong khoảng 20 ms, so với khoảng 80 ms khi có kiểm bcrypt. Khi hiện thực, chạy `crypt()` giả ở nhánh không có tài khoản để thời gian như nhau. Dropdown vốn đã công khai danh sách đơn vị có tài khoản, nên mức lộ thấp **Đã chốt:** kiểm tra PIN giả (`crypt()` với hash cố định) khi đơn vị không có tài khoản, để thời gian bước 1 như nhau. Có test thời gian trong pgTAP 010. |
 | R-5 | Migration dữ liệu ghi thẳng `auth.users`/`auth.identities`, phụ thuộc cấu trúc của Supabase Auth | Trung bình | Spike chạy được trên CLI 2.117.0: magic link và `verifyOtp` dùng được với người dùng tạo bằng SQL. Diễn tập trên bản sao trước release. Phương án dự phòng: script service role tạo người dùng Auth bằng Admin API, migration chỉ chuyển grant |
@@ -303,7 +319,7 @@ Kết quả spike (M1): 6 grant còn hiệu lực trước migration. 5 grant qu
 | R-10 | Sửa fixture pgTAP 5 file (181 assertion) làm thay đổi ý nghĩa test cũ | Cao | Một helper dùng chung, chỉ thay phần "ai thao tác". Thêm assertion "tài khoản cá nhân bị từ chối" trước (RED), rồi phiên tổ chức (GREEN). Không xóa assertion cũ |
 | R-11 | Sau "Đổi cán bộ" hoặc thu hồi thành viên, token cũ còn hạn (tối đa 1 giờ) vẫn đọc được qua RLS | Thấp | Ghi bị chặn ngay (L5, L9: `OFFICER_REQUIRED`). Đọc: như R-7 **Đã chốt (bắt buộc):** `end_officer_session` xóa `auth.sessions` của phiên; `organization_session_ok()` kiểm phiên Auth còn tồn tại, nên token cũ mất quyền đọc và ghi ngay. Test: pgTAP 010 (AC13, AC14). |
 | R-12 | `bootstrap_school_admin` hiện tại bị trigger mới chặn | Trung bình | Viết lại cùng migration, sửa pgTAP 006. Spike chưa làm **Đã chốt:** viết lại trong migration CR-01, nằm trong danh sách không cắt. Test: pgTAP 010 (AC10). |
-| R-13 | Không kịp 09/11 | Trung bình | Thứ tự cắt giảm ở 2.7 |
+| R-13 | Không kịp 11/11 | Trung bình | Thứ tự cắt giảm ở 2.7 |
 
 ## 5. Bộ test hồi quy (test tự động + test case từ TH2)
 
