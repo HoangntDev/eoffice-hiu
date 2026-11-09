@@ -327,7 +327,8 @@ select is(pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'), $
   'AC14: token cũ sau khi đổi cán bộ không còn là phiên hợp lệ');
 select is(pg_temp.c('drafts_before') || '/' || pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'),
   format($$ select count(*)::text from public.event_programs where owner_org_id = %L and status = 'draft' $$, pg_temp.c('f'))),
-  '1/0', 'AC14: token cũ đọc được bản nháp trước khi đổi cán bộ, sau khi đổi thì không');
+  pg_temp.c('drafts_before') || '/0',
+  'AC14: token cũ đọc được toàn bộ bản nháp trước khi đổi cán bộ, sau khi đổi thì không');
 -- Cán bộ C vào bước 2 (không nhập lại PIN tổ chức); thao tác sau đó ghi theo C.
 select pg_temp.setup(format($$ insert into auth.sessions(id, user_id) values (%L, %L) $$, pg_temp.c('S4'), pg_temp.c('acc_f')));
 select pg_temp.setup(format($$ select public.start_officer_session(%L, %L, %L) $$, pg_temp.c('S4'), pg_temp.c('acc_f'), pg_temp.c('C')));
