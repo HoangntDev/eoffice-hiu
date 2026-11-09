@@ -932,3 +932,143 @@ grant execute on function public.set_feature_flag(text, boolean, text) to authen
 grant execute on function public.manage_organization_account(uuid, text, text, text) to authenticated, service_role;
 grant execute on function public.change_organization_pin(text, text) to authenticated, service_role;
 grant execute on function public.start_organization_switch(uuid) to service_role;
+
+
+-- Quyền sửa quy tắc sau khi khóa xét theo cán bộ đang thao tác, không chỉ theo tài khoản dùng chung.
+create or replace function public.save_attendance_plan(
+  p_program_id   uuid,
+  p_max_points   integer,
+  p_rule_type    text,
+  p_tiers        jsonb,
+  p_tiers_require_required boolean,
+  p_sessions     jsonb,
+  p_reason       text default null,
+  p_request_id   text default null
+) returns uuid
+language plpgsql security definer set search_path = public as $$
+declare
+  v_program  public.event_programs%rowtype;
+  v_grant    uuid;
+  v_role     text;
+  v_locked   boolean;
+  v_reason   text := nullif(btrim(coalesce(p_reason, '')), '');
+  v_before   jsonb;
+  v_after    jsonb;
+  v_item     jsonb;
+  v_id       uuid;
+  v_keep     uuid[] := '{}'::uuid[];
+  v_count    integer;
+  v_required integer;
+begin
+  if auth.uid() is null then raise exception 'UNAUTHENTICATED'; end if;
+  select * into v_program from public.event_programs where id = p_program_id for update;
+  if v_program.id is null then raise exception 'PROGRAM_NOT_FOUND'; end if;
+  v_grant := public.event_program_manager_grant(v_program.owner_org_id);
+  if v_grant is null then raise exception 'FORBIDDEN'; end if;
+  if v_program.status <> 'approved' then raise exception 'PROGRAM_NOT_APPROVED'; end if;
+
+  -- Kiểm tra cấu hình
+  if p_max_points is null or p_max_points not between 0 and 100 then raise exception 'INVALID_MAX_POINTS'; end if;
+  if p_rule_type not in ('all_required', 'any_session', 'sum_sessions', 'tiers') then raise exception 'INVALID_RULE'; end if;
+  if p_sessions is null or jsonb_typeof(p_sessions) <> 'array' or jsonb_array_length(p_sessions) = 0 then
+    raise exception 'SESSIONS_REQUIRED';
+  end if;
+  p_tiers := coalesce(p_tiers, '[]'::jsonb);
+  if jsonb_typeof(p_tiers) <> 'array' then raise exception 'INVALID_TIERS'; end if;
+  v_count := jsonb_array_length(p_sessions);
+  select count(*) into v_required from jsonb_array_elements(p_sessions) e where coalesce((e->>'is_required')::boolean, false);
+  if p_rule_type = 'all_required' and v_required = 0 then raise exception 'REQUIRED_SESSION_NEEDED'; end if;
+  if p_rule_type = 'tiers' then
+    if jsonb_array_length(p_tiers) = 0 then raise exception 'INVALID_TIERS'; end if;
+    if exists (
+      select 1 from jsonb_array_elements(p_tiers) t
+      where coalesce(jsonb_typeof(t->'min_sessions'), '') <> 'number' or coalesce(jsonb_typeof(t->'points'), '') <> 'number'
+         or (t->>'min_sessions')::numeric <> floor((t->>'min_sessions')::numeric)
+         or (t->>'points')::numeric <> floor((t->>'points')::numeric)
+         or (t->>'min_sessions')::int not between 1 and v_count
+         or (t->>'points')::int not between 0 and p_max_points
+    ) then raise exception 'INVALID_TIERS'; end if;
+    if (select count(distinct (t->>'min_sessions')::int) from jsonb_array_elements(p_tiers) t) <> jsonb_array_length(p_tiers) then
+      raise exception 'INVALID_TIERS';
+    end if;
+    if coalesce(p_tiers_require_required, false) and v_required = 0 then raise exception 'REQUIRED_SESSION_NEEDED'; end if;
+  end if;
+  if exists (
+    select 1 from jsonb_array_elements(p_sessions) e
+    where coalesce(jsonb_typeof(e->'points'), '') <> 'number' or (e->>'points')::numeric <> floor((e->>'points')::numeric)
+       or (e->>'points')::int not between 0 and greatest(p_max_points, 0)
+  ) then raise exception 'INVALID_SESSION_POINTS'; end if;
+
+  -- Đã mở lượt nào → khóa quy tắc: chỉ faculty_manager, có lý do, ghi lịch sử điều chỉnh.
+  v_locked := exists (select 1 from public.program_attendance_sessions where program_id = p_program_id and open_count > 0);
+  if v_locked then
+    if public.is_organization_account(auth.uid()) then
+      if not exists (
+        select 1 from public.role_grants rg
+        where rg.user_id = public.current_officer_user_id()
+          and rg.organization_id = v_program.owner_org_id
+          and rg.role_code = 'faculty_manager'
+          and rg.revoked_at is null
+      ) then raise exception 'AMEND_FORBIDDEN'; end if;
+    else
+      select role_code into v_role from public.role_grants where id = v_grant;
+      if v_role <> 'faculty_manager' then raise exception 'AMEND_FORBIDDEN'; end if;
+    end if;
+    if char_length(coalesce(v_reason, '')) < 10 then raise exception 'AMEND_REASON_REQUIRED'; end if;
+  end if;
+
+  select jsonb_build_object('plan', to_jsonb(p), 'sessions',
+           coalesce((select jsonb_agg(jsonb_build_object('id', s.id, 'label', s.label, 'points', s.points,
+                       'is_required', s.is_required, 'sort_order', s.sort_order) order by s.sort_order)
+                     from public.program_attendance_sessions s where s.program_id = p_program_id), '[]'::jsonb))
+    into v_before
+  from public.program_attendance_plans p where p.program_id = p_program_id;
+
+  insert into public.program_attendance_plans(program_id, max_points, rule_type, tiers, tiers_require_required, updated_by)
+  values (p_program_id, p_max_points, p_rule_type, p_tiers, coalesce(p_tiers_require_required, false), auth.uid())
+  on conflict (program_id) do update
+  set max_points = excluded.max_points, rule_type = excluded.rule_type, tiers = excluded.tiers,
+      tiers_require_required = excluded.tiers_require_required, updated_at = now(), updated_by = auth.uid();
+
+  for v_item in select value from jsonb_array_elements(p_sessions) loop
+    v_id := nullif(v_item->>'id', '')::uuid;
+    if v_id is not null then
+      update public.program_attendance_sessions
+      set label = btrim(v_item->>'label'), points = (v_item->>'points')::int,
+          is_required = coalesce((v_item->>'is_required')::boolean, false),
+          sort_order = coalesce((v_item->>'sort_order')::int, 0)
+      where id = v_id and program_id = p_program_id;
+      if not found then raise exception 'SESSION_NOT_FOUND'; end if;
+    else
+      insert into public.program_attendance_sessions(program_id, label, points, is_required, sort_order)
+      values (p_program_id, btrim(v_item->>'label'), (v_item->>'points')::int,
+              coalesce((v_item->>'is_required')::boolean, false), coalesce((v_item->>'sort_order')::int, 0))
+      returning id into v_id;
+      insert into public.program_attendance_secrets(session_id) values (v_id);
+    end if;
+    v_keep := array_append(v_keep, v_id);
+  end loop;
+
+  if exists (select 1 from public.program_attendance_sessions
+             where program_id = p_program_id and not (id = any(v_keep)) and open_count > 0) then
+    raise exception 'SESSION_IN_USE';
+  end if;
+  delete from public.program_attendance_secrets
+  where session_id in (select id from public.program_attendance_sessions where program_id = p_program_id and not (id = any(v_keep)));
+  delete from public.program_attendance_sessions where program_id = p_program_id and not (id = any(v_keep));
+
+  select jsonb_build_object('plan', to_jsonb(p), 'sessions',
+           (select jsonb_agg(jsonb_build_object('id', s.id, 'label', s.label, 'points', s.points,
+                     'is_required', s.is_required, 'sort_order', s.sort_order) order by s.sort_order)
+            from public.program_attendance_sessions s where s.program_id = p_program_id))
+    into v_after
+  from public.program_attendance_plans p where p.program_id = p_program_id;
+
+  insert into public.program_attendance_history(program_id, action, reason, before_data, after_data, actor_user_id, actor_role_grant_id, request_id)
+  values (p_program_id, case when v_locked then 'plan_amended' else 'plan_saved' end, v_reason, v_before, v_after,
+          auth.uid(), v_grant, p_request_id);
+  perform public.write_audit('program_attendance.' || case when v_locked then 'plan_amended' else 'plan_saved' end,
+    'event_program', p_program_id::text, v_before, v_after, v_grant, v_program.owner_org_id, p_request_id);
+  return p_program_id;
+end;
+$$;
