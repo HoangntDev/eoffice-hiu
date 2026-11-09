@@ -610,8 +610,10 @@ set search_path = ''
 as $$
 declare v_type text;
 begin
-  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return true; end if;
   select a.account_type into v_type from public.accounts a where a.user_id = auth.uid();
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then
+    return v_type = 'student';
+  end if;
   return v_type = 'organization' and public.organization_session_ok();
 end;
 $$;
@@ -629,6 +631,7 @@ declare
   v_challenge uuid;
   v_dummy constant text := '$2a$10$SEu1jPh5YpnNNt.OjRukUe1ptALn4my13.j5jnu3aeuPit098HCPW';
 begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return null; end if;
   select a.user_id, p.pin_hash into v_account, v_hash
   from public.accounts a
   join public.organization_units ou on ou.id = a.organization_id and ou.is_active
@@ -657,6 +660,7 @@ security definer
 set search_path = ''
 as $$
 begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return; end if;
   return query
   select ou.id, ou.name, ou.unit_type
   from public.organization_units ou
@@ -666,6 +670,28 @@ begin
     and ou.unit_type in ('school_union', 'office', 'faculty_union')
   order by case ou.unit_type when 'school_union' then 1 when 'office' then 2 else 3 end,
     ou.name;
+end;
+$$;
+
+-- Đổi cán bộ không yêu cầu nhập lại PIN tổ chức: server tạo một challenge mới cho đúng tài khoản
+-- trước khi thu hồi phiên Auth cũ.
+create or replace function public.start_organization_switch(p_account_user_id uuid)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare v_challenge uuid;
+begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return null; end if;
+  if not exists (
+    select 1 from public.accounts a
+    join public.organization_units ou on ou.id = a.organization_id and ou.is_active
+    where a.user_id = p_account_user_id and a.account_type = 'organization' and a.status = 'active'
+  ) then return null; end if;
+  insert into public.organization_login_challenges(account_user_id)
+  values (p_account_user_id) returning id into v_challenge;
+  return v_challenge;
 end;
 $$;
 
@@ -898,9 +924,11 @@ revoke all on function public.list_organization_login_units() from public, authe
 revoke all on function public.set_feature_flag(text, boolean, text) from public, anon;
 revoke all on function public.manage_organization_account(uuid, text, text, text) from public, anon;
 revoke all on function public.change_organization_pin(text, text) from public, anon;
+revoke all on function public.start_organization_switch(uuid) from public, anon, authenticated;
 grant execute on function public.organization_session_ok() to authenticated, service_role;
 grant execute on function public.management_account_allowed() to authenticated, service_role;
 grant execute on function public.list_organization_login_units() to anon, authenticated, service_role;
 grant execute on function public.set_feature_flag(text, boolean, text) to authenticated, service_role;
 grant execute on function public.manage_organization_account(uuid, text, text, text) to authenticated, service_role;
 grant execute on function public.change_organization_pin(text, text) to authenticated, service_role;
+grant execute on function public.start_organization_switch(uuid) to service_role;
