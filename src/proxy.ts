@@ -62,6 +62,7 @@ export async function proxy(request: NextRequest) {
   });
   const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
   const pathname = request.nextUrl.pathname;
+  const adminLoginPath = pathname === "/admin/login" || pathname === "/admin/login/officer";
   const protectedPath = [
     "/onboarding",
     "/account",
@@ -75,8 +76,10 @@ export async function proxy(request: NextRequest) {
     "/forms/new",
     "/programs",
     "/attend",
+    "/admin",
   ].some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
     || /^\/forms\/[^/]+(\/edit|\/responses)(\/|$)/.test(pathname);
+  const requiresSession = protectedPath && !adminLoginPath;
 
   function redirect(path: string) {
     const redirectResponse = NextResponse.redirect(new URL(path, request.url));
@@ -89,14 +92,21 @@ export async function proxy(request: NextRequest) {
     logEvent("warn", "auth.access_denied", { source: "proxy", requestId, path: pathname, reason, ip: clientIp(request.headers), ...extra });
   }
 
-  if (protectedPath) {
+  if (requiresSession) {
     const userId = typeof claimsData?.claims?.sub === "string" ? claimsData.claims.sub : null;
     if (claimsError || !userId) {
       denied("NO_SESSION");
       return redirect(loginPathFor(pathname, request.nextUrl.search));
     }
-    const { data: account } = await supabase.from("accounts").select("status, student_code").eq("user_id", userId).maybeSingle();
+    const { data: account } = await supabase.from("accounts").select("status, student_code, account_type").eq("user_id", userId).maybeSingle();
     const denyAccount = () => denied("ACCOUNT_NOT_ACTIVE", { userId, studentCode: account?.student_code, accountStatus: account?.status ?? null });
+    if (account?.account_type === "organization") {
+      if (!pathname.startsWith("/admin")) return redirect("/admin");
+      const { data: sessionOk } = await supabase.rpc("organization_session_ok");
+      if (!sessionOk) return redirect("/admin/login/officer");
+    } else if (pathname.startsWith("/admin")) {
+      return redirect("/admin/login");
+    }
     if (pathname.startsWith("/signup/create-pin")) {
       if (account?.status === "active") return redirect("/onboarding/profile");
       if (account?.status !== "pending_pin") {

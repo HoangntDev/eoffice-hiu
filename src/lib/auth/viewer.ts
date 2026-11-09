@@ -10,6 +10,7 @@ export type Viewer = {
   studentCode: string | null;
   fullName: string | null;
   accountStatus: string | null;
+  accountType: "student" | "organization" | null;
   roles: string[];
   access: NavAccess;
 };
@@ -20,7 +21,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
   const { data } = await supabase.auth.getUser();
   if (!data.user) return null;
   const [{ data: account }, { data: profile }, { data: grants }] = await Promise.all([
-    supabase.from("accounts").select("student_code, status").eq("user_id", data.user.id).maybeSingle(),
+    supabase.from("accounts").select("student_code, status, account_type").eq("user_id", data.user.id).maybeSingle(),
     supabase.from("student_profiles").select("full_name").eq("user_id", data.user.id).maybeSingle(),
     supabase.from("role_grants").select("role_code").eq("user_id", data.user.id).is("revoked_at", null),
   ]);
@@ -31,6 +32,7 @@ export const getViewer = cache(async (): Promise<Viewer | null> => {
     studentCode: account?.student_code ?? null,
     fullName: profile?.full_name?.trim() || null,
     accountStatus: account?.status ?? null,
+    accountType: (account?.account_type as "student" | "organization" | undefined) ?? null,
     roles,
     access: navAccess(roles),
   };
