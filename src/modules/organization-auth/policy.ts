@@ -1,6 +1,4 @@
 // Chính sách đăng nhập tổ chức: giới hạn thử (R5), lỗi chung (R5), cookie phiên tạm 5 phút (R2).
-import { NotImplementedError } from "./errors";
-
 export type OrgLoginAttemptPolicy = {
   action: "org_login";
   maxFailures: number;
@@ -28,14 +26,18 @@ export type PendingLoginCookieOptions = {
 };
 
 export function orgLoginAttemptPolicy(): OrgLoginAttemptPolicy {
-  throw new NotImplementedError("orgLoginAttemptPolicy");
+  return { action: "org_login", maxFailures: 5, windowMinutes: 15, scope: ["organization", "ip"] };
 }
 
 export function organizationLoginFailure(reason: OrganizationLoginFailureReason): OrganizationLoginFailure {
   void reason;
-  throw new NotImplementedError("organizationLoginFailure");
+  return {
+    status: 401,
+    code: "INVALID_CREDENTIALS",
+    message: "Thông tin đăng nhập không hợp lệ. Vui lòng kiểm tra và thử lại.",
+  };
 }
 
 export function pendingLoginCookieOptions(): PendingLoginCookieOptions {
-  throw new NotImplementedError("pendingLoginCookieOptions");
+  return { httpOnly: true, sameSite: "strict", path: "/", maxAge: 300 };
 }
