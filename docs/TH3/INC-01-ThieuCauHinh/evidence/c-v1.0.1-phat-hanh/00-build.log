@@ -1,0 +1,9 @@
+$ git describe; git status --porcelain
+v1.0.1
+(trống = sạch)
+$ npm ci
+
+Run `npm audit` for details.
+$ NODE_ENV=production npm run build (biến giữ chỗ như CI)
+▲ Next.js 16.4.5 (Turbopack)
+✓ Compiled successfully in 5.4s

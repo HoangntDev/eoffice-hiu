@@ -1,0 +1,6 @@
+09:32:58 K2 chuẩn bị: sao lưu stack eoffice-v100
+09:33:05 K2 BẮT ĐẦU sự cố: docker stop supabase_db_eoffice-v100 (web vẫn chạy)
+09:33:06 container DB đã dừng
+09:33:25 K2 khắc phục: docker start supabase_db_eoffice-v100
+09:33:35 container DB healthy
+09:33:43 K2 KHÔI PHỤC: đăng nhập lại được (web không cần khởi động lại)

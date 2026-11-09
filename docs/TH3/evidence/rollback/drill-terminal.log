@@ -1,0 +1,50 @@
+
+== 0. Trạng thái trước: v1.0.1 đang chạy (16:40:36)
+{"app":"ok","db":"ok","config":"ok","version":"1.0.1"}  HTTP 200
+
+== SỰ CỐ GIẢ ĐỊNH: v1.0.1 vừa phát hành gặp lỗi nghiêm trọng → quyết định rollback về v1.0.0 (16:40:36)
+
+== 1. Quyết định rollback: kiểm schema + sao lưu (16:40:36)
+$ git diff --stat v1.0.0 v1.0.1 -- supabase/
+(rỗng: không đổi schema → rollback không cần gỡ migration)
+$ scripts/backup.sh eoffice-v100
+[16:40:37] Xong sau 951 ms. Bản sao lưu: eoffice-v100_20261106T164036
+eoffice-v100_20261106T164036
+
+== 2. Dừng bản mới v1.0.1 (16:40:37)
+cổng 3500 đã trống
+{"ts":"2026-11-06T09:40:37.445Z","level":"info","source":"app","event":"app.stop","version":"1.0.1","nodeEnv":"production","signal":"SIGTERM","exitCode":143,"up
+
+== 3. Cài bản cũ v1.0.0 từ Release (16:40:37)
+hiu-youth-e-office-v1.0.0.zip: OK
+HIU Youth E-Office — gói phát hành v1.0.0
+Tag:        v1.0.0
+Commit:     fe2b984f4b004265dc47d200cc7ede855fd5ea36
+added 494 packages, and audited 495 packages in 14s
+dùng lại .env.local (cùng stack, cùng cổng)
+v1.0.0 trả lời: / → 200; /api/health → 404 (v1.0.0 chưa có health check)
+
+== 4. Smoke test 8 bước trên v1.0.0 (16:40:56)
+# Bước 1: npm start
+▲ Next.js 16.3.8
+- Local:         http://localhost:3500
+- Network:       http://<LAN-IP>:3500
+✓ Ready in 193ms
+✓ Running next.config.ts took 49ms
+# Bước 2: $BASE/ → 200
+# Bước 3: supabase status: 0 dịch vụ running; /forms → 200, thấy biểu mẫu demo: 2 lần
+# Bước 4: $BASE/programs → 307 http://localhost:3500/login?next=%2Fprograms
+# Bước 5–8 (Playwright, tài khoản demo 2201110203)
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "PB Phạm Quốc Bảo 2201110203 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng 
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tò
+[Bước 8] PASS – sau đăng xuất về "/", có nút Đăng nhập: true; mở /programs → /login?next=%2Fprograms
+
+== Bảng thời gian (16:41:08)
+buoc                                                               bat_dau   ket_thuc  ms
+1. Quyết định rollback (kiểm schema, sao lưu)                      16:40:36  16:40:37  1199
+2. Dừng bản mới v1.0.1                                             16:40:37  16:40:37  155
+3. Cài bản cũ v1.0.0 (tải, checksum, giải nén, npm ci, khởi động)  16:40:37  16:40:56  19255
+4. Smoke test 8 bước                                               16:40:56  16:41:08  11895
+Từ quyết định rollback tới smoke xong                              32588
+PASS: 4/4 bước Playwright; FAIL: 0

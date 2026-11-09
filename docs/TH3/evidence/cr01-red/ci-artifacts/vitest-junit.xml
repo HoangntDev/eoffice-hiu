@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="166" failures="24" errors="0" time="0.376529247">
+    <testsuite name="tests/auth-ui.test.tsx" timestamp="2026-10-30T10:02:10.409Z" hostname="runnervm48cm3" tests="4" failures="0" errors="0" skipped="0" time="0.135780056">
+        <testcase classname="tests/auth-ui.test.tsx" name="independent account flows &gt; SIGN UP asks for MSSV and student email, but not a PIN" time="0.103540414">
+        </testcase>
+        <testcase classname="tests/auth-ui.test.tsx" name="independent account flows &gt; SIGN IN asks for a 10-digit MSSV first, then a six-digit PIN, never an email" time="0.02108456">
+        </testcase>
+        <testcase classname="tests/auth-ui.test.tsx" name="independent account flows &gt; PIN setup requires confirmation and account security requires the current PIN first" time="0.006172754">
+        </testcase>
+        <testcase classname="tests/auth-ui.test.tsx" name="independent account flows &gt; shows a clear SIGN OUT control" time="0.00375344">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/catalog-import-v2.test.mjs" timestamp="2026-10-30T10:02:10.410Z" hostname="runnervm48cm3" tests="5" failures="0" errors="0" skipped="0" time="0.008475304">
+        <testcase classname="tests/catalog-import-v2.test.mjs" name="academic catalog CSV &gt; preserves Vietnamese, quoted commas, and leading zeroes" time="0.002642921">
+        </testcase>
+        <testcase classname="tests/catalog-import-v2.test.mjs" name="academic catalog CSV &gt; rejects a changed header" time="0.001240134">
+        </testcase>
+        <testcase classname="tests/catalog-import-v2.test.mjs" name="academic catalog CSV &gt; reports duplicate and missing values with CSV line numbers" time="0.001388336">
+        </testcase>
+        <testcase classname="tests/catalog-import-v2.test.mjs" name="academic catalog CSV &gt; rejects unclosed quotes" time="0.000235324">
+        </testcase>
+        <testcase classname="tests/catalog-import-v2.test.mjs" name="academic catalog CSV &gt; plans inserts, updates, and idempotent reruns without guessing relationships" time="0.000957068">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/core-business-baseline.test.ts" timestamp="2026-10-30T10:02:10.410Z" hostname="runnervm48cm3" tests="35" failures="0" errors="0" skipped="0" time="0.026976107">
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; nhận bản nháp đầy đủ và chuẩn hóa chuỗi rỗng thành null" time="0.004043095">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; biên độ dài tên: 5 và 200 ký tự hợp lệ; 4 (sau trim) và 201 bị từ chối" time="0.000539601">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; thời gian kết thúc bằng thời gian bắt đầu bị từ chối (phải sau hẳn)" time="0.000630478">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; so sánh thời gian theo thời điểm thật, không theo chuỗi múi giờ" time="0.000187992">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; chỉ có một đầu thời gian thì không kiểm tra thứ tự" time="0.000142715">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; thời gian phải có múi giờ; ngày ký phải là ngày ISO" time="0.000289916">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; số người dự kiến: 1 hợp lệ; 0 và 100001 bị từ chối" time="0.000249244">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 kế hoạch chương trình — saveEventProgramSchema &gt; ownerOrgId phải là UUID" time="0.000212579">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 xét kế hoạch — reviewEventProgramSchema (chỉ Văn phòng xét, quyền kiểm ở DB) &gt; lý do đúng 10 ký tự sau trim là đủ; 9 ký tự bị từ chối" time="0.000580132">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 xét kế hoạch — reviewEventProgramSchema (chỉ Văn phòng xét, quyền kiểm ở DB) &gt; chấp thuận vẫn giữ lý do nếu có; lý do quá 2000 ký tự bị từ chối" time="0.000204117">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC6 hiển thị giờ Việt Nam &gt; giá trị rỗng hoặc sai định dạng không làm vỡ form" time="0.000234102">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; tổng chỉ tiêu bằng đúng tổng số chỗ là hợp lệ (biên)" time="0.00417318">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; tổng số chỗ: 1 và 100000 hợp lệ; 0, 100001 và số lẻ bị từ chối" time="0.000466822">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; nhóm chỉ tiêu: tên tối thiểu 2 ký tự, ít nhất 1 chỗ, tối đa 50 nhóm" time="0.002604013">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; hạn đóng đăng ký phải có múi giờ; hướng dẫn rỗng thành null" time="0.000236566">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; không nhận trường lạ (ví dụ trạng thái mở đăng ký) qua API lưu cấu hình" time="0.000133661">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 cấu hình đăng ký — saveRegistrationSettingsSchema &gt; đổi trạng thái chỉ nhận open/closed, không cho quay về draft" time="0.000339851">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 đăng ký và duyệt &gt; đăng ký không có câu trả lời mặc định là mảng rỗng" time="0.000431788">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 đăng ký và duyệt &gt; tối đa 200 câu trả lời; client không được gửi email người trả lời" time="0.001925012">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 đăng ký và duyệt &gt; lý do từ chối: đúng 10 ký tự sau trim là đủ, khoảng trắng thuần bị coi là không có" time="0.001209673">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC7 đăng ký và duyệt &gt; lỗi RPC nằm trong thông điệp dài vẫn được nhận diện; lỗi lạ không lộ chi tiết" time="0.00039942">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; điểm tối đa biên 0 và 100 hợp lệ; 101 và số âm bị từ chối" time="0.001367845">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; số lượt: 0 bị từ chối với thông báo rõ; 50 hợp lệ; 51 bị từ chối" time="0.000937528">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; cộng từng lượt: điểm lượt bằng đúng điểm tối đa là hợp lệ (biên)" time="0.000167221">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; theo bậc: bậc cần đúng bằng số lượt cấu hình là hợp lệ; không có bậc nào bị từ chối" time="0.00051271">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; theo bậc kèm lượt bắt buộc cần ít nhất một lượt bắt buộc" time="0.000227833">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; hành vi hiện tại: bậc gửi kèm vẫn bị kiểm tra dù quy tắc không phải &apos;theo bậc&apos;" time="0.000120552">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; tên lượt được trim trước khi kiểm độ dài; quy tắc lạ bị từ chối" time="0.000150747">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 kế hoạch điểm danh — saveAttendancePlanSchema &gt; đổi trạng thái lượt chỉ nhận open/closed" time="0.000371318">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 điểm danh QR — checkInSchema &gt; nhận token hợp lệ với lần mở 6 chữ số (biên)" time="0.000463206">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 điểm danh QR — checkInSchema &gt; từ chối lần mở 7 chữ số, chữ ký viết hoa, mốc thời gian quá ngắn" time="0.000202874">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 điểm danh QR — checkInSchema &gt; sessionId phải là UUID và không nhận trường lạ" time="0.000183746">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 điểm danh QR — checkInSchema &gt; hành vi hiện tại: schema không đối chiếu sessionId với UUID trong token (DB trả WRONG_SESSION)" time="0.000181733">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 ánh xạ lỗi RPC điểm danh &gt; AMEND_FORBIDDEN không bị nhận nhầm thành FORBIDDEN" time="0.000867513">
+        </testcase>
+        <testcase classname="tests/core-business-baseline.test.ts" name="UC8 ánh xạ lỗi RPC điểm danh &gt; chưa đăng nhập hướng dẫn quét lại; lỗi lạ trả 500 chung" time="0.000152549">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/env-config.test.ts" timestamp="2026-10-30T10:02:10.413Z" hostname="runnervm48cm3" tests="7" failures="0" errors="0" skipped="0" time="0.008317748">
+        <testcase classname="tests/env-config.test.ts" name="logLevel &gt; dùng LOG_LEVEL khi hợp lệ, không phân biệt hoa thường" time="0.002052144">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="logLevel &gt; mặc định theo NODE_ENV=production là info khi LOG_LEVEL trống hoặc sai" time="0.000462034">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="logLevel &gt; mặc định theo NODE_ENV=development là debug khi LOG_LEVEL trống hoặc sai" time="0.000184588">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="logLevel &gt; mặc định theo NODE_ENV=test là warn khi LOG_LEVEL trống hoặc sai" time="0.000151768">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="logEvent &gt; bỏ dòng dưới mức LOG_LEVEL và ghi JSON cho dòng đạt mức" time="0.002796041">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="optionalPublicSupabaseEnv &gt; trả null khi thiếu URL hoặc key, không ném lỗi" time="0.000405269">
+        </testcase>
+        <testcase classname="tests/env-config.test.ts" name="đọc cấu hình lúc chạy (không nhúng lúc build) &gt; appUrl và publicSupabaseEnv đổi theo biến môi trường hiện tại" time="0.000287041">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/event-programs.test.ts" timestamp="2026-10-30T10:02:10.413Z" hostname="runnervm48cm3" tests="18" failures="0" errors="0" skipped="0" time="0.014880834">
+        <testcase classname="tests/event-programs.test.ts" name="saveEventProgramSchema &gt; accepts a minimal draft with only owner and title" time="0.006235168">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="saveEventProgramSchema &gt; rejects end time before start time" time="0.00168362">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="saveEventProgramSchema &gt; rejects client-injected status or workflow fields" time="0.000192219">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="saveEventProgramSchema &gt; rejects short titles and non-integer participants" time="0.000790578">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="reviewEventProgramSchema &gt; allows approval without a reason" time="0.000526021">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="reviewEventProgramSchema &gt; requires a reason of at least 10 characters for changes or rejection" time="0.000183216">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="reviewEventProgramSchema &gt; rejects unknown decisions" time="0.000094572">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="checkPlanPdf &gt; accepts a PDF with the right extension, MIME type and magic bytes" time="0.00027287">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="checkPlanPdf &gt; rejects a renamed non-PDF file" time="0.000665165">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="checkPlanPdf &gt; rejects wrong extension or MIME type even with PDF bytes" time="0.000128023">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="checkPlanPdf &gt; rejects empty and oversized files" time="0.000180862">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="checkPlanPdf &gt; strips directory components and control characters from file names" time="0.000208874">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="Vietnam time conversion &gt; round-trips datetime-local values as UTC+07:00" time="0.000487462">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="availableActions &gt; lets the faculty edit and submit only drafts or programs needing changes" time="0.000436125">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="availableActions &gt; lets the office review only submitted programs it did not submit" time="0.000101473">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="eventProgramRpcError &gt; maps database codes to HTTP status and Vietnamese messages" time="0.000330116">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="eventProgramRpcError &gt; lists missing required fields by label" time="0.000214452">
+        </testcase>
+        <testcase classname="tests/event-programs.test.ts" name="eventProgramRpcError &gt; does not leak unknown database errors" time="0.000167011">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/forms-validation.test.ts" timestamp="2026-10-30T10:02:10.415Z" hostname="runnervm48cm3" tests="17" failures="0" errors="0" skipped="0" time="0.018171183">
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; accepts &apos;any&apos;" time="0.003856304">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; accepts &apos;hiu_student&apos;" time="0.001022396">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; accepts &apos;faculty&apos; with faculty_id" time="0.00115123">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; rejects &apos;faculty&apos; without faculty_id" time="0.002091282">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; accepts nested &apos;and&apos;" time="0.000284548">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; accepts nested &apos;or&apos;" time="0.000144217">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="audienceRuleSchema &gt; rejects unknown types" time="0.000216716">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="questionSchema &gt; accepts minimal question" time="0.001723359">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="questionSchema &gt; rejects empty label" time="0.000391969">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="questionSchema &gt; accepts options for single_choice" time="0.00106509">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="saveTemplateSchema &gt; accepts valid template with draft status" time="0.000987614">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="saveTemplateSchema &gt; rejects title shorter than 3 chars" time="0.000393962">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="saveFormSchema &gt; accepts valid form" time="0.001125211">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="saveFormSchema &gt; rejects closes_at before opens_at" time="0.000644879">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="submitResponseSchema &gt; accepts answers with null values for optional questions" time="0.000812181">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="submitResponseSchema &gt; rejects invalid respondent_email" time="0.000264097">
+        </testcase>
+        <testcase classname="tests/forms-validation.test.ts" name="submitResponseSchema &gt; accepts null respondent_email" time="0.00009333">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/login-next-path.test.ts" timestamp="2026-10-30T10:02:10.416Z" hostname="runnervm48cm3" tests="16" failures="0" errors="0" skipped="0" time="0.011768547">
+        <testcase classname="tests/login-next-path.test.ts" name="loginPathFor (proxy) &gt; giữ query string ?t= trong tham số next" time="0.001270198">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="loginPathFor (proxy) &gt; không thêm dấu ? khi không có query string" time="0.000186224">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; trả lại đúng đường dẫn nội bộ kèm query" time="0.000222064">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là undefined" time="0.000074682">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là chuỗi rỗng" time="0.000042835">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là URL tuyệt đối" time="0.000038327">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là protocol-relative" time="0.00003967">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là dấu gạch ngược" time="0.000035894">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là scheme javascript" time="0.00004686">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là không bắt đầu bằng /" time="0.00003348">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là ký tự điều khiển" time="0.000034032">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là quay về /login" time="0.000038558">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là gọi API" time="0.000035583">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; dùng mặc định khi next là quá dài" time="0.000034001">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="safeNextPath &gt; cho phép đổi giá trị mặc định (trang login dùng chuỗi rỗng)" time="0.000043525">
+        </testcase>
+        <testcase classname="tests/login-next-path.test.ts" name="loginSchema &gt; nhận next tùy chọn và vẫn chặn trường lạ" time="0.008076625">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/nav-access.test.ts" timestamp="2026-10-30T10:02:10.417Z" hostname="runnervm48cm3" tests="5" failures="0" errors="0" skipped="0" time="0.003188892">
+        <testcase classname="tests/nav-access.test.ts" name="menu theo vai trò &gt; sinh viên không có vai trò thì không thấy Cơ cấu và Xử lý hồ sơ" time="0.001478842">
+        </testcase>
+        <testcase classname="tests/nav-access.test.ts" name="menu theo vai trò &gt; Đoàn Trường thấy cả hai" time="0.000148824">
+        </testcase>
+        <testcase classname="tests/nav-access.test.ts" name="menu theo vai trò &gt; Đoàn Khoa và Trưởng Ban chỉ thấy Cơ cấu" time="0.000184737">
+        </testcase>
+        <testcase classname="tests/nav-access.test.ts" name="menu theo vai trò &gt; Văn phòng và CTV chỉ thấy Xử lý hồ sơ" time="0.000135123">
+        </testcase>
+        <testcase classname="tests/nav-access.test.ts" name="menu theo vai trò &gt; vai trò lạ không mở thêm menu" time="0.000106831">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/organization-auth.test.ts" timestamp="2026-10-30T10:02:10.417Z" hostname="runnervm48cm3" tests="24" failures="24" errors="0" skipped="0" time="0.034832618">
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; bước 1 nhận đơn vị + PIN tổ chức 6 số" time="0.011444491">
+            <failure message="expected { …(2) } to deeply equal { value: { …(2) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { …(2) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;organizationId&quot;: &quot;00000000-0000-4000-8000-000000000002&quot;,
+-     &quot;organizationPin&quot;: &quot;246810&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: parseOrganizationLoginStep1&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:31:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; bước 1 từ chối PIN tổ chức không đủ 6 số" time="0.002163831">
+            <failure message="expected { …(2) } to match object { errorType: &apos;ZodError&apos; }
+(1 matching property omitted from actual)" type="AssertionError">
+AssertionError: expected { …(2) } to match object { errorType: &apos;ZodError&apos; }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;errorType&quot;: &quot;ZodError&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:36:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; bước 2 nhận MSSV 10 số + PIN cá nhân 6 số" time="0.0007391">
+            <failure message="expected { …(2) } to deeply equal { value: { …(2) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { …(2) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;pin&quot;: &quot;123456&quot;,
+-     &quot;studentCode&quot;: &quot;2201110202&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: parseOfficerLoginStep2&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:41:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)" time="0.00059243">
+            <failure message="expected { …(2) } to match object { errorType: &apos;ZodError&apos; }
+(1 matching property omitted from actual)" type="AssertionError">
+AssertionError: expected { …(2) } to match object { errorType: &apos;ZodError&apos; }
+(1 matching property omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   &quot;errorType&quot;: &quot;ZodError&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:46:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; thanh trên cùng hiện đơn vị và cán bộ đang thao tác" time="0.001476349">
+            <failure message="expected { …(2) } to deeply equal { value: StringContaining{…} }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: StringContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: StringContaining &quot;Văn phòng Đoàn – Hội&quot;,
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: organizationHeader&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:51:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC1: đăng nhập hai bước và thanh trên cùng &gt; cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV" time="0.000604389">
+            <failure message="expected { …(2) } to deeply equal { Object (value) }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { Object (value) }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: StringContaining &quot;2201110201&quot;,
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: organizationHeader&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:57:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC2: dropdown đơn vị nhóm theo cấp &gt; chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn Trường → Văn phòng → Đoàn Khoa" time="0.00217285">
+            <failure message="expected { …(2) } to deeply equal { value: [ { …(3) }, { …(3) }, …(1) ] }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: [ { …(3) }, { …(3) }, …(1) ] }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: [
+-     {
+-       &quot;label&quot;: Any&lt;String&gt;,
+-       &quot;level&quot;: &quot;school_union&quot;,
+-       &quot;units&quot;: [
+-         {
+-           &quot;id&quot;: &quot;s&quot;,
+-           &quot;name&quot;: &quot;Đoàn Trường&quot;,
+-         },
+-       ],
+-     },
+-     {
+-       &quot;label&quot;: Any&lt;String&gt;,
+-       &quot;level&quot;: &quot;office&quot;,
+-       &quot;units&quot;: [
+-         {
+-           &quot;id&quot;: &quot;o&quot;,
+-           &quot;name&quot;: &quot;Văn phòng Đoàn – Hội&quot;,
+-         },
+-       ],
+-     },
+-     {
+-       &quot;label&quot;: Any&lt;String&gt;,
+-       &quot;level&quot;: &quot;faculty_union&quot;,
+-       &quot;units&quot;: [
+-         {
+-           &quot;id&quot;: &quot;f1&quot;,
+-           &quot;name&quot;: &quot;Đoàn Khoa CNKT&quot;,
+-         },
+-       ],
+-     },
+-   ],
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: groupLoginUnits&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:74:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC4: mỗi bước sai đều trả một thông báo lỗi chung &gt; mọi lý do cho cùng status, mã và câu thông báo" time="0.001345291">
+            <failure message="expected { …(2) } to deeply equal { value: { status: 401, …(2) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { status: 401, …(2) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;code&quot;: &quot;INVALID_CREDENTIALS&quot;,
+-     &quot;message&quot;: Any&lt;String&gt;,
+-     &quot;status&quot;: 401,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: organizationLoginFailure&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:93:24
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC4: mỗi bước sai đều trả một thông báo lỗi chung &gt; thông báo không nói bước nào hay thông tin nào sai" time="0.001147784">
+            <failure message="expected { …(2) } to have property &quot;value.message&quot;" type="AssertionError">
+AssertionError: expected { …(2) } to have property &quot;value.message&quot;
+ ❯ tests/organization-auth.test.ts:98:20
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC5: giới hạn thử PIN tổ chức &gt; 5 lần sai trong 15 phút, tính theo đơn vị + IP" time="0.00163778">
+            <failure message="expected { …(2) } to deeply equal { Object (value) }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { Object (value) }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;org_login&quot;,
+-     &quot;maxFailures&quot;: 5,
+-     &quot;scope&quot;: [
+-       &quot;organization&quot;,
+-       &quot;ip&quot;,
+-     ],
+-     &quot;windowMinutes&quot;: 15,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: orgLoginAttemptPolicy&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:106:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; khách vào /admin" time="0.000677608">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin/login&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; khách mở trang đăng nhập tổ chức" time="0.00050636">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;next&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; sinh viên vào /admin/programs" time="0.000535945">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin/login&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; phiên tổ chức vào trang sinh viên /programs" time="0.000553401">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; phiên tổ chức vào /union-membership" time="0.000485139">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; phiên tổ chức vào /admin/programs" time="0.000510728">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;next&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; sinh viên vào /programs (không đổi, R9)" time="0.000813993">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;next&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:120:65
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài khoản" time="0.000940944">
+            <failure message="expected { …(2) } to deeply equal { value: ArrayContaining{…} }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: ArrayContaining [
+-     &quot;/admin/programs&quot;,
+-   ],
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminMenuFor&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:125:18
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức" time="0.00059861">
+            <failure message="expected { …(2) } to deeply equal { value: ArrayContaining{…} }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: ArrayContaining [
+-     &quot;/admin/reviews&quot;,
+-   ],
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminMenuFor&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:132:18
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC9 (R7): phân luồng trang và menu theo loại đơn vị &gt; Đoàn Trường thấy cơ cấu và tài khoản tổ chức" time="0.000586781">
+            <failure message="expected { …(2) } to deeply equal { value: ArrayContaining{…} }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: ArrayContaining{…} }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: ArrayContaining [
+-     &quot;/admin/organization&quot;,
+-     &quot;/admin/accounts&quot;,
+-   ],
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminMenuFor&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:138:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC12: phiên tạm của bước 1 &gt; cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút" time="0.001514325">
+            <failure message="expected { …(2) } to deeply equal { value: { httpOnly: true, …(3) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { httpOnly: true, …(3) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;httpOnly&quot;: true,
+-     &quot;maxAge&quot;: 300,
+-     &quot;path&quot;: &quot;/&quot;,
+-     &quot;sameSite&quot;: &quot;strict&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: pendingLoginCookieOptions&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:145:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC13, AC14: đổi cán bộ và phiên chưa có cán bộ &gt; phiên tổ chức chưa có cán bộ vào /admin thì về bước 2" time="0.000584558">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin/login/officer&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:154:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC13, AC14: đổi cán bộ và phiên chưa có cán bộ &gt; phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ" time="0.000548154">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;redirect&apos;, …(1) } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;redirect&quot;,
+-     &quot;to&quot;: &quot;/admin/login/officer&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:159:8
+            </failure>
+        </testcase>
+        <testcase classname="tests/organization-auth.test.ts" name="AC13, AC14: đổi cán bộ và phiên chưa có cán bộ &gt; sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được trang bước 2" time="0.000787373">
+            <failure message="expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }" type="AssertionError">
+AssertionError: expected { …(2) } to deeply equal { value: { action: &apos;next&apos; } }
+
+- Expected
++ Received
+
+  {
+-   &quot;value&quot;: {
+-     &quot;action&quot;: &quot;next&quot;,
+-   },
++   &quot;error&quot;: &quot;NOT_IMPLEMENTED: adminRouteDecision&quot;,
++   &quot;errorType&quot;: &quot;NotImplementedError&quot;,
+  }
+
+ ❯ tests/organization-auth.test.ts:163:90
+            </failure>
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/program-attendance.test.ts" timestamp="2026-10-30T10:02:10.424Z" hostname="runnervm48cm3" tests="7" failures="0" errors="0" skipped="0" time="0.007863165">
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 kế hoạch điểm danh &gt; điểm tối đa và điểm lượt phải là số nguyên" time="0.003689724">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 kế hoạch điểm danh &gt; điểm lượt và điểm bậc không vượt điểm tối đa" time="0.000646271">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 kế hoạch điểm danh &gt; bậc không được cần nhiều lượt hơn số lượt cấu hình, không trùng" time="0.000325198">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 kế hoạch điểm danh &gt; quy tắc đủ lượt bắt buộc cần ít nhất một lượt bắt buộc" time="0.000207332">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 kế hoạch điểm danh &gt; mở lại lượt nhận lý do tùy chọn ở client (server bắt buộc khi mở lại)" time="0.000510848">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 mã QR &gt; nhận đúng định dạng token, từ chối mã bị cắt hoặc lạ" time="0.000856116">
+        </testcase>
+        <testcase classname="tests/program-attendance.test.ts" name="UC8 mã QR &gt; ánh xạ lỗi hết hạn sang 410 và yêu cầu quét mã mới" time="0.000383647">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/program-registrations.test.ts" timestamp="2026-10-30T10:02:10.425Z" hostname="runnervm48cm3" tests="15" failures="0" errors="0" skipped="0" time="0.015442934">
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 cấu hình đăng ký &gt; chấp nhận không giới hạn chỗ, không chỉ tiêu" time="0.005788537">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 cấu hình đăng ký &gt; chặn chỉ tiêu nhóm khi không có tổng số chỗ" time="0.001833645">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 cấu hình đăng ký &gt; chặn tổng chỉ tiêu nhóm vượt tổng số chỗ" time="0.000362895">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 cấu hình đăng ký &gt; chặn hạn chuyển chỉ tiêu khi không có nhóm" time="0.000586972">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 cấu hình đăng ký &gt; nhận điều kiện theo ngành" time="0.000457798">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 duyệt và đăng ký &gt; từ chối phải có lý do ≥ 10 ký tự" time="0.001276778">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 duyệt và đăng ký &gt; duyệt không bắt buộc lý do ở client (server quyết định khi bỏ qua người uy tín cao)" time="0.000174282">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 duyệt và đăng ký &gt; không nhận trường lạ như user_id hay status từ client" time="0.000564478">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 duyệt và đăng ký &gt; ánh xạ lỗi RPC sang thông báo tiếng Việt" time="0.00034589">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 điều kiện đối tượng &gt; mặc định là sinh viên HIU" time="0.000433361">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 điều kiện đối tượng &gt; dựng và đọc lại Khoa/ngành/Đoàn viên" time="0.000682426">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 điều kiện đối tượng &gt; không lặp tiền tố khi tên danh mục đã có chữ Khoa" time="0.000170916">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 điều kiện đối tượng &gt; nhóm chỉ tiêu đọc lại đúng loại" time="0.000267692">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 xuất danh sách &gt; không xuất điểm uy tín" time="0.000359681">
+        </testcase>
+        <testcase classname="tests/program-registrations.test.ts" name="UC7 xuất danh sách &gt; đổi mã lựa chọn sang nhãn và chặn công thức Excel" time="0.000215444">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/registration-eligibility.test.ts" timestamp="2026-10-30T10:02:10.426Z" hostname="runnervm48cm3" tests="5" failures="0" errors="0" skipped="0" time="0.003737566">
+        <testcase classname="tests/registration-eligibility.test.ts" name="registrationBlockReason &gt; cho đăng ký khi mở, đúng đối tượng, còn chỗ" time="0.001560385">
+        </testcase>
+        <testcase classname="tests/registration-eligibility.test.ts" name="registrationBlockReason &gt; chưa cấu hình, nháp, đã đóng" time="0.00027301">
+        </testcase>
+        <testcase classname="tests/registration-eligibility.test.ts" name="registrationBlockReason &gt; quá hạn đăng ký hoặc chương trình đã kết thúc thì coi là đã đóng" time="0.000140441">
+        </testcase>
+        <testcase classname="tests/registration-eligibility.test.ts" name="registrationBlockReason &gt; sai đối tượng được báo trước hết chỗ" time="0.000116826">
+        </testcase>
+        <testcase classname="tests/registration-eligibility.test.ts" name="registrationBlockReason &gt; hết chỗ chỉ khi nhận theo thứ tự" time="0.000243887">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/student-profile-form.test.tsx" timestamp="2026-10-30T10:02:10.426Z" hostname="runnervm48cm3" tests="1" failures="0" errors="0" skipped="0" time="0.077504294">
+        <testcase classname="tests/student-profile-form.test.tsx" name="StudentProfileForm academic catalog cascade &gt; filters Khoa → Ngành → Khóa → Lớp and clears child selections" time="0.076153604">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/validation.test.ts" timestamp="2026-10-30T10:02:10.426Z" hostname="runnervm48cm3" tests="7" failures="0" errors="0" skipped="0" time="0.009589999">
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; accepts exactly 10 digits and preserves a leading zero" time="0.002133957">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; rejects the future 11-digit format today" time="0.00041896">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; requires a @student.hiu.vn email matching the MSSV at registration" time="0.002206876">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; accepts only a six-digit PIN" time="0.000257306">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; does not accept Gmail or role as login identity" time="0.000703207">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; requires matching PIN confirmation and the current PIN for changes" time="0.001170909">
+        </testcase>
+        <testcase classname="tests/validation.test.ts" name="student account validation &gt; rejects organization fields injected into the student profile" time="0.001249448">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,8 @@
+$ gh release download v1.0.1 (thư mục tạm) && scripts/package-release.sh --verify hiu-youth-e-office-v1.0.1.zip 1.0.1
+hiu-youth-e-office-v1.0.1.zip: OK
+[17:00:44] Tự kiểm tra hiu-youth-e-office-v1.0.1.zip trong <tmp>/verify-hiu-youth-e-office-TK3e
+[17:00:44] npm ci
+[17:00:54] Khởi động ở cổng 3990
+[17:00:58] /api/health: {"app":"ok","db":"error","config":"ok","version":"1.0.1"}
+[17:01:01] Tự kiểm tra ĐẠT
+(exit 0)

@@ -1,0 +1,12 @@
+FATAL:  terminating connection due to administrator command
+06/Nov/2026:02:33:05 +0000: Failed listening for database notifications on the "pgrst" channel. server closed the connection unexpectedly This probably means the server terminated abnormally before or while processing the request.
+06/Nov/2026:02:33:05 +0000: Retrying listening for database notifications in 1 seconds...
+<LAN-IP> - authenticated [06/Nov/2026:02:33:05 +0000] "GET /accounts?select=status&user_id=eq.ee52dbbe-6897-40da-bb74-1e7ab9c1163f HTTP/1.1" 503 107 "" "node"
+06/Nov/2026:02:33:05 +0000: {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: Failed to query the PostgreSQL version. {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: Failed to query database settings for the config parameters.{"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: Failed to query the role settings. {"code":"57P01","details":null,"hint":null,"message":"terminating connection due to administrator command"}
+06/Nov/2026:02:33:05 +0000: Config reloaded

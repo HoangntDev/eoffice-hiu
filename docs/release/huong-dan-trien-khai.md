@@ -65,8 +65,58 @@ Bảng biến môi trường xem ở README, mục "Biến môi trường".
 
 Chạy checklist [`docs/testing/smoke-test.md`](../testing/smoke-test.md), rồi lưu kết quả (log, ảnh) vào thư mục bằng chứng của đợt phát hành.
 
-## 6. Quay lại phiên bản trước (rollback)
+## 6. Rollback – quay lại phiên bản trước
 
-1. Dừng web.
-2. Giải nén gói của phiên bản trước vào một thư mục khác, chạy `npm ci`, rồi dùng lại `.env.local` cũ.
-3. Chỉ rollback được khi phiên bản trước **không** cần gỡ migration. Migration đã áp không tự gỡ được, nên trước khi nâng cấp phải sao lưu DB theo `docs/operations/`.
+Dùng khi bản vừa triển khai gặp lỗi nghiêm trọng mà chưa sửa nhanh được. Rollback chỉ đổi mã chạy; dữ liệu giữ nguyên.
+
+**Điều kiện:** hai phiên bản phải dùng cùng lược đồ database. Kiểm tra trước khi quyết định:
+
+```bash
+git diff --stat <bản cũ> <bản mới> -- supabase/   # rỗng: không đổi schema, rollback được ngay
+```
+
+Nếu có migration mới, migration đã áp không tự gỡ được: phải phục hồi DB về bản sao lưu chụp **trước khi nâng cấp** (`scripts/restore.sh <stack> <bản sao lưu>`, xem `docs/runbooks/backup-restore.md`), và mọi dữ liệu ghi sau thời điểm đó sẽ mất. Vì vậy luôn chạy `scripts/backup.sh <stack>` trước khi nâng cấp.
+
+| Từ → về | Schema | Ghi chú |
+|---|---|---|
+| v1.0.1 → v1.0.0 | Không đổi (migration cuối của cả hai là `202610150003`) | Rollback không cần đụng DB. v1.0.0 không có `/api/health`, không ghi log ra file |
+
+**Các bước** (đã diễn tập ngày 06/11/2026, số liệu ở `docs/TH3/evidence/rollback/`):
+
+1. **Quyết định và sao lưu:** kiểm schema như trên, rồi `scripts/backup.sh <stack>`. Diễn tập: 1,2 giây.
+2. **Dừng bản mới:** `kill -TERM $(lsof -t -iTCP:<cổng> -sTCP:LISTEN)` (hoặc Ctrl+C ở cửa sổ chạy `npm start`). Diễn tập: 0,2 giây.
+3. **Cài bản cũ vào thư mục mới**, không ghi đè thư mục bản mới (để còn quay lại):
+
+   ```bash
+   mkdir -p eoffice-<bản cũ>/dl eoffice-<bản cũ>/app && cd eoffice-<bản cũ>/dl
+   gh release download <bản cũ> --repo HoangntDev/eoffice-hiu
+   shasum -a 256 -c hiu-youth-e-office-<bản cũ>.zip.sha256
+   cd ../app && unzip -q ../dl/hiu-youth-e-office-<bản cũ>.zip && npm ci
+   cp <thư mục bản mới>/.env.local .env.local      # cùng stack, cùng cổng
+   PORT=<cổng> npm start
+   ```
+
+   Diễn tập (v1.0.0): 19,3 giây, trong đó `npm ci` 14 giây vì máy đã có sẵn cache npm; máy mới sẽ lâu hơn.
+4. **Smoke test** theo `docs/testing/smoke-test.md`. Diễn tập: 8/8 PASS, 11,9 giây.
+
+Tổng từ lúc quyết định rollback tới smoke xong trong diễn tập: **32,6 giây**, nằm trong RTO 30 phút của runbook. Sau khi rollback, ghi lại lý do và mở issue cho lỗi của bản mới; chỉ triển khai lại khi đã có bản sửa.
+
+## 7. Đóng gói một phiên bản (dành cho người phát hành)
+
+Dùng `scripts/package-release.sh`, không ghép gói bằng tay. Script được thêm sau sự cố đóng gói v1.0.1: gói tải lên lần đầu bị `zip` bỏ mất 2 symlink `.next/node_modules/winston-*` nên `npm start` báo `Cannot find module` (xem `docs/TH3/INC-01-ThieuCauHinh/incident-report.md`).
+
+```bash
+git tag -a v1.0.2 <commit> -m "…" && git push origin v1.0.2   # tag annotated, sau khi CI trên main xanh
+scripts/package-release.sh 1.0.2
+```
+
+Script làm lần lượt:
+
+1. Kiểm tra tag `v<version>` tồn tại và là tag annotated; tạo worktree tạm tại tag, kiểm tra không có thay đổi chưa commit và `package.json` đúng version.
+2. `npm ci`, `npm run build` với `NODE_ENV=production` và biến giữ chỗ.
+3. Ghép gói: mã nguồn tại tag (`git archive`), bỏ báo cáo môn học; `.next/` không có `.next/cache`; `BUILD-INFO.txt`; `HUONG-DAN-TRIEN-KHAI.md`. Nén bằng `zip -y` để **giữ nguyên symlink**, tạo `.sha256`.
+4. **Tự kiểm tra:** giải nén vào thư mục tạm, chặn gói có file `.env`, `npm ci`, kiểm tra symlink trong `.next/node_modules` trỏ tới module đã cài, khởi động ở cổng `VERIFY_PORT` (mặc định 3990) với biến giữ chỗ (không gọi Supabase thật), gọi `/api/health`: phải có `"app":"ok"` và đúng `"version"` (`db: "error"` là bình thường vì không có DB).
+5. Đạt thì chuyển gói vào `dist/` (nằm trong `.gitignore`) và in lệnh `gh release …` để người phát hành tự chạy. Hỏng thì dừng với mã khác 0, không có gì trong `dist/`.
+
+Kiểm tra lại một gói có sẵn (ví dụ gói tải từ Release): `scripts/package-release.sh --verify <file.zip> <version>`. Tự kiểm tra cần `/api/health`, nên chỉ dùng được với gói từ v1.0.1 trở đi.
+

@@ -1,0 +1,9 @@
+$ (SQL) từ chối nhầm hàng loạt đăng ký của chương trình Hiến máu, sửa sai tên và địa điểm 2 kế hoạch, xóa nhầm 1 hồ sơ Đoàn viên đang chờ xét
+BEGIN
+UPDATE 4
+UPDATE 2
+DELETE 1
+COMMIT
+$ (Storage) xóa 1 file PDF, ghi đè nội dung 1 file PDF khác
+xóa: ./stub/stub/event-program-plans/3266408c-2014-40a3-9c2b-721496b49cab/46aabcfb-b793-4f7c-b404-e600d9185833.pdf/975b4b1c-3036-4f19-8eea-b9ce8c20ff14
+ghi đè: ./stub/stub/event-program-plans/abaedc56-05ac-453b-bd31-9e697b056848/c1a73f5e-b016-4f0e-b71c-0f997fcee2d0.pdf/19b35b0d-d672-4bc2-a493-9d259ddee247

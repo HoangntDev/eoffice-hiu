@@ -1,0 +1,8 @@
+09:33:02 POST /api/auth/login → 200
+09:33:02 GET /api/catalog → 200
+09:33:02 GET /api/student-profile → 200
+09:33:05 Đã đăng nhập: /onboarding/profile
+09:33:07 Mở /programs → URL /login; h1: Nhập MSSV
+09:33:08 Mở / → URL /; h1: Văn phòng điện tử Đoàn – Hội HIU
+09:33:09 POST /api/auth/login → 500
+09:33:13 Đăng nhập lại → /login; người dùng thấy: ["Không thể xử lý yêu cầu. Vui lòng thử lại."]

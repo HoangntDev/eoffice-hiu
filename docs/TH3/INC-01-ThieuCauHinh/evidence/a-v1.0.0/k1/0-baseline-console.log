@@ -1,0 +1,7 @@
+npm notice run hiu-youth-e-office@1.0.0 start
+npm notice run next start
+▲ Next.js 16.3.8
+- Local:         http://localhost:3300
+- Network:       http://<LAN-IP>:3300
+✓ Ready in 331ms
+✓ Running next.config.ts took 148ms

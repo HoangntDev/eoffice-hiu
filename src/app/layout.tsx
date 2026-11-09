@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { AccountMenu } from "@/components/account-menu";
@@ -12,9 +13,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const viewer = await getViewer();
+  // Mã yêu cầu do proxy gắn; trang lỗi (error.tsx) hiển thị làm mã tham chiếu khi lỗi không có digest.
+  const requestId = (await headers()).get("x-request-id");
   return (
     <html lang="vi">
       <body>
+        {requestId ? <meta name="x-request-id" content={requestId} /> : null}
         <header className="site-header">
           {/* Tier 1: brand bar */}
           <div className="header-brand-bar">

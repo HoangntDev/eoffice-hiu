@@ -1,0 +1,5 @@
+[16:59:49] Tự kiểm tra goi-loi-lan-dau-v1.0.1.zip trong <tmp>/verify-hiu-youth-e-office-nfVF
+[16:59:49] npm ci
+[16:59:59] .next/node_modules rỗng: thiếu symlink tới module ngoài (winston…)
+[16:59:59] THẤT BẠI: symlink trong .next/node_modules không trỏ tới module đã cài
+(exit 1)

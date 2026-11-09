@@ -1,0 +1,14 @@
+[16:58:57] Worktree sạch tại v1.0.1 (fb5eb99)
+[16:58:57] npm ci
+[16:59:07] npm run build (NODE_ENV=production, biến giữ chỗ)
+[16:59:25] Ghép gói
+[16:59:28] Gói: 8.5M, SHA-256 d4a05deb70b43143b053a1d84b0d11ea2309bdaccab1a419f6c9f73547271ae8
+[16:59:28] Tự kiểm tra hiu-youth-e-office-v1.0.1.zip trong <tmp>/verify-hiu-youth-e-office-fzxj
+[16:59:28] npm ci
+[16:59:39] Khởi động ở cổng 3990
+[16:59:40] /api/health: {"app":"ok","db":"error","config":"ok","version":"1.0.1"}
+[16:59:44] Tự kiểm tra ĐẠT
+[16:59:44] Xong: dist/hiu-youth-e-office-v1.0.1.zip
+Tải lên sau khi xem lại (script không tự chạy):
+  gh release create v1.0.1 dist/hiu-youth-e-office-v1.0.1.zip dist/hiu-youth-e-office-v1.0.1.zip.sha256 --verify-tag --notes-file <ghi-chú>
+(exit 0)

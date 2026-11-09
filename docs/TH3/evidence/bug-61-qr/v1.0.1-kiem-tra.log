@@ -1,0 +1,2 @@
+token 000000000000… → 422 {"error":"QR_INVALID","message":"Mã QR không hợp lệ. Vui lòng quét mã mới đang hiển thị."}
+token abc… → 422 {"error":"QR_INVALID","message":"Mã QR không hợp lệ. Vui lòng quét mã mới đang hiển thị."}

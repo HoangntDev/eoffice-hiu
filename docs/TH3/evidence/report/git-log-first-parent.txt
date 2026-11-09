@@ -1,0 +1,41 @@
+$ date; git rev-parse --short main origin/main
+Fri Nov  6 17:13:24 +07 2026
+24e005a
+24e005a
+
+$ git log --first-parent --oneline course-baseline..main
+24e005a Merge pull request #72 from HoangntDev/feat/71-package-release
+81940ed Merge pull request #70 from HoangntDev/chore/69-rollback-drill
+41aba69 Merge pull request #68 from HoangntDev/docs/67-inc01-incident-report
+fb5eb99 Merge pull request #66 from HoangntDev/chore/65-release-v1.0.1
+8285c2d Merge pull request #64 from HoangntDev/chore/63-security-next-zod
+25305fc Merge pull request #62 from HoangntDev/fix/61-qr-token-invalid
+a787366 Merge pull request #60 from HoangntDev/hotfix/INC-01-ThieuCauHinh
+b67ee3e Merge pull request #58 from HoangntDev/chore/57-backup-restore
+ed902df Merge pull request #56 from HoangntDev/feat/55-logging
+ea88a99 Merge pull request #54 from HoangntDev/docs/53-cr01-red-screenshots
+443f4ce Merge pull request #52 from HoangntDev/docs/51-cr01-red-evidence
+15823fe Merge pull request #49 from HoangntDev/docs/48-cr01-chot-quyet-dinh
+1af3f5e Merge pull request #47 from HoangntDev/docs/46-cr01-impact-analysis-update
+b8ce02e Merge pull request #45 from HoangntDev/docs/44-cr01-impact-analysis
+e6a66db Merge pull request #43 from HoangntDev/docs/42-th2-report-images
+37873be Merge pull request #41 from HoangntDev/docs/40-th2-report
+d727856 Merge pull request #39 from HoangntDev/test/38-smoke-artifact-v1.0.0
+cf8c161 Merge pull request #36 from HoangntDev/fix/35-home-duplicate-auth
+fe2b984 Merge pull request #34 from HoangntDev/docs/33-release-notes
+caa2a92 Merge pull request #32 from HoangntDev/refactor/31-runtime-public-env
+634108d Merge pull request #30 from HoangntDev/fix/28-giu-qr-khi-dang-nhap
+5953e07 Merge pull request #29 from HoangntDev/test/27-use-case-tests
+15f0a5f Merge pull request #26 from HoangntDev/refactor/25-externalize-config
+5f56811 Merge pull request #24 from HoangntDev/ci/23-build-test-workflow
+044bfe3 Merge pull request #22 from HoangntDev/chore/21-issue-pr-templates
+69d7675 Merge pull request #20 from HoangntDev/docs/19-th1-report-ui
+bd06583 Merge pull request #18 from HoangntDev/fix/17-ui-polish
+2713860 Merge pull request #16 from HoangntDev/docs/15-th1-thong-tin-sv
+6467a31 Merge pull request #14 from HoangntDev/docs/13-th1-report
+8253341 Merge pull request #12 from HoangntDev/test/11-baseline-coverage
+97744b6 Merge pull request #10 from HoangntDev/chore/9-claude-md-rules
+46721db Merge pull request #8 from HoangntDev/docs/7-readme-baseline
+
+$ git log --first-parent --no-merges --oneline course-baseline..main
+(hết – lệnh trên không in dòng nào)

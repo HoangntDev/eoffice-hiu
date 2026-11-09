@@ -1,0 +1,12 @@
+$ scripts/restore.sh hiu-youth-e-office latest
+TỪ CHỐI: 'hiu-youth-e-office' là stack dev chính của repo (supabase/config.toml).
+Phục hồi sẽ ghi đè toàn bộ dữ liệu đang dùng. Nếu thật sự cần, chạy lại kèm --confirm-dev-stack.
+(exit 77)
+
+$ # bản sao chép của eoffice-v100_20261106T092608, file counts.tsv bị thêm 1 dòng
+$ scripts/restore.sh eoffice-v100 <bản sao>/eoffice-v100_20261106T092608.dump
+[09:27:05] Phục hồi eoffice-v100_20261106T092608 (stack nguồn eoffice-v100, tạo lúc 2026-11-06T02:26:09Z) vào stack eoffice-v100
+eoffice-v100_20261106T092608.counts.tsv: FAILED
+shasum: WARNING: 1 computed checksum did NOT match
+Checksum KHÔNG khớp, dừng.
+(exit 65)

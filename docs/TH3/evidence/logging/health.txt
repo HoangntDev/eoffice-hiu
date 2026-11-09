@@ -1,0 +1,5 @@
+$ curl -i http://localhost:3400/api/health   # DB đang chạy
+HTTP/1.1 200 OK
+x-request-id: dff7da97-0649-453d-bf45-bc978b03d241
+cache-control: no-store
+{"app":"ok","db":"ok","version":"1.0.0"}

@@ -1,0 +1,107 @@
+npm notice run hiu-youth-e-office@1.0.1 start
+npm notice run next start
+▲ Next.js 16.4.5
+- Local:         http://localhost:3500
+- Network:       http://<LAN-IP>:3500
+✓ Ready in 180ms
+✓ Running next.config.ts took 1644ms
+Failed to prepare server Error: An error occurred while loading instrumentation hook: Failed to load external module winston-592a0a42b673a90a: Error: Cannot find module 'winston-592a0a42b673a90a'
+Require stack:
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[turbopack]_runtime.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/instrumentation.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/router-utils/instrumentation-globals.external.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/start-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/cli/next-start.js
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:693:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:109)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:1657)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at <unknown> (.next/server/chunks/src_1hpul5-r3xth1._.js:1:818)
+⨯ Failed to preload entries: Error: An error occurred while loading instrumentation hook: Failed to load external module winston-592a0a42b673a90a: Error: Cannot find module 'winston-592a0a42b673a90a'
+Require stack:
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[turbopack]_runtime.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/instrumentation.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/router-utils/instrumentation-globals.external.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/start-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/cli/next-start.js
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:693:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:109)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:1657)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at <unknown> (.next/server/chunks/src_1hpul5-r3xth1._.js:1:818)
+Failed to prepare server Error: An error occurred while loading instrumentation hook: Failed to load external module winston-592a0a42b673a90a: Error: Cannot find module 'winston-592a0a42b673a90a'
+Require stack:
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[turbopack]_runtime.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/instrumentation.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/router-utils/instrumentation-globals.external.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/start-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/cli/next-start.js
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:693:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:109)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:1657)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at <unknown> (.next/server/chunks/src_1hpul5-r3xth1._.js:1:818)
+Error: An error occurred while loading instrumentation hook: Failed to load external module winston-592a0a42b673a90a: Error: Cannot find module 'winston-592a0a42b673a90a'
+Require stack:
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[turbopack]_runtime.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/instrumentation.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/router-utils/instrumentation-globals.external.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/start-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/cli/next-start.js
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:693:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:109)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:1657)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at <unknown> (.next/server/chunks/src_1hpul5-r3xth1._.js:1:818)
+Error: An error occurred while loading instrumentation hook: Failed to load external module winston-592a0a42b673a90a: Error: Cannot find module 'winston-592a0a42b673a90a'
+Require stack:
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/chunks/[turbopack]_runtime.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/.next/server/instrumentation.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/router-utils/instrumentation-globals.external.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/next.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/server/lib/start-server.js
+- ~/Developer/eoffice-smoke-v1.0.1/app/node_modules/next/dist/cli/next-start.js
+    at Context.externalRequire [as x] (.next/server/chunks/[turbopack]_runtime.js:693:15)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:109)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at module evaluation (.next/server/chunks/[root-of-the-server]__1fy7mj8bvt8tk._.js:1:1657)
+    at instantiateModule (.next/server/chunks/[turbopack]_runtime.js:885:9)
+    at getOrInstantiateModuleFromParent (.next/server/chunks/[turbopack]_runtime.js:909:12)
+    at Context.esmImport [as i] (.next/server/chunks/[turbopack]_runtime.js:465:20)
+    at <unknown> (.next/server/chunks/src_1hpul5-r3xth1._.js:1:818)

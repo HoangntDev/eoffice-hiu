@@ -1,0 +1,11 @@
+buoc	bat_dau	ket_thuc	ms
+1. Ghi số liệu trước	09:26:07	09:26:08	610
+2. Sao lưu (scripts/backup.sh)	09:26:08	09:26:09	1406
+3. Gây hỏng dữ liệu	09:26:09	09:26:09	355
+4. Dừng web	09:26:10	09:26:10	404
+5. Phục hồi (scripts/restore.sh)	09:26:10	09:26:12	1951
+6. Khởi động web đến khi /api/health = 200	09:26:12	09:26:14	1731
+7. So sánh số liệu trước/sau	09:26:14	09:26:15	657
+8. Smoke test (bước 2–4 curl, 5–8 Playwright)	09:26:15	09:26:24	9179
+RTO đo được (dừng web → smoke xong)			14063
+Tổng diễn tập			17150

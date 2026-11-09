@@ -9,7 +9,13 @@ import { checkInSchema } from "@/modules/program-attendance/schemas";
 export async function POST(request: Request) {
   const requestId = requestIdFrom(request);
   try {
-    const input = checkInSchema.parse(await readJson(request));
+    const parsed = checkInSchema.safeParse(await readJson(request));
+    if (!parsed.success) {
+      // Token sai định dạng là mã QR không hợp lệ (422 QR_INVALID), không gửi xuống database (#61).
+      if (parsed.error.issues.some((issue) => issue.path[0] === "token")) throw attendanceRpcError("QR_INVALID");
+      throw parsed.error;
+    }
+    const input = parsed.data;
     const { user, supabase } = await requireUser();
     const { data, error } = await supabase.rpc("check_in_attendance", {
       p_session_id: input.sessionId, p_token: input.token, p_request_id: requestId,

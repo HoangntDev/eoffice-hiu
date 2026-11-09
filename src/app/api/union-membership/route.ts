@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/dal";
 import { apiError, HttpError, readJson } from "@/lib/http";
+import { logEvent, requestIdFrom } from "@/lib/log";
 import { unionApplicationSchema } from "@/modules/union-membership/schemas";
 
 export async function GET(request: Request) {
@@ -26,9 +27,10 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  const requestId = requestIdFrom(request);
   try {
     const input = unionApplicationSchema.parse(await readJson(request));
-    const { supabase } = await requireUser();
+    const { user, supabase } = await requireUser();
     const payload = {
       identity: input.identity,
       membership: input.membership,
@@ -40,6 +42,9 @@ export async function PUT(request: Request) {
       p_submit: input.submit,
     });
     if (error) {
+      logEvent("warn", "union_application.save_rejected", {
+        requestId, userId: user.id, cycleKey: input.cycleKey, submit: input.submit, code: error.message,
+      });
       const known = error.message.includes("BASIC_PROFILE_OR_VERIFIED_GMAIL_REQUIRED")
         ? "Hãy hoàn tất hồ sơ sinh viên và xác minh email sinh viên HIU trước khi nộp."
         : error.message.includes("APPLICATION_NOT_EDITABLE")
@@ -47,6 +52,9 @@ export async function PUT(request: Request) {
           : "Không thể lưu hồ sơ. Hãy kiểm tra các trường bắt buộc và danh mục.";
       throw new HttpError(422, "APPLICATION_SAVE_FAILED", known);
     }
+    logEvent("info", input.submit ? "union_application.submitted" : "union_application.draft_saved", {
+      requestId, userId: user.id, applicationId: data, cycleKey: input.cycleKey, result: "ok",
+    });
     return NextResponse.json({ id: data, message: input.submit ? "Đã nộp hồ sơ Đoàn viên." : "Đã lưu bản nháp." });
   } catch (error) {
     return apiError(error);

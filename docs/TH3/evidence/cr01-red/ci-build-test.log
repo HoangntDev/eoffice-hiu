@@ -1,0 +1,880 @@
+build-test	Set up job	﻿2026-10-30T10:01:49.2793708Z Current runner version: '2.338.0'
+build-test	Set up job	2026-10-30T10:01:49.2809404Z ##[group]Runner Image Provisioner
+build-test	Set up job	2026-10-30T10:01:49.2809984Z Hosted Compute Agent
+build-test	Set up job	2026-10-30T10:01:49.2810346Z Version: 20261021.618
+build-test	Set up job	2026-10-30T10:01:49.2810708Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+build-test	Set up job	2026-10-30T10:01:49.2811160Z Build Date: 2026-10-21T00:45:21Z
+build-test	Set up job	2026-10-30T10:01:49.2811583Z Worker ID: {b679665c-7028-4063-9f25-da6887eeae0f}
+build-test	Set up job	2026-10-30T10:01:49.2811975Z Region: centralus
+build-test	Set up job	2026-10-30T10:01:49.2812375Z Cloud: Azure
+build-test	Set up job	2026-10-30T10:01:49.2812696Z ##[endgroup]
+build-test	Set up job	2026-10-30T10:01:49.2813476Z ##[group]Operating System
+build-test	Set up job	2026-10-30T10:01:49.2813864Z Ubuntu
+build-test	Set up job	2026-10-30T10:01:49.2814161Z 24.04.5
+build-test	Set up job	2026-10-30T10:01:49.2814508Z LTS
+build-test	Set up job	2026-10-30T10:01:49.2814812Z ##[endgroup]
+build-test	Set up job	2026-10-30T10:01:49.2815152Z ##[group]Runner Image
+build-test	Set up job	2026-10-30T10:01:49.2815544Z Image: ubuntu-24.04
+build-test	Set up job	2026-10-30T10:01:49.2815897Z Version: 20261025.353.1
+build-test	Set up job	2026-10-30T10:01:49.2816549Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+build-test	Set up job	2026-10-30T10:01:49.2817511Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+build-test	Set up job	2026-10-30T10:01:49.2818102Z ##[endgroup]
+build-test	Set up job	2026-10-30T10:01:49.2818763Z ##[group]GITHUB_TOKEN Permissions
+build-test	Set up job	2026-10-30T10:01:49.2820027Z Contents: read
+build-test	Set up job	2026-10-30T10:01:49.2820362Z Metadata: read
+build-test	Set up job	2026-10-30T10:01:49.2820787Z ##[endgroup]
+build-test	Set up job	2026-10-30T10:01:49.2821953Z Secret source: Actions
+build-test	Set up job	2026-10-30T10:01:49.2822516Z Cache mode: write
+build-test	Set up job	2026-10-30T10:01:49.2822937Z Prepare workflow directory
+build-test	Set up job	2026-10-30T10:01:49.3052449Z Prepare all required actions
+build-test	Set up job	2026-10-30T10:01:49.3081585Z Getting action download info
+build-test	Set up job	2026-10-30T10:01:49.5412317Z Download action repository 'actions/checkout@v7' (SHA:3d3c42e5aac5ba805825da76410c181273ba90b1)
+build-test	Set up job	2026-10-30T10:01:49.6320783Z Download action repository 'actions/setup-node@v7' (SHA:949feb2413d6458794dcd2491c4babbbce0c15c1)
+build-test	Set up job	2026-10-30T10:01:49.7172441Z Download action repository 'actions/upload-artifact@v7' (SHA:cf430e030ddbb5b0abf93d22962f4752f3646cd9)
+build-test	Set up job	2026-10-30T10:01:49.9090828Z Complete job name: build-test
+build-test	Run actions/checkout@v7	﻿2026-10-30T10:01:49.9570982Z ##[group]Run actions/checkout@v7
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9571380Z with:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9571611Z   repository: HoangntDev/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9573494Z   token: ***
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9573716Z   ssh-strict: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9573942Z   ssh-user: git
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9574173Z   persist-credentials: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9574427Z   clean: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9574657Z   sparse-checkout-cone-mode: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9574928Z   fetch-depth: 1
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9575150Z   fetch-tags: false
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9575377Z   show-progress: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9575612Z   lfs: false
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9575949Z   submodules: false
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9576242Z   set-safe-directory: true
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9576506Z   allow-unsafe-pr-checkout: false
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9576853Z env:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9577099Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9577490Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9577850Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9578237Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9578626Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Run actions/checkout@v7	2026-10-30T10:01:49.9579184Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1336503Z Syncing repository: HoangntDev/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1338058Z ##[group]Getting Git version info
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1338448Z Working directory is '/home/runner/work/eoffice-hiu/eoffice-hiu'
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1339293Z [command]/usr/bin/git version
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1385959Z git version 2.56.0
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1398114Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1405309Z Temporarily overriding HOME='/home/runner/work/_temp/b11c7f2a-4bf4-4d38-ad96-5c53dc9419ec' before making global git config changes
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1406482Z Adding repository directory to the temporary git global config as a safe directory
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1409844Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eoffice-hiu/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1447460Z Deleting the contents of '/home/runner/work/eoffice-hiu/eoffice-hiu'
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1449555Z ##[group]Determining repository object format
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1450426Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1451053Z ##[group]Initializing the repository
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1452884Z [command]/usr/bin/git init /home/runner/work/eoffice-hiu/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1525358Z hint: Using 'master' as the name for the initial branch. This default branch name
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1526570Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1529526Z hint: to use in all of your new repositories, which will suppress this warning,
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1530284Z hint: call:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1530726Z hint:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1531343Z hint: 	git config --global init.defaultBranch <name>
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1531970Z hint:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1532599Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1533511Z hint: 'development'. The just-created branch can be renamed via this command:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1534252Z hint:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1534699Z hint: 	git branch -m <name>
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1535201Z hint:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1535832Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1536884Z Initialized empty Git repository in .git/
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1544372Z [command]/usr/bin/git remote add origin https://github.com/HoangntDev/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1581612Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1582273Z ##[group]Disabling automatic garbage collection
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1584319Z [command]/usr/bin/git config --local gc.auto 0
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1612349Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1613105Z ##[group]Setting up auth
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1613388Z Removing SSH command configuration
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1617309Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1649181Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1936240Z Removing HTTP extra header
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1940928Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.1977973Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2157985Z Removing includeIf entries pointing to credentials config files
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2161957Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2196567Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2379847Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2417776Z [command]/usr/bin/git config --local includeIf.gitdir:.git.path /home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2454651Z [command]/usr/bin/git config --local includeIf.gitdir:.git/worktrees/*.path /home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2490074Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2525723Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2560014Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2560441Z ##[group]Fetching the repository
+build-test	Run actions/checkout@v7	2026-10-30T10:01:50.2564268Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +dedddd94e764ce0795b204b6e0ae5fd9f97ad062:refs/remotes/pull/50/merge
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3982179Z From https://github.com/HoangntDev/eoffice-hiu
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3983389Z  * [new ref]         dedddd94e764ce0795b204b6e0ae5fd9f97ad062 -> pull/50/merge
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3986052Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3986677Z ##[group]Determining the checkout info
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3991289Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.3991814Z [command]/usr/bin/git sparse-checkout disable
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4044738Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4112590Z ##[group]Checking out the ref
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4758178Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/50/merge
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4759586Z Note: switching to 'refs/remotes/pull/50/merge'.
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4760096Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4760493Z You are in 'detached HEAD' state. You can look around, make experimental
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4761585Z changes and commit them, and you can discard any commits you make in this
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4762629Z state without impacting any branches by switching back to a branch.
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4763265Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4763752Z If you want to create a new branch to retain commits you create, you may
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4764741Z do so (now or later) by using -c with the switch command. Example:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4765340Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4765534Z   git switch -c <new-branch-name>
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4765926Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4766109Z Or undo this operation with:
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4766485Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4766653Z   git switch -
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4766922Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4767414Z Turn off this advice by setting config variable advice.detachedHead to false
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4768389Z 
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4769285Z HEAD is now at dedddd9 Merge fa1d4c94b470ea68d9fc2a34e04e535cfee075c5 into 15823fe7bc83516c0bc4026539bbbb62463141ce
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4817412Z ##[endgroup]
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4819540Z [command]/usr/bin/git log -1 --format=%H
+build-test	Run actions/checkout@v7	2026-10-30T10:01:51.4850382Z dedddd94e764ce0795b204b6e0ae5fd9f97ad062
+build-test	Run actions/setup-node@v7	﻿2026-10-30T10:01:51.5080553Z ##[group]Run actions/setup-node@v7
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5080965Z with:
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5081221Z   node-version: 24
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5081504Z   cache: npm
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5081775Z   check-latest: false
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5086445Z   token: ***
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5086736Z   package-manager-cache: true
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5087112Z env:
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5087438Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5088089Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5088729Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5089416Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5090109Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5090740Z ##[endgroup]
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.5900450Z Found in cache @ /opt/hostedtoolcache/node/24.22.1/x64
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.6426559Z ##[group]Environment details
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.8680336Z node: v24.22.1
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.8681121Z npm: 11.19.1
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.8681838Z yarn: 1.22.22
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.8683128Z ##[endgroup]
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.8692624Z [command]/opt/hostedtoolcache/node/24.22.1/x64/bin/npm config get cache
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:51.9401489Z /home/runner/.npm
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:52.1101750Z Cache hit for: node-cache-Linux-x64-npm-a9ad0860c66de02c9c4a9c922384ff8201b1bbb76132241c05ae55e98eccab51
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.2437675Z Received 134217728 of 136272634 (98.5%), 128.0 MBs/sec
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.2780084Z Received 136272634 of 136272634 (100.0%), 125.7 MBs/sec
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.2781149Z Cache Size: ~130 MB (136272634 B)
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.2797915Z [command]/usr/bin/tar -xf /home/runner/work/_temp/1a7f78f0-67ba-4f47-8dbf-e0cdecd8f6ed/cache.tzst -P -C /home/runner/work/eoffice-hiu/eoffice-hiu --use-compress-program unzstd
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.4596100Z Cache restored successfully
+build-test	Run actions/setup-node@v7	2026-10-30T10:01:53.4653289Z Cache restored from key: node-cache-Linux-x64-npm-a9ad0860c66de02c9c4a9c922384ff8201b1bbb76132241c05ae55e98eccab51
+build-test	Run npm ci	﻿2026-10-30T10:01:53.4881833Z ##[group]Run npm ci
+build-test	Run npm ci	2026-10-30T10:01:53.4882045Z ^[[36;1mnpm ci^[[0m
+build-test	Run npm ci	2026-10-30T10:01:53.4906355Z shell: /usr/bin/bash -e {0}
+build-test	Run npm ci	2026-10-30T10:01:53.4906520Z env:
+build-test	Run npm ci	2026-10-30T10:01:53.4906752Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Run npm ci	2026-10-30T10:01:53.4906968Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Run npm ci	2026-10-30T10:01:53.4907177Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Run npm ci	2026-10-30T10:01:53.4907366Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Run npm ci	2026-10-30T10:01:53.4907587Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Run npm ci	2026-10-30T10:01:53.4907801Z ##[endgroup]
+build-test	Run npm ci	2026-10-30T10:01:57.2617228Z npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+build-test	Run npm ci	2026-10-30T10:01:59.7422974Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7424065Z added 493 packages, and audited 494 packages in 6s
+build-test	Run npm ci	2026-10-30T10:01:59.7424496Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7424658Z 169 packages are looking for funding
+build-test	Run npm ci	2026-10-30T10:01:59.7429613Z   run `npm fund` for details
+build-test	Run npm ci	2026-10-30T10:01:59.7943465Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7943942Z 7 vulnerabilities (3 moderate, 3 high, 1 critical)
+build-test	Run npm ci	2026-10-30T10:01:59.7944206Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7944398Z To address issues that do not require attention, run:
+build-test	Run npm ci	2026-10-30T10:01:59.7944678Z   npm audit fix
+build-test	Run npm ci	2026-10-30T10:01:59.7944791Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7944909Z To address all issues, run:
+build-test	Run npm ci	2026-10-30T10:01:59.7945157Z   npm audit fix --force
+build-test	Run npm ci	2026-10-30T10:01:59.7945291Z 
+build-test	Run npm ci	2026-10-30T10:01:59.7945398Z Run `npm audit` for details.
+build-test	Run npm ci	2026-10-30T10:01:59.7951855Z npm warn install-scripts 1 package has install scripts not yet covered by allowScripts:
+build-test	Run npm ci	2026-10-30T10:01:59.7952403Z npm warn install-scripts   unrs-resolver@1.12.2 (postinstall: node postinstall.js)
+build-test	Run npm ci	2026-10-30T10:01:59.7952636Z npm warn install-scripts
+build-test	Run npm ci	2026-10-30T10:01:59.7953050Z npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.
+build-test	Run npm run lint	﻿2026-10-30T10:01:59.8899825Z ##[group]Run npm run lint
+build-test	Run npm run lint	2026-10-30T10:01:59.8900067Z ^[[36;1mnpm run lint^[[0m
+build-test	Run npm run lint	2026-10-30T10:01:59.8916478Z shell: /usr/bin/bash -e {0}
+build-test	Run npm run lint	2026-10-30T10:01:59.8916614Z env:
+build-test	Run npm run lint	2026-10-30T10:01:59.8916750Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Run npm run lint	2026-10-30T10:01:59.8916953Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Run npm run lint	2026-10-30T10:01:59.8917146Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Run npm run lint	2026-10-30T10:01:59.8917317Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Run npm run lint	2026-10-30T10:01:59.8917527Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Run npm run lint	2026-10-30T10:01:59.8917730Z ##[endgroup]
+build-test	Run npm run lint	2026-10-30T10:01:59.9544903Z 
+build-test	Run npm run lint	2026-10-30T10:01:59.9545303Z > hiu-youth-e-office@1.0.0 lint
+build-test	Run npm run lint	2026-10-30T10:01:59.9545597Z > eslint .
+build-test	Run npm run lint	2026-10-30T10:01:59.9545668Z 
+build-test	Run npm run typecheck	﻿2026-10-30T10:02:04.4493845Z ##[group]Run npm run typecheck
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4494042Z ^[[36;1mnpm run typecheck^[[0m
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510048Z shell: /usr/bin/bash -e {0}
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510185Z env:
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510326Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510539Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510735Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4510907Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4511132Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Run npm run typecheck	2026-10-30T10:02:04.4511328Z ##[endgroup]
+build-test	Run npm run typecheck	2026-10-30T10:02:04.5092868Z 
+build-test	Run npm run typecheck	2026-10-30T10:02:04.5093394Z > hiu-youth-e-office@1.0.0 typecheck
+build-test	Run npm run typecheck	2026-10-30T10:02:04.5093827Z > tsc --noEmit
+build-test	Run npm run typecheck	2026-10-30T10:02:04.5093906Z 
+build-test	Test (JUnit + coverage)	﻿2026-10-30T10:02:08.0267152Z ##[group]Run npm run test:ci
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0267338Z ^[[36;1mnpm run test:ci^[[0m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0283176Z shell: /usr/bin/bash -e {0}
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0283323Z env:
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0283470Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0283676Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0283868Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0284042Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0284255Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0284450Z ##[endgroup]
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0896731Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0897230Z > hiu-youth-e-office@1.0.0 test:ci
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0897644Z > vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-results/junit.xml
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.0897858Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.3154451Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.3160458Z ^[[1m^[[30m^[[46m RUN ^[[49m^[[39m^[[22m ^[[36mv5.0.2 ^[[39m^[[90m/home/runner/work/eoffice-hiu/eoffice-hiu^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.3161238Z       ^[[2mCoverage enabled with ^[[22m^[[33mv8^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.3161505Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7107542Z  ^[[31m❯^[[39m tests/organization-auth.test.ts ^[[2m(^[[22m^[[2m24 tests^[[22m^[[2m | ^[[22m^[[31m24 failed^[[39m^[[2m)^[[22m^[[32m 35^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7108393Z    ^[[31m❯^[[39m AC1: đăng nhập hai bước và thanh trên cùng ^[[2m(6)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7108986Z ^[[31m     ^[[31m×^[[31m bước 1 nhận đơn vị + PIN tổ chức 6 số^[[39m^[[32m 11^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7109515Z ^[[31m     ^[[31m×^[[31m bước 1 từ chối PIN tổ chức không đủ 6 số^[[39m^[[32m 2^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7110089Z ^[[31m     ^[[31m×^[[31m bước 2 nhận MSSV 10 số + PIN cá nhân 6 số^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7110709Z ^[[31m     ^[[31m×^[[31m bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7111349Z ^[[31m     ^[[31m×^[[31m thanh trên cùng hiện đơn vị và cán bộ đang thao tác^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7112039Z ^[[31m     ^[[31m×^[[31m cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7132382Z    ^[[31m❯^[[39m AC2: dropdown đơn vị nhóm theo cấp ^[[2m(1)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7133357Z ^[[31m     ^[[31m×^[[31m chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn Trường → Văn phòng → Đoàn Khoa^[[39m^[[32m 2^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7133974Z    ^[[31m❯^[[39m AC4: mỗi bước sai đều trả một thông báo lỗi chung ^[[2m(2)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7134549Z ^[[31m     ^[[31m×^[[31m mọi lý do cho cùng status, mã và câu thông báo^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7135159Z ^[[31m     ^[[31m×^[[31m thông báo không nói bước nào hay thông tin nào sai^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7135622Z    ^[[31m❯^[[39m AC5: giới hạn thử PIN tổ chức ^[[2m(1)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7136148Z ^[[31m     ^[[31m×^[[31m 5 lần sai trong 15 phút, tính theo đơn vị + IP^[[39m^[[32m 2^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7136713Z    ^[[31m❯^[[39m AC9 (R7): phân luồng trang và menu theo loại đơn vị ^[[2m(10)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7137183Z ^[[31m     ^[[31m×^[[31m khách vào /admin^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7137649Z ^[[31m     ^[[31m×^[[31m khách mở trang đăng nhập tổ chức^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7138161Z ^[[31m     ^[[31m×^[[31m sinh viên vào /admin/programs^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7138707Z ^[[31m     ^[[31m×^[[31m phiên tổ chức vào trang sinh viên /programs^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7140739Z ^[[31m     ^[[31m×^[[31m phiên tổ chức vào /union-membership^[[39m^[[32m 0^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7141271Z ^[[31m     ^[[31m×^[[31m phiên tổ chức vào /admin/programs^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7141999Z ^[[31m     ^[[31m×^[[31m sinh viên vào /programs (không đổi, R9)^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7142811Z ^[[31m     ^[[31m×^[[31m Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài khoản^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7144148Z ^[[31m     ^[[31m×^[[31m Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7144752Z ^[[31m     ^[[31m×^[[31m Đoàn Trường thấy cơ cấu và tài khoản tổ chức^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7145190Z    ^[[31m❯^[[39m AC12: phiên tạm của bước 1 ^[[2m(1)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7145779Z ^[[31m     ^[[31m×^[[31m cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút^[[39m^[[32m 2^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7146338Z    ^[[31m❯^[[39m AC13, AC14: đổi cán bộ và phiên chưa có cán bộ ^[[2m(3)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7146900Z ^[[31m     ^[[31m×^[[31m phiên tổ chức chưa có cán bộ vào /admin thì về bước 2^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7147527Z ^[[31m     ^[[31m×^[[31m phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7148199Z ^[[31m     ^[[31m×^[[31m sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được trang bước 2^[[39m^[[32m 1^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7261662Z  ^[[32m✓^[[39m tests/event-programs.test.ts ^[[2m(^[[22m^[[2m18 tests^[[22m^[[2m)^[[22m^[[32m 15^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.7951259Z  ^[[32m✓^[[39m tests/core-business-baseline.test.ts ^[[2m(^[[22m^[[2m35 tests^[[22m^[[2m)^[[22m^[[32m 27^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.9396902Z  ^[[32m✓^[[39m tests/forms-validation.test.ts ^[[2m(^[[22m^[[2m17 tests^[[22m^[[2m)^[[22m^[[32m 18^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.9876940Z  ^[[32m✓^[[39m tests/catalog-import-v2.test.mjs ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:08.9972609Z  ^[[32m✓^[[39m tests/program-registrations.test.ts ^[[2m(^[[22m^[[2m15 tests^[[22m^[[2m)^[[22m^[[32m 15^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.1995995Z  ^[[32m✓^[[39m tests/program-attendance.test.ts ^[[2m(^[[22m^[[2m7 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.2278074Z  ^[[32m✓^[[39m tests/validation.test.ts ^[[2m(^[[22m^[[2m7 tests^[[22m^[[2m)^[[22m^[[32m 10^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.3811091Z  ^[[32m✓^[[39m tests/env-config.test.ts ^[[2m(^[[22m^[[2m7 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.5654456Z  ^[[32m✓^[[39m tests/login-next-path.test.ts ^[[2m(^[[22m^[[2m16 tests^[[22m^[[2m)^[[22m^[[32m 12^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.7027062Z  ^[[32m✓^[[39m tests/registration-eligibility.test.ts ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 4^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.7713488Z  ^[[32m✓^[[39m tests/student-profile-form.test.tsx ^[[2m(^[[22m^[[2m1 test^[[22m^[[2m)^[[22m^[[32m 78^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:09.8179194Z  ^[[32m✓^[[39m tests/nav-access.test.ts ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 3^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.0490782Z  ^[[32m✓^[[39m tests/auth-ui.test.tsx ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 136^[[2mms^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3975925Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3976984Z ^[[31m⎯⎯⎯⎯⎯⎯^[[39m^[[1m^[[41m Failed Tests 24 ^[[49m^[[22m^[[31m⎯⎯⎯⎯⎯⎯⎯^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3977196Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3979314Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mbước 1 nhận đơn vị + PIN tổ chức 6 số
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3982721Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { …(2) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3983132Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3983422Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3983724Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3983902Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3984106Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3984378Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3984783Z ^[[32m-     "organizationId": "00000000-0000-4000-8000-000000000002",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3985195Z ^[[32m-     "organizationPin": "246810",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3985461Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3985844Z ^[[31m+   "error": "NOT_IMPLEMENTED: parseOrganizationLoginStep1",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3986356Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3986695Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3986806Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.3989561Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m31:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4015865Z     ^[[90m 29|^[[39m   it("bước 1 nhận đơn vị + PIN tổ chức 6 số", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4016896Z     ^[[90m 30|^[[39m     expect(outcome(() => parseOrganizationLoginStep1({ organizationId:…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4017464Z     ^[[90m 31|^[[39m       .toEqual({ value: { organizationId: ORG_ID, organizationPin: "24…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4017869Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4018300Z     ^[[90m 32|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4018533Z     ^[[90m 33|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4018648Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4019008Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4019195Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4019900Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mbước 1 từ chối PIN tổ chức không đủ 6 số
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4020740Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to match object { errorType: 'ZodError' }
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4021241Z (1 matching property omitted from actual)^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4021459Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4021588Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4021818Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4021935Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4022032Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4022300Z ^[[32m-   "errorType": "ZodError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4022662Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4022944Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4023042Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4023319Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m36:20^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4023828Z     ^[[90m 34|^[[39m   it("bước 1 từ chối PIN tổ chức không đủ 6 số", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4024366Z     ^[[90m 35|^[[39m     const result = outcome(() => parseOrganizationLoginStep1({ organiz…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4024912Z     ^[[90m 36|^[[39m     expect(result).toMatchObject({ errorType: ZodError.name });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4025334Z     ^[[90m   |^[[39m                    ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4025617Z     ^[[90m 37|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4025849Z     ^[[90m 38|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4025964Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4045843Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4046078Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4046251Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4047099Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mbước 2 nhận MSSV 10 số + PIN cá nhân 6 số
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4047909Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { …(2) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048168Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048248Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048400Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048476Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048541Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048679Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4048856Z ^[[32m-     "pin": "123456",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4049227Z ^[[32m-     "studentCode": "2201110202",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4049396Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4049617Z ^[[31m+   "error": "NOT_IMPLEMENTED: parseOfficerLoginStep2",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4049889Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4050071Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4050133Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4050302Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m41:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4050605Z     ^[[90m 39|^[[39m   it("bước 2 nhận MSSV 10 số + PIN cá nhân 6 số", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4050931Z     ^[[90m 40|^[[39m     expect(outcome(() => parseOfficerLoginStep2({ studentCode: "220111…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051264Z     ^[[90m 41|^[[39m       .toEqual({ value: { studentCode: "2201110202", pin: "123456" } }…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051502Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051660Z     ^[[90m 42|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051797Z     ^[[90m 43|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051868Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4051993Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4052105Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4052545Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mbước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4053748Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to match object { errorType: 'ZodError' }
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054039Z (1 matching property omitted from actual)^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054155Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054227Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054364Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054438Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054494Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054706Z ^[[32m-   "errorType": "ZodError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4054929Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4055163Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4055224Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4055386Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m46:20^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4055703Z     ^[[90m 44|^[[39m   it("bước 2 không nhận thêm PIN tổ chức (đã xác thực ở bước 1)", () =…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056029Z     ^[[90m 45|^[[39m     const result = outcome(() => parseOfficerLoginStep2({ studentCode:…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056360Z     ^[[90m 46|^[[39m     expect(result).toMatchObject({ errorType: ZodError.name });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056611Z     ^[[90m   |^[[39m                    ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056788Z     ^[[90m 47|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056922Z     ^[[90m 48|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4056990Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4057110Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4057274Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4057677Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mthanh trên cùng hiện đơn vị và cán bộ đang thao tác
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058183Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: StringContaining{…} }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058371Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058437Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058576Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058644Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4058703Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4059205Z ^[[32m-   "value": StringContaining "Văn phòng Đoàn – Hội",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4059644Z ^[[31m+   "error": "NOT_IMPLEMENTED: organizationHeader",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4060025Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4060289Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4060387Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4060640Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m51:20^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4060957Z     ^[[90m 49|^[[39m   it("thanh trên cùng hiện đơn vị và cán bộ đang thao tác", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4061280Z     ^[[90m 50|^[[39m     const header = outcome(() => organizationHeader({ unitName: "Văn p…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4061618Z     ^[[90m 51|^[[39m     expect(header).toEqual({ value: expect.stringContaining("Văn phòng…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4061872Z     ^[[90m   |^[[39m                    ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4062142Z     ^[[90m 52|^[[39m     expect(header).toEqual({ value: expect.stringContaining("Lê Thị Ma…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4062368Z     ^[[90m 53|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4062457Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4062579Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4062692Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4063087Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC1: đăng nhập hai bước và thanh trên cùng^[[2m > ^[[22mcán bộ chưa có họ tên thì thanh trên cùng hiện MSSV
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4063566Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { Object (value) }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4063738Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4063803Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4063941Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4064010Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4064067Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4064315Z ^[[32m-   "value": StringContaining "2201110201",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4064724Z ^[[31m+   "error": "NOT_IMPLEMENTED: organizationHeader",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4065053Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4065217Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4065281Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4065435Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m57:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4065984Z     ^[[90m 55|^[[39m   it("cán bộ chưa có họ tên thì thanh trên cùng hiện MSSV", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4066303Z     ^[[90m 56|^[[39m     expect(outcome(() => organizationHeader({ unitName: "Đoàn Khoa CNK…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4066617Z     ^[[90m 57|^[[39m       .toEqual({ value: expect.stringContaining("2201110201") });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4066845Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4066998Z     ^[[90m 58|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4067135Z     ^[[90m 59|^[[39m });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4067205Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4067327Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4067432Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4067939Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC2: dropdown đơn vị nhóm theo cấp^[[2m > ^[[22mchỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn Trường → Văn phòng → Đoàn Khoa
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4068518Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: [ { …(3) }, { …(3) }, …(1) ] }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4068730Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4068801Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4069238Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4069355Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4069442Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4069642Z ^[[32m-   "value": [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4069852Z ^[[32m-     {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4070102Z ^[[32m-       "label": Any<String>,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4070403Z ^[[32m-       "level": "school_union",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4070602Z ^[[32m-       "units": [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4070750Z ^[[32m-         {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4070905Z ^[[32m-           "id": "s",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071094Z ^[[32m-           "name": "Đoàn Trường",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071259Z ^[[32m-         },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071395Z ^[[32m-       ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071523Z ^[[32m-     },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071646Z ^[[32m-     {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071802Z ^[[32m-       "label": Any<String>,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4071993Z ^[[32m-       "level": "office",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072160Z ^[[32m-       "units": [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072302Z ^[[32m-         {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072456Z ^[[32m-           "id": "o",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072656Z ^[[32m-           "name": "Văn phòng Đoàn – Hội",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072827Z ^[[32m-         },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4072961Z ^[[32m-       ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073088Z ^[[32m-     },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073213Z ^[[32m-     {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073367Z ^[[32m-       "label": Any<String>,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073555Z ^[[32m-       "level": "faculty_union",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073726Z ^[[32m-       "units": [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4073869Z ^[[32m-         {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074026Z ^[[32m-           "id": "f1",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074216Z ^[[32m-           "name": "Đoàn Khoa CNKT",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074384Z ^[[32m-         },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074522Z ^[[32m-       ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074875Z ^[[32m-     },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4074994Z ^[[32m-   ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4075267Z ^[[31m+   "error": "NOT_IMPLEMENTED: groupLoginUnits",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4075499Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4075663Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4075728Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4075882Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m74:20^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4076198Z     ^[[90m 72|^[[39m   it("chỉ có đơn vị đang hoạt động đã có tài khoản, theo thứ tự Đoàn T…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4076490Z     ^[[90m 73|^[[39m     const result = outcome(() => groupLoginUnits(units));
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4076726Z     ^[[90m 74|^[[39m     expect(result).toEqual({
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4076919Z     ^[[90m   |^[[39m                    ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4077094Z     ^[[90m 75|^[[39m       value: [
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4077345Z     ^[[90m 76|^[[39m         { level: "school_union", label: expect.any(String), units: [{ …
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4077498Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4077624Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4077734Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4078139Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC4: mỗi bước sai đều trả một thông báo lỗi chung^[[2m > ^[[22mmọi lý do cho cùng status, mã và câu thông báo
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4078651Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { status: 401, …(2) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4078834Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079040Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079248Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079357Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079445Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079646Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4079938Z ^[[32m-     "code": "INVALID_CREDENTIALS",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4080267Z ^[[32m-     "message": Any<String>,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4080557Z ^[[32m-     "status": 401,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4080780Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4081121Z ^[[31m+   "error": "NOT_IMPLEMENTED: organizationLoginFailure",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4081427Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4081595Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4081657Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4081816Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m93:24^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4082127Z     ^[[90m 91|^[[39m     const results = reasons.map((reason) => outcome(() => organization…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4082455Z     ^[[90m 92|^[[39m     expect(new Set(results.map((r) => JSON.stringify(r))).size).toBe(1…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4082781Z     ^[[90m 93|^[[39m     expect(results[0]).toEqual({ value: { status: 401, code: "INVALID_…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083033Z     ^[[90m   |^[[39m                        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083200Z     ^[[90m 94|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083336Z     ^[[90m 95|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083400Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083522Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4083628Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4084043Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC4: mỗi bước sai đều trả một thông báo lỗi chung^[[2m > ^[[22mthông báo không nói bước nào hay thông tin nào sai
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4084537Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to have property "value.message"^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4084853Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m98:20^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4085141Z     ^[[90m 96|^[[39m   it("thông báo không nói bước nào hay thông tin nào sai", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4085459Z     ^[[90m 97|^[[39m     const result = outcome(() => organizationLoginFailure("not_a_membe…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4085748Z     ^[[90m 98|^[[39m     expect(result).toHaveProperty("value.message");
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4085968Z     ^[[90m   |^[[39m                    ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4086237Z     ^[[90m 99|^[[39m     expect(JSON.stringify(result)).not.toMatch(/thành viên|MSSV không|…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4086458Z     ^[[90m100|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4086534Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4086650Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4086953Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4087396Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC5: giới hạn thử PIN tổ chức^[[2m > ^[[22m5 lần sai trong 15 phút, tính theo đơn vị + IP
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4087847Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { Object (value) }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088017Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088086Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088221Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088292Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088346Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088488Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088660Z ^[[32m-     "action": "org_login",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4088843Z ^[[32m-     "maxFailures": 5,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089181Z ^[[32m-     "scope": [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089347Z ^[[32m-       "organization",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089504Z ^[[32m-       "ip",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089637Z ^[[32m-     ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089793Z ^[[32m-     "windowMinutes": 15,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4089948Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4090163Z ^[[31m+   "error": "NOT_IMPLEMENTED: orgLoginAttemptPolicy",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4090407Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4090568Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4090634Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4090787Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m106:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4091075Z     ^[[90m104|^[[39m   it("5 lần sai trong 15 phút, tính theo đơn vị + IP", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4091351Z     ^[[90m105|^[[39m     expect(outcome(() => orgLoginAttemptPolicy()))
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4091652Z     ^[[90m106|^[[39m       .toEqual({ value: { action: "org_login", maxFailures: 5, windowM…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4091886Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092037Z     ^[[90m107|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092173Z     ^[[90m108|^[[39m });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092244Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092365Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092477Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4092818Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mkhách vào /admin
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4093428Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22msinh viên vào /admin/programs
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4093937Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094134Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094200Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094335Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094406Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094463Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094592Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094757Z ^[[32m-     "action": "redirect",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4094941Z ^[[32m-     "to": "/admin/login",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095086Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095285Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095530Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095698Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095761Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4095914Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m120:65^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4096222Z     ^[[90m118|^[[39m     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4096543Z     ^[[90m119|^[[39m   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4096869Z     ^[[90m120|^[[39m     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097175Z     ^[[90m   |^[[39m                                                                 ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097369Z     ^[[90m121|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097500Z     ^[[90m122|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097568Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097686Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4097786Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4098336Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mkhách mở trang đăng nhập tổ chức
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4099645Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mphiên tổ chức vào /admin/programs
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4100441Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22msinh viên vào /programs (không đổi, R9)
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4100935Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'next' } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101121Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101191Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101327Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101397Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101451Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101581Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101742Z ^[[32m-     "action": "next",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4101899Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4102119Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4102366Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4102531Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4102593Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4102746Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m120:65^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4103055Z     ^[[90m118|^[[39m     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4103377Z     ^[[90m119|^[[39m   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4103700Z     ^[[90m120|^[[39m     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4103999Z     ^[[90m   |^[[39m                                                                 ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4104189Z     ^[[90m121|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4104325Z     ^[[90m122|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4104389Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4104509Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4104620Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4105016Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mphiên tổ chức vào trang sinh viên /programs
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4105661Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mphiên tổ chức vào /union-membership
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106170Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106366Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106430Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106569Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106638Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106695Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106822Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4106992Z ^[[32m-     "action": "redirect",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107168Z ^[[32m-     "to": "/admin",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107317Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107516Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107754Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107917Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4107979Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4108134Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m120:65^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4108436Z     ^[[90m118|^[[39m     ["sinh viên vào /programs (không đổi, R9)", "/programs", { kind: "…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4108755Z     ^[[90m119|^[[39m   ] as [string, string, AdminViewer, unknown][])("%s", (_name, pathnam…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4109241Z     ^[[90m120|^[[39m     expect(outcome(() => adminRouteDecision(pathname, viewer))).toEqua…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4109542Z     ^[[90m   |^[[39m                                                                 ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4109732Z     ^[[90m121|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4109867Z     ^[[90m122|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4109932Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4110051Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4110470Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4111015Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mĐoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài khoản
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4111555Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: ArrayContaining{…} }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4111737Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4111802Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4111937Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112010Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112066Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112222Z ^[[32m-   "value": ArrayContaining [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112408Z ^[[32m-     "/admin/programs",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112558Z ^[[32m-   ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112744Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminMenuFor",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4112971Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4113137Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4113206Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4113361Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m125:18^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4113676Z     ^[[90m123|^[[39m   it("Đoàn Khoa thấy kế hoạch chương trình, không thấy duyệt và tài kh…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4113983Z     ^[[90m124|^[[39m     const menu = outcome(() => adminMenuFor("faculty_union"));
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4114303Z     ^[[90m125|^[[39m     expect(menu).toEqual({ value: expect.arrayContaining(["/admin/prog…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4114555Z     ^[[90m   |^[[39m                  ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4114828Z     ^[[90m126|^[[39m     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4115154Z     ^[[90m127|^[[39m     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4115315Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4115431Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4115535Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4115962Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mVăn phòng thấy mục duyệt, không thấy tài khoản tổ chức
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116487Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: ArrayContaining{…} }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116670Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116737Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116871Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116941Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4116995Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4117151Z ^[[32m-   "value": ArrayContaining [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4117335Z ^[[32m-     "/admin/reviews",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4117477Z ^[[32m-   ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4117661Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminMenuFor",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4117888Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4118051Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4118114Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4118265Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m132:18^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4118575Z     ^[[90m130|^[[39m   it("Văn phòng thấy mục duyệt, không thấy tài khoản tổ chức", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4118998Z     ^[[90m131|^[[39m     const menu = outcome(() => adminMenuFor("office"));
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4119332Z     ^[[90m132|^[[39m     expect(menu).toEqual({ value: expect.arrayContaining(["/admin/revi…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4119583Z     ^[[90m   |^[[39m                  ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4119851Z     ^[[90m133|^[[39m     expect(menu).not.toEqual({ value: expect.arrayContaining(["/admin/…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4120075Z     ^[[90m134|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4120148Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4120266Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4120371Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4120766Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC9 (R7): phân luồng trang và menu theo loại đơn vị^[[2m > ^[[22mĐoàn Trường thấy cơ cấu và tài khoản tổ chức
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121263Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: ArrayContaining{…} }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121547Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121614Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121830Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121901Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4121957Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4122112Z ^[[32m-   "value": ArrayContaining [^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4122308Z ^[[32m-     "/admin/organization",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4122489Z ^[[32m-     "/admin/accounts",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4122635Z ^[[32m-   ],^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4122821Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminMenuFor",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123046Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123208Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123269Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123420Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m138:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123710Z     ^[[90m136|^[[39m   it("Đoàn Trường thấy cơ cấu và tài khoản tổ chức", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4123987Z     ^[[90m137|^[[39m     expect(outcome(() => adminMenuFor("school_union")))
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4124295Z     ^[[90m138|^[[39m       .toEqual({ value: expect.arrayContaining(["/admin/organization",…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4124546Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4124696Z     ^[[90m139|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4124828Z     ^[[90m140|^[[39m });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4124901Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4125019Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4125119Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4125507Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC12: phiên tạm của bước 1^[[2m > ^[[22mcookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126013Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { httpOnly: true, …(3) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126202Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126270Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126405Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126476Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126530Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126660Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126820Z ^[[32m-     "httpOnly": true,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4126997Z ^[[32m-     "maxAge": 300,^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4127160Z ^[[32m-     "path": "/",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4127332Z ^[[32m-     "sameSite": "strict",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4127479Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4127696Z ^[[31m+   "error": "NOT_IMPLEMENTED: pendingLoginCookieOptions",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4127946Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4128107Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4128169Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4128318Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m145:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4128765Z     ^[[90m143|^[[39m   it("cookie phiên tạm httpOnly, SameSite=Strict, hết hạn sau 5 phút",…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4129341Z     ^[[90m144|^[[39m     expect(outcome(() => pendingLoginCookieOptions()))
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4129657Z     ^[[90m145|^[[39m       .toEqual({ value: { httpOnly: true, sameSite: "strict", path: "/…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4129898Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4130158Z     ^[[90m146|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4130291Z     ^[[90m147|^[[39m });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4130443Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4130563Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4130666Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4131083Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC13, AC14: đổi cán bộ và phiên chưa có cán bộ^[[2m > ^[[22mphiên tổ chức chưa có cán bộ vào /admin thì về bước 2
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4131608Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4131801Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4131870Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132003Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132074Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132131Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132257Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132421Z ^[[32m-     "action": "redirect",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132615Z ^[[32m-     "to": "/admin/login/officer",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132777Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4132985Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4133226Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4133390Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4133449Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4133600Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m154:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4133904Z     ^[[90m152|^[[39m   it("phiên tổ chức chưa có cán bộ vào /admin thì về bước 2", () => {
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4134217Z     ^[[90m153|^[[39m     expect(outcome(() => adminRouteDecision("/admin", noOfficer)))
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4134537Z     ^[[90m154|^[[39m       .toEqual({ value: { action: "redirect", to: "/admin/login/office…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4134768Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4134919Z     ^[[90m155|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4135051Z     ^[[90m156|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4135120Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4135235Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4135340Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4135762Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC13, AC14: đổi cán bộ và phiên chưa có cán bộ^[[2m > ^[[22mphiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136301Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'redirect', …(1) } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136496Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136564Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136697Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136767Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136821Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4136950Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4137113Z ^[[32m-     "action": "redirect",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4137306Z ^[[32m-     "to": "/admin/login/officer",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4137463Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4137665Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4137897Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4138059Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4138121Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4138281Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m159:8^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4138599Z     ^[[90m157|^[[39m   it("phiên tổ chức chưa có cán bộ không vào được trang nghiệp vụ", ()…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139057Z     ^[[90m158|^[[39m     expect(outcome(() => adminRouteDecision("/admin/reviews", noOffice…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139385Z     ^[[90m159|^[[39m       .toEqual({ value: { action: "redirect", to: "/admin/login/office…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139614Z     ^[[90m   |^[[39m        ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139764Z     ^[[90m160|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139897Z     ^[[90m161|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4139961Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4140080Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4140185Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4140633Z ^[[41m^[[1m FAIL ^[[22m^[[49m tests/organization-auth.test.ts^[[2m > ^[[22mAC13, AC14: đổi cán bộ và phiên chưa có cán bộ^[[2m > ^[[22msau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được trang bước 2
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141164Z ^[[31m^[[1mAssertionError^[[22m: expected { …(2) } to deeply equal { value: { action: 'next' } }^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141532Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141596Z ^[[32m- Expected^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141732Z ^[[31m+ Received^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141802Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141859Z ^[[2m  {^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4141986Z ^[[32m-   "value": {^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142149Z ^[[32m-     "action": "next",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142292Z ^[[32m-   },^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142490Z ^[[31m+   "error": "NOT_IMPLEMENTED: adminRouteDecision",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142722Z ^[[31m+   "errorType": "NotImplementedError",^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142886Z ^[[2m  }^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4142945Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4143102Z ^[[36m ^[[2m❯^[[22m tests/organization-auth.test.ts:^[[2m163:90^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4143294Z     ^[[90m161|^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4143537Z     ^[[90m162|^[[39m   it("sau khi bấm Đổi cán bộ (phiên tạm, chưa đăng nhập) vào được tran…
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4143858Z     ^[[90m163|^[[39m     expect(outcome(() => adminRouteDecision("/admin/login/officer", { …
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144197Z     ^[[90m   |^[[39m                                                                                          ^[[31m^^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144407Z     ^[[90m164|^[[39m   });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144540Z     ^[[90m165|^[[39m });
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144613Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144732Z ^[[31m^[[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/24]⎯^[[22m^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4144834Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4145091Z ^[[2m Test Files ^[[22m ^[[1m^[[31m1 failed^[[39m^[[22m^[[2m | ^[[22m^[[1m^[[32m13 passed^[[39m^[[22m^[[90m (14)^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4145487Z ^[[2m      Tests ^[[22m ^[[1m^[[31m24 failed^[[39m^[[22m^[[2m | ^[[22m^[[1m^[[32m142 passed^[[39m^[[22m^[[90m (166)^[[39m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4145756Z ^[[2m   Start at ^[[22m 10:02:08
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4146082Z ^[[2m   Duration ^[[22m 2.07s^[[2m (import 33%, environment 30%, transform 15%, tests 13%, worker 9%)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4146277Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4146549Z ^[[2m    Isolate ^[[22m ^[[33m14 workers spawned^[[39m^[[2m · ~140ms startup each (spawn + environment, per file)^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4147074Z ^[[2m            ^[[22m ^[[2mat least ~515ms faster with ^[[22m^[[33misolate: false^[[39m^[[2m — reuses workers across files instead of one per file^[[22m
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4147311Z 
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4272594Z JUNIT report written to test-results/junit.xml
+build-test	Test (JUnit + coverage)	2026-10-30T10:02:10.4749206Z ##[error]Process completed with exit code 1.
+build-test	Upload test results	﻿2026-10-30T10:02:10.4806785Z ##[group]Run actions/upload-artifact@v7
+build-test	Upload test results	2026-10-30T10:02:10.4806945Z with:
+build-test	Upload test results	2026-10-30T10:02:10.4807056Z   name: vitest-results
+build-test	Upload test results	2026-10-30T10:02:10.4807235Z   path: test-results/
+build-test	Upload test results	coverage/coverage-summary.json
+build-test	Upload test results	coverage/index.html
+build-test	Upload test results	
+build-test	Upload test results	2026-10-30T10:02:10.4807441Z   retention-days: 7
+build-test	Upload test results	2026-10-30T10:02:10.4807558Z   if-no-files-found: warn
+build-test	Upload test results	2026-10-30T10:02:10.4807682Z   compression-level: 6
+build-test	Upload test results	2026-10-30T10:02:10.4807799Z   overwrite: false
+build-test	Upload test results	2026-10-30T10:02:10.4807919Z   include-hidden-files: false
+build-test	Upload test results	2026-10-30T10:02:10.4808050Z   archive: true
+build-test	Upload test results	2026-10-30T10:02:10.4808171Z env:
+build-test	Upload test results	2026-10-30T10:02:10.4808303Z   NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+build-test	Upload test results	2026-10-30T10:02:10.4808503Z   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-build-placeholder
+build-test	Upload test results	2026-10-30T10:02:10.4808697Z   NEXT_PUBLIC_APP_URL: http://localhost:3001
+build-test	Upload test results	2026-10-30T10:02:10.4808869Z   SUPABASE_SERVICE_ROLE_KEY: ci-build-placeholder
+build-test	Upload test results	2026-10-30T10:02:10.4809183Z   AUTH_RATE_LIMIT_PEPPER: ci-build-placeholder-min-32-chars-padding
+build-test	Upload test results	2026-10-30T10:02:10.4809374Z ##[endgroup]
+build-test	Upload test results	2026-10-30T10:02:10.5744846Z Multiple search paths detected. Calculating the least common ancestor of all paths
+build-test	Upload test results	2026-10-30T10:02:10.5745921Z The least common ancestor is /home/runner/work/eoffice-hiu/eoffice-hiu. This will be the root directory of the artifact
+build-test	Upload test results	2026-10-30T10:02:10.5746410Z With the provided path, there will be 1 file uploaded
+build-test	Upload test results	2026-10-30T10:02:10.5748444Z Artifact name is valid!
+build-test	Upload test results	2026-10-30T10:02:10.5749076Z Root directory input is valid!
+build-test	Upload test results	2026-10-30T10:02:10.8841210Z Uploading artifact: vitest-results.zip
+build-test	Upload test results	2026-10-30T10:02:10.8863747Z Beginning upload of artifact content to blob storage
+build-test	Upload test results	2026-10-30T10:02:11.0390223Z Uploaded bytes 8279
+build-test	Upload test results	2026-10-30T10:02:11.0758443Z Finished uploading artifact content to blob storage!
+build-test	Upload test results	2026-10-30T10:02:11.0759338Z SHA256 digest of uploaded artifact is f468283a94676bb9f1b5488a114081497e868202002596a1b6e043aea1c28016
+build-test	Upload test results	2026-10-30T10:02:11.0759758Z Finalizing artifact upload
+build-test	Upload test results	2026-10-30T10:02:12.2339616Z Artifact vitest-results successfully finalized. Artifact ID 12969215457
+build-test	Upload test results	2026-10-30T10:02:12.2340097Z Artifact vitest-results has been successfully uploaded! Final size is 8279 bytes. Artifact ID is 12969215457
+build-test	Upload test results	2026-10-30T10:02:12.2340571Z Artifact download URL: https://github.com/HoangntDev/eoffice-hiu/actions/runs/41037701934/artifacts/12969215457
+build-test	Post Run actions/checkout@v7	﻿2026-10-30T10:02:12.2465835Z Post job cleanup.
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3021715Z [command]/usr/bin/git version
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3055178Z git version 2.56.0
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3077945Z Temporarily overriding HOME='/home/runner/work/_temp/9c264660-0c6c-42ea-9dcb-ce222fecf32a' before making global git config changes
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3078712Z Adding repository directory to the temporary git global config as a safe directory
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3081420Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/eoffice-hiu/eoffice-hiu
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3108724Z Removing SSH command configuration
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3113151Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3144928Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3341919Z Removing HTTP extra header
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3346859Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3381577Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3572333Z Removing includeIf entries pointing to credentials config files
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3577952Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3619308Z includeif.gitdir:.git.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3619686Z includeif.gitdir:.git/worktrees/*.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3619957Z includeif.gitdir:/github/workspace/.git.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3620186Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3626265Z [command]/usr/bin/git config --local --get-all includeif.gitdir:.git.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3656224Z /home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3663553Z [command]/usr/bin/git config --local --unset includeif.gitdir:.git.path \/home\/runner\/work\/_temp\/git\-credentials\-62b3023e\-d1dd\-43c2\-b2f8\-a458d3683be9\.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3703633Z [command]/usr/bin/git config --local --get-all includeif.gitdir:.git/worktrees/*.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3732355Z /home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3738497Z [command]/usr/bin/git config --local --unset includeif.gitdir:.git/worktrees/*.path \/home\/runner\/work\/_temp\/git\-credentials\-62b3023e\-d1dd\-43c2\-b2f8\-a458d3683be9\.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3774542Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3802642Z /github/runner_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3808268Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path \/github\/runner_temp\/git\-credentials\-62b3023e\-d1dd\-43c2\-b2f8\-a458d3683be9\.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3843687Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3871205Z /github/runner_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3877090Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path \/github\/runner_temp\/git\-credentials\-62b3023e\-d1dd\-43c2\-b2f8\-a458d3683be9\.config
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.3913628Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build-test	Post Run actions/checkout@v7	2026-10-30T10:02:12.4092231Z Removing credentials config '/home/runner/work/_temp/git-credentials-62b3023e-d1dd-43c2-b2f8-a458d3683be9.config'
+build-test	Complete job	﻿2026-10-30T10:02:12.4208757Z Cleaning up orphan processes

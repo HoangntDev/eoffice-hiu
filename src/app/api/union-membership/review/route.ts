@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/dal";
 import { apiError, HttpError, readJson } from "@/lib/http";
+import { logEvent, requestIdFrom } from "@/lib/log";
 import { reviewSchema } from "@/modules/union-membership/schemas";
 
 async function requireReviewerRole(supabase: Awaited<ReturnType<typeof requireUser>>["supabase"], userId: string, roleGrantId?: string) {
@@ -44,6 +45,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const requestId = requestIdFrom(request);
   try {
     const input = reviewSchema.parse(await readJson(request));
     const { user, supabase } = await requireUser();
@@ -55,6 +57,9 @@ export async function POST(request: Request) {
       p_role_grant_id: input.roleGrantId,
     });
     if (error) {
+      logEvent("warn", "union_application.review_rejected", {
+        requestId, userId: user.id, applicationId: input.applicationId, outcome: input.outcome, code: error.message,
+      });
       const message = error.message.includes("PAPER_BOOK_NOT_RECEIVED")
         ? "Chưa thể công nhận trước khi Văn phòng tiếp nhận Sổ Đoàn."
         : error.message.includes("COLLABORATOR_CANNOT_FINALIZE")
@@ -62,6 +67,9 @@ export async function POST(request: Request) {
           : "Không thể ghi nhận kết quả xử lý.";
       throw new HttpError(422, "REVIEW_FAILED", message);
     }
+    logEvent("info", "union_application.reviewed", {
+      requestId, userId: user.id, applicationId: input.applicationId, outcome: input.outcome, status: data,
+    });
     return NextResponse.json({ status: data, message: "Đã ghi nhận kết quả xử lý." });
   } catch (error) {
     return apiError(error);

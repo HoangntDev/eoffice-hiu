@@ -1,0 +1,15 @@
+npm notice run hiu-youth-e-office@1.0.1 start
+npm notice run next start
+▲ Next.js 16.4.5
+- Local:         http://localhost:3500
+- Network:       http://<LAN-IP>:3500
+✓ Ready in 210ms
+✓ Running next.config.ts took 1989ms
+{"ts":"2026-11-06T03:21:08.389Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73046}
+{"ts":"2026-11-06T03:21:09.166Z","level":"info","source":"config","event":"config.ok","checked":4}
+{"ts":"2026-11-06T03:21:13.579Z","level":"warn","source":"proxy","event":"auth.access_denied","requestId":"9f267e45-6b04-485b-939b-3c061299894e","path":"/programs","reason":"NO_SESSION","ip":"::1"}
+{"ts":"2026-11-06T03:21:19.070Z","level":"info","source":"auth","event":"auth.login_succeeded","requestId":"7145ce54-93ff-43f5-aacd-aabd8d6bb54a","userId":"12e348de-ffcc-4278-b780-5b6cf2aeba9b","studentCode":"220***03","ip":"::ffff:127.0.0.1","result":"ok"}
+{"ts":"2026-11-06T03:21:20.794Z","level":"info","source":"program_registration","event":"program_registration.registered","requestId":"485d28cf-068b-4c17-9e7e-db4338f5301e","userId":"12e348de-ffcc-4278-b780-5b6cf2aeba9b","programId":"6f49f3a6-16ae-4da2-9815-3fd6b65c3b45","status":"accepted"}
+{"ts":"2026-11-06T03:21:22.461Z","level":"warn","source":"proxy","event":"auth.access_denied","requestId":"6b8986e1-7374-40bd-bcab-fa38650f2a66","path":"/programs","reason":"NO_SESSION","ip":"::ffff:127.0.0.1"}
+{"ts":"2026-11-06T03:21:33.418Z","level":"info","source":"auth","event":"auth.login_succeeded","requestId":"3d1dc875-692f-4d77-95ef-ee769c3e3eeb","userId":"1b984dc1-8896-45b8-90a3-40a135ae07c5","studentCode":"221***01","ip":"::1","result":"ok"}
+{"ts":"2026-11-06T03:21:55.324Z","level":"info","source":"app","event":"app.stop","version":"1.0.1","nodeEnv":"production","signal":"SIGTERM","exitCode":143,"uptimeSec":49}

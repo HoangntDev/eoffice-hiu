@@ -1,0 +1,11 @@
+▲ Next.js 16.4.5
+- Local:         http://localhost:3500
+- Network:       http://<LAN-IP>:3500
+✓ Ready in 235ms
+✓ Running next.config.ts took 63ms
+{"ts":"2026-11-06T03:22:19.656Z","level":"info","source":"app","event":"app.start","version":"1.0.1","nodeEnv":"production","logLevel":"info","pid":73560}
+{"ts":"2026-11-06T03:22:20.201Z","level":"error","source":"config","event":"config.invalid","problems":[{"variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}],"checked":4}
+{"ts":"2026-11-06T03:22:20.211Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"2a6d5500-0153-4b9e-8191-f318c24779b9","problems":[{"variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}]}
+{"ts":"2026-11-06T03:22:22.286Z","level":"warn","source":"health","event":"health.config_invalid","requestId":"1b82f3b8-f025-432b-b816-d4721f36fe98","problems":[{"variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}]}
+{"ts":"2026-11-06T03:22:26.057Z","level":"error","source":"api","event":"config.invalid","requestId":"b736a9a5-1741-4b66-838d-b2550466c46b","path":"/api/auth/login","ip":"::ffff:127.0.0.1","reference":"b736a9a5","variable":"SUPABASE_SERVICE_ROLE_KEY","problem":"rejected"}
+{"ts":"2026-11-06T03:22:30.333Z","level":"info","source":"app","event":"app.stop","version":"1.0.1","nodeEnv":"production","signal":"SIGTERM","exitCode":143,"uptimeSec":11}

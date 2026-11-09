@@ -1,0 +1,5 @@
+09:31:41 POST /api/auth/login → 503
+09:31:44 URL sau đăng nhập: /login
+09:31:44 Người dùng thấy: ["Dịch vụ chưa được cấu hình biến môi trường."]
+POST /api/auth/register → {"error":"VALIDATION_ERROR","message":"Dữ liệu chưa hợp lệ.","fields":{"gmail":["Invalid input: expected string, received undefined"]}}
+POST /api/auth/recover → {"error":"VALIDATION_ERROR","message":"Dữ liệu chưa hợp lệ.","fields":{}}
