@@ -1,5 +1,6 @@
 -- pgTAP: UC8 — điểm danh QR lượt, mở lại lượt, quy tắc điểm dự kiến, khóa quy tắc.
 begin;
+\ir helpers/organization_login.inc
 select plan(55);
 
 -- ── Fixtures (postgres) ───────────────────────────────────────────────────────
@@ -21,6 +22,8 @@ from (values ('b8000000-0000-4000-8000-000000000001', 'faculty_manager', 'c80000
              ('b8000000-0000-4000-8000-000000000002', 'faculty_manager', 'c8000000-0000-4000-8000-00000000000b')) v(u, r, f)
 join public.organization_units ou on ou.faculty_id = v.f::uuid and ou.unit_type = 'faculty_union';
 
+select pg_temp.cr01_setup_organization_logins();
+
 insert into public.event_programs (id, owner_org_id, faculty_id, title, starts_at, ends_at, status, created_by, decided_at)
 select 'a8000000-0000-4000-8000-0000000000aa', id, 'c8000000-0000-4000-8000-00000000000a', 'UC8 chương trình điểm danh',
        now(), now() + interval '1 day', 'approved', 'b8000000-0000-4000-8000-000000000001', now()
@@ -35,9 +38,10 @@ from unnest(array['11','12','13','15']) n;
 create temp table uc8_ctx (k text primary key, v text);
 grant all on uc8_ctx to authenticated;
 
-create function pg_temp.act_as(p_user text) returns void language sql as $$
-  select set_config('request.jwt.claims',
-    json_build_object('sub', ('b8000000-0000-4000-8000-0000000000' || p_user)::uuid, 'role', 'authenticated')::text, true);
+create function pg_temp.act_as(p_user text) returns void language plpgsql security definer as $$
+begin
+  perform pg_temp.cr01_login_as(('b8000000-0000-4000-8000-0000000000' || p_user)::uuid, null);
+end;
 $$;
 grant execute on function pg_temp.act_as(text) to authenticated;
 create function pg_temp.ctx(p_key text) returns text language sql as $$ select v from uc8_ctx where k = p_key $$;

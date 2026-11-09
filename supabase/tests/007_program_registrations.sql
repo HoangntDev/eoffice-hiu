@@ -2,6 +2,7 @@
 -- Tranh chấp suất cuối giữa nhiều phiên đồng thời: scripts/race-program-registration.sh (cần commit thật).
 
 begin;
+\ir helpers/organization_login.inc
 select plan(67);
 
 -- ── Fixtures (postgres) ───────────────────────────────────────────────────────
@@ -73,6 +74,8 @@ insert into public.reputation_adjustments (user_id, term_id, delta, reason) valu
   ('b7000000-0000-4000-8000-000000000012', 'd7000000-0000-4000-8000-000000000001', -10, 'UC7 fixture'),
   ('b7000000-0000-4000-8000-000000000013', 'd7000000-0000-4000-8000-000000000002', -30, 'UC7 fixture học kỳ trước');
 
+select pg_temp.cr01_setup_organization_logins();
+
 -- ── 0. Học kỳ cấu hình được, không suy ra từ tháng ───────────────────────────
 select hasnt_function('public', 'semester_key_for', 'Không còn hàm chia học kỳ cố định theo tháng');
 select is(public.academic_term_at(now()), 'd7000000-0000-4000-8000-000000000001'::uuid, 'Thời điểm hiện tại thuộc học kỳ đã cấu hình');
@@ -86,9 +89,10 @@ select throws_ok($$ insert into public.academic_terms (academic_year, term_code,
   values ('2090-2091', 'HK-X', 'Chồng ngày', current_date, current_date + 10) $$,
   '23P01', null, 'Hai học kỳ không được chồng ngày');
 
-create function pg_temp.act_as(p_user text) returns void language sql as $$
-  select set_config('request.jwt.claims',
-    json_build_object('sub', ('b7000000-0000-4000-8000-0000000000' || p_user)::uuid, 'role', 'authenticated')::text, true);
+create function pg_temp.act_as(p_user text) returns void language plpgsql security definer as $$
+begin
+  perform pg_temp.cr01_login_as(('b7000000-0000-4000-8000-0000000000' || p_user)::uuid, null);
+end;
 $$;
 grant execute on function pg_temp.act_as(text) to authenticated;
 

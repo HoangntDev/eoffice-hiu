@@ -1,4 +1,5 @@
 begin;
+\ir helpers/organization_login.inc
 select plan(10);
 
 insert into auth.users(id, email) values
@@ -36,29 +37,34 @@ insert into public.membership_application_assignments(application_id, collaborat
 values ('30000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000003',
   '00000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000002');
 
+select pg_temp.cr01_setup_organization_logins();
+
 set local role authenticated;
-select set_config('request.jwt.claim.sub', '10000000-0000-4000-8000-000000000003', true);
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000003', null);
 select throws_ok(
   $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','CTV không được duyệt','20000000-0000-4000-8000-000000000002')$$,
   'P0001', 'COLLABORATOR_CANNOT_FINALIZE', 'CTV cannot make final recognition'
 );
 
-select set_config('request.jwt.claim.sub', '10000000-0000-4000-8000-000000000002', true);
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000002', '00000000-0000-4000-8000-000000000002');
 select throws_ok(
-  $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','Duyệt khi chưa nhận sổ','20000000-0000-4000-8000-000000000001')$$,
+  $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','Duyệt khi chưa nhận sổ',
+    pg_temp.cr01_management_grant('00000000-0000-4000-8000-000000000002','office'))$$,
   'P0001', 'PAPER_BOOK_NOT_RECEIVED', 'office cannot recognize before paper book receipt'
 );
 select lives_ok(
-  $$select public.record_paper_book_event('10000000-0000-4000-8000-000000000004','30000000-0000-4000-8000-000000000001','received',current_date,'20000000-0000-4000-8000-000000000001')$$,
+  $$select public.record_paper_book_event('10000000-0000-4000-8000-000000000004','30000000-0000-4000-8000-000000000001','received',current_date,
+    pg_temp.cr01_management_grant('00000000-0000-4000-8000-000000000002','office'))$$,
   'office records paper book receipt'
 );
 select lives_ok(
-  $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','Hồ sơ hợp lệ','20000000-0000-4000-8000-000000000001')$$,
+  $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','Hồ sơ hợp lệ',
+    pg_temp.cr01_management_grant('00000000-0000-4000-8000-000000000002','office'))$$,
   'office recognizes after receipt'
 );
 select is((select status from public.union_memberships where user_id='10000000-0000-4000-8000-000000000004'), 'recognized', 'recognition creates membership');
 
-select set_config('request.jwt.claim.sub', '10000000-0000-4000-8000-000000000004', true);
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000004', null);
 select lives_ok(
   $$select public.save_student_profile('Sinh viên Kiểm thử', 'female', '0900000000',
     (select id from public.classes where current_code = '00AUTH0001'))$$,
