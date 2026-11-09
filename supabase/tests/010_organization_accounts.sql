@@ -4,7 +4,7 @@
 -- pg_temp.setup (SQL động, bắt lỗi), nên khi chưa hiện thực, test báo "not ok" kèm lỗi chứ không
 -- dừng cả file.
 begin;
-select plan(69);
+select plan(73);
 
 -- ── Trợ giúp ─────────────────────────────────────────────────────────────────
 -- Giá trị text của câu SQL (chạy bằng postgres), hoặc 'ERROR: <thông báo>'.
@@ -121,6 +121,7 @@ select has_function('public', 'change_organization_pin', array['text', 'text'], 
 select has_function('public', 'migrate_management_grants_to_organizations', array[]::text[], 'có hàm migrate_management_grants_to_organizations');
 select has_table('public', 'feature_flags', 'AC6: có bảng công tắc tính năng mà database đọc được');
 select has_function('public', 'feature_flag_enabled', array['text'], 'AC6: database đọc công tắc qua feature_flag_enabled');
+select has_function('public', 'set_feature_flag', array['text', 'boolean', 'text'], 'YC4: có hàm đổi công tắc có kiểm quyền và audit');
 
 -- ── AC10 (R-12): bootstrap tạo tài khoản tổ chức Đoàn Trường ─────────────────
 -- Cho trước DB chưa có tài khoản Đoàn Trường; Khi chạy bootstrap_school_admin cho E;
@@ -266,6 +267,20 @@ select is(pg_temp.as_val('authenticated', pg_temp.c('acc_office'), pg_temp.c('S3
 -- ── AC10: Đoàn Trường quản lý tài khoản tổ chức; đơn vị tự đổi PIN ──────────
 select pg_temp.setup(format($$ insert into auth.sessions(id, user_id) values (%L, %L) $$, pg_temp.c('S6'), pg_temp.c('acc_school')));
 select pg_temp.setup(format($$ select public.start_officer_session(%L, %L, %L) $$, pg_temp.c('S6'), pg_temp.c('acc_school'), pg_temp.c('E')));
+-- Công tắc chỉ Đoàn Trường hoặc script DB được đổi, và thay đổi phải có audit.
+select pg_temp.setup($$ update public.feature_flags set enabled = false where key = 'ORG_ACCOUNTS_ENABLED' $$);
+select is(
+  pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'),
+    $$ select public.set_feature_flag('ORG_ACCOUNTS_ENABLED', true, 'Đoàn Khoa thử bật')::text $$)
+  || '/' || pg_temp.val($$ select public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED')::text $$),
+  'ERROR: FORBIDDEN/false', 'YC4: Đoàn Khoa không đổi được công tắc');
+select is(pg_temp.as_val('authenticated', pg_temp.c('acc_school'), pg_temp.c('S6'),
+  $$ select (public.set_feature_flag('ORG_ACCOUNTS_ENABLED', true, 'Bật sau kiểm thử')
+    and public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED'))::text $$),
+  'true', 'YC4: phiên Đoàn Trường bật được công tắc trong database');
+select is(pg_temp.val($$ select count(*)::text from public.audit_events
+  where action = 'feature_flag.updated' and target_id = 'ORG_ACCOUNTS_ENABLED' $$),
+  '1', 'YC4: thay đổi công tắc có audit');
 select is(pg_temp.as_val('authenticated', pg_temp.c('acc_school'), pg_temp.c('S6'),
   format($$ select (public.manage_organization_account(%L, 'create', '135790', 'Tạo tài khoản Đoàn Khoa F2') is not null)::text $$, pg_temp.c('f2'))),
   'true', 'AC10: Đoàn Trường tạo tài khoản tổ chức cho Đoàn Khoa');
