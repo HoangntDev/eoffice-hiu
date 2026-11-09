@@ -1,5 +1,5 @@
 -- CR-01-TaiKhoanToChuc (#37): loại tài khoản student/organization.
--- AC3 (chặn Chi đoàn, Ban), AC6 (vai trò quản lý không nằm trên tài khoản cá nhân), AC11 và R-6
+-- AC3 (chặn Chi đoàn, Ban), AC6 (grant quản lý cá nhân được giữ để rollback bằng công tắc), AC11 và R-6
 -- (ràng buộc cũ của tài khoản sinh viên giữ nguyên, CTV và trưởng Ban giữ trên tài khoản cá nhân).
 -- Câu lệnh dùng cột/bảng mới đều nằm trong chuỗi SQL của assertion hoặc pg_temp.val, để khi chưa
 -- hiện thực, test báo "not ok" thay vì dừng cả file.
@@ -90,10 +90,10 @@ select throws_ok(
   $$ update public.organization_units set unit_type = 'school_committee' where id = (select v from ctx where k = 'faculty_org') $$,
   'P0001', 'ORG_ACCOUNT_UNIT_NOT_ALLOWED', 'AC3: đơn vị đã có tài khoản không đổi được sang loại không có tài khoản');
 
--- ── AC6: vai trò quản lý chỉ nằm trên tài khoản tổ chức của đúng đơn vị ──────
-select throws_ok(
+-- ── AC6: giữ grant cá nhân; khi bật công tắc chỉ grant tổ chức có hiệu lực ────
+select lives_ok(
   $$ insert into public.role_grants(user_id, role_code, organization_id, reason) values ('a9000000-0000-4000-8000-000000000001', 'faculty_manager', (select v from ctx where k = 'faculty_org'), 'thử') $$,
-  'P0001', 'MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT', 'AC6: không cấp vai trò quản lý cho tài khoản cá nhân');
+  'AC6: vẫn lưu được vai trò quản lý trên tài khoản cá nhân để dùng khi công tắc tắt');
 select throws_ok(
   $$ insert into public.role_grants(user_id, role_code, organization_id, reason) values ('a9000000-0000-4000-8000-000000000004', 'office', '00000000-0000-4000-8000-000000000002', 'thử') $$,
   'P0001', 'MANAGEMENT_ROLE_REQUIRES_ORGANIZATION_ACCOUNT', 'AC6: tài khoản tổ chức chỉ giữ vai trò của chính đơn vị');

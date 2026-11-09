@@ -4,7 +4,7 @@
 -- pg_temp.setup (SQL động, bắt lỗi), nên khi chưa hiện thực, test báo "not ok" kèm lỗi chứ không
 -- dừng cả file.
 begin;
-select plan(66);
+select plan(69);
 
 -- ── Trợ giúp ─────────────────────────────────────────────────────────────────
 -- Giá trị text của câu SQL (chạy bằng postgres), hoặc 'ERROR: <thông báo>'.
@@ -119,6 +119,8 @@ select has_function('public', 'list_organization_login_units', array[]::text[], 
 select has_function('public', 'manage_organization_account', array['uuid', 'text', 'text', 'text'], 'có hàm manage_organization_account');
 select has_function('public', 'change_organization_pin', array['text', 'text'], 'có hàm change_organization_pin');
 select has_function('public', 'migrate_management_grants_to_organizations', array[]::text[], 'có hàm migrate_management_grants_to_organizations');
+select has_table('public', 'feature_flags', 'AC6: có bảng công tắc tính năng mà database đọc được');
+select has_function('public', 'feature_flag_enabled', array['text'], 'AC6: database đọc công tắc qua feature_flag_enabled');
 
 -- ── AC10 (R-12): bootstrap tạo tài khoản tổ chức Đoàn Trường ─────────────────
 -- Cho trước DB chưa có tài khoản Đoàn Trường; Khi chạy bootstrap_school_admin cho E;
@@ -133,8 +135,8 @@ select is(pg_temp.val($$ select count(*)::text from public.role_grants where use
   '0', 'AC10/AC6: bootstrap không cấp school_admin cho tài khoản cá nhân');
 select pg_temp.setup($$ insert into ctx select 'acc_school', user_id::text from public.accounts where organization_id = '00000000-0000-4000-8000-000000000001' and account_type = 'organization' $$);
 
--- ── AC6 + kế hoạch dữ liệu: chuyển vai trò quản lý cá nhân sang tài khoản tổ chức ─
--- Cho trước hiện trạng trước CR: vai trò quản lý nằm trên tài khoản cá nhân (tắt trigger để dựng hiện trạng cũ).
+-- ── AC6 + kế hoạch dữ liệu: sao chép quyền sang tổ chức, giữ grant cá nhân ────
+-- Cho trước hiện trạng trước CR: vai trò quản lý nằm trên tài khoản cá nhân.
 select pg_temp.setup($$ alter table public.role_grants disable trigger role_grants_holder_rule $$);
 select pg_temp.setup(format($$ insert into public.role_grants(user_id, role_code, organization_id, reason) values
   (%1$L, 'faculty_manager', %3$L, 'hiện trạng: Bí thư'), (%1$L, 'office', %4$L, 'hiện trạng: cán bộ VP'),
@@ -145,11 +147,11 @@ insert into public.role_grants(user_id, role_code, organization_id, reason)
 values ('a1000000-0000-4000-8000-000000000006', 'collaborator', '00000000-0000-4000-8000-000000000003', 'CTV kiểm thử');
 -- Khi chạy hàm chuyển dữ liệu;
 select is(pg_temp.val($$ select public.migrate_management_grants_to_organizations()::text $$), '4',
-  'AC6: chuyển đúng 4 vai trò quản lý của tài khoản cá nhân');
--- Thì không còn vai trò quản lý nào trên tài khoản cá nhân, cán bộ thành thành viên, CTV giữ nguyên.
+  'AC6: xử lý đúng 4 vai trò quản lý cá nhân để tạo grant tổ chức và thành viên');
+-- Thì grant cá nhân vẫn còn để công tắc có thể quay về hành vi v1.0.0; cán bộ thành thành viên, CTV giữ nguyên.
 select is(pg_temp.val($$ select count(*)::text from public.role_grants rg join public.accounts a on a.user_id = rg.user_id
   where a.student_code is not null and rg.revoked_at is null and rg.role_code in ('school_admin', 'office', 'faculty_manager', 'faculty_executive') $$),
-  '0', 'AC6: không còn vai trò quản lý trên tài khoản cá nhân');
+  '4', 'AC6: migration không thu hồi role_grants quản lý trên tài khoản cá nhân');
 select is(pg_temp.val(format($$ select count(*)::text from public.organization_members where revoked_at is null and organization_id in (%L, %L) $$, pg_temp.c('f'), pg_temp.c('office'))),
   '4', 'AC6: A, C thành thành viên Đoàn Khoa; A, B thành thành viên Văn phòng');
 select is(pg_temp.val(format($$ select string_agg(rg.role_code, ',') from public.role_grants rg join public.accounts a on a.user_id = rg.user_id
@@ -157,9 +159,16 @@ select is(pg_temp.val(format($$ select string_agg(rg.role_code, ',') from public
   'faculty_manager', 'AC6: tài khoản tổ chức Đoàn Khoa giữ vai trò faculty_manager');
 select is(pg_temp.val($$ select count(*)::text from public.role_grants where user_id = 'a1000000-0000-4000-8000-000000000006' and role_code = 'collaborator' and revoked_at is null $$),
   '1', 'R-6: CTV giữ vai trò trên tài khoản cá nhân');
--- Khi A dùng tài khoản cá nhân gọi RPC quản lý; Thì bị từ chối.
+-- Khi công tắc tắt, A dùng tài khoản cá nhân gọi RPC quản lý; Thì vẫn được như v1.0.0.
+select pg_temp.setup($$ insert into public.feature_flags(key, enabled) values ('ORG_ACCOUNTS_ENABLED', false)
+  on conflict (key) do update set enabled = excluded.enabled $$);
+select ok(pg_temp.is_uuid(pg_temp.as_val('authenticated', pg_temp.c('A'), null,
+  pg_temp.create_program_sql(pg_temp.c('f'), 'Tài khoản cá nhân khi công tắc tắt'))),
+  'AC6: công tắc tắt thì role_grants cá nhân vẫn có hiệu lực');
+-- Khi bật công tắc, cùng grant cá nhân chỉ bị vô hiệu chứ không bị thu hồi; RPC quản lý phải từ chối.
+select pg_temp.setup($$ update public.feature_flags set enabled = true where key = 'ORG_ACCOUNTS_ENABLED' $$);
 select is(pg_temp.as_val('authenticated', pg_temp.c('A'), null, pg_temp.create_program_sql(pg_temp.c('f'), 'Tạo bằng tài khoản cá nhân')),
-  'ERROR: FORBIDDEN', 'AC6: tài khoản cá nhân của cán bộ bị từ chối khi tạo kế hoạch');
+  'ERROR: FORBIDDEN', 'AC6: công tắc bật thì role_grants quản lý cá nhân bị vô hiệu');
 
 -- Đặt PIN tổ chức cho các đơn vị đã có tài khoản.
 select pg_temp.setup(format($$ insert into ctx select k, user_id::text from (values ('acc_f', %L::uuid), ('acc_office', %L::uuid)) u(k, org)
