@@ -24,7 +24,6 @@ values ('ORG_ACCOUNTS_ENABLED', false, 'Mặc định tắt khi áp migration CR
 create or replace function public.feature_flag_enabled(p_key text)
 returns boolean
 language plpgsql
-stable
 security definer
 set search_path = ''
 as $$
@@ -217,7 +216,7 @@ returns boolean language sql stable security definer set search_path = public as
 $$;
 
 -- Chỉ server (service role): kiểm PIN tổ chức, tạo phiên tạm.
-create or replace function public.start_organization_login(p_account_user_id uuid, p_pin text)
+create or replace function public.start_organization_login(p_organization_id uuid, p_pin text)
 returns uuid language plpgsql security definer set search_path = public, extensions as $$
 declare v_id uuid;
 begin
@@ -225,12 +224,12 @@ begin
     select 1 from public.accounts a
     join public.organization_units ou on ou.id = a.organization_id and ou.is_active
     join public.organization_pins p on p.account_user_id = a.user_id
-    where a.user_id = p_account_user_id and a.account_type = 'organization' and a.status = 'active'
+    where a.user_id = p_organization_id and a.account_type = 'organization' and a.status = 'active'
       and p.pin_hash = crypt(p_pin, p.pin_hash)
   ) then
     return null;
   end if;
-  insert into public.organization_login_challenges(account_user_id) values (p_account_user_id) returning id into v_id;
+  insert into public.organization_login_challenges(account_user_id) values (p_organization_id) returning id into v_id;
   return v_id;
 end;
 $$;
@@ -550,3 +549,358 @@ grant execute on function public.create_organization_account(uuid, text) to serv
 grant execute on function public.set_organization_pin(uuid, text) to service_role;
 grant execute on function public.feature_flag_enabled(text) to authenticated, service_role;
 grant execute on function public.migrate_management_grants_to_organizations() to service_role;
+
+-- ── 7. Phiên tổ chức, đăng nhập và quản lý tài khoản ─────────────────────────
+create index if not exists organization_members_lookup_idx
+  on public.organization_members(organization_id, user_id) where revoked_at is null;
+create index if not exists organization_login_challenges_expiry_idx
+  on public.organization_login_challenges(expires_at) where used_at is null;
+create index if not exists organization_session_officers_active_idx
+  on public.organization_session_officers(account_user_id, officer_user_id) where ended_at is null;
+
+create or replace function public.organization_session_ok()
+returns boolean
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare
+  v_account_type text;
+  v_session_id uuid;
+begin
+  if auth.uid() is null then return false; end if;
+  select a.account_type into v_account_type
+  from public.accounts a
+  where a.user_id = auth.uid() and a.status = 'active';
+  if v_account_type is null then return false; end if;
+  if v_account_type <> 'organization' then return true; end if;
+
+  begin
+    v_session_id := nullif(auth.jwt() ->> 'session_id', '')::uuid;
+  exception when invalid_text_representation then
+    return false;
+  end;
+  if v_session_id is null then return false; end if;
+
+  return exists (
+    select 1
+    from public.organization_session_officers s
+    join public.organization_members m on m.id = s.member_id
+      and m.organization_id = (select a.organization_id from public.accounts a where a.user_id = s.account_user_id)
+      and m.user_id = s.officer_user_id
+      and m.revoked_at is null
+    join public.accounts officer on officer.user_id = s.officer_user_id
+      and officer.account_type = 'student' and officer.status = 'active'
+    join auth.sessions auth_session on auth_session.id = s.session_id
+      and auth_session.user_id = s.account_user_id
+    where s.session_id = v_session_id
+      and s.account_user_id = auth.uid()
+      and s.ended_at is null
+  );
+end;
+$$;
+
+create or replace function public.management_account_allowed()
+returns boolean
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare v_type text;
+begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return true; end if;
+  select a.account_type into v_type from public.accounts a where a.user_id = auth.uid();
+  return v_type = 'organization' and public.organization_session_ok();
+end;
+$$;
+
+-- Bước 1 nhận đơn vị, luôn kiểm một bcrypt thật hoặc bcrypt giả để tránh lộ sự tồn tại tài khoản.
+create or replace function public.start_organization_login(p_organization_id uuid, p_pin text)
+returns uuid
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare
+  v_account uuid;
+  v_hash text;
+  v_challenge uuid;
+  v_dummy constant text := '$2a$10$SEu1jPh5YpnNNt.OjRukUe1ptALn4my13.j5jnu3aeuPit098HCPW';
+begin
+  select a.user_id, p.pin_hash into v_account, v_hash
+  from public.accounts a
+  join public.organization_units ou on ou.id = a.organization_id and ou.is_active
+  join public.organization_pins p on p.account_user_id = a.user_id
+  where a.organization_id = p_organization_id
+    and a.account_type = 'organization'
+    and a.status = 'active';
+
+  if crypt(coalesce(p_pin, ''), coalesce(v_hash, v_dummy))
+       is distinct from coalesce(v_hash, v_dummy)
+     or v_account is null then
+    return null;
+  end if;
+
+  insert into public.organization_login_challenges(account_user_id)
+  values (v_account) returning id into v_challenge;
+  return v_challenge;
+end;
+$$;
+
+create or replace function public.list_organization_login_units()
+returns table(organization_id uuid, name text, unit_type text)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  return query
+  select ou.id, ou.name, ou.unit_type
+  from public.organization_units ou
+  join public.accounts a on a.organization_id = ou.id
+    and a.account_type = 'organization' and a.status = 'active'
+  where ou.is_active
+    and ou.unit_type in ('school_union', 'office', 'faculty_union')
+  order by case ou.unit_type when 'school_union' then 1 when 'office' then 2 else 3 end,
+    ou.name;
+end;
+$$;
+
+create or replace function public.end_officer_session(p_session_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  update public.organization_session_officers
+  set ended_at = now()
+  where session_id = p_session_id and ended_at is null;
+  delete from auth.sessions where id = p_session_id;
+end;
+$$;
+
+create or replace function public.set_feature_flag(p_key text, p_enabled boolean, p_reason text)
+returns boolean
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_org uuid;
+  v_before boolean;
+begin
+  select a.organization_id into v_org
+  from public.accounts a
+  join public.organization_units ou on ou.id = a.organization_id
+  where a.user_id = auth.uid() and a.account_type = 'organization'
+    and ou.unit_type = 'school_union';
+  if v_org is null or not public.organization_session_ok() then raise exception 'FORBIDDEN'; end if;
+  if char_length(btrim(coalesce(p_reason, ''))) < 3 then raise exception 'REASON_REQUIRED'; end if;
+
+  select f.enabled into v_before from public.feature_flags f where f.key = p_key for update;
+  if v_before is null then raise exception 'FEATURE_FLAG_NOT_FOUND'; end if;
+  update public.feature_flags
+  set enabled = p_enabled, updated_at = now(), updated_by = auth.uid(), reason = p_reason
+  where key = p_key;
+  perform public.write_audit(
+    'feature_flag.updated', 'feature_flag', p_key,
+    jsonb_build_object('enabled', v_before), jsonb_build_object('enabled', p_enabled, 'reason', p_reason),
+    null, v_org, null
+  );
+  return true;
+end;
+$$;
+
+create or replace function public.manage_organization_account(
+  p_organization_id uuid,
+  p_action text,
+  p_pin text,
+  p_reason text
+) returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_school uuid;
+  v_account uuid;
+  v_before text;
+begin
+  select a.organization_id into v_school
+  from public.accounts a
+  join public.organization_units ou on ou.id = a.organization_id
+  where a.user_id = auth.uid() and a.account_type = 'organization'
+    and ou.unit_type = 'school_union';
+  if v_school is null or not public.organization_session_ok() then raise exception 'FORBIDDEN'; end if;
+  if char_length(btrim(coalesce(p_reason, ''))) < 3 then raise exception 'REASON_REQUIRED'; end if;
+
+  select a.user_id, a.status into v_account, v_before
+  from public.accounts a where a.organization_id = p_organization_id for update;
+
+  if p_action = 'create' then
+    if v_account is not null then raise exception 'ORG_ACCOUNT_EXISTS'; end if;
+    v_account := public.create_organization_account(p_organization_id, p_reason);
+    perform public.set_organization_pin(v_account, p_pin);
+  elsif p_action = 'reset_pin' then
+    if v_account is null then raise exception 'ORG_ACCOUNT_NOT_FOUND'; end if;
+    perform public.set_organization_pin(v_account, p_pin);
+  elsif p_action = 'lock' then
+    if v_account is null then raise exception 'ORG_ACCOUNT_NOT_FOUND'; end if;
+    update public.accounts set status = 'suspended', updated_at = now() where user_id = v_account;
+  elsif p_action = 'unlock' then
+    if v_account is null then raise exception 'ORG_ACCOUNT_NOT_FOUND'; end if;
+    if not exists (select 1 from public.organization_pins p where p.account_user_id = v_account) then
+      raise exception 'PIN_NOT_SET';
+    end if;
+    update public.accounts set status = 'active', updated_at = now() where user_id = v_account;
+  else
+    raise exception 'INVALID_ACTION';
+  end if;
+
+  perform public.write_audit(
+    'organization_account.' || p_action, 'account', v_account::text,
+    jsonb_build_object('status', v_before), jsonb_build_object('organization_id', p_organization_id, 'reason', p_reason),
+    null, p_organization_id, null
+  );
+  return v_account;
+end;
+$$;
+
+create or replace function public.change_organization_pin(p_current_pin text, p_new_pin text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare v_hash text;
+begin
+  if not public.organization_session_ok() then raise exception 'FORBIDDEN'; end if;
+  select p.pin_hash into v_hash
+  from public.organization_pins p where p.account_user_id = auth.uid() for update;
+  if v_hash is null or crypt(coalesce(p_current_pin, ''), v_hash) <> v_hash then
+    raise exception 'INVALID_CREDENTIALS';
+  end if;
+  perform public.set_organization_pin(auth.uid(), p_new_pin);
+  perform public.write_audit(
+    'organization_account.pin_changed', 'account', auth.uid()::text,
+    null, jsonb_build_object('changed', true), null,
+    (select a.organization_id from public.accounts a where a.user_id = auth.uid()), null
+  );
+  return true;
+end;
+$$;
+
+-- ── 8. Khi bật công tắc, quyền quản lý chỉ có hiệu lực trên phiên tổ chức ─────
+create or replace function public.has_active_role(
+  p_role_code text,
+  p_organization_id uuid default null
+) returns boolean
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if auth.uid() is null then return false; end if;
+  if p_role_code in ('school_admin', 'office', 'faculty_manager', 'faculty_executive')
+     and not public.management_account_allowed() then
+    return false;
+  end if;
+  return exists (
+    select 1 from public.role_grants rg
+    where rg.user_id = auth.uid()
+      and rg.role_code = p_role_code
+      and rg.revoked_at is null
+      and (p_organization_id is null or rg.organization_id = p_organization_id)
+  );
+end;
+$$;
+
+create or replace function public.event_program_manager_grant(p_org_id uuid)
+returns uuid
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare v_grant uuid;
+begin
+  if not public.management_account_allowed() then return null; end if;
+  select rg.id into v_grant
+  from public.role_grants rg
+  join public.organization_units ou on ou.id = rg.organization_id
+  where rg.user_id = auth.uid() and rg.revoked_at is null
+    and rg.organization_id = p_org_id
+    and rg.role_code in ('faculty_manager', 'faculty_executive')
+    and ou.unit_type = 'faculty_union' and ou.is_active
+  order by case rg.role_code when 'faculty_manager' then 0 else 1 end, rg.granted_at
+  limit 1;
+  return v_grant;
+end;
+$$;
+
+create or replace function public.event_program_reviewer_grant()
+returns uuid
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare v_grant uuid;
+begin
+  if not public.management_account_allowed() then return null; end if;
+  select rg.id into v_grant
+  from public.role_grants rg
+  join public.organization_units ou on ou.id = rg.organization_id
+  where rg.user_id = auth.uid() and rg.revoked_at is null
+    and rg.role_code = 'office' and ou.unit_type = 'office' and ou.is_active
+  order by rg.granted_at limit 1;
+  return v_grant;
+end;
+$$;
+
+create or replace function public.user_can_manage_forms_for_org(p_org_id uuid)
+returns boolean
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if public.has_active_role('school_admin') then return true; end if;
+  if exists (
+    select 1 from public.role_grants rg
+    where rg.user_id = auth.uid() and rg.revoked_at is null
+      and rg.organization_id = p_org_id and rg.role_code = 'committee_manager'
+  ) then return true; end if;
+  if not public.management_account_allowed() then return false; end if;
+  return exists (
+    select 1 from public.role_grants rg
+    where rg.user_id = auth.uid() and rg.revoked_at is null
+      and rg.organization_id = p_org_id and rg.role_code in ('faculty_manager', 'office')
+  );
+end;
+$$;
+
+drop policy if exists audit_events_read_authorized on public.audit_events;
+create policy audit_events_read_authorized on public.audit_events for select to authenticated using (
+  public.organization_session_ok()
+  and (actor_user_id = auth.uid() or public.has_active_role('school_admin') or public.has_active_role('office'))
+);
+
+revoke all on function public.organization_session_ok() from public, anon;
+revoke all on function public.management_account_allowed() from public, anon;
+revoke all on function public.list_organization_login_units() from public, authenticated;
+revoke all on function public.set_feature_flag(text, boolean, text) from public, anon;
+revoke all on function public.manage_organization_account(uuid, text, text, text) from public, anon;
+revoke all on function public.change_organization_pin(text, text) from public, anon;
+grant execute on function public.organization_session_ok() to authenticated, service_role;
+grant execute on function public.management_account_allowed() to authenticated, service_role;
+grant execute on function public.list_organization_login_units() to anon, authenticated, service_role;
+grant execute on function public.set_feature_flag(text, boolean, text) to authenticated, service_role;
+grant execute on function public.manage_organization_account(uuid, text, text, text) to authenticated, service_role;
+grant execute on function public.change_organization_pin(text, text) to authenticated, service_role;
