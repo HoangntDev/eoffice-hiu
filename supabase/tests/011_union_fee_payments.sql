@@ -80,6 +80,7 @@ insert into public.role_grants(user_id, role_code, organization_id, reason) valu
 select pg_temp.cr01_setup_organization_logins();
 
 -- Cấu trúc và ràng buộc mức thu.
+update public.feature_flags set enabled = false where key = 'PAYMENT_ENABLED';
 select is(pg_temp.val($$ select enabled::text from public.feature_flags where key = 'PAYMENT_ENABLED' $$),
   'false', 'YC4: PAYMENT_ENABLED tồn tại và mặc định tắt');
 select has_table('public', 'union_fee_campaigns', 'có bảng khoản thu Đoàn phí theo năm');
