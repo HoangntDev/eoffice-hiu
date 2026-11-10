@@ -38,6 +38,7 @@ NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1:55321 SUPABASE_SERVICE_ROLE_KEY=$DEMO_
 
 # Dữ liệu demo.
 DEMO_SUPABASE_URL=http://127.0.0.1:55321 DEMO_SERVICE_ROLE_KEY=$DEMO_KEY \
+  DEMO_ORGANIZATION_PIN='<PIN-tổ-chức-6-số>' \
   npm run demo:seed -- --confirm-demo
 ```
 
@@ -45,9 +46,12 @@ DEMO_SUPABASE_URL=http://127.0.0.1:55321 DEMO_SERVICE_ROLE_KEY=$DEMO_KEY \
 
 - thiếu cờ `--confirm-demo`;
 - URL không phải Supabase local;
+- `DEMO_ORGANIZATION_PIN` không có đúng 6 chữ số;
 - DB đã có tài khoản, tức là DB đang dùng hoặc DB đã seed rồi.
 
-Script không đọc `.env.local`, nên không thể ghi nhầm vào stack chính.
+Script không đọc `.env.local`, nên không thể ghi nhầm vào stack chính. Sau khi tạo dữ liệu,
+script sao chép các grant quản lý sang tài khoản tổ chức, đặt cùng PIN tổ chức từ biến môi
+trường và không ghi PIN này ra log. Grant cá nhân vẫn được giữ để kiểm thử trạng thái công tắc TẮT.
 
 ## 4. Chạy web với DB demo
 
@@ -85,6 +89,12 @@ Dữ liệu gồm:
 - **4 hồ sơ Đoàn viên:** đã công nhận, đã nộp, CTV đã đề xuất, cần bổ sung.
 
 Mọi họ tên, MSSV, CCCD và số điện thoại đều là dữ liệu giả.
+
+Khi `ORG_ACCOUNTS_ENABLED` bật, cán bộ đăng nhập tại `/admin/login` bằng đơn vị, PIN tổ chức
+đã truyền ở bước 3, rồi MSSV cá nhân. Đoàn Trường, Văn phòng và Đoàn Khoa CNKT có tài khoản
+tổ chức; Ban (`school_committee`) chưa làm ở giai đoạn này và Chi đoàn (`class_union`) không
+bao giờ có tài khoản tổ chức. Khi công tắc tắt, ba tài khoản cán bộ trong bảng trên tiếp tục
+quản lý bằng phiên cá nhân như v1.0.0.
 
 ## 6. Làm lại từ đầu hoặc dừng
 

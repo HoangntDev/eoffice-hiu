@@ -7,6 +7,7 @@
 //
 // Cách dùng:
 //   DEMO_SUPABASE_URL=http://127.0.0.1:55321 DEMO_SERVICE_ROLE_KEY=<service_role của stack demo> \
+//     DEMO_ORGANIZATION_PIN=<PIN tổ chức 6 số> \
 //     node scripts/seed-demo.mjs --confirm-demo
 //
 // Mọi tài khoản demo dùng PIN 123456. Họ tên, MSSV, CCCD, số điện thoại đều là dữ liệu giả.
@@ -19,6 +20,7 @@ const CYCLE = "2026-2027";
 
 const url = process.env.DEMO_SUPABASE_URL;
 const key = process.env.DEMO_SERVICE_ROLE_KEY;
+const organizationPin = process.env.DEMO_ORGANIZATION_PIN;
 
 function fail(message) {
   console.error(`SEED_DEMO_REFUSED: ${message}`);
@@ -27,6 +29,7 @@ function fail(message) {
 
 if (!process.argv.includes("--confirm-demo")) fail("thiếu cờ --confirm-demo.");
 if (!url || !key) fail("thiếu DEMO_SUPABASE_URL hoặc DEMO_SERVICE_ROLE_KEY (script không đọc .env.local).");
+if (!/^\d{6}$/.test(organizationPin ?? "")) fail("DEMO_ORGANIZATION_PIN phải có đúng 6 chữ số.");
 const host = new URL(url).hostname;
 if (!["127.0.0.1", "localhost", "::1"].includes(host)) fail(`chỉ chạy với Supabase local, không chạy với ${host}.`);
 
@@ -100,8 +103,37 @@ for (const p of Object.values(people)) {
 const grant = async (person, role, orgId, reason) =>
   (await q(db.from("role_grants").insert({ user_id: person.id, role_code: role, organization_id: orgId, reason }).select("id").single(), `role ${role}`)).id;
 await grant(people.bao, "school_admin", school.id, "Demo: quản trị Đoàn Trường");
-const officeGrant = await grant(people.mai, "office", office.id, "Demo: cán bộ Văn phòng Đoàn – Hội");
-const facultyGrant = await grant(people.quan, "faculty_manager", cnktUnion.id, "Demo: Bí thư Đoàn Khoa CNKT");
+await grant(people.mai, "office", office.id, "Demo: cán bộ Văn phòng Đoàn – Hội");
+await grant(people.quan, "faculty_manager", cnktUnion.id, "Demo: Bí thư Đoàn Khoa CNKT");
+
+// CR-01 giữ grant cá nhân để công tắc có thể quay về hành vi v1.0.0, đồng thời sao chép
+// các quyền quản lý sang tài khoản tổ chức. PIN chỉ nhận qua biến môi trường và không in ra log.
+const copiedGrantCount = await q(db.rpc("migrate_management_grants_to_organizations"), "migrate management grants");
+const organizationAccounts = await q(
+  db.from("accounts").select("user_id, organization_id").eq("account_type", "organization"),
+  "organization accounts",
+);
+for (const account of organizationAccounts) {
+  await q(
+    db.rpc("set_organization_pin", { p_account_user_id: account.user_id, p_pin: organizationPin }),
+    `organization PIN ${account.organization_id}`,
+  );
+}
+const organizationAccountFor = (organizationId) =>
+  organizationAccounts.find((account) => account.organization_id === organizationId)?.user_id
+  ?? fail(`thiếu tài khoản tổ chức ${organizationId}`);
+const schoolAccount = organizationAccountFor(school.id);
+const officeAccount = organizationAccountFor(office.id);
+const facultyAccount = organizationAccountFor(cnktUnion.id);
+const organizationGrants = await q(
+  db.from("role_grants").select("id, user_id, role_code").in("user_id", [schoolAccount, officeAccount, facultyAccount]),
+  "organization role grants",
+);
+const organizationGrantFor = (accountUserId, roleCode) =>
+  organizationGrants.find((row) => row.user_id === accountUserId && row.role_code === roleCode)?.id
+  ?? fail(`thiếu grant ${roleCode} của tài khoản tổ chức`);
+const officeOrganizationGrant = organizationGrantFor(officeAccount, "office");
+const facultyOrganizationGrant = organizationGrantFor(facultyAccount, "faculty_manager");
 
 // ── Biểu mẫu ─────────────────────────────────────────────────────────────────
 const opt = (labels) => labels.map((label, order) => ({ id: randomUUID(), label, order }));
@@ -144,7 +176,7 @@ for (const f of forms) {
   const row = await q(db.from("forms").insert({
     owner_org_id: cnktUnion.id, title: f.title, description: f.description, status: f.status,
     audience_rule: { type: "hiu_student" }, questions: f.questions, closes_at: f.closes_at,
-    confirmation_message: "Đoàn Khoa đã nhận phản hồi của bạn.", created_by: people.quan.id,
+    confirmation_message: "Đoàn Khoa đã nhận phản hồi của bạn.", created_by: facultyAccount,
   }).select("id").single(), `form ${f.key}`);
   formIds[f.key] = row.id;
 }
@@ -178,15 +210,15 @@ for (const p of programs) {
   const row = await q(db.from("event_programs").insert({
     owner_org_id: cnktUnion.id, faculty_id: faculty.id, title: p.title, summary: p.summary, location: p.location,
     starts_at: p.starts_at, ends_at: p.ends_at, expected_participants: p.expected, plan_number: p.plan, plan_signed_on: day(-7),
-    status: p.status, submission_count: 1, created_by: people.quan.id, submitted_at: at(-6, 9, 0),
-    decided_at: approved ? at(-4, 10, 0) : null, decided_by: approved ? people.mai.id : null,
+    status: p.status, submission_count: 1, created_by: facultyAccount, submitted_at: at(-6, 9, 0),
+    decided_at: approved ? at(-4, 10, 0) : null, decided_by: approved ? officeAccount : null,
   }).select("id").single(), `program ${p.key}`);
   programIds[p.key] = row.id;
   const history = [
-    { action: "created", from_status: null, to_status: "draft", actor_user_id: people.quan.id, actor_role_grant_id: facultyGrant, occurred_at: at(-8, 9, 0) },
-    { action: "submitted", from_status: "draft", to_status: "submitted", actor_user_id: people.quan.id, actor_role_grant_id: facultyGrant, occurred_at: at(-6, 9, 0) },
+    { action: "created", from_status: null, to_status: "draft", actor_user_id: facultyAccount, actor_officer_user_id: people.quan.id, actor_role_grant_id: facultyOrganizationGrant, occurred_at: at(-8, 9, 0) },
+    { action: "submitted", from_status: "draft", to_status: "submitted", actor_user_id: facultyAccount, actor_officer_user_id: people.quan.id, actor_role_grant_id: facultyOrganizationGrant, occurred_at: at(-6, 9, 0) },
   ];
-  if (approved) history.push({ action: "approved", from_status: "submitted", to_status: "approved", actor_user_id: people.mai.id, actor_role_grant_id: officeGrant, occurred_at: at(-4, 10, 0) });
+  if (approved) history.push({ action: "approved", from_status: "submitted", to_status: "approved", actor_user_id: officeAccount, actor_officer_user_id: people.mai.id, actor_role_grant_id: officeOrganizationGrant, occurred_at: at(-4, 10, 0) });
   await q(db.from("event_program_history").insert(history.map((h) => ({ ...h, program_id: row.id }))), `history ${p.key}`);
 }
 
@@ -205,7 +237,7 @@ for (const s of settings) {
     program_id: programIds[s.key], status: s.status, audience_rule: s.audience_rule, capacity: s.capacity,
     requires_approval: s.requires_approval, form_id: s.form ? formIds[s.form] : null, closes_at: s.closes_at,
     instructions: s.instructions, opened_at: at(-3, 8, 0), closed_at: s.status === "closed" ? at(-1, 23, 59) : null,
-    updated_by: people.quan.id,
+    updated_by: facultyAccount,
   }), `settings ${s.key}`);
 }
 const registrations = [
@@ -221,7 +253,7 @@ for (const r of registrations) {
   const decided = r.status !== "pending";
   await q(db.from("program_registrations").insert({
     program_id: programIds[r.program], user_id: people[r.who].id, status: r.status, registered_at: at(-2, 9, 30),
-    decided_at: decided ? at(-1, 15, 0) : null, decided_by: r.decided_by ? people[r.decided_by].id : null, decision_reason: r.reason ?? null,
+    decided_at: decided ? at(-1, 15, 0) : null, decided_by: r.decided_by ? facultyAccount : null, decision_reason: r.reason ?? null,
   }), `registration ${r.program}/${r.who}`);
 }
 
@@ -257,11 +289,12 @@ for (const [index, a] of applications.entries()) {
   }), `qualification ${a.who}`);
   if (recognized) {
     await q(db.from("union_memberships").insert({
-      user_id: person.id, recognized_application_id: app.id, recognized_on: day(-15), recognized_by: people.mai.id, role_grant_id: officeGrant,
+      user_id: person.id, recognized_application_id: app.id, recognized_on: day(-15), recognized_by: officeAccount, role_grant_id: officeOrganizationGrant,
     }), `union_memberships ${a.who}`);
   }
 }
 
 console.log("SEED_DEMO_OK");
 console.table(Object.values(people).map((p) => ({ MSSV: p.code, "Họ tên": p.name, Lớp: p.cls, Email: p.email })));
-console.log(`PIN của mọi tài khoản demo: ${DEMO_PIN}`);
+console.log("PIN cá nhân demo được giữ trong tài liệu hướng dẫn, không ghi lại trong log seed.");
+console.log(`Đã sao chép ${copiedGrantCount} grant sang ${organizationAccounts.length} tài khoản tổ chức; PIN tổ chức không được ghi ra log.`);
