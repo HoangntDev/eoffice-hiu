@@ -15,20 +15,20 @@ Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế
 
 Bốn use case chính của bản phát hành v1.0.0 (dùng thống nhất trong test case và CHANGELOG): **UC-A** Hồ sơ Đoàn viên (thuộc UC2), **UC-B** Kế hoạch chương trình (UC6), **UC-C** Đăng ký tham gia (UC7), **UC-D** Điểm danh QR và điểm dự kiến đề nghị (UC8). Các UC còn lại là phần nền.
 
-Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). Báo cáo bài thực hành nằm ở [`docs/TH1/`](docs/TH1/) và [`docs/TH2/`](docs/TH2/). Lịch sử phiên bản: [`CHANGELOG.md`](CHANGELOG.md).
+Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). Báo cáo bài thực hành nằm trong `docs/TH1/` đến `docs/TH4/`. Lịch sử phiên bản: [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Công nghệ
 
 | Thành phần | Phiên bản (theo `package-lock.json` / `supabase/config.toml`) |
 |---|---|
 | Node.js / npm | 24 / 12 (CI dùng Node 24) |
-| Next.js (App Router, `src/proxy.ts`) | 16.3.8 |
+| Next.js (App Router, `src/proxy.ts`) | 16.4.5 |
 | React / React DOM | 19.2.8 |
 | TypeScript | 5.9.3 |
 | Tailwind CSS | 4.3.3 |
 | Supabase JS / `@supabase/ssr` | 2.117.2 / 0.12.7 |
 | PostgreSQL (Supabase local) | 17 |
-| Zod / React Hook Form | 4.6.5 / 7.89.0 |
+| Zod / React Hook Form | 4.6.7 / 7.89.0 |
 | `qrcode` (QR SVG phía server) | 1.5.4 |
 | Vitest / jsdom / Testing Library React | 5.0.2 / 30.1.1 / 16.3.3 |
 | pgTAP (`supabase test db`) | đi kèm Supabase CLI |
@@ -53,7 +53,7 @@ Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 ```bash
 # 1. Lấy mã nguồn đúng phiên bản phát hành
 git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
-git switch --detach v1.0.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+git switch --detach v1.1.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
 
 # 2. Cài dependency đúng theo package-lock.json
 npm ci
@@ -75,7 +75,7 @@ npm run build && npm start            # http://localhost:3000 (đổi cổng: PO
 Sau khi app chạy:
 
 1. Tạo tài khoản đầu tiên tại `/register`. Mở email xác thực trong Mailpit (http://127.0.0.1:54324), rồi tạo PIN.
-2. Cấp quyền Đoàn Trường cho tài khoản đó (mục "Bootstrap Đoàn Trường" bên dưới).
+2. Tạo tài khoản tổ chức Đoàn Trường đầu tiên (mục "Bootstrap Đoàn Trường" bên dưới).
 3. Import danh mục học vụ (mục "Import danh mục học vụ").
 4. Hoặc, để có ngay dữ liệu mẫu, dựng một stack demo riêng theo [`docs/TH2/demo-data.md`](docs/TH2/demo-data.md).
 
@@ -156,7 +156,29 @@ Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc t
 npm run admin:bootstrap -- --user-id <UUID> --confirm
 ```
 
-Hàm sẽ từ chối nếu đã có school admin đang hoạt động. Sau bước này, Đoàn Trường phân quyền tại `/organization`.
+Script hỏi PIN tổ chức mới hai lần bằng đầu vào ẩn, tạo đúng một tài khoản tổ chức
+Đoàn Trường và thêm tài khoản sinh viên đã chọn làm thành viên. Script không ghi PIN
+ra log và từ chối chạy lại khi tài khoản đã được khởi tạo.
+
+Sau đó đăng nhập tại `/admin/login`: chọn Đoàn Trường, nhập PIN tổ chức, rồi nhập
+MSSV + PIN cá nhân của thành viên. Đoàn Trường quản lý cơ cấu tại
+`/admin/organization` và tài khoản tổ chức tại `/admin/accounts`.
+
+### Công tắc tài khoản tổ chức
+
+`ORG_ACCOUNTS_ENABLED` nằm trong bảng cấu hình database, không phải biến môi trường
+Next.js. Chỉ phiên tổ chức Đoàn Trường có cán bộ mới đổi được công tắc tại
+`/admin/accounts`; database ghi audit cho mỗi lần đổi.
+
+- **TẮT (mặc định sau migration):** `/admin` và đăng nhập tổ chức không dùng được;
+  các grant quản lý cá nhân tiếp tục hoạt động như v1.0.0.
+- **BẬT:** chỉ phiên tổ chức có cán bộ còn hiệu lực được quản lý; bốn grant quản lý
+  cá nhân (`school_admin`, `office`, `faculty_manager`, `faculty_executive`) vẫn được
+  lưu nhưng bị RPC/RLS bỏ qua. `collaborator` và `committee_manager` vẫn là vai trò cá nhân.
+
+Trình tự nâng cấp an toàn: sao lưu, áp migration, chạy test/smoke khi công tắc còn
+TẮT, bootstrap Đoàn Trường nếu cần, đăng nhập Đoàn Trường và bật công tắc. Nếu cần
+quay lui hành vi, tắt công tắc; không xóa grant hay chạy migration ngược.
 
 ### Import danh mục học vụ
 
