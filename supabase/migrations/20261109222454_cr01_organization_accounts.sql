@@ -239,6 +239,7 @@ create or replace function public.read_organization_login(p_challenge_id uuid, p
 returns uuid language plpgsql security definer set search_path = public as $$
 declare v_account uuid;
 begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return null; end if;
   select account_user_id into v_account from public.organization_login_challenges
   where id = p_challenge_id and used_at is null and expires_at > now()
   for update;
@@ -263,6 +264,9 @@ create or replace function public.start_officer_session(p_session_id uuid, p_acc
 returns uuid language plpgsql security definer set search_path = public as $$
 declare v_member uuid; v_org uuid;
 begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then
+    raise exception 'ORG_ACCOUNTS_DISABLED';
+  end if;
   v_member := public.organization_member_for(p_account_user_id, p_officer_user_id);
   if v_member is null then raise exception 'OFFICER_NOT_ALLOWED'; end if;
   if not exists (select 1 from auth.sessions where id = p_session_id and user_id = p_account_user_id) then
@@ -575,6 +579,7 @@ begin
   where a.user_id = auth.uid() and a.status = 'active';
   if v_account_type is null then return false; end if;
   if v_account_type <> 'organization' then return true; end if;
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then return false; end if;
 
   begin
     v_session_id := nullif(auth.jwt() ->> 'session_id', '')::uuid;
@@ -724,7 +729,7 @@ begin
   join public.organization_units ou on ou.id = a.organization_id
   where a.user_id = auth.uid() and a.account_type = 'organization'
     and ou.unit_type = 'school_union';
-  if v_org is null or not public.organization_session_ok() then raise exception 'FORBIDDEN'; end if;
+  if v_org is null or public.current_officer_user_id() is null then raise exception 'FORBIDDEN'; end if;
   if char_length(btrim(coalesce(p_reason, ''))) < 3 then raise exception 'REASON_REQUIRED'; end if;
 
   select f.enabled into v_before from public.feature_flags f where f.key = p_key for update;
