@@ -20,20 +20,22 @@ begin
   perform public.migrate_management_grants_to_organizations();
   update public.accounts set status = 'active'
   where account_type = 'organization' and status <> 'active';
-  for r in
-    select m.user_id as officer_user_id, m.organization_id, a.user_id as account_user_id
-    from public.organization_members m
-    join public.accounts a on a.organization_id = m.organization_id and a.account_type = 'organization'
-    where m.revoked_at is null
-  loop
-    v_session := gen_random_uuid();
-    insert into auth.sessions(id, user_id) values (v_session, r.account_user_id);
-    perform public.start_officer_session(v_session, r.account_user_id, r.officer_user_id);
-    insert into pg_temp.cr01_organization_test_sessions
-      (officer_user_id, organization_id, account_user_id, session_id)
-    values (r.officer_user_id, r.organization_id, r.account_user_id, v_session)
-    on conflict (officer_user_id, organization_id) do nothing;
-  end loop;
+  if public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then
+    for r in
+      select m.user_id as officer_user_id, m.organization_id, a.user_id as account_user_id
+      from public.organization_members m
+      join public.accounts a on a.organization_id = m.organization_id and a.account_type = 'organization'
+      where m.revoked_at is null
+    loop
+      v_session := gen_random_uuid();
+      insert into auth.sessions(id, user_id) values (v_session, r.account_user_id);
+      perform public.start_officer_session(v_session, r.account_user_id, r.officer_user_id);
+      insert into pg_temp.cr01_organization_test_sessions
+        (officer_user_id, organization_id, account_user_id, session_id)
+      values (r.officer_user_id, r.organization_id, r.account_user_id, v_session)
+      on conflict (officer_user_id, organization_id) do nothing;
+    end loop;
+  end if;
 end;
 $$;
 
