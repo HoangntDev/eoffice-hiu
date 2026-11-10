@@ -23,7 +23,7 @@ end;
 $$;
 
 create temp table payment_ctx(k text primary key, v text);
-grant select on payment_ctx to authenticated, service_role;
+grant all on payment_ctx to authenticated, service_role;
 create function pg_temp.c(p_key text) returns text language sql as $$
   select v from payment_ctx where k = p_key
 $$;
