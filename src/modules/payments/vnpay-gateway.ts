@@ -11,7 +11,7 @@ export type VnpayConfig = {
 function canonicalParams(params: URLSearchParams): string {
   return [...params.entries()]
     .filter(([key, value]) => key.startsWith("vnp_") && key !== "vnp_SecureHash" && key !== "vnp_SecureHashType" && value !== "")
-    .sort(([left], [right]) => left.localeCompare(right))
+    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
     .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
     .join("&");
 }

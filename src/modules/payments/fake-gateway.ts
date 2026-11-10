@@ -10,7 +10,7 @@ export class FakeGateway implements PaymentGateway {
     return url.toString();
   }
 
-  verifyIpn(_params: URLSearchParams): VerifiedPaymentIpn {
+  verifyIpn(): VerifiedPaymentIpn {
     return this.ipn;
   }
 }
