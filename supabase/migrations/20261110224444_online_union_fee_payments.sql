@@ -252,6 +252,7 @@ begin
   select c.organization_id into v_org from public.union_fee_campaigns c where c.id = v_order.campaign_id;
 
   if p_response_code = '00' and p_transaction_status = '00' then
+    if nullif(btrim(p_transaction_ref), '') is null then return '99'; end if;
     update public.union_fee_orders
     set status = 'paid', transaction_ref = p_transaction_ref,
         response_code = p_response_code, transaction_status = p_transaction_status,

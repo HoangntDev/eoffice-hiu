@@ -74,9 +74,8 @@ export class VnpayGateway implements PaymentGateway {
       ? rawAmount / 100
       : Number.NaN;
     return {
-      signatureValid: params.get("vnp_TmnCode") !== null
-        ? params.get("vnp_TmnCode") === this.config.tmnCode && sameHex(receivedHash, expectedHash)
-        : sameHex(receivedHash, expectedHash),
+      signatureValid: params.get("vnp_TmnCode") === this.config.tmnCode
+        && sameHex(receivedHash, expectedHash),
       orderRef: params.get("vnp_TxnRef") ?? "",
       amountVnd,
       transactionRef: params.get("vnp_TransactionNo") ?? "",
