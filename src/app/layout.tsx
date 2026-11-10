@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { AccountMenu } from "@/components/account-menu";
 import { getViewer } from "@/lib/auth/viewer";
+import { paymentEnabled } from "@/lib/payments";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const viewer = await getViewer();
+  const paymentsAvailable = viewer?.accountType === "student" ? await paymentEnabled() : false;
   // Mã yêu cầu do proxy gắn; trang lỗi (error.tsx) hiển thị làm mã tham chiếu khi lỗi không có digest.
   const requestId = (await headers()).get("x-request-id");
   return (
@@ -33,7 +35,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               </span>
             </Link>
             {viewer ? (
-              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} organization={viewer.accountType === "organization"} />
+              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} organization={viewer.accountType === "organization"} paymentEnabled={paymentsAvailable} />
             ) : (
               <div className="header-user">
                 <Link href="/register" className="header-link">Tạo tài khoản</Link>
@@ -48,6 +50,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
             {viewer?.accountType === "organization" ? <Link href="/admin">Quản trị tổ chức</Link> : viewer && (
               <>
                 <Link href="/programs">Chương trình</Link>
+                {paymentsAvailable && <Link href="/payments">Đoàn phí</Link>}
                 {viewer.access.organization && <Link href="/organization">Cơ cấu</Link>}
                 {viewer.access.membershipReview && <Link href="/office/membership">Xử lý hồ sơ</Link>}
               </>

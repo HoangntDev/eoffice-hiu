@@ -50,6 +50,21 @@ export function rateLimitPepper() {
   return required("AUTH_RATE_LIMIT_PEPPER");
 }
 
+const VNPAY_VARS = ["VNP_TMN_CODE", "VNP_HASH_SECRET", "VNP_URL", "VNP_RETURN_URL"] as const;
+
+export function missingVnpayVars(): string[] {
+  return VNPAY_VARS.filter((name) => !runtime(name)?.trim());
+}
+
+export function vnpayEnv() {
+  return {
+    tmnCode: required("VNP_TMN_CODE"),
+    hashSecret: required("VNP_HASH_SECRET"),
+    paymentUrl: required("VNP_URL"),
+    returnUrl: required("VNP_RETURN_URL"),
+  };
+}
+
 export function isProduction() {
   return runtime("NODE_ENV") === "production";
 }
