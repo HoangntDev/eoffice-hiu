@@ -1072,3 +1072,234 @@ begin
   return p_program_id;
 end;
 $$;
+
+
+-- Các gateway UC-B/UC-C phải bỏ qua grant quản lý cá nhân khi công tắc bật.
+create or replace function public.management_officer_has_role(
+  p_role_code text,
+  p_organization_id uuid
+) returns boolean
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+declare v_actor uuid;
+begin
+  if not public.feature_flag_enabled('ORG_ACCOUNTS_ENABLED') then
+    v_actor := auth.uid();
+  elsif public.organization_session_ok() then
+    v_actor := public.current_officer_user_id();
+  end if;
+  if v_actor is null then return false; end if;
+  return exists (
+    select 1 from public.role_grants rg
+    where rg.user_id = v_actor and rg.role_code = p_role_code
+      and rg.organization_id = p_organization_id and rg.revoked_at is null
+  );
+end;
+$$;
+
+create or replace function public.has_permission(
+  p_permission text,
+  p_faculty_id uuid default null,
+  p_organization_id uuid default null
+) returns boolean
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then return false; end if;
+
+  if public.has_active_role('school_admin') then return true; end if;
+
+  if p_permission in ('student_code.edit', 'membership.final_review', 'paper_book.record')
+     and public.has_active_role('office') then return true; end if;
+
+  if p_permission = 'student.read_all' and (
+    public.has_active_role('office') or exists (
+      select 1 from public.role_grants rg
+      join public.organization_units ou on ou.id = rg.organization_id
+      where rg.user_id = auth.uid() and rg.revoked_at is null
+        and ou.code = 'ORGANIZATION_INSPECTION'
+    )
+  ) then return true; end if;
+
+  if p_permission in ('class.manage', 'student.read_faculty')
+     and p_faculty_id is not null
+     and public.management_account_allowed()
+     and exists (
+       select 1 from public.role_grants rg
+       join public.organization_units ou on ou.id = rg.organization_id
+       where rg.user_id = auth.uid() and rg.revoked_at is null
+         and rg.role_code in ('faculty_manager', 'faculty_executive')
+         and ou.faculty_id = p_faculty_id
+     ) then return true; end if;
+
+  if p_permission in ('role.grant_collaborator', 'membership.collaborator_review')
+     and p_organization_id is not null and exists (
+    select 1 from public.role_grants rg
+    where rg.user_id = auth.uid() and rg.revoked_at is null
+      and rg.role_code = 'committee_manager'
+      and rg.organization_id = p_organization_id
+  ) then return true; end if;
+
+  return false;
+end;
+$$;
+
+create or replace function public.can_access_application(p_application_id uuid)
+returns boolean
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+begin
+  return exists (
+    select 1 from public.union_applications ua
+    where ua.id = p_application_id and (
+      ua.user_id = auth.uid()
+      or public.has_permission('student.read_all')
+      or exists (
+        select 1 from public.membership_application_assignments aa
+        where aa.application_id = ua.id and aa.collaborator_user_id = auth.uid()
+      )
+      or (
+        public.management_account_allowed() and exists (
+          select 1 from public.role_grants rg
+          join public.organization_units ou on ou.id = rg.organization_id
+          where rg.user_id = auth.uid() and rg.revoked_at is null
+            and rg.role_code in ('faculty_manager', 'faculty_executive')
+            and ou.faculty_id::text = ua.organization_snapshot->>'facultyId'
+        )
+      )
+    )
+  );
+end;
+$$;
+
+create or replace function public.grant_role(
+  p_user_id uuid,
+  p_role_code text,
+  p_organization_id uuid,
+  p_reason text,
+  p_actor_role_grant_id uuid default null
+) returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_id uuid; v_can boolean := false; v_actor_org uuid; v_actor_role text;
+begin
+  select role_code, organization_id into v_actor_role, v_actor_org
+  from public.role_grants
+  where id = p_actor_role_grant_id and user_id = auth.uid() and revoked_at is null;
+
+  if public.has_active_role('school_admin') then
+    v_can := true;
+  elsif v_actor_role = 'committee_manager' and p_role_code = 'collaborator'
+        and v_actor_org = p_organization_id then
+    v_can := true;
+  elsif v_actor_role = 'faculty_manager' and p_role_code = 'faculty_executive'
+        and v_actor_org = p_organization_id
+        and public.management_officer_has_role('faculty_manager', p_organization_id) then
+    v_can := true;
+  end if;
+
+  if not v_can then raise exception 'FORBIDDEN'; end if;
+  if char_length(btrim(p_reason)) < 3 then raise exception 'REASON_REQUIRED'; end if;
+
+  insert into public.role_grants(user_id, role_code, organization_id, granted_by, reason)
+  values (p_user_id, p_role_code, p_organization_id, auth.uid(), p_reason)
+  returning id into v_id;
+  perform public.write_audit('role.granted', 'role_grant', v_id::text, null,
+    jsonb_build_object('user_id', p_user_id, 'role_code', p_role_code),
+    p_actor_role_grant_id, p_organization_id);
+  return v_id;
+end;
+$$;
+
+create or replace function public.review_union_application(
+  p_application_id uuid,
+  p_outcome text,
+  p_reason text,
+  p_role_grant_id uuid
+) returns text
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_role public.role_grants%rowtype; v_app public.union_applications%rowtype; v_new_status text; v_review_type text;
+begin
+  if char_length(btrim(p_reason)) < 3 then raise exception 'REASON_REQUIRED'; end if;
+  select * into v_role from public.role_grants where id = p_role_grant_id and user_id = auth.uid() and revoked_at is null;
+  if v_role.id is null then raise exception 'ACTIVE_ROLE_REQUIRED'; end if;
+  if v_role.role_code in ('office', 'school_admin')
+     and not public.management_account_allowed() then raise exception 'FORBIDDEN'; end if;
+  select * into v_app from public.union_applications where id = p_application_id for update;
+  if v_app.id is null then raise exception 'APPLICATION_NOT_FOUND'; end if;
+
+  if v_role.role_code = 'collaborator' then
+    if not exists (
+      select 1 from public.membership_application_assignments aa
+      where aa.application_id = p_application_id and aa.collaborator_user_id = auth.uid()
+        and aa.organization_id = v_role.organization_id
+    ) then raise exception 'NOT_ASSIGNED'; end if;
+    if p_outcome not in ('recommend', 'needs_changes') then raise exception 'COLLABORATOR_CANNOT_FINALIZE'; end if;
+    if p_outcome = 'recommend' and exists (
+      select 1 from public.membership_review_checklist_items ci
+      where ci.is_active and ci.is_required and not exists (
+        select 1 from public.membership_application_checks ac
+        where ac.application_id = p_application_id and ac.checklist_item_id = ci.id and ac.checked
+      )
+    ) then raise exception 'REQUIRED_CHECKLIST_INCOMPLETE'; end if;
+    v_new_status := case when p_outcome = 'recommend' then 'collaborator_recommended' else 'needs_changes' end;
+    v_review_type := 'collaborator_recommendation';
+  elsif v_role.role_code in ('office', 'school_admin') then
+    if p_outcome not in ('recognize', 'reject', 'needs_changes') then raise exception 'INVALID_OFFICE_OUTCOME'; end if;
+    if p_outcome = 'recognize' and not exists (
+      select 1 from public.paper_book_events pbe
+      where pbe.user_id = v_app.user_id and pbe.event_type = 'received'
+        and not exists (
+          select 1 from public.paper_book_events later
+          where later.user_id = pbe.user_id and later.created_at > pbe.created_at and later.event_type = 'withdrawn'
+        )
+    ) then raise exception 'PAPER_BOOK_NOT_RECEIVED'; end if;
+    v_new_status := case p_outcome when 'recognize' then 'recognized' when 'reject' then 'rejected' else 'needs_changes' end;
+    v_review_type := 'office_decision';
+  else
+    raise exception 'FORBIDDEN';
+  end if;
+
+  insert into public.membership_reviews(application_id, reviewer_user_id, reviewer_role_grant_id,
+    review_type, outcome, reason)
+  values (p_application_id, auth.uid(), p_role_grant_id, v_review_type, p_outcome, p_reason);
+
+  update public.union_applications set status = v_new_status, updated_at = now(),
+    decision_reason = case when v_review_type = 'office_decision' or v_new_status = 'needs_changes' then p_reason else decision_reason end,
+    decided_at = case when v_new_status in ('recognized', 'rejected') then now() else decided_at end
+  where id = p_application_id;
+
+  if v_new_status = 'recognized' then
+    insert into public.union_memberships(user_id, recognized_application_id, recognized_on, recognized_by, role_grant_id)
+    values (v_app.user_id, p_application_id, current_date, auth.uid(), p_role_grant_id)
+    on conflict (user_id) do update set
+      recognized_application_id = excluded.recognized_application_id,
+      recognized_on = excluded.recognized_on,
+      recognized_by = excluded.recognized_by,
+      role_grant_id = excluded.role_grant_id,
+      status = 'recognized', status_reason = null, updated_at = now();
+  end if;
+
+  perform public.write_audit('union_application.reviewed', 'union_application', p_application_id::text,
+    jsonb_build_object('status', v_app.status), jsonb_build_object('status', v_new_status, 'outcome', p_outcome),
+    p_role_grant_id, v_role.organization_id);
+  return v_new_status;
+end;
+$$;
+
+revoke all on function public.management_officer_has_role(text, uuid) from public, anon;
+grant execute on function public.management_officer_has_role(text, uuid) to authenticated, service_role;
