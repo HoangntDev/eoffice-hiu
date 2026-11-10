@@ -42,6 +42,16 @@ insert into public.classes(id, current_code, current_name, current_program_id, c
   ('f1400000-0000-4000-8000-000000000001', '99PAY01', 'Lớp Thanh toán 1', 'f1200000-0000-4000-8000-000000000001', 'f1300000-0000-4000-8000-000000000001'),
   ('f1400000-0000-4000-8000-000000000002', '99PAY02', 'Lớp Thanh toán 2', 'f1200000-0000-4000-8000-000000000001', 'f1300000-0000-4000-8000-000000000001'),
   ('f1400000-0000-4000-8000-000000000003', '99PAY03', 'Lớp Thanh toán 3', 'f1200000-0000-4000-8000-000000000002', 'f1300000-0000-4000-8000-000000000001');
+insert into public.faculty_versions(faculty_id, code, name, valid_during, changed_reason) values
+  ('f1100000-0000-4000-8000-000000000001', 'PAYF1', 'Khoa Thanh toán Một', '[2026-01-01,)', 'Kiểm thử thanh toán'),
+  ('f1100000-0000-4000-8000-000000000002', 'PAYF2', 'Khoa Thanh toán Hai', '[2026-01-01,)', 'Kiểm thử thanh toán');
+insert into public.program_versions(program_id, faculty_id, code, name, valid_during, changed_reason) values
+  ('f1200000-0000-4000-8000-000000000001', 'f1100000-0000-4000-8000-000000000001', 'PAYP1', 'Ngành Thanh toán Một', '[2026-01-01,)', 'Kiểm thử thanh toán'),
+  ('f1200000-0000-4000-8000-000000000002', 'f1100000-0000-4000-8000-000000000002', 'PAYP2', 'Ngành Thanh toán Hai', '[2026-01-01,)', 'Kiểm thử thanh toán');
+insert into public.class_versions(class_id, program_id, cohort_id, code, name, valid_during, changed_reason) values
+  ('f1400000-0000-4000-8000-000000000001', 'f1200000-0000-4000-8000-000000000001', 'f1300000-0000-4000-8000-000000000001', '99PAY01', 'Lớp Thanh toán 1', '[2026-01-01,)', 'Kiểm thử thanh toán'),
+  ('f1400000-0000-4000-8000-000000000002', 'f1200000-0000-4000-8000-000000000001', 'f1300000-0000-4000-8000-000000000001', '99PAY02', 'Lớp Thanh toán 2', '[2026-01-01,)', 'Kiểm thử thanh toán'),
+  ('f1400000-0000-4000-8000-000000000003', 'f1200000-0000-4000-8000-000000000002', 'f1300000-0000-4000-8000-000000000001', '99PAY03', 'Lớp Thanh toán 3', '[2026-01-01,)', 'Kiểm thử thanh toán');
 
 insert into auth.users(id, email) values
   ('f1500000-0000-4000-8000-000000000001', 'manager1@test.local'),
