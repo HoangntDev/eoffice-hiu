@@ -10,6 +10,7 @@ import { statusLabels, type EventProgramStatus } from "@/modules/event-programs/
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { displayOrgName } from "@/modules/organization-catalog/display";
 import { availableActions } from "@/modules/event-programs/workflow";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 import { AttendanceSection } from "./attendance-section";
 import { RegistrationSection } from "./registration-section";
 
@@ -54,12 +55,12 @@ const roleLabels: Record<string, string> = {
   school_admin: "Đoàn Trường",
 };
 
-export default async function ProgramDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProgramDetailPage({ params, basePath = "/programs" }: { params: Promise<{ id: string }>; basePath?: EventProgramBasePath }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?next=/programs/${id}`);
+  if (!user) redirect(`/login?next=${eventProgramPath(basePath, id)}`);
 
   const { data } = await supabase.from("event_programs").select("*, organization_units(name)").eq("id", id).maybeSingle();
   if (!data) notFound();
@@ -87,7 +88,7 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
     <main className="page">
       <div className="page-header">
         <div>
-          <p className="eyebrow"><Link href="/programs">Chương trình sự kiện</Link> · {displayOrgName(program.organization_units?.name)}</p>
+          <p className="eyebrow"><Link href={basePath}>Chương trình sự kiện</Link> · {displayOrgName(program.organization_units?.name)}</p>
           <h1>{program.title}</h1>
           <p className="inline">
             <EventProgramStatusBadge status={program.status} />
@@ -117,16 +118,16 @@ export default async function ProgramDetailPage({ params }: { params: Promise<{ 
       </section>
 
       {program.status === "approved" && (
-        <RegistrationSection supabase={supabase} userId={user.id} program={program} isManager={isManager} />
+        <RegistrationSection supabase={supabase} userId={user.id} program={program} isManager={isManager} basePath={basePath} />
       )}
       {program.status === "approved" && (
-        <AttendanceSection supabase={supabase} userId={user.id} programId={program.id} isManager={isManager} />
+        <AttendanceSection supabase={supabase} userId={user.id} programId={program.id} isManager={isManager} basePath={basePath} />
       )}
 
       {actions.canEdit && (
         <section className="panel">
           <h2>{program.status === "needs_changes" ? "Sửa tiếp hồ sơ theo yêu cầu" : "Sửa bản nháp"}</h2>
-          <EventProgramEditor mode="edit" programId={program.id} initial={program} />
+          <EventProgramEditor mode="edit" programId={program.id} initial={program} basePath={basePath} />
         </section>
       )}
 

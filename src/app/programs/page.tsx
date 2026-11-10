@@ -7,6 +7,7 @@ import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import { displayOrgName } from "@/modules/organization-catalog/display";
 import { blockReasonLabels, registrationBlockReason } from "@/modules/program-registrations/eligibility";
 import { registrationStatusLabels, type RegistrationStatus } from "@/modules/program-registrations/schemas";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
 type Row = {
   id: string;
@@ -25,7 +26,7 @@ const columns = "id, owner_org_id, title, location, starts_at, ends_at, status, 
 
 type MyState = { label: string; tone: string };
 
-function ProgramTable({ rows, empty, showStatus = true, mine }: { rows: Row[]; empty: string; showStatus?: boolean; mine?: Map<string, MyState> }) {
+function ProgramTable({ rows, empty, showStatus = true, mine, basePath }: { rows: Row[]; empty: string; showStatus?: boolean; mine?: Map<string, MyState>; basePath: EventProgramBasePath }) {
   if (rows.length === 0) return <p className="muted">{empty}</p>;
   return (
     <div className="table-wrap">
@@ -55,7 +56,7 @@ function ProgramTable({ rows, empty, showStatus = true, mine }: { rows: Row[]; e
               {mine && (
                 <td data-label="Đăng ký của tôi">{mine.has(row.id) ? <span className={`status ${mine.get(row.id)!.tone}`}>{mine.get(row.id)!.label}</span> : <span className="muted">—</span>}</td>
               )}
-              <td className="cell-action"><Link className="button secondary small" href={`/programs/${row.id}`}>Xem</Link></td>
+              <td className="cell-action"><Link className="button secondary small" href={eventProgramPath(basePath, row.id)}>Xem</Link></td>
             </tr>
           ))}
         </tbody>
@@ -64,7 +65,7 @@ function ProgramTable({ rows, empty, showStatus = true, mine }: { rows: Row[]; e
   );
 }
 
-export default async function ProgramsPage() {
+export default async function ProgramsPage({ basePath = "/programs" }: { basePath?: EventProgramBasePath } = {}) {
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/programs");
@@ -96,26 +97,26 @@ export default async function ProgramsPage() {
             mới xuất hiện trong danh sách đã duyệt.
           </p>
         </div>
-        {viewer.managedOrgs.length > 0 && <Link className="button primary" href="/programs/new">Lập kế hoạch</Link>}
+        {viewer.managedOrgs.length > 0 && <Link className="button primary" href={eventProgramPath(basePath, "new")}>Lập kế hoạch</Link>}
       </div>
 
       {viewer.isReviewer && (
         <section className="panel">
           <h2>Chờ Văn phòng xét duyệt</h2>
-          <ProgramTable rows={(queue.data ?? []) as unknown as Row[]} empty="Không có kế hoạch nào đang chờ xét." showStatus={false} />
+          <ProgramTable rows={(queue.data ?? []) as unknown as Row[]} empty="Không có kế hoạch nào đang chờ xét." showStatus={false} basePath={basePath} />
         </section>
       )}
 
       {viewer.managedOrgs.length > 0 && (
         <section className="panel">
           <h2>Kế hoạch của Đoàn Khoa</h2>
-          <ProgramTable rows={(mine.data ?? []) as unknown as Row[]} empty="Đoàn Khoa chưa lập kế hoạch nào." />
+          <ProgramTable rows={(mine.data ?? []) as unknown as Row[]} empty="Đoàn Khoa chưa lập kế hoạch nào." basePath={basePath} />
         </section>
       )}
 
       <section className="panel">
         <h2>Chương trình đã được chấp thuận</h2>
-        <ProgramTable rows={approvedRows} empty="Chưa có chương trình nào được chấp thuận." showStatus={false} mine={myStates} />
+        <ProgramTable rows={approvedRows} empty="Chưa có chương trình nào được chấp thuận." showStatus={false} mine={myStates} basePath={basePath} />
       </section>
     </main>
   );

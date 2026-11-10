@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import styles from "./event-programs.module.css";
 import { fromVietnamInputValue, toVietnamInputValue } from "@/modules/event-programs/dates";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
 export type EventProgramFormValues = {
   title: string;
@@ -17,8 +18,8 @@ export type EventProgramFormValues = {
 };
 
 type Props =
-  | { mode: "create"; orgs: Array<{ id: string; name: string }> }
-  | { mode: "edit"; programId: string; initial: EventProgramFormValues };
+  | { mode: "create"; orgs: Array<{ id: string; name: string }>; basePath?: EventProgramBasePath }
+  | { mode: "edit"; programId: string; initial: EventProgramFormValues; basePath?: EventProgramBasePath };
 
 export function EventProgramEditor(props: Props) {
   const router = useRouter();
@@ -58,7 +59,7 @@ export function EventProgramEditor(props: Props) {
         throw new Error(result.message ?? "Không thể lưu kế hoạch.");
       }
       if (props.mode === "create") {
-        router.push(`/programs/${result.id}`);
+        router.push(eventProgramPath(props.basePath ?? "/programs", result.id));
       } else {
         setMessage(result.message ?? "Đã lưu kế hoạch.");
         router.refresh();

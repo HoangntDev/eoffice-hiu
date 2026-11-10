@@ -1,17 +1,18 @@
 import Link from "next/link";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { formatVietnamDateTime } from "@/modules/event-programs/dates";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
-type Props = { supabase: SupabaseClient; userId: string; programId: string; isManager: boolean };
+type Props = { supabase: SupabaseClient; userId: string; programId: string; isManager: boolean; basePath?: EventProgramBasePath };
 
 // UC8 trên trang chương trình: BTC vào trang điểm danh; sinh viên xem các lượt mình đã được ghi nhận.
 // Không hiển thị điểm dự kiến hay uy tín cho sinh viên.
-export async function AttendanceSection({ supabase, userId, programId, isManager }: Props) {
+export async function AttendanceSection({ supabase, userId, programId, isManager, basePath = "/programs" }: Props) {
   if (isManager) {
     return (
       <section className="panel inline">
         <h2>Điểm danh</h2>
-        <Link className="button secondary" href={`/programs/${programId}/attendance`}>Quản lý lượt điểm danh</Link>
+        <Link className="button secondary" href={eventProgramPath(basePath, programId, "attendance")}>Quản lý lượt điểm danh</Link>
       </section>
     );
   }
