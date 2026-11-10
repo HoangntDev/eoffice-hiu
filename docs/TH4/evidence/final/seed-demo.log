@@ -1,0 +1,14 @@
+SEED_DEMO_OK
+┌─────────┬──────────────┬────────────────────┬──────────────┬──────────────────────────────────┐
+│ (index) │ MSSV         │ Họ tên             │ Lớp          │ Email                            │
+├─────────┼──────────────┼────────────────────┼──────────────┼──────────────────────────────────┤
+│ 0       │ '2211110101' │ 'Nguyễn Văn An'    │ 'TH22DH-CN1' │ 'an.nv2210101@student.hiu.vn'    │
+│ 1       │ '2211110102' │ 'Võ Thị Bích Ngọc' │ 'TH22DH-CN1' │ 'ngoc.vtb2210102@student.hiu.vn' │
+│ 2       │ '2211110103' │ 'Huỳnh Gia Hân'    │ 'TH22DH-CN2' │ 'han.hg2210103@student.hiu.vn'   │
+│ 3       │ '2241110104' │ 'Đặng Hoàng Phúc'  │ 'DS22DH-DS1' │ 'phuc.dh2240104@student.hiu.vn'  │
+│ 4       │ '2201110201' │ 'Lê Minh Quân'     │ 'TH22DH-CN2' │ 'quan.lm2200201@student.hiu.vn'  │
+│ 5       │ '2201110202' │ 'Trần Thị Mai'     │ 'TH22DH-CN1' │ 'mai.tt2200202@student.hiu.vn'   │
+│ 6       │ '2201110203' │ 'Phạm Quốc Bảo'    │ 'TH22DH-CN1' │ 'bao.pq2200203@student.hiu.vn'   │
+└─────────┴──────────────┴────────────────────┴──────────────┴──────────────────────────────────┘
+PIN cá nhân demo được giữ trong tài liệu hướng dẫn, không ghi lại trong log seed.
+Đã sao chép 3 grant sang 3 tài khoản tổ chức; PIN tổ chức không được ghi ra log.
