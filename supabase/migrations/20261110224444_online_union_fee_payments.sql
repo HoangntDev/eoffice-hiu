@@ -132,7 +132,7 @@ create policy union_fee_orders_read on public.union_fee_orders
 for select to authenticated using (
   public.feature_flag_enabled('PAYMENT_ENABLED')
   and (
-    student_user_id = auth.uid()
+    student_user_id = (select auth.uid())
     or public.union_fee_manager_grant((select c.organization_id from public.union_fee_campaigns c where c.id = campaign_id)) is not null
   )
 );
@@ -141,7 +141,7 @@ create policy union_fee_month_payments_read on public.union_fee_month_payments
 for select to authenticated using (
   public.feature_flag_enabled('PAYMENT_ENABLED')
   and (
-    student_user_id = auth.uid()
+    student_user_id = (select auth.uid())
     or public.union_fee_manager_grant((select c.organization_id from public.union_fee_campaigns c where c.id = campaign_id)) is not null
   )
 );
