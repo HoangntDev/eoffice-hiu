@@ -5,6 +5,7 @@ import { ZodError } from "zod";
 import { groupLoginUnits, organizationHeader, type LoginUnit } from "@/modules/organization-auth/display";
 import { adminMenuFor } from "@/modules/organization-auth/navigation";
 import { eventProgramPath } from "@/modules/organization-auth/program-paths";
+import { formManagementPath } from "@/modules/organization-auth/form-paths";
 import {
   organizationLoginFailure,
   orgLoginAttemptPolicy,
@@ -147,6 +148,13 @@ describe("AC9 (R7): phân luồng trang và menu theo loại đơn vị", () => 
     expect(eventProgramPath("/admin/programs", id, "registrations")).toBe(`/admin/programs/${id}/registrations`);
     expect(eventProgramPath("/admin/programs", id, "attendance", sessionId, "qr"))
       .toBe(`/admin/programs/${id}/attendance/${sessionId}/qr`);
+  });
+
+  it("mọi liên kết quản lý biểu mẫu của phiên tổ chức ở trong /admin", () => {
+    const id = "33333333-3333-4333-8333-333333333333";
+    expect(formManagementPath("/admin/forms", "new")).toBe("/admin/forms/new");
+    expect(formManagementPath("/admin/forms", id, "edit")).toBe(`/admin/forms/${id}/edit`);
+    expect(formManagementPath("/admin/forms", id, "responses")).toBe(`/admin/forms/${id}/responses`);
   });
 });
 
