@@ -55,10 +55,10 @@ insert into public.accounts(user_id, student_code, status) values
   ('f1500000-0000-4000-8000-000000000003', '9991100003', 'active'),
   ('f1500000-0000-4000-8000-000000000004', '9991100004', 'active'),
   ('f1500000-0000-4000-8000-000000000005', '9991100005', 'active');
-insert into public.student_profiles(user_id, full_name, gender, class_id) values
-  ('f1500000-0000-4000-8000-000000000002', 'Sinh viên Thanh toán Một', 'female', 'f1400000-0000-4000-8000-000000000001'),
-  ('f1500000-0000-4000-8000-000000000003', 'Sinh viên Thanh toán Hai', 'male', 'f1400000-0000-4000-8000-000000000002'),
-  ('f1500000-0000-4000-8000-000000000004', 'Sinh viên Khoa Khác', 'female', 'f1400000-0000-4000-8000-000000000003');
+insert into public.student_profiles(user_id, full_name, gender, phone, class_id) values
+  ('f1500000-0000-4000-8000-000000000002', 'Sinh viên Thanh toán Một', 'female', '0900000002', 'f1400000-0000-4000-8000-000000000001'),
+  ('f1500000-0000-4000-8000-000000000003', 'Sinh viên Thanh toán Hai', 'male', '0900000003', 'f1400000-0000-4000-8000-000000000002'),
+  ('f1500000-0000-4000-8000-000000000004', 'Sinh viên Khoa Khác', 'female', '0900000004', 'f1400000-0000-4000-8000-000000000003');
 
 insert into payment_ctx
 select 'org1', id::text from public.organization_units where faculty_id = 'f1100000-0000-4000-8000-000000000001'
@@ -188,7 +188,7 @@ select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000005', pg_temp.c('
 select is(pg_temp.val(format($$ select count(*)::text from public.faculty_union_fee_report(%L, null) $$, pg_temp.c('campaign2026'))),
   'ERROR: FORBIDDEN', 'Đoàn Khoa khác không xem báo cáo');
 select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000003', null);
-select lives_ok($$ select public.save_student_profile('Sinh viên Thanh toán Hai', 'male', null, 'f1400000-0000-4000-8000-000000000002') $$,
+select lives_ok($$ select public.save_student_profile('Sinh viên Thanh toán Hai', 'male', '0900000003', 'f1400000-0000-4000-8000-000000000002') $$,
   'chưa đóng không chặn cập nhật hồ sơ Đoàn viên');
 reset role;
 select is(pg_temp.val($$ select count(*)::text from public.audit_events where action = 'union_fee.order_created' $$),
