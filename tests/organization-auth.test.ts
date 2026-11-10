@@ -137,7 +137,7 @@ describe("AC9 (R7): phân luồng trang và menu theo loại đơn vị", () => 
 
   it("Đoàn Trường thấy cơ cấu và tài khoản tổ chức", () => {
     expect(outcome(() => adminMenuFor("school_union")))
-      .toEqual({ value: expect.arrayContaining(["/admin/organization", "/admin/accounts"]) });
+      .toEqual({ value: expect.arrayContaining(["/admin/organization", "/admin/accounts", "/admin/settings"]) });
   });
 
   it("mọi liên kết nghiệp vụ chương trình của phiên tổ chức ở trong /admin", () => {
