@@ -10,9 +10,9 @@ npm notice run next build
   Finished TypeScript in 3.9s ...
   Collecting page data using 15 workers ...
   Generating static pages using 15 workers (0/77) ...
-  Generating static pages using 15 workers (19/77) 
-  Generating static pages using 15 workers (38/77) 
-  Generating static pages using 15 workers (57/77) 
+  Generating static pages using 15 workers (19/77)
+  Generating static pages using 15 workers (38/77)
+  Generating static pages using 15 workers (57/77)
 ✓ Generating static pages using 15 workers (77/77) in 378ms
   Finalizing page optimization ...
 
@@ -133,4 +133,3 @@ Route (app)
 ƒ Proxy (Middleware)
 
 ƒ  (Dynamic)  server-rendered on demand
-
