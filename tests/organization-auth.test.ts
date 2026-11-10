@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { ZodError } from "zod";
 import { groupLoginUnits, organizationHeader, type LoginUnit } from "@/modules/organization-auth/display";
 import { adminMenuFor } from "@/modules/organization-auth/navigation";
+import { eventProgramPath } from "@/modules/organization-auth/program-paths";
 import {
   organizationLoginFailure,
   orgLoginAttemptPolicy,
@@ -136,6 +137,16 @@ describe("AC9 (R7): phân luồng trang và menu theo loại đơn vị", () => 
   it("Đoàn Trường thấy cơ cấu và tài khoản tổ chức", () => {
     expect(outcome(() => adminMenuFor("school_union")))
       .toEqual({ value: expect.arrayContaining(["/admin/organization", "/admin/accounts"]) });
+  });
+
+  it("mọi liên kết nghiệp vụ chương trình của phiên tổ chức ở trong /admin", () => {
+    const id = "11111111-1111-4111-8111-111111111111";
+    const sessionId = "22222222-2222-4222-8222-222222222222";
+    expect(eventProgramPath("/admin/programs", "new")).toBe("/admin/programs/new");
+    expect(eventProgramPath("/admin/programs", id)).toBe(`/admin/programs/${id}`);
+    expect(eventProgramPath("/admin/programs", id, "registrations")).toBe(`/admin/programs/${id}/registrations`);
+    expect(eventProgramPath("/admin/programs", id, "attendance", sessionId, "qr"))
+      .toBe(`/admin/programs/${id}/attendance/${sessionId}/qr`);
   });
 });
 
