@@ -5,8 +5,10 @@
 import { execFileSync } from "node:child_process";
 
 const BASE = process.env.BASE_URL ?? "http://localhost:3200";
-const DB_CONTAINER = "supabase_db_hiu-eoffice-demo";
-const PIN = "123456";
+const DB_CONTAINER = process.env.DB_CONTAINER ?? "supabase_db_hiu-eoffice-demo";
+const PIN = process.env.TEST_PERSONAL_PIN ?? "123456";
+const ORG_PIN = process.env.TEST_ORGANIZATION_PIN ?? "";
+const ORGANIZATION_MODE = ORG_PIN.length > 0;
 if (!/^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(BASE)) throw new Error("Chỉ chạy với web local trỏ vào stack demo.");
 
 const sql = (query) =>
@@ -34,6 +36,13 @@ class Session {
     if (r.status !== 200) throw new Error(`Đăng nhập ${studentCode} thất bại: ${r.status}`);
     return r;
   }
+  async organizationLogin(organizationId, studentCode) {
+    const first = await this.request("POST", "/api/auth/organization/start", { organizationId, organizationPin: ORG_PIN });
+    if (first.status !== 200) throw new Error(`Đăng nhập tổ chức bước 1 thất bại: ${first.status}`);
+    const second = await this.request("POST", "/api/auth/organization/officer", { studentCode, pin: PIN });
+    if (second.status !== 200) throw new Error(`Đăng nhập tổ chức bước 2 của ${studentCode} thất bại: ${second.status}`);
+    return second;
+  }
 }
 
 const results = [];
@@ -55,7 +64,12 @@ const ids = {
   cv: id("select id from event_programs where title like 'Workshop%'"),
   mhx: id("select id from event_programs where title like 'Chiến dịch%'"),
   football: id("select id from event_programs where title like 'Giải bóng đá%'"),
-  officeGrant: id("select rg.id from role_grants rg join accounts a using(user_id) where a.student_code='2201110202' and rg.role_code='office'"),
+  facultyOrg: id("select id from organization_units where unit_type='faculty_union' and faculty_id=(select id from faculties where current_name='Khoa Công Nghệ - Kỹ Thuật')"),
+  officeOrg: id("select id from organization_units where unit_type='office'"),
+  officeGrant: id(ORGANIZATION_MODE
+    ? "select rg.id from role_grants rg join accounts a using(user_id) where a.account_type='organization' and a.organization_id=(select id from organization_units where unit_type='office') and rg.role_code='office'"
+    : "select rg.id from role_grants rg join accounts a using(user_id) where a.student_code='2201110202' and rg.role_code='office'"),
+  personalOfficeGrant: id("select rg.id from role_grants rg join accounts a using(user_id) where a.student_code='2201110202' and rg.role_code='office'"),
   appNgoc: id("select ua.id from union_applications ua join accounts a using(user_id) where a.student_code='2211110102'"),
   appHan: id("select ua.id from union_applications ua join accounts a using(user_id) where a.student_code='2211110103'"),
   userHan: id("select user_id from accounts where student_code='2211110103'"),
@@ -66,9 +80,49 @@ const ids = {
 const an = new Session("An"); await an.login("2211110101");
 const han = new Session("Hân"); await han.login("2211110103");
 const phuc = new Session("Phúc"); await phuc.login("2241110104");
-const quan = new Session("Quân"); await quan.login("2201110201");
-const mai = new Session("Mai"); await mai.login("2201110202");
+const quan = new Session("Quân");
+const mai = new Session("Mai");
+if (ORGANIZATION_MODE) {
+  await quan.organizationLogin(ids.facultyOrg, "2201110201");
+  await mai.organizationLogin(ids.officeOrg, "2201110202");
+} else {
+  await quan.login("2201110201");
+  await mai.login("2201110202");
+}
 const today = new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 10);
+
+// Khi bật CR-01, các grant quản lý cá nhân còn dữ liệu nhưng phải bị vô hiệu ở cả bốn UC.
+if (ORGANIZATION_MODE) {
+  const personalQuan = new Session("Quân cá nhân"); await personalQuan.login("2201110201");
+  const personalMai = new Session("Mai cá nhân"); await personalMai.login("2201110202");
+  {
+    const r = await personalMai.request("POST", "/api/union-membership/paper-book", {
+      userId: ids.userHan, applicationId: ids.appHan, eventType: "received", eventDate: today, roleGrantId: ids.personalOfficeGrant,
+    });
+    record("TC-AC6-UCA", "Tài khoản cá nhân có grant office bị từ chối, dữ liệu Sổ Đoàn không đổi", show(r), r.status === 403);
+  }
+  {
+    const r = await personalMai.request("POST", `/api/event-programs/${ids.football}/review`, { decision: "approve" });
+    const db = sql(`select status from event_programs where id='${ids.football}'`);
+    record("TC-AC6-UCB", "Tài khoản cá nhân có grant office bị từ chối; kế hoạch giữ submitted", `${show(r)} | DB: ${db}`,
+      r.status === 403 && db === "submitted");
+  }
+  {
+    const r = await personalQuan.request("POST", `/api/event-programs/${ids.mhx}/registrations/${ids.regHanMhx}/decision`, { decision: "approve" });
+    const db = sql(`select status from program_registrations where id='${ids.regHanMhx}'`);
+    record("TC-AC6-UCC", "Tài khoản cá nhân có grant faculty_manager bị từ chối; đăng ký giữ pending", `${show(r)} | DB: ${db}`,
+      r.status === 403 && db === "pending");
+  }
+  {
+    const r = await personalQuan.request("PUT", `/api/event-programs/${ids.blood}/attendance`, {
+      maxPoints: 5, ruleType: "sum_sessions", tiers: [], tiersRequireRequired: false,
+      sessions: [{ label: "Thử cá nhân", points: 2, isRequired: false }],
+    });
+    const db = sql(`select count(*) from program_attendance_plans where program_id='${ids.blood}'`);
+    record("TC-AC6-UCD", "Tài khoản cá nhân có grant faculty_manager bị từ chối; chưa tạo kế hoạch điểm danh", `${show(r)} | DB: ${db}`,
+      r.status === 403 && db === "0");
+  }
+}
 
 // ── UC-A Hồ sơ Đoàn viên ──────────────────────────────────────────────────────
 {

@@ -8,6 +8,7 @@ import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
 import {
   participationLabels, ruleLabels, sessionStatusLabels, type Participation, type SessionStatus,
 } from "@/modules/program-attendance/schemas";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
 type SessionRow = {
   id: string; label: string; points: number; is_required: boolean; sort_order: number;
@@ -31,12 +32,12 @@ const actionLabels: Record<string, string> = {
   session_closed: "Đóng lượt",
 };
 
-export default async function ProgramAttendancePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProgramAttendancePage({ params, basePath = "/programs" }: { params: Promise<{ id: string }>; basePath?: EventProgramBasePath }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?next=/programs/${id}/attendance`);
+  if (!user) redirect(`/login?next=${eventProgramPath(basePath, id, "attendance")}`);
 
   const { data: program } = await supabase.from("event_programs").select("id, title, status, owner_org_id").eq("id", id).maybeSingle();
   if (!program || program.status !== "approved") notFound();
@@ -70,7 +71,7 @@ export default async function ProgramAttendancePage({ params }: { params: Promis
     <main className="page">
       <div className="page-header">
         <div>
-          <p className="eyebrow"><Link href={`/programs/${id}`}>{program.title as string}</Link></p>
+          <p className="eyebrow"><Link href={eventProgramPath(basePath, id)}>{program.title as string}</Link></p>
           <h1>Điểm danh</h1>
           {plan && <p className="muted">Tối đa {plan.max_points} điểm · {ruleLabels[plan.rule_type as keyof typeof ruleLabels]}</p>}
         </div>
@@ -97,7 +98,7 @@ export default async function ProgramAttendancePage({ params }: { params: Promis
                       {s.open_count > 1 && <><br /><span className="muted">Đã mở {s.open_count} lần</span></>}
                     </td>
                     <td>{preview.filter((p) => p.attended_sessions.some((a) => a.session_id === s.id)).length}</td>
-                    <td><AttendanceSessionControls programId={id} sessionId={s.id} label={s.label} status={s.status} /></td>
+                    <td><AttendanceSessionControls programId={id} sessionId={s.id} label={s.label} status={s.status} basePath={basePath} /></td>
                   </tr>
                 ))}
               </tbody>

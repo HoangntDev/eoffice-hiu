@@ -1,0 +1,25 @@
+{
+  "baseURL": "http://localhost:3200",
+  "results": [
+    {
+      "step": 5,
+      "result": "PASS",
+      "detail": "Đăng nhập bằng tài khoản demo; thanh tài khoản hiện họ tên và MSSV."
+    },
+    {
+      "step": 6,
+      "result": "PASS",
+      "detail": "Trang chủ có khối Việc của tôi; danh sách chương trình có cột Đăng ký của tôi."
+    },
+    {
+      "step": 7,
+      "result": "PASS",
+      "detail": "Đăng ký chương trình thành công; trạng thái hiện ở chi tiết và Việc của tôi."
+    },
+    {
+      "step": 8,
+      "result": "PASS",
+      "detail": "Đăng xuất về trang đăng nhập; /programs tiếp tục chuyển về /login."
+    }
+  ]
+}

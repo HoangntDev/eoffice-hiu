@@ -1,0 +1,25 @@
+{
+  "baseURL": "http://localhost:3200",
+  "results": [
+    {
+      "caseId": "FT-LOGIN-ERROR",
+      "result": "PASS",
+      "detail": "Sai PIN tổ chức bị từ chối bằng thông báo chung."
+    },
+    {
+      "caseId": "FT-FACULTY",
+      "result": "PASS",
+      "detail": "Chương trình, biểu mẫu, đổi PIN và đổi cán bộ chạy trong /admin."
+    },
+    {
+      "caseId": "FT-OFFICE",
+      "result": "PASS",
+      "detail": "Văn phòng mở được duyệt kế hoạch và hồ sơ Đoàn viên."
+    },
+    {
+      "caseId": "FT-SCHOOL-AND-FLAG",
+      "result": "PASS",
+      "detail": "Tạo/đặt PIN/khóa/mở tài khoản; khi TẮT, /admin bị chặn và tài khoản cá nhân quản lý như v1.0.0."
+    }
+  ]
+}

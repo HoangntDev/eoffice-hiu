@@ -13,6 +13,7 @@ import { blockReasonLabels, registrationBlockReason, type BlockReason } from "@/
 import {
   registrationStatusLabels, settingsStatusLabels, type RegistrationStatus,
 } from "@/modules/program-registrations/schemas";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
 type Summary = {
   capacity: number | null;
@@ -27,10 +28,11 @@ type Props = {
   userId: string;
   program: { id: string; owner_org_id: string; ends_at?: string | null };
   isManager: boolean;
+  basePath?: EventProgramBasePath;
 };
 
 // UC7 trên trang chi tiết chương trình đã chấp thuận: BTC cấu hình/mở/đóng; sinh viên xem điều kiện và đăng ký.
-export async function RegistrationSection({ supabase, userId, program, isManager }: Props) {
+export async function RegistrationSection({ supabase, userId, program, isManager, basePath = "/programs" }: Props) {
   const [{ data: settingsRow }, { data: quotaRows }, { data: summaryData }, { data: own }, { data: faculties }, { data: majors }] =
     await Promise.all([
       supabase.from("program_registration_settings")
@@ -69,7 +71,7 @@ export async function RegistrationSection({ supabase, userId, program, isManager
               Đã xác nhận {summary.accepted}{summary.capacity ? `/${summary.capacity}` : ""} · Chờ duyệt {summary.pending}
             </span>
           )}
-          {settings && <Link className="button secondary small" href={`/programs/${program.id}/registrations`}>Danh sách đăng ký</Link>}
+          {settings && <Link className="button secondary small" href={eventProgramPath(basePath, program.id, "registrations")}>Danh sách đăng ký</Link>}
         </p>
         <ProgramRegistrationSettings
           programId={program.id}

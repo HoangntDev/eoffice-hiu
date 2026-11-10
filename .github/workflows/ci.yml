@@ -60,11 +60,29 @@ jobs:
           version: 2.117.0 # cùng phiên bản CLI dùng local
       - name: Start Postgres và áp migrations
         run: supabase db start
-      - name: pgTAP (supabase test db)
+      - name: pgTAP công tắc TẮT — 205 assertion cũ
         run: |
           mkdir -p test-results
           set -o pipefail
-          supabase test db 2>&1 | tee test-results/pgtap.txt
+          supabase test db \
+            supabase/tests/001_business_rules.sql \
+            supabase/tests/002_authorization_workflow.sql \
+            supabase/tests/003_account_lifecycle.sql \
+            supabase/tests/004_forms.sql \
+            supabase/tests/005_event_programs.sql \
+            supabase/tests/006_bootstrap_template_seed.sql \
+            supabase/tests/007_program_registrations.sql \
+            supabase/tests/008_program_attendance.sql \
+            2>&1 | tee test-results/pgtap-off.txt
+      - name: Bật tài khoản tổ chức trong database kiểm thử
+        run: |
+          docker exec supabase_db_hiu-youth-e-office \
+            psql -U postgres -d postgres -v ON_ERROR_STOP=1 \
+            -c "update public.feature_flags set enabled = true where key = 'ORG_ACCOUNTS_ENABLED';"
+      - name: pgTAP công tắc BẬT — toàn bộ
+        run: |
+          set -o pipefail
+          supabase test db 2>&1 | tee test-results/pgtap-on.txt
       - name: Upload pgTAP results
         if: always()
         uses: actions/upload-artifact@v7

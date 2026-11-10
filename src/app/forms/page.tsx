@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createUserSupabase } from "@/lib/supabase/server";
 import { displayOrgName } from "@/modules/organization-catalog/display";
+import { formManagementPath, type FormManagementBasePath } from "@/modules/organization-auth/form-paths";
 
 const statusLabels: Record<string, string> = {
   draft: "Bản nháp", published: "Đang mở", paused: "Tạm dừng",
@@ -15,7 +16,7 @@ function formPeriod(opensAt: string | null, closesAt: string | null) {
   return "Không giới hạn";
 }
 
-export default async function FormsPage() {
+export default async function FormsPage({ managementBasePath = "/forms" }: { managementBasePath?: FormManagementBasePath } = {}) {
   const supabase = await createUserSupabase();
 
   const { data: { user } } = await supabase.auth.getUser();
@@ -55,7 +56,7 @@ export default async function FormsPage() {
           <p className="lead">Danh sách biểu mẫu đang mở và biểu mẫu bạn quản lý.</p>
         </div>
         {orgIds.length > 0 && (
-          <Link className="button primary" href="/forms/new">
+          <Link className="button primary" href={formManagementPath(managementBasePath, "new")}>
             Tạo biểu mẫu
           </Link>
         )}
@@ -94,7 +95,7 @@ export default async function FormsPage() {
                           <Link href={`/forms/${f.id as string}`} className="button primary small">Điền</Link>
                         )}
                         {orgIds.includes(f.owner_org_id as string) && (
-                          <Link href={`/forms/${f.id as string}/edit`} className="button secondary small">Quản lý</Link>
+                          <Link href={formManagementPath(managementBasePath, f.id as string, "edit")} className="button secondary small">Quản lý</Link>
                         )}
                       </div>
                     </td>

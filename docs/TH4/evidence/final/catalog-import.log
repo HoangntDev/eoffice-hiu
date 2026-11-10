@@ -1,0 +1,51 @@
+
+> hiu-youth-e-office@1.0.1 catalog:import
+> node scripts/import-academic-catalog.mjs data/DSN LOPWS - Sheet1 (1).csv --apply
+
+{
+  "phase": "dry-run",
+  "totalRows": 347,
+  "validRows": 347,
+  "invalidRows": 0,
+  "planned": {
+    "faculties": {
+      "insert": 10,
+      "update": 0
+    },
+    "programs": {
+      "insert": 51,
+      "update": 0
+    },
+    "cohorts": {
+      "insert": 6,
+      "update": 0
+    },
+    "classes": {
+      "insert": 347,
+      "update": 0
+    }
+  },
+  "conflicts": [],
+  "errors": [],
+  "applied": false
+}
+{
+  "phase": "apply",
+  "errors": [],
+  "applied": true,
+  "updated": {
+    "classes": 0,
+    "cohorts": 0,
+    "programs": 0,
+    "faculties": 0
+  },
+  "inserted": {
+    "classes": 347,
+    "cohorts": 6,
+    "programs": 51,
+    "faculties": 10
+  },
+  "rowCount": 347,
+  "conflicts": [],
+  "alreadyApplied": false
+}

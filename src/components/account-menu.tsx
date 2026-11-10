@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { LogoutButton } from "@/components/logout-button";
 import { nameInitials } from "@/lib/auth/roles";
 
-const items = [
+const studentItems = [
   { href: "/account", label: "Tổng quan tài khoản" },
   { href: "/onboarding/profile", label: "Hồ sơ sinh viên" },
   { href: "/union-membership", label: "Hồ sơ Đoàn viên" },
@@ -14,9 +14,14 @@ const items = [
 ];
 
 // Menu tài khoản ở góc trên bên phải: bấm để mở, đóng khi chọn mục, bấm ra ngoài hoặc nhấn Esc.
-type Props = { fullName: string | null; studentCode: string | null; email: string | null };
+const organizationItems = [
+  { href: "/admin", label: "Tổng quan quản trị" },
+  { href: "/admin/settings", label: "Đổi PIN tổ chức" },
+];
 
-export function AccountMenu({ fullName, studentCode, email }: Props) {
+type Props = { fullName: string | null; studentCode: string | null; email: string | null; organization?: boolean };
+
+export function AccountMenu({ fullName, studentCode, email, organization = false }: Props) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -37,7 +42,8 @@ export function AccountMenu({ fullName, studentCode, email }: Props) {
     };
   }, [open]);
 
-  const name = fullName ?? (studentCode ? `MSSV ${studentCode}` : "Tài khoản");
+  const name = organization ? "Tài khoản tổ chức" : (fullName ?? (studentCode ? `MSSV ${studentCode}` : "Tài khoản"));
+  const items = organization ? organizationItems : studentItems;
   return (
     <div className="account-menu" ref={rootRef}>
       <button

@@ -18,7 +18,7 @@
 - Không merge, rebase hay sửa các nhánh tính năng chưa vào baseline (`feat/program-acceptance`, `feat/program-publication`) nếu chưa được yêu cầu riêng.
 
 ## Migration và cơ sở dữ liệu
-- Tạo migration bằng `supabase migration new <tên>`. Nếu đặt tên tay, version phải lớn hơn mọi version đang có ở **mọi nhánh**, kể cả nhánh chưa merge. Hiện cao nhất là `202610170001`. Kiểm tra bằng:
+- Tạo migration bằng `supabase migration new <tên>`. Nếu đặt tên tay, version phải lớn hơn mọi version đang có ở **mọi nhánh**, kể cả nhánh chưa merge. Hiện cao nhất là `202610300003` (nhánh spike CR-01). Kiểm tra bằng:
   `git for-each-ref --format='%(refname:short)' refs/heads refs/remotes | xargs -I{} git ls-tree --name-only {} supabase/migrations/ | sort -u | tail -1`
 - Không sửa migration đã merge. Muốn thay đổi thì tạo migration mới.
 - **Không chạy `supabase db reset`** trên DB local đang dùng. Để kiểm tra dựng-từ-đầu, dùng stack tách biệt: copy hoặc worktree, đổi `project_id` và cổng, `supabase start --workdir …`, xong thì `supabase stop --workdir … --no-backup`.

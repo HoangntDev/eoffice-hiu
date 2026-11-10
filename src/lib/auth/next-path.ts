@@ -1,6 +1,6 @@
 // Đường dẫn quay lại sau đăng nhập (?next=). Chỉ nhận đường dẫn nội bộ để tránh open redirect.
 export const DEFAULT_AFTER_LOGIN = "/onboarding/profile";
-const INTERNAL_ORIGIN = "http://internal.invalid";
+const INTERNAL_ORIGIN = "https://internal.invalid";
 
 export function safeNextPath(value: unknown, fallback = DEFAULT_AFTER_LOGIN): string {
   if (typeof value !== "string" || value.length === 0 || value.length > 2048) return fallback;

@@ -5,6 +5,7 @@ import { createUserSupabase } from "@/lib/supabase/server";
 import { formatVietnamDateTime } from "@/modules/event-programs/dates";
 import type { RegistrationListRow } from "@/modules/program-registrations/export";
 import { registrationStatusLabels, settingsStatusLabels, type SettingsStatus } from "@/modules/program-registrations/schemas";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
 type HistoryRow = {
   id: number;
@@ -26,12 +27,12 @@ const actionLabels: Record<string, string> = {
   rejected: "BTC từ chối",
 };
 
-export default async function ProgramRegistrationsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProgramRegistrationsPage({ params, basePath = "/programs" }: { params: Promise<{ id: string }>; basePath?: EventProgramBasePath }) {
   const { id } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect(`/login?next=/programs/${id}/registrations`);
+  if (!user) redirect(`/login?next=${eventProgramPath(basePath, id, "registrations")}`);
 
   const { data: program } = await supabase.from("event_programs").select("id, title").eq("id", id).maybeSingle();
   if (!program) notFound();
@@ -56,7 +57,7 @@ export default async function ProgramRegistrationsPage({ params }: { params: Pro
     <main className="page">
       <div className="page-header">
         <div>
-          <p className="eyebrow"><Link href={`/programs/${id}`}>{program.title as string}</Link></p>
+          <p className="eyebrow"><Link href={eventProgramPath(basePath, id)}>{program.title as string}</Link></p>
           <h1>Danh sách đăng ký</h1>
           <p className="inline">
             <span className="status">{settingsStatusLabels[(settings?.status ?? "draft") as SettingsStatus]}</span>

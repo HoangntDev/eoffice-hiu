@@ -3,8 +3,9 @@ import Link from "next/link";
 import { createUserSupabase } from "@/lib/supabase/server";
 import { FormEditor } from "@/components/form-editor";
 import type { Question, AudienceRule } from "@/modules/forms/schemas";
+import { formManagementPath, type FormManagementBasePath } from "@/modules/organization-auth/form-paths";
 
-export default async function EditFormPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditFormPage({ params, managementBasePath = "/forms" }: { params: Promise<{ id: string }>; managementBasePath?: FormManagementBasePath }) {
   const { id } = await params;
   const supabase = await createUserSupabase();
 
@@ -36,7 +37,7 @@ export default async function EditFormPage({ params }: { params: Promise<{ id: s
           <p className="lead">
             Trạng thái: <strong>{statusLabels[form.status as string] ?? form.status as string}</strong>
             {" · "}
-            <Link href={`/forms/${id}/responses`}>Xem phản hồi</Link>
+            <Link href={formManagementPath(managementBasePath, id, "responses")}>Xem phản hồi</Link>
             {" · "}
             <Link href={`/forms/${id}`} target="_blank">Xem trang điền</Link>
           </p>
@@ -58,6 +59,7 @@ export default async function EditFormPage({ params }: { params: Promise<{ id: s
         }}
         orgs={orgs}
         templates={templates ?? []}
+        managementBasePath={managementBasePath}
       />
     </main>
   );

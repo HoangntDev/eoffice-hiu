@@ -3,11 +3,12 @@ import { redirect } from "next/navigation";
 import { EventProgramEditor } from "@/components/event-program-editor";
 import { createUserSupabase } from "@/lib/supabase/server";
 import { loadEventProgramViewer } from "@/modules/event-programs/viewer";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
-export default async function NewProgramPage() {
+export default async function NewProgramPage({ basePath = "/programs" }: { basePath?: EventProgramBasePath } = {}) {
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login?next=/programs/new");
+  if (!user) redirect(`/login?next=${eventProgramPath(basePath, "new")}`);
   const { managedOrgs } = await loadEventProgramViewer(supabase, user.id);
 
   return (
@@ -21,11 +22,11 @@ export default async function NewProgramPage() {
       </div>
       {managedOrgs.length === 0 ? (
         <p className="notice warning">
-          Tài khoản chưa được cấp vai trò BCH Đoàn Khoa nên không thể lập kế hoạch. <Link href="/programs">Quay lại</Link>
+          Tài khoản chưa được cấp vai trò BCH Đoàn Khoa nên không thể lập kế hoạch. <Link href={basePath}>Quay lại</Link>
         </p>
       ) : (
         <section className="panel">
-          <EventProgramEditor mode="create" orgs={managedOrgs} />
+          <EventProgramEditor mode="create" orgs={managedOrgs} basePath={basePath} />
         </section>
       )}
     </main>

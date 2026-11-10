@@ -2,6 +2,7 @@
 -- Run with: supabase test db
 
 begin;
+\ir helpers/organization_login.inc
 select plan(14);
 
 -- ── Setup: create test accounts and roles ─────────────────────────────────────
@@ -27,6 +28,8 @@ insert into public.role_grants (user_id, role_code, organization_id, granted_by,
    '00000000-0000-4000-8000-000000000003'::uuid,
    'aaaaaaaa-0000-4000-8000-000000000001'::uuid, 'Test setup')
 on conflict do nothing;
+
+select pg_temp.cr01_setup_organization_logins();
 
 -- ── 1. audience validation: any ───────────────────────────────────────────────
 select ok(
@@ -73,35 +76,35 @@ select ok(
 
 -- ── 5. user_can_manage_forms_for_org ─────────────────────────────────────────
 set local role authenticated;
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000001","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001');
 
 select ok(
   public.user_can_manage_forms_for_org('00000000-0000-4000-8000-000000000001'::uuid),
   'school_admin can manage forms for school_union org'
 );
 
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000002","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000002', null);
 select ok(
   not public.user_can_manage_forms_for_org('00000000-0000-4000-8000-000000000001'::uuid),
   'plain student cannot manage forms for school_union org'
 );
 
 -- ── 6. save_form_template: only school_admin ─────────────────────────────────
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000001","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000001', '00000000-0000-4000-8000-000000000001');
 
 select lives_ok($$
   select public.save_form_template(
     null, 'Mẫu kiểm tra', 'Mô tả', '{"type":"hiu_student"}'::jsonb, '[]'::jsonb, 'draft')
 $$, 'school_admin can create form template');
 
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000002","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000002', null);
 select throws_like($$
   select public.save_form_template(
     null, 'Mẫu không hợp lệ', null, '{"type":"hiu_student"}'::jsonb, '[]'::jsonb, 'draft')
 $$, '%FORBIDDEN%', 'non-school_admin cannot create template');
 
 -- ── 7. save_form: committee_manager can manage their org ─────────────────────
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000003","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000003', null);
 select lives_ok($$
   select public.save_form(
     null,
@@ -113,7 +116,7 @@ select lives_ok($$
     false, null, null, null, null)
 $$, 'committee_manager can create form for their org');
 
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000003","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000003', null);
 select throws_like($$
   select public.save_form(
     null,
@@ -126,7 +129,7 @@ select throws_like($$
 $$, '%FORBIDDEN%', 'committee_manager cannot create form for unrelated org');
 
 -- ── 8. direct insert into form_responses is revoked ──────────────────────────
-set local "request.jwt.claims" to '{"sub":"aaaaaaaa-0000-4000-8000-000000000002","role":"authenticated"}';
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000002', null);
 select throws_ok($$
   insert into public.form_responses(form_id, form_version, questions_snapshot)
   values (gen_random_uuid(), 1, '[]'::jsonb)

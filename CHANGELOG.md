@@ -5,6 +5,56 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-10
+
+CR-01 tách toàn bộ thao tác quản lý sang tài khoản tổ chức. Không thay đổi hành vi
+đăng ký tài khoản, hồ sơ, đăng ký chương trình và điểm danh QR của sinh viên.
+
+### Added
+
+- Tài khoản tổ chức cho Đoàn Trường, Văn phòng Đoàn – Hội và Đoàn Khoa; database
+  từ chối tài khoản tổ chức cho Chi đoàn. Ban chưa nằm trong phạm vi phiên bản này (#37).
+- Đăng nhập hai bước tại `/admin/login`: PIN tổ chức, sau đó MSSV + PIN cá nhân của
+  cán bộ còn hiệu lực. Phiên tạm dùng một lần, hết hạn sau 5 phút; sai PIN tổ chức
+  5 lần trong 15 phút theo đơn vị và IP thì bị giới hạn (#37).
+- Khu vực `/admin` có menu theo loại đơn vị, nút "Đổi cán bộ", đổi PIN tổ chức và
+  màn hình Đoàn Trường tạo, đặt lại PIN, khóa hoặc mở tài khoản tổ chức (#37).
+- Công tắc database `ORG_ACCOUNTS_ENABLED`, chỉ Đoàn Trường đổi được trên giao diện
+  và mọi lần đổi đều có audit. Khi tắt, hệ thống dùng lại quyền cá nhân như v1.0.0 (#37).
+- Audit và lịch sử nghiệp vụ ghi đồng thời tài khoản tổ chức, đơn vị và cán bộ thao tác (#37).
+
+### Changed
+
+- Migration giữ nguyên các `role_grants` quản lý cá nhân để quay lui bằng công tắc;
+  khi công tắc bật, RPC/RLS bỏ qua các grant này và chỉ nhận phiên tổ chức có cán bộ (#37).
+- Chuyển các màn hình quản lý chương trình, biểu mẫu, hồ sơ Đoàn viên và cơ cấu tổ
+  chức vào `/admin`; chức năng sinh viên giữ ở các đường dẫn cũ (#37).
+- Viết lại `bootstrap_school_admin`: tạo đúng một tài khoản tổ chức Đoàn Trường,
+  nhập PIN ẩn và thêm người chạy làm thành viên, không cấp quyền quản lý cho tài khoản cá nhân (#37).
+- Seed demo tạo ba tài khoản tổ chức, giữ grant cá nhân để thử công tắc TẮT và ghi
+  lịch sử bằng tài khoản tổ chức kèm cán bộ (#37).
+
+### Security
+
+- Nhánh không có tài khoản vẫn chạy kiểm tra PIN giả để giảm rò rỉ thời gian; mọi lỗi
+  đăng nhập ở hai bước dùng cùng thông báo chung (#37).
+- Phiên tổ chức chưa chọn cán bộ không đọc hoặc ghi được dữ liệu. "Đổi cán bộ" và
+  thu hồi thành viên vô hiệu phiên cũ ngay, không chờ JWT hết hạn (#37).
+- Log đăng nhập tổ chức chỉ ghi đơn vị, MSSV che giữa, IP và kết quả; không ghi PIN
+  hoặc token (#37).
+
+### Tests
+
+- CI chạy pgTAP ở hai trạng thái: TẮT giữ nguyên 205 assertion cũ; BẬT đạt 306
+  assertion. Vitest đạt 203 test; 19 test case UC-A–D và smoke 8 bước đều đạt (#37).
+
+### Migration và rollback
+
+- Thêm migration `20261109222454_cr01_organization_accounts.sql`. Migration tạo dữ
+  liệu tài khoản tổ chức nhưng mặc định để công tắc TẮT, nên có thể kiểm tra trước khi bật.
+- Không hạ schema bằng cách chạy migration ngược. Quay lui hành vi bằng cách tắt
+  `ORG_ACCOUNTS_ENABLED`; muốn quay về database trước v1.1.0 phải phục hồi bản sao lưu.
+
 ## [1.0.1] - 2026-11-06
 
 Bản vá sau sự cố INC-01-ThieuCauHinh, kèm nâng cấp bảo mật. Không đổi cơ sở dữ liệu (không có migration mới); nâng từ 1.0.0 chỉ cần thay gói và chạy `npm ci`.
@@ -92,6 +142,7 @@ Phiên bản phát hành đầu tiên của Final Project. Tính từ baseline `
 - K2 – QR điểm danh dùng chung cho cả lượt, nên trong 30 giây hiệu lực vẫn có thể bị chụp lại và gửi cho người khác. Đây là giới hạn thiết kế đã chấp nhận. Hệ thống vẫn yêu cầu đăng nhập, đăng ký được nhận và mỗi lượt chỉ một lần.
 - K5 – Tên một số migration mang ngày 14–15/10, trong khi thực tế được tạo ngày 13/10/2026. Không đổi tên được vì đã áp lên DB. Không ảnh hưởng người dùng.
 
-[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/HoangntDev/eoffice-hiu/releases/tag/v1.0.0

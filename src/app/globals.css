@@ -36,6 +36,17 @@ body {
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font: inherit; }
 
+.admin-context {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 10px clamp(16px, 3vw, 48px); background: #fff8dc; border-bottom: 1px solid #e6d39b;
+}
+.admin-nav {
+  display: flex; gap: 4px; flex-wrap: wrap; padding: 8px clamp(16px, 3vw, 48px);
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.admin-nav a { padding: 7px 10px; border-radius: 6px; color: var(--blue-dark); font-weight: 600; }
+.admin-nav a:hover { background: var(--blue-tint); }
+
 /* ════════════════════════════════════════════
    PORTAL HEADER — two-tier
    ════════════════════════════════════════════ */

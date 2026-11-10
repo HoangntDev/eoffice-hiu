@@ -1,0 +1,9 @@
+# Smoke curl lúc 2026-11-10 11:23:35 +07
+# Phiên bản worktree: v1.0.1-38-g4c6ae7a-dirty
+Bước 1 — build đang chạy: HTTP health 200
+{"app":"ok","db":"ok","config":"ok","version":"<build-version>"}
+Bước 2 — GET /: 200
+Văn phòng điện tử Đoàn – Hội HIU
+Bước 3 — stack status exit: 0; GET /forms: 200
+Khảo sát nhu cầu bồi dưỡng kỹ năng mềm
+Bước 4 — GET /programs: 307 http://localhost:3200/login?next=%2Fprograms

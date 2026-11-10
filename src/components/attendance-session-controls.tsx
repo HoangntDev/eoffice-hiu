@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { SessionStatus } from "@/modules/program-attendance/schemas";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
-type Props = { programId: string; sessionId: string; label: string; status: SessionStatus };
+type Props = { programId: string; sessionId: string; label: string; status: SessionStatus; basePath?: EventProgramBasePath };
 
 // Mở/đóng một lượt; mở lại lượt đã đóng (điểm danh bổ sung) bắt buộc ghi lý do.
-export function AttendanceSessionControls({ programId, sessionId, label, status }: Props) {
+export function AttendanceSessionControls({ programId, sessionId, label, status, basePath = "/programs" }: Props) {
   const router = useRouter();
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
@@ -40,7 +41,7 @@ export function AttendanceSessionControls({ programId, sessionId, label, status 
         {status === "draft" && <button className="primary small" disabled={busy} onClick={() => void setStatus("open")}>Mở lượt</button>}
         {status === "open" && (
           <>
-            <Link className="button primary small" href={`/programs/${programId}/attendance/${sessionId}/qr`}>Hiển thị QR</Link>
+            <Link className="button primary small" href={eventProgramPath(basePath, programId, "attendance", sessionId, "qr")}>Hiển thị QR</Link>
             <button className="secondary small" disabled={busy} onClick={() => void setStatus("closed")}>Đóng lượt</button>
           </>
         )}

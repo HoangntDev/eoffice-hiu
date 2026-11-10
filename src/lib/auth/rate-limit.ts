@@ -6,7 +6,7 @@ import { rateLimitPepper } from "@/lib/env";
 import { HttpError } from "@/lib/http";
 import { clientIp } from "@/lib/request-meta";
 
-export type AuthAction = "login" | "register" | "recover" | "pin_change";
+export type AuthAction = "login" | "register" | "recover" | "pin_change" | "org_login";
 
 function digest(value: string) {
   return createHash("sha256").update(rateLimitPepper()).update("\0").update(value).digest("hex");

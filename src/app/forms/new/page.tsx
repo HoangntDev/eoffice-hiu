@@ -1,8 +1,9 @@
 import { createUserSupabase } from "@/lib/supabase/server";
 import { AccessDenied } from "@/components/access-denied";
 import { FormEditor } from "@/components/form-editor";
+import type { FormManagementBasePath } from "@/modules/organization-auth/form-paths";
 
-export default async function NewFormPage() {
+export default async function NewFormPage({ managementBasePath = "/forms" }: { managementBasePath?: FormManagementBasePath } = {}) {
   const supabase = await createUserSupabase();
 
   const [{ data: grants }, { data: templates }] = await Promise.all([
@@ -28,7 +29,7 @@ export default async function NewFormPage() {
           <p className="lead">Biểu mẫu có thể đứng độc lập hoặc tham chiếu từ một mẫu gốc Đoàn Trường đã phát hành.</p>
         </div>
       </div>
-      <FormEditor orgs={orgs} templates={templates ?? []} />
+      <FormEditor orgs={orgs} templates={templates ?? []} managementBasePath={managementBasePath} />
     </main>
   );
 }

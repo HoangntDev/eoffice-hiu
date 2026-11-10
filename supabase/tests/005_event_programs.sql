@@ -2,6 +2,7 @@
 -- Run with: supabase test db
 
 begin;
+\ir helpers/organization_login.inc
 select plan(35);
 
 -- ── Fixtures (postgres) ───────────────────────────────────────────────────────
@@ -47,8 +48,12 @@ select 'org_a', id from public.organization_units where faculty_id = 'cccccccc-0
 union all
 select 'org_b', id from public.organization_units where faculty_id = 'cccccccc-0000-4000-8000-00000000000b';
 
-create function pg_temp.act_as(p_user uuid) returns void language sql as $$
-  select set_config('request.jwt.claims', json_build_object('sub', p_user, 'role', 'authenticated')::text, true);
+select pg_temp.cr01_setup_organization_logins();
+
+create function pg_temp.act_as(p_user uuid) returns void language plpgsql security definer as $$
+begin
+  perform pg_temp.cr01_login_as(p_user, null);
+end;
 $$;
 grant execute on function pg_temp.act_as(uuid) to authenticated;
 
@@ -196,7 +201,8 @@ select is(
 select is(
   (select h.actor_role_code from public.event_program_history h
    where h.program_id = (select v from uc6_ctx where k = 'p1') and h.action = 'approved'
-     and h.actor_user_id = 'bbbbbbbb-0000-4000-8000-000000000004' and h.actor_role_grant_id is not null),
+     and coalesce(h.actor_officer_user_id, h.actor_user_id) = 'bbbbbbbb-0000-4000-8000-000000000004'
+     and h.actor_role_grant_id is not null),
   'office', 'Lịch sử ghi vai trò Văn phòng của người chấp thuận');
 
 -- ── 7. Hiển thị sau khi duyệt ────────────────────────────────────────────────
@@ -207,7 +213,7 @@ select is((select count(*)::int from public.event_program_documents where progra
   'Sinh viên không đọc PDF/hồ sơ nội bộ của chương trình đã duyệt');
 
 -- ── 8. Người đã nộp không tự xét duyệt ───────────────────────────────────────
-select pg_temp.act_as('bbbbbbbb-0000-4000-8000-000000000006');
+select pg_temp.cr01_login_as('bbbbbbbb-0000-4000-8000-000000000006', (select v from uc6_ctx where k = 'org_a'));
 insert into uc6_ctx values ('p2', public.save_event_program(null, (select v from uc6_ctx where k = 'org_a'),
   'Hội thảo kỹ năng Khoa A', 'Nội dung hội thảo', 'Phòng B1', '2026-12-01 13:00+07', '2026-12-01 16:00+07', 80,
   '15/KH-ĐKA', '2026-10-12'));
@@ -218,6 +224,7 @@ select public.attach_event_program_document((select v from uc6_ctx where k = 'p2
   (select v from uc6_ctx where k = 'p2')::text || '/' || (select v from uc6_ctx where k = 'obj2')::text || '.pdf',
   'hoi-thao.pdf', 4096, repeat('b', 64));
 select public.submit_event_program((select v from uc6_ctx where k = 'p2'));
+select pg_temp.cr01_login_as('bbbbbbbb-0000-4000-8000-000000000006', '00000000-0000-4000-8000-000000000002');
 select throws_ok(
   $$ select public.review_event_program((select v from uc6_ctx where k = 'p2'), 'approve', null) $$,
   'P0001', 'SELF_REVIEW_FORBIDDEN', 'Người vừa là Đoàn Khoa vừa là Văn phòng không tự duyệt hồ sơ mình nộp');

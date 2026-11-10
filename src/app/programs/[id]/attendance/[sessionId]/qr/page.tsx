@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { AttendanceQrDisplay } from "@/components/attendance-qr-display";
 import { createUserSupabase } from "@/lib/supabase/server";
+import { eventProgramPath, type EventProgramBasePath } from "@/modules/organization-auth/program-paths";
 
-export default async function AttendanceQrPage({ params }: { params: Promise<{ id: string; sessionId: string }> }) {
+export default async function AttendanceQrPage({ params, basePath = "/programs" }: { params: Promise<{ id: string; sessionId: string }>; basePath?: EventProgramBasePath }) {
   const { id, sessionId } = await params;
   if (!/^[0-9a-f-]{36}$/i.test(id) || !/^[0-9a-f-]{36}$/i.test(sessionId)) notFound();
   const supabase = await createUserSupabase();
@@ -21,7 +22,7 @@ export default async function AttendanceQrPage({ params }: { params: Promise<{ i
     <main className="page">
       <div className="page-header">
         <div>
-          <p className="eyebrow"><Link href={`/programs/${id}/attendance`}>{title}</Link></p>
+          <p className="eyebrow"><Link href={eventProgramPath(basePath, id, "attendance")}>{title}</Link></p>
           <h1>Điểm danh: {session.label as string}</h1>
         </div>
       </div>

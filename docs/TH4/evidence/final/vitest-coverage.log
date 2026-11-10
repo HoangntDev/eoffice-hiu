@@ -1,0 +1,335 @@
+
+> hiu-youth-e-office@1.0.1 test:ci
+> vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-results/junit.xml
+
+
+ RUN  v5.0.2 <repo>
+      Coverage enabled with v8
+
+ ✓ tests/env-config.test.ts (7 tests) 26ms
+ ✓ tests/catalog-import-v2.test.mjs (5 tests) 22ms
+ ✓ tests/validation.test.ts (7 tests) 26ms
+ ✓ tests/organization-auth.test.ts (26 tests) 31ms
+ ✓ tests/login-next-path.test.ts (16 tests) 31ms
+ ✓ tests/forms-validation.test.ts (17 tests) 87ms
+ ✓ tests/program-attendance.test.ts (7 tests) 25ms
+ ✓ tests/qr-token-invalid.test.ts (5 tests) 38ms
+ ✓ tests/event-programs.test.ts (18 tests) 34ms
+ ✓ tests/nav-access.test.ts (5 tests) 12ms
+ ✓ tests/core-business-baseline.test.ts (35 tests) 97ms
+ ✓ tests/logging.test.ts (20 tests) 115ms
+ ✓ tests/registration-eligibility.test.ts (5 tests) 11ms
+ ✓ tests/program-registrations.test.ts (15 tests) 40ms
+ ✓ tests/inc-01-config.test.ts (10 tests) 79ms
+ ✓ tests/student-profile-form.test.tsx (1 test) 99ms
+ ✓ tests/auth-ui.test.tsx (4 tests) 291ms
+
+ Test Files  17 passed (17)
+      Tests  203 passed (203)
+   Start at  11:09:51
+   Duration  3.30s (import 33%, transform 28%, environment 25%, tests 8%, worker 6%)
+
+  Transform  transforming modules took 3.55s · 28% of tracked time, re-done on every run
+             persist transforms across runs with fsModuleCache: true
+             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns
+
+JUNIT report written to <repo>/test-results/junit.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    18.7 |    15.88 |   21.45 |   19.58 |                   
+ src               |   29.62 |    15.38 |   28.57 |   31.94 |                   
+  ...umentation.ts |       0 |        0 |       0 |       0 | 6-26              
+  proxy.ts         |    33.8 |     18.6 |   36.36 |   37.09 | ...0,85-92,96-124 
+ src/app           |       0 |        0 |       0 |       0 |                   
+  error.tsx        |       0 |        0 |       0 |       0 | 1-19              
+  global-error.tsx |       0 |        0 |       0 |       0 | 1-5               
+  layout.tsx       |       0 |        0 |       0 |       0 | 9-18              
+  page.tsx         |       0 |        0 |       0 |       0 | 5-90              
+ src/app/account   |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-32              
+ ...nt/recover-pin |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 5-6               
+ ...count/security |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 5-6               
+ ...n/(auth)/login |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 8-18              
+ .../login/officer |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 7-9               
+ ...admin/(portal) |       0 |        0 |       0 |       0 |                   
+  layout.tsx       |       0 |        0 |       0 |       0 | 9-32              
+  page.tsx         |       0 |        0 |       0 |       0 | 6-9               
+ ...rtal)/accounts |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 7-18              
+ ...(portal)/forms |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-7               
+ ...orms/[id]/edit |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...[id]/responses |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...tal)/forms/new |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...al)/membership |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-7               
+ ...)/organization |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-7               
+ ...rtal)/programs |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-7               
+ .../programs/[id] |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...id]/attendance |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...[sessionId]/qr |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ .../registrations |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...)/programs/new |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...ortal)/reviews |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-7               
+ ...)/reviews/[id] |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...rtal)/security |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ ...rtal)/settings |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ .../account/email |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-30              
+ ...pi/account/pin |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-44              
+ ...unt/verify-pin |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 10-36             
+ ...admin/accounts |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-21              
+ ...n/feature-flag |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-16              
+ ...n/student-code |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-20              
+ ...dance/check-in |   83.33 |     62.5 |     100 |   81.25 |                   
+  route.ts         |   83.33 |     62.5 |     100 |   81.25 | 16,24-25          
+ ...[sessionId]/qr |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 11-24             
+ ...sionId]/status |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 10-28             
+ ...uth/create-pin |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-35              
+ ...api/auth/login |      25 |     6.06 |     100 |   27.02 |                   
+  route.ts         |      25 |     6.06 |     100 |   27.02 | 22-71,81          
+ ...pi/auth/logout |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-15              
+ ...ion/change-pin |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-19              
+ ...zation/officer |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 17-108            
+ ...nization/start |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 12-40             
+ ...ization/switch |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-25              
+ ...i/auth/recover |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-28              
+ .../auth/register |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-44              
+ .../resend-signup |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-37              
+ ...auth/reset-pin |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 10-39             
+ ...pp/api/catalog |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-18              
+ ...event-programs |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-52              
+ ...-programs/[id] |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-63              
+ ...id]/attendance |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 11-35             
+ ...[id]/documents |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 11-81             
+ ...s/[documentId] |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-26              
+ ...]/registration |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 11-37             
+ ...tration/status |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 10-28             
+ .../registrations |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 11-51             
+ ...onId]/decision |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 10-32             
+ ...rations/export |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 13-39             
+ ...ms/[id]/review |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-39              
+ ...ms/[id]/submit |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 9-24              
+ src/app/api/forms |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-65              
+ ...api/forms/[id] |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-49              
+ ...ms/[id]/export |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 12-114            
+ ...[id]/responses |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-84              
+ ...ms/[id]/status |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-29              
+ ...orms/templates |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-38              
+ ...templates/[id] |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-50              
+ ...s/[id]/publish |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-23              
+ ...app/api/health |   86.66 |       50 |     100 |    92.3 |                   
+  route.ts         |   86.66 |       50 |     100 |    92.3 | 24                
+ ...ization/access |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-49              
+ ...zation/catalog |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-70              
+ ...nization/units |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 5-6               
+ ...erence-options |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 6-7               
+ ...tudent-profile |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-40              
+ ...p/api/students |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 5                 
+ ...ion-membership |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-60              
+ ...hip/assignment |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-24              
+ ...ship/checklist |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-23              
+ ...ist-definition |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 5-7               
+ ...hip/paper-book |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 7-21              
+ ...bership/review |       0 |        0 |       0 |       0 |                   
+  route.ts         |       0 |        0 |       0 |       0 | 8-75              
+ ...nd/[sessionId] |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 10-20             
+ src/app/auth      |       0 |        0 |       0 |       0 |                   
+  ...rm-handler.ts |       0 |        0 |       0 |       0 | 10-143            
+ ...p/auth/confirm |       0 |      100 |       0 |       0 |                   
+  route.ts         |       0 |      100 |       0 |       0 | 5                 
+ ...p/auth/recover |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 4-5               
+ src/app/forms     |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 6-82              
+ ...app/forms/[id] |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 9-45              
+ ...orms/[id]/edit |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 9-31              
+ ...[id]/responses |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 17-112            
+ src/app/forms/new |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 7-23              
+ ...orms/templates |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-42              
+ ...templates/[id] |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 7-64              
+ .../templates/new |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 4                 
+ src/app/login     |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 5-8               
+ ...ice/membership |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 6-10              
+ ...arding/profile |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 2                 
+ ...p/organization |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 6-10              
+ src/app/programs  |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 25-175            
+ .../programs/[id] |       0 |        0 |       0 |       0 |                   
+  ...e-section.tsx |       0 |        0 |       0 |       0 | 11-31             
+  page.tsx         |       0 |        0 |       0 |       0 | 41-172            
+  ...n-section.tsx |       0 |        0 |       0 |       0 | 37-188            
+ ...id]/attendance |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 27-147            
+ ...[sessionId]/qr |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 8-21              
+ .../registrations |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 20-126            
+ ...p/programs/new |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 9-14              
+ src/app/register  |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 4-5               
+ ...nup/create-pin |       0 |        0 |       0 |       0 |                   
+  page.tsx         |       0 |        0 |       0 |       0 | 6-10              
+ ...ion-membership |       0 |      100 |       0 |       0 |                   
+  page.tsx         |       0 |      100 |       0 |       0 | 2                 
+ src/components    |     9.5 |     8.27 |    7.29 |   10.57 |                   
+  ...ss-denied.tsx |       0 |      100 |       0 |       0 | 4                 
+  account-menu.tsx |       0 |        0 |       0 |       0 | 1-76              
+  ...ity-panel.tsx |   24.05 |    26.66 |   22.22 |   28.35 | 55-124,137-162    
+  ...-check-in.tsx |       0 |        0 |       0 |       0 | 1-38              
+  ...an-editor.tsx |       0 |        0 |       0 |       0 | 1-151             
+  ...r-display.tsx |       0 |        0 |       0 |       0 | 1-57              
+  ...-controls.tsx |       0 |        0 |       0 |       0 | 1-52              
+  auth-form-v2.tsx |   37.66 |    44.77 |   38.88 |   46.55 | ...02-123,178-188 
+  ...m-actions.tsx |       0 |        0 |       0 |       0 | 1-96              
+  ...am-editor.tsx |       0 |        0 |       0 |       0 | 1-86              
+  ...am-status.tsx |       0 |        0 |       0 |       0 | 5-6               
+  form-editor.tsx  |       0 |        0 |       0 |       0 | 1-272             
+  ...te-editor.tsx |       0 |        0 |       0 |       0 | 1-251             
+  form-viewer.tsx  |       0 |        0 |       0 |       0 | 1-204             
+  ...ut-button.tsx |   28.57 |    33.33 |   33.33 |   30.76 | 10-19,24          
+  ...w-console.tsx |       0 |        0 |       0 |       0 | 1-14              
+  my-tasks.tsx     |       0 |        0 |       0 |       0 | 13-118            
+  ...s-console.tsx |       0 |        0 |       0 |       0 | 1-58              
+  ...n-console.tsx |       0 |        0 |       0 |       0 | 1-42              
+  ...ogin-form.tsx |       0 |        0 |       0 |       0 | 1-58              
+  ...-pin-form.tsx |       0 |        0 |       0 |       0 | 1-19              
+  ...n-actions.tsx |       0 |        0 |       0 |       0 | 1-24              
+  ...etup-form.tsx |   21.05 |    33.33 |   23.07 |   25.53 | 34-79,93-139      
+  ...-settings.tsx |       0 |        0 |       0 |       0 | 1-210             
+  ...-decision.tsx |       0 |        0 |       0 |       0 | 1-50              
+  ...file-form.tsx |   71.62 |    56.25 |   88.23 |   73.33 | 33-38,54-60       
+  ...tion-form.tsx |       0 |        0 |       0 |       0 | 1-324             
+ src/lib           |   74.07 |    76.66 |   77.77 |   75.47 |                   
+  config-check.ts  |   94.87 |    81.25 |     100 |   93.93 | 73,76             
+  env.ts           |   89.65 |     90.9 |   84.61 |    87.5 | 11,39,54          
+  http.ts          |    67.5 |    61.29 |   83.33 |   69.23 | 27,39-48,62,89    
+  log-node.ts      |       0 |        0 |       0 |       0 | 11-65             
+  log.ts           |    92.3 |    82.45 |     100 |    97.5 | 97                
+ src/lib/auth      |   26.66 |    21.56 |   36.36 |   26.08 |                   
+  dal.ts           |       0 |        0 |       0 |       0 | 8-40              
+  next-path.ts     |   86.66 |    94.44 |     100 |    90.9 | 13                
+  ...tion-login.ts |       0 |        0 |       0 |       0 | 8-48              
+  ...ion-viewer.ts |       0 |        0 |       0 |       0 | 18-50             
+  rate-limit.ts    |    62.5 |    33.33 |      75 |   64.28 | 37-49             
+  roles.ts         |   45.45 |        0 |      75 |      50 | 22-26             
+  viewer.ts        |       0 |        0 |       0 |       0 | 19-29             
+ src/lib/supabase  |   73.68 |    68.51 |   54.54 |    74.5 |                   
+  ...nted-fetch.ts |   89.36 |    68.51 |     100 |   92.68 | 18,33,42          
+  server.ts        |       0 |      100 |       0 |       0 | 10-36             
+ ...s/auth-account |     100 |       75 |     100 |     100 |                   
+  schemas.ts       |     100 |       75 |     100 |     100 | 15                
+ ...event-programs |   77.27 |       70 |   66.66 |   77.77 |                   
+  dates.ts         |   70.58 |    46.66 |      75 |   66.66 | 18-20,25          
+  errors.ts        |     100 |       75 |     100 |     100 | 22-23             
+  pdf.ts           |     100 |    84.61 |     100 |     100 | 11-13             
+  viewer.ts        |       0 |        0 |       0 |       0 | 12-24             
+ src/modules/forms |      70 |        0 |      50 |   73.68 |                   
+  prefill.ts       |       0 |        0 |       0 |       0 | 7-21              
+ ...anization-auth |   93.02 |     92.1 |   94.11 |   94.87 |                   
+  display.ts       |     100 |    85.71 |     100 |     100 | 32                
+  errors.ts        |       0 |      100 |       0 |       0 | 4-5               
+  routing.ts       |   93.33 |    92.59 |     100 |     100 | 28,33             
+ ...zation-catalog |   66.66 |    71.42 |    92.3 |   66.66 |                   
+  display.ts       |       0 |        0 |       0 |       0 | 4-5               
+  schemas.ts       |       0 |      100 |     100 |       0 | 3-26              
+ ...ram-attendance |     100 |    93.33 |     100 |     100 |                   
+  schemas.ts       |     100 |     90.9 |     100 |     100 | 28                
+ ...-registrations |   95.23 |    85.58 |     100 |   98.68 |                   
+  audience.ts      |    91.3 |    83.72 |     100 |   96.87 | 52                
+  eligibility.ts   |     100 |    95.23 |     100 |     100 | 26                
+  export.ts        |   95.65 |    77.41 |     100 |     100 | 34-49             
+  schemas.ts       |     100 |    92.85 |     100 |     100 | 39                
+ ...ion-membership |       0 |        0 |       0 |       0 |                   
+  labels.ts        |       0 |        0 |       0 |       0 | 2-18              
+  schemas.ts       |       0 |      100 |     100 |       0 | 3-64              
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 18.7% ( 654/3496 )
+Branches     : 15.88% ( 482/3034 )
+Functions    : 21.45% ( 177/825 )
+Lines        : 19.58% ( 554/2828 )
+================================================================================

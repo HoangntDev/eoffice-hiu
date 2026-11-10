@@ -25,6 +25,7 @@ describe("independent account flows", () => {
 
   it("SIGN IN asks for a 10-digit MSSV first, then a six-digit PIN, never an email", () => {
     render(<AuthFormV2 mode="login" />);
+    expect(screen.getByRole("link", { name: "Đăng nhập tài khoản tổ chức" })).toHaveAttribute("href", "/admin/login");
     const mssv = screen.getByPlaceholderText(/2154010001/);
     expect(mssv).toBeRequired();
     expect(mssv).toHaveAttribute("pattern", "[0-9]{10}");

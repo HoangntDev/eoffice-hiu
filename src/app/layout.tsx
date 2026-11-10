@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               </span>
             </Link>
             {viewer ? (
-              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} />
+              <AccountMenu fullName={viewer.fullName} studentCode={viewer.studentCode} email={viewer.email} organization={viewer.accountType === "organization"} />
             ) : (
               <div className="header-user">
                 <Link href="/register" className="header-link">Tạo tài khoản</Link>
@@ -44,8 +44,8 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           {/* Tier 2: nav bar */}
           <nav className="header-nav" aria-label="Điều hướng chính">
             <Link href="/">Trang chủ</Link>
-            <Link href="/forms">Biểu mẫu</Link>
-            {viewer && (
+            {viewer?.accountType !== "organization" && <Link href="/forms">Biểu mẫu</Link>}
+            {viewer?.accountType === "organization" ? <Link href="/admin">Quản trị tổ chức</Link> : viewer && (
               <>
                 <Link href="/programs">Chương trình</Link>
                 {viewer.access.organization && <Link href="/organization">Cơ cấu</Link>}
