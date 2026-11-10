@@ -154,6 +154,8 @@ function LoginForm({ initialError = "", next = "" }: { initialError?: string; ne
             <Link href="/register">Tạo tài khoản</Link>
             {" · "}
             <Link href="/auth/recover">Quên PIN?</Link>
+            {" · "}
+            <Link href="/admin/login">Đăng nhập tài khoản tổ chức</Link>
           </p>
         </div>
       </main>

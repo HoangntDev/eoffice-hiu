@@ -14,6 +14,7 @@ const labels: Record<string, string> = {
   "/admin/accounts": "Tài khoản tổ chức",
   "/admin/forms": "Biểu mẫu",
   "/admin/membership": "Hồ sơ Đoàn viên",
+  "/admin/settings": "Đổi PIN",
 };
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
@@ -29,7 +30,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     </div>
     <nav className="admin-nav" aria-label="Điều hướng quản trị">
       {menu.map((href) => <Link key={href} href={href}>{labels[href] ?? href}</Link>)}
-      <Link href="/admin/security">Đổi PIN</Link>
     </nav>
     {children}
   </>;

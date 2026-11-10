@@ -16,7 +16,7 @@ const studentItems = [
 // Menu tài khoản ở góc trên bên phải: bấm để mở, đóng khi chọn mục, bấm ra ngoài hoặc nhấn Esc.
 const organizationItems = [
   { href: "/admin", label: "Tổng quan quản trị" },
-  { href: "/admin/security", label: "Đổi PIN tổ chức" },
+  { href: "/admin/settings", label: "Đổi PIN tổ chức" },
 ];
 
 type Props = { fullName: string | null; studentCode: string | null; email: string | null; organization?: boolean };
