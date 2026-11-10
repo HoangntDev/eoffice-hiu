@@ -23,11 +23,11 @@ end;
 $$;
 
 create temp table payment_ctx(k text primary key, v text);
-grant select on payment_ctx to authenticated;
+grant select on payment_ctx to authenticated, service_role;
 create function pg_temp.c(p_key text) returns text language sql as $$
   select v from payment_ctx where k = p_key
 $$;
-grant execute on function pg_temp.c(text) to authenticated;
+grant execute on function pg_temp.c(text) to authenticated, service_role;
 
 -- Hai Khoa, ba lớp và bốn sinh viên giả để kiểm tra đúng phạm vi Khoa/lớp.
 insert into public.faculties(id, current_code, current_name) values
