@@ -12,6 +12,7 @@ Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế
 | UC6 | Kế hoạch chương trình sự kiện; chỉ Văn phòng Đoàn – Hội duyệt | `/programs`, `/programs/new`, `/programs/{id}` |
 | UC7 | Đăng ký tham gia chương trình | `/programs/{id}`, `/programs/{id}/registrations` |
 | UC8 | Điểm danh QR theo lượt, điểm rèn luyện dự kiến đề nghị | `/programs/{id}/attendance`, `/attend/{sessionId}?t=…` |
+| UC9 | Đoàn phí theo tháng, đóng gộp năm qua VNPay và đối chiếu theo lớp | `/payments`, `/admin/payments` |
 
 Bốn use case chính của bản phát hành v1.0.0 (dùng thống nhất trong test case và CHANGELOG): **UC-A** Hồ sơ Đoàn viên (thuộc UC2), **UC-B** Kế hoạch chương trình (UC6), **UC-C** Đăng ký tham gia (UC7), **UC-D** Điểm danh QR và điểm dự kiến đề nghị (UC8). Các UC còn lại là phần nền.
 
@@ -53,7 +54,7 @@ Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 ```bash
 # 1. Lấy mã nguồn đúng phiên bản phát hành
 git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
-git switch --detach v1.1.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+git switch --detach v1.2.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
 
 # 2. Cài dependency đúng theo package-lock.json
 npm ci
@@ -120,6 +121,10 @@ Sao chép từ [`.env.example`](.env.example) sang `.env.local`. Không commit `
 | `NEXT_PUBLIC_APP_URL` | trình duyệt + server | Origin của app, dùng trong link xác thực/khôi phục |
 | `LOG_LEVEL` | chỉ server | Mức log JSON: `debug`, `info`, `warn`, `error`. Để trống thì theo môi trường: dev → `debug`, production → `info`, test → `warn`. Log ghi ra console và file `logs/app-YYYY-MM-DD.log` (xoay theo ngày, giữ 7 file) |
 | `DB_SLOW_MS` | chỉ server | Ngưỡng (ms) ghi log `db.slow` khi lời gọi database chậm. Trống thì 1000 |
+| `VNP_TMN_CODE` | chỉ server | Mã website/merchant do VNPay sandbox cấp |
+| `VNP_HASH_SECRET` | chỉ server | Khóa HMAC-SHA512 của VNPay sandbox; không ghi log hoặc đưa ra trình duyệt |
+| `VNP_URL` | chỉ server | URL cổng thanh toán VNPay sandbox |
+| `VNP_RETURN_URL` | chỉ server | URL đưa trình duyệt về `/payments/return`; trang này chỉ đọc trạng thái database |
 | `PORT` | chỉ server | Cổng của `npm start` / `next start` (mặc định 3000) |
 
 Tạo file cấu hình từ file mẫu:
@@ -179,6 +184,31 @@ Next.js. Chỉ phiên tổ chức Đoàn Trường có cán bộ mới đổi đ
 Trình tự nâng cấp an toàn: sao lưu, áp migration, chạy test/smoke khi công tắc còn
 TẮT, bootstrap Đoàn Trường nếu cần, đăng nhập Đoàn Trường và bật công tắc. Nếu cần
 quay lui hành vi, tắt công tắc; không xóa grant hay chạy migration ngược.
+
+### Thanh toán Đoàn phí qua VNPay sandbox
+
+`PAYMENT_ENABLED` nằm trong bảng `feature_flags` và mặc định **TẮT** sau migration.
+Khi tắt, menu, trang và API khởi tạo thanh toán không hoạt động; các chức năng v1.1.0
+vẫn giữ nguyên. Chỉ bật sau khi đã điền đủ bốn biến `VNP_*` trong `.env.local` và
+đăng ký IPN URL trên VNPay sandbox. Phiên tổ chức Đoàn Trường có cán bộ bật hoặc
+tắt công tắc tại `/admin/accounts`; database ghi audit cho mỗi lần đổi.
+
+Luồng nghiệp vụ:
+
+1. Đoàn Khoa tạo khoản thu cho một năm dương lịch tại `/admin/payments`; nếu
+   `ORG_ACCOUNTS_ENABLED` tắt thì cán bộ dùng tài khoản cá nhân tại `/payments/manage`.
+2. Mỗi Khoa chọn đúng một mức 2.000, 5.000, 10.000 hoặc 20.000 đồng/tháng. Database
+   tính số tiền cả năm bằng mức × 12; sinh viên không nhập hoặc sửa số tiền.
+3. Sinh viên mở `/payments` và chuyển sang VNPay. Return URL chỉ hiển thị dữ liệu
+   đã lưu. Chỉ `/api/payments/ipn` với HMAC-SHA512 hợp lệ mới có thể ghi nhận đủ
+   tháng 1–12; IPN lặp không tạo bản ghi trùng.
+4. Đoàn Khoa lọc danh sách theo lớp và xuất CSV để nhập lại hệ thống Trung ương.
+
+VNPay phải gọi được IPN URL công khai. Khi kiểm thử local, dùng tunnel tạm chỉ sau
+khi được người phụ trách môi trường cho phép; trỏ tunnel tới ứng dụng local và đăng
+ký `<public-origin>/api/payments/ipn` trong cấu hình merchant sandbox. Không ghi
+TMN code, hash secret, chữ ký, dữ liệu thẻ hoặc URL tunnel có thông tin truy cập vào
+Git, log hay ảnh bằng chứng.
 
 ### Import danh mục học vụ
 

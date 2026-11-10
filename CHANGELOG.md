@@ -5,6 +5,45 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+## [1.2.0] - Unreleased
+
+### Added
+
+- Đoàn Khoa tạo khoản Đoàn phí cho một năm dương lịch với một trong bốn mức
+  2.000, 5.000, 10.000 hoặc 20.000 đồng/tháng; database tính khoản đóng gộp 12 tháng (#81).
+- Sinh viên xem khoản phải đóng, chuyển sang VNPay sandbox và xem biên nhận gồm
+  mã giao dịch, số tiền, mức tháng, năm và thời gian. Không chặn hồ sơ Đoàn viên khi chưa đóng (#81).
+- Danh sách đã đóng/chưa đóng theo Khoa, lọc theo lớp và CSV có cột tháng 1–12 để
+  cán bộ nhập lại hệ thống quản lý đoàn viên Trung ương (#81).
+- Công tắc database `PAYMENT_ENABLED`; khi tắt, chức năng thanh toán bị ẩn và hệ
+  thống giữ hành vi v1.1.0 (#81).
+
+### Security
+
+- Tách `PaymentGateway`, `VnpayGateway` và `FakeGateway`. IPN kiểm HMAC-SHA512
+  trước mọi thao tác; Return URL không ghi trạng thái (#81).
+- RPC chỉ ghi nhận khi mã đơn đang chờ, số tiền khớp mức × 12 và giao dịch thành
+  công. IPN lặp idempotent; sinh viên và Đoàn Khoa khác bị RLS chặn (#81).
+- Log thanh toán chỉ ghi mã đơn, mã giao dịch, kết quả kiểm chữ ký, số tiền và MSSV
+  che giữa; không ghi secret, chữ ký hoặc dữ liệu thẻ (#81).
+
+### Changed
+
+- Giao dịch lỗi hoặc hủy có thể tạo đơn mới; giao dịch đã đóng đủ năm bị chặn đóng
+  trùng. Hệ thống không cung cấp chức năng hoàn tiền (#81).
+- Tăng phiên bản ứng dụng lên 1.2.0 và bổ sung hướng dẫn cấu hình/chạy VNPay sandbox (#81).
+
+### Tests
+
+- Thêm Vitest với FakeGateway và pgTAP cho bốn mức thu, số tiền năm, chữ ký/số
+  tiền sai, đơn không tồn tại, IPN lặp, retry, chống đóng trùng, công tắc và phân quyền (#81).
+
+### Migration và rollback
+
+- Thêm migration `20261110224444_online_union_fee_payments.sql`; migration mặc
+  định để `PAYMENT_ENABLED` tắt. Quay lui hành vi bằng công tắc, không sửa hoặc
+  chạy ngược migration đã phát hành.
+
 ## [1.1.0] - 2026-11-10
 
 CR-01 tách toàn bộ thao tác quản lý sang tài khoản tổ chức. Không thay đổi hành vi
@@ -142,7 +181,8 @@ Phiên bản phát hành đầu tiên của Final Project. Tính từ baseline `
 - K2 – QR điểm danh dùng chung cho cả lượt, nên trong 30 giây hiệu lực vẫn có thể bị chụp lại và gửi cho người khác. Đây là giới hạn thiết kế đã chấp nhận. Hệ thống vẫn yêu cầu đăng nhập, đăng ký được nhận và mỗi lượt chỉ một lần.
 - K5 – Tên một số migration mang ngày 14–15/10, trong khi thực tế được tạo ngày 13/10/2026. Không đổi tên được vì đã áp lên DB. Không ảnh hưởng người dùng.
 
-[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/HoangntDev/eoffice-hiu/releases/tag/v1.0.0
