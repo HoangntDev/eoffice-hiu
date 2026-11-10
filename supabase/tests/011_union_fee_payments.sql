@@ -2,7 +2,7 @@
 -- RED: mọi đối tượng mới được gọi qua SQL động để toàn bộ assertion vẫn chạy khi chưa có migration.
 begin;
 \ir helpers/organization_login.inc
-select plan(44);
+select plan(46);
 
 create function pg_temp.val(p_sql text) returns text language plpgsql as $$
 declare v text;
@@ -152,6 +152,10 @@ select is(pg_temp.val(format($$ select public.record_union_fee_ipn(%L, 60000, '1
   '04', 'số tiền khác mức × 12 trả RspCode 04');
 select is(pg_temp.val(format($$ select status from public.union_fee_orders where id = %L $$, pg_temp.c('order1'))),
   'pending', 'sai số tiền không ghi nhận đã đóng');
+select is(pg_temp.val(format($$ select public.record_union_fee_ipn(%L, 24000, '', '00', '00', now(), 'missing-transaction') $$, pg_temp.c('order_ref1'))),
+  '99', 'thành công nhưng thiếu mã giao dịch bị từ chối');
+select is(pg_temp.val(format($$ select status from public.union_fee_orders where id = %L $$, pg_temp.c('order1'))),
+  'pending', 'thiếu mã giao dịch không ghi nhận đã đóng');
 select is(pg_temp.val(format($$ select public.record_union_fee_ipn(%L, 24000, '15000001', '00', '00', '2026-11-11 06:00+07', 'success') $$, pg_temp.c('order_ref1'))),
   '00', 'IPN hợp lệ ghi nhận thành công');
 select is(pg_temp.val(format($$ select status || '/' || transaction_ref from public.union_fee_orders where id = %L $$, pg_temp.c('order1'))),

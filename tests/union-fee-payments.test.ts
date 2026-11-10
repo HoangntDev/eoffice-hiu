@@ -94,6 +94,26 @@ describe("PaymentGateway và IPN", () => {
     });
     expect(gateway.verifyIpn(params).signatureValid).toBe(false);
   });
+
+  it("VnpayGateway từ chối payload ký đúng nhưng thiếu mã merchant", () => {
+    const secret = "unit-test-secret-only";
+    const params = new URLSearchParams({
+      vnp_Amount: "6000000",
+      vnp_ResponseCode: "00",
+      vnp_TransactionNo: "15000001",
+      vnp_TransactionStatus: "00",
+      vnp_TxnRef: request.orderRef,
+      vnp_PayDate: "20261111000500",
+    });
+    params.set("vnp_SecureHash", signVnpayParams(params, secret));
+    const gateway = new VnpayGateway({
+      tmnCode: "TESTCODE",
+      hashSecret: secret,
+      paymentUrl: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+      returnUrl: "http://127.0.0.1:3000/payments/return",
+    });
+    expect(gateway.verifyIpn(params).signatureValid).toBe(false);
+  });
 });
 
 describe("đối chiếu và log an toàn", () => {
