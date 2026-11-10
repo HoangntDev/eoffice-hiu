@@ -1,0 +1,128 @@
+09:38:55.579 INFO  Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+09:38:55.592 INFO  Project root configuration file: NONE
+09:38:55.651 INFO  SonarScanner CLI 8.1.0.6389
+09:38:55.672 INFO  Linux 6.10.14-linuxkit amd64
+09:39:01.144 INFO  Communicating with SonarQube Community Build 26.10.0.133078
+09:39:01.146 INFO  JRE provisioning: os[linux], arch[x86_64]
+09:39:15.335 INFO  Starting SonarScanner Engine...
+09:39:15.337 INFO  Java 21.0.12.1 Eclipse Adoptium (64-bit)
+09:39:19.463 INFO  Load global settings
+09:39:19.956 INFO  Load global settings (done) | time=487ms
+09:39:19.966 INFO  Server id: 147B411E-AaHEt4uFPe0c6rML9TCD
+09:39:20.002 INFO  Loading required plugins
+09:39:20.003 INFO  Load plugins index
+09:39:20.112 INFO  Load plugins index (done) | time=108ms
+09:39:20.114 INFO  Load/download plugins
+09:39:22.245 INFO  Load/download plugins (done) | time=2132ms
+09:39:23.075 INFO  Load project settings for component key: 'hiu-youth-e-office-th4'
+09:39:23.190 INFO  Load project settings for component key: 'hiu-youth-e-office-th4' (done) | time=117ms
+09:39:23.231 INFO  Process project properties
+09:39:23.268 INFO  Process project properties (done) | time=37ms
+09:39:23.301 INFO  Project key: hiu-youth-e-office-th4
+09:39:23.302 INFO  Base dir: /usr/src
+09:39:23.304 INFO  Working dir: /tmp/.scannerwork
+09:39:23.685 INFO  Load quality profiles
+09:39:24.377 INFO  Load quality profiles (done) | time=692ms
+09:39:24.505 INFO  Load active rules
+09:39:26.066 INFO  Load active rules (done) | time=1560ms
+09:39:26.094 INFO  Load analysis cache
+09:39:26.236 INFO  Load analysis cache | time=141ms
+09:39:26.516 INFO  Preprocessing files...
+09:39:27.435 INFO  5 languages detected in 245 preprocessed files (done) | time=919ms
+09:39:27.436 INFO  0 files ignored because of inclusion/exclusion patterns
+09:39:27.438 INFO  1 directory skipped because of exclusion patterns (content not counted)
+09:39:27.445 INFO  Loading plugins for detected languages
+09:39:27.446 INFO  Load/download plugins
+09:39:34.145 INFO  Load/download plugins (done) | time=6700ms
+09:39:34.689 INFO  Load project repositories
+09:39:35.307 INFO  Load project repositories (done) | time=616ms
+09:39:35.501 INFO  Indexing files...
+09:39:35.502 INFO  Project configuration:
+09:39:35.504 INFO    Excluded sources: supabase/tests/**, **/node_modules/**, supabase/.temp/**, supabase/.branches/**, tests/**, supabase/tests/**
+09:39:35.505 INFO    Included tests: tests/**, supabase/tests/**
+09:39:35.731 INFO  245 files indexed (done) | time=229ms
+09:39:35.734 INFO  Quality profile for css: Sonar way core
+09:39:35.736 INFO  Quality profile for js: Sonar way core
+09:39:35.738 INFO  Quality profile for php: Sonar way core
+09:39:35.740 INFO  Quality profile for ts: Sonar way core
+09:39:35.741 INFO  Quality profile for web: Sonar way core
+09:39:35.743 INFO  ------------- Run sensors on module HIU Youth E-Office (TH4 v1.1.0)
+09:39:35.860 INFO  Load metrics repository
+09:39:35.951 INFO  Load metrics repository (done) | time=92ms
+09:39:37.486 INFO  Reflections took 319 ms to scan 1 urls, producing 30 keys and 303 values
+09:39:37.861 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+09:39:37.878 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=16ms
+09:39:37.881 INFO  Sensor PHP sensor [php]
+09:39:38.188 INFO  Starting PHP symbol indexer
+09:39:38.199 INFO  1 source file to be analyzed
+09:39:38.263 INFO  1/1 source file has been analyzed
+09:39:38.263 INFO  Cached information of global symbols will be used for 0 out of 1 files. Global symbols were recomputed for the remaining files.
+09:39:38.323 INFO  Starting PHP rules
+09:39:38.325 INFO  1 source file to be analyzed
+09:39:38.363 INFO  1/1 source file has been analyzed
+09:39:38.364 INFO  The PHP analyzer was able to leverage cached data from previous analyses for 0 out of 1 files. These files were not parsed.
+09:39:38.365 INFO  Sensor PHP sensor [php] (done) | time=485ms
+09:39:38.366 INFO  Sensor Analyzer for "php.ini" files [php]
+09:39:38.385 INFO  Sensor Analyzer for "php.ini" files [php] (done) | time=20ms
+09:39:38.387 INFO  Sensor PHPUnit report sensor [php]
+09:39:38.388 INFO  No PHPUnit tests reports provided (see 'sonar.php.tests.reportPath' property)
+09:39:38.390 INFO  No PHPUnit coverage reports provided (see 'sonar.php.coverage.reportPaths' property)
+09:39:38.390 INFO  Sensor PHPUnit report sensor [php] (done) | time=3ms
+09:39:38.391 INFO  Sensor IaC hadolint report Sensor [iac]
+09:39:38.392 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=1ms
+09:39:38.393 INFO  Sensor Java Config Sensor [iac]
+09:39:38.393 INFO  There are no files to be analyzed for the Java language
+09:39:38.395 INFO  Sensor Java Config Sensor [iac] (done) | time=2ms
+09:39:38.395 INFO  Sensor IaC Docker Sensor [iac]
+09:39:38.415 INFO  There are no files to be analyzed for the Docker language
+09:39:38.415 INFO  Sensor IaC Docker Sensor [iac] (done) | time=22ms
+09:39:38.416 INFO  Sensor HTML [web]
+09:39:38.745 INFO  Sensor HTML [web] (done) | time=329ms
+09:39:38.747 INFO  Sensor TextAndSecretsSensor [text]
+09:39:38.832 INFO  Available processors: 16
+09:39:38.833 INFO  Using 16 threads for analysis.
+09:39:39.741 INFO  Start fetching files for the text and secrets analysis
+09:39:39.762 INFO  Using Git CLI to retrieve dirty files
+09:39:39.774 WARN  Retrieving only language associated files, make sure to run the analysis inside a git repository to make use of inclusions specified via "sonar.text.inclusions"
+09:39:39.779 INFO  Starting the text and secrets analysis
+09:39:39.783 INFO  208 source files to be analyzed for the text and secrets analysis
+09:39:40.932 INFO  208/208 source files have been analyzed for the text and secrets analysis
+09:39:40.940 INFO  Sensor TextAndSecretsSensor [text] (done) | time=2193ms
+09:39:40.954 INFO  ------------- Run sensors on project
+09:39:41.545 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+09:39:42.314 INFO  Detected os: Linux arch: amd64 alpine: false. Platform: LINUX_X64
+09:39:42.316 INFO  Deploy location /opt/sonar-scanner/.sonar/js/node-runtime, tagetRuntime: /opt/sonar-scanner/.sonar/js/node-runtime/node,  version: /opt/sonar-scanner/.sonar/js/node-runtime/version.txt
+09:39:49.937 INFO  Using embedded Node.js runtime.
+09:39:49.939 INFO  Using Node.js executable: '/opt/sonar-scanner/.sonar/js/node-runtime/node'.
+09:39:56.952 INFO  Memory configuration: OS (7837 MB), Node.js (2240 MB).
+09:39:57.153 INFO  gRPC analyze-project server listening on 127.0.0.1:35087
+09:39:57.662 INFO  Plugin version: [14.0.0.46108]
+09:40:44.270 INFO  Found 1 tsconfig.json file(s): [/usr/src/tsconfig.json]
+09:40:44.271 INFO  207 source files to be analyzed
+09:40:44.281 INFO  Creating TypeScript(6.0.3) program with configuration file /usr/src/tsconfig.json [lib: lib.dom.d.ts, lib.dom.iterable.d.ts, lib.esnext.d.ts]
+09:40:44.282 INFO  Analyzing 201 file(s) from tsconfig /usr/src/tsconfig.json (1031 total files in program)
+09:40:44.285 INFO  Analyzing 1 file(s) using merged compiler options [lib: lib.es2024.d.ts, lib.dom.d.ts]
+09:40:44.286 INFO  207/207 source files have been analyzed
+09:40:44.324 INFO  Hit the cache for 0 out of 205
+09:40:44.325 INFO  Miss the cache for 205 out of 205: ANALYSIS_MODE_INELIGIBLE [205/205]
+09:40:44.327 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=62779ms
+09:40:44.328 INFO  Sensor IaC Project Sensor [iac]
+09:40:44.333 INFO  Sensor IaC Project Sensor [iac] (done) | time=8ms
+09:40:44.334 INFO  Sensor Zero Coverage Sensor
+09:40:44.407 INFO  Sensor Zero Coverage Sensor (done) | time=73ms
+09:40:44.408 INFO  ------------- Gather SCA dependencies on project
+09:40:44.437 INFO  Dependency analysis skipped
+09:40:44.441 INFO  SCM Publisher is disabled
+09:40:44.470 INFO  CPD Executor 49 files had no CPD blocks
+09:40:44.471 INFO  CPD Executor Calculating CPD for 141 files
+09:40:44.599 INFO  CPD Executor CPD calculation finished (done) | time=130ms
+09:40:45.357 INFO  Analysis report generated in 711ms, dir size=1.7 MB
+09:40:45.871 INFO  Analysis report compressed in 512ms, zip size=1.1 MB
+09:40:46.125 INFO  Analysis report uploaded in 254ms
+09:40:46.131 INFO  ANALYSIS SUCCESSFUL, you can find the results at: http://host.docker.internal:9001/dashboard?id=hiu-youth-e-office-th4
+09:40:46.132 INFO  Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+09:40:46.133 INFO  More about the report processing at http://host.docker.internal:9001/api/ce/task?id=e1e403d9-f0a1-403c-b88c-1cf38434c625
+09:40:46.607 INFO  Analysis total time: 1:31.062 min
+09:40:46.611 INFO  SonarScanner Engine completed successfully
+09:40:46.670 INFO  EXECUTION SUCCESS
+09:40:46.682 INFO  Total time: 1:51.122s

@@ -1,0 +1,341 @@
+ .env.example                                       |    3 +
+ .github/workflows/ci.yml                           |   22 +-
+ .gitignore                                         |    9 +
+ AGENTS.md                                          |   74 +-
+ CHANGELOG.md                                       |   82 +-
+ CLAUDE.md                                          |    2 +-
+ README.md                                          |   39 +-
+ docs/TH2/BaoCao_TH2.docx                           |  Bin 0 -> 2734408 bytes
+ docs/TH2/BaoCao_TH2.md                             |  503 ++++++++
+ docs/TH2/build-docx.sh                             |   38 +
+ docs/TH2/demo-data.md                              |   12 +-
+ docs/TH2/evidence/ci-run-xanh.png                  |  Bin 0 -> 454416 bytes
+ docs/TH2/evidence/cr-01-issue-37.png               |  Bin 0 -> 735088 bytes
+ docs/TH2/evidence/git-log-first-parent.png         |  Bin 0 -> 277791 bytes
+ docs/TH2/evidence/git-log-first-parent.txt         |   19 +
+ docs/TH2/evidence/issue-forms.png                  |  Bin 0 -> 275648 bytes
+ docs/TH2/evidence/release-v1.0.0-assets.png        |  Bin 0 -> 161102 bytes
+ docs/TH2/evidence/release-v1.0.0.png               |  Bin 0 -> 683409 bytes
+ docs/TH2/evidence/smoke-artifact/01-giai-nen.log   |   46 +
+ docs/TH2/evidence/smoke-artifact/02-npm-ci.log     |   20 +
+ .../evidence/smoke-artifact/03-cau-hinh-stack.log  |   14 +
+ .../evidence/smoke-artifact/04-supabase-start.log  |   29 +
+ .../TH2/evidence/smoke-artifact/05-nap-du-lieu.log |   51 +
+ docs/TH2/evidence/smoke-artifact/06-env-local.log  |    8 +
+ docs/TH2/evidence/smoke-artifact/07-npm-start.log  |    9 +
+ .../evidence/smoke-artifact/08-smoke-buoc-2-4.log  |   25 +
+ .../smoke-artifact/09-smoke-buoc-5-8-lan1.log      |   19 +
+ .../smoke-artifact/09-smoke-buoc-5-8-lan2.log      |    7 +
+ docs/TH2/evidence/smoke-artifact/10-npm-audit.log  |   91 ++
+ docs/TH2/evidence/smoke-artifact/README.md         |   38 +
+ .../smoke-artifact/smoke-dang-ky-thanh-cong.png    |  Bin 0 -> 107903 bytes
+ .../evidence/smoke-artifact/smoke-screenshot.log   |    4 +
+ .../evidence/smoke-artifact/smoke-screenshot.mjs   |   25 +
+ docs/TH2/evidence/smoke-artifact/smoke-ui.mjs      |   58 +
+ docs/TH2/evidence/test-run/run-test-cases.mjs      |   64 +-
+ .../evidence/ui/home-sau-da-dang-nhap-desktop.png  |  Bin 0 -> 108187 bytes
+ .../evidence/ui/home-sau-da-dang-nhap-mobile.png   |  Bin 0 -> 187092 bytes
+ docs/TH2/evidence/ui/home-sau-header-320.png       |  Bin 0 -> 25201 bytes
+ docs/TH2/evidence/ui/home-sau-header-360.png       |  Bin 0 -> 25652 bytes
+ docs/TH2/evidence/ui/home-sau-khach-desktop.png    |  Bin 0 -> 160230 bytes
+ docs/TH2/evidence/ui/home-sau-khach-mobile.png     |  Bin 0 -> 301765 bytes
+ .../ui/home-truoc-da-dang-nhap-desktop.png         |  Bin 0 -> 108187 bytes
+ .../evidence/ui/home-truoc-da-dang-nhap-mobile.png |  Bin 0 -> 187092 bytes
+ docs/TH2/evidence/ui/home-truoc-khach-desktop.png  |  Bin 0 -> 180833 bytes
+ docs/TH2/evidence/ui/home-truoc-khach-mobile.png   |  Bin 0 -> 341210 bytes
+ docs/TH2/evidence/ui/home-ui-narrow.mjs            |   11 +
+ docs/TH2/evidence/ui/home-ui.log                   |   18 +
+ docs/TH2/evidence/ui/home-ui.mjs                   |   34 +
+ docs/TH3/BaoCao_TH3.docx                           |  Bin 0 -> 5190910 bytes
+ docs/TH3/BaoCao_TH3.md                             |  503 ++++++++
+ docs/TH3/CR-01-TaiKhoanToChuc/impact-analysis.md   |  432 +++++++
+ .../spike/lan-1/do-chi-phi-kiem-phien.txt          |   16 +
+ .../spike/lan-1/pgtap-tren-spike-lan-1.log         |  157 +++
+ .../spike/lan-1/spike-lan-1-chay-1.log             |   17 +
+ .../spike/lan-1/spike-lan-1-chay-2.log             |   17 +
+ .../spike/lan-1/spike-lan-1-chay-3.log             |   17 +
+ .../spike/lan-2/pgtap-tren-spike-lan-2.log         |   51 +
+ .../spike/lan-2/spike-lan-2-chay-1.log             |   21 +
+ .../spike/lan-2/spike-lan-2-chay-2.log             |   21 +
+ docs/TH3/INC-01-ThieuCauHinh/evidence/README.md    |    3 +
+ .../evidence/a-v1.0.0/k1/0-backup.log              |    6 +
+ .../evidence/a-v1.0.0/k1/0-baseline-console.log    |    7 +
+ .../evidence/a-v1.0.0/k1/0-baseline-user.log       |    5 +
+ .../evidence/a-v1.0.0/k1/1a-console.log            |    7 +
+ .../evidence/a-v1.0.0/k1/1a-login.png              |  Bin 0 -> 35997 bytes
+ .../evidence/a-v1.0.0/k1/1a-recovered-user.log     |    5 +
+ .../evidence/a-v1.0.0/k1/1a-user.log               |    5 +
+ .../evidence/a-v1.0.0/k1/1b-console.log            |    7 +
+ .../evidence/a-v1.0.0/k1/1b-login.png              |  Bin 0 -> 36048 bytes
+ .../evidence/a-v1.0.0/k1/1b-recovered-user.log     |    5 +
+ .../evidence/a-v1.0.0/k1/1b-user.log               |    4 +
+ .../evidence/a-v1.0.0/k1/1c-backup.log             |    6 +
+ .../evidence/a-v1.0.0/k1/1c-console.log            |   67 +
+ .../evidence/a-v1.0.0/k1/1c-curl.log               |    4 +
+ .../evidence/a-v1.0.0/k1/1c-login.png              |  Bin 0 -> 4587 bytes
+ .../evidence/a-v1.0.0/k1/1c-recovered-user.log     |    5 +
+ .../evidence/a-v1.0.0/k1/1c-user.log               |    1 +
+ .../evidence/a-v1.0.0/k1/timeline.txt              |   21 +
+ .../evidence/a-v1.0.0/k2/0-backup.log              |    6 +
+ .../evidence/a-v1.0.0/k2/2-auth-trich.log          |    3 +
+ .../evidence/a-v1.0.0/k2/2-login.png               |  Bin 0 -> 36089 bytes
+ .../evidence/a-v1.0.0/k2/2-postgrest-trich.log     |   12 +
+ .../evidence/a-v1.0.0/k2/2-programs.png            |  Bin 0 -> 35866 bytes
+ .../evidence/a-v1.0.0/k2/2-user.log                |    8 +
+ .../evidence/a-v1.0.0/k2/2-web-console.log         |    0
+ .../evidence/a-v1.0.0/k2/3-counts-diff.txt         |    4 +
+ .../evidence/a-v1.0.0/k2/3-recovered-user.log      |    5 +
+ .../evidence/a-v1.0.0/k2/3-smoke-curl.txt          |    3 +
+ .../evidence/a-v1.0.0/k2/timeline.txt              |    6 +
+ .../b-red-green/green-ci-run-42153895101.log       |    2 +
+ .../evidence/b-red-green/green-vitest.log          |   10 +
+ .../b-red-green/red-ci-run-42153647144.log         |   35 +
+ .../evidence/b-red-green/red-vitest.log            |  214 ++++
+ .../evidence/c-v1.0.1-phat-hanh/00-build.log       |    9 +
+ .../evidence/c-v1.0.1-phat-hanh/01-cai-dat.log     |   17 +
+ .../c-v1.0.1-phat-hanh/02-env-ten-bien.txt         |    6 +
+ .../03-dua-du-lieu-ve-ban-sao-luu.log              |    7 +
+ .../evidence/c-v1.0.1-phat-hanh/04-npm-start.log   |   15 +
+ .../evidence/c-v1.0.1-phat-hanh/05-smoke.log       |   26 +
+ .../evidence/c-v1.0.1-phat-hanh/06-qr-invalid.log  |    2 +
+ .../c-v1.0.1-phat-hanh/lan1-goi-loi/01-cai-dat.log |   26 +
+ .../lan1-goi-loi/04-npm-start.log                  |  107 ++
+ .../evidence/c-v1.0.1-phat-hanh/release-notes.md   |   34 +
+ .../evidence/d-v1.0.1-lap-lai/K1a-console.log      |   11 +
+ .../d-v1.0.1-lap-lai/K1a-recovered-user.log        |    5 +
+ .../evidence/d-v1.0.1-lap-lai/K1a-user.log         |    3 +
+ .../evidence/d-v1.0.1-lap-lai/K1b-console.log      |   11 +
+ .../d-v1.0.1-lap-lai/K1b-recovered-user.log        |    5 +
+ .../evidence/d-v1.0.1-lap-lai/K1b-user.log         |    3 +
+ .../evidence/d-v1.0.1-lap-lai/K1c-console.log      |   13 +
+ .../d-v1.0.1-lap-lai/K1c-recovered-user.log        |    5 +
+ .../evidence/d-v1.0.1-lap-lai/K1c-user.log         |    1 +
+ .../evidence/d-v1.0.1-lap-lai/timeline.txt         |   28 +
+ .../evidence/d-v1.0.1-lap-lai/v101-K1a-login.png   |  Bin 0 -> 44101 bytes
+ .../evidence/d-v1.0.1-lap-lai/v101-K1b-login.png   |  Bin 0 -> 44443 bytes
+ .../evidence/d-v1.0.1-lap-lai/v101-K1c-login.png   |  Bin 0 -> 22915 bytes
+ docs/TH3/INC-01-ThieuCauHinh/incident-report.md    |  148 +++
+ docs/TH3/build-docx.sh                             |   46 +
+ docs/TH3/evidence/backup/1-truoc.txt               |   53 +
+ docs/TH3/evidence/backup/2-backup.log              |    6 +
+ docs/TH3/evidence/backup/3-gay-hong.log            |    9 +
+ docs/TH3/evidence/backup/3-sau-khi-hong.txt        |   51 +
+ docs/TH3/evidence/backup/5-restore.log             |    7 +
+ docs/TH3/evidence/backup/7-diff-truoc-sau.txt      |    1 +
+ docs/TH3/evidence/backup/7-sau-phuc-hoi.txt        |   53 +
+ docs/TH3/evidence/backup/8-smoke.log               |    8 +
+ docs/TH3/evidence/backup/9-kiem-tra-an-toan.log    |   12 +
+ docs/TH3/evidence/backup/README.md                 |   38 +
+ docs/TH3/evidence/backup/drill.sh                  |  116 ++
+ .../backup/eoffice-v100_20261106T092608.counts.tsv |   54 +
+ .../backup/eoffice-v100_20261106T092608.manifest   |   15 +
+ .../backup/eoffice-v100_20261106T092608.sha256     |    5 +
+ docs/TH3/evidence/backup/timings.tsv               |   11 +
+ docs/TH3/evidence/bug-61-qr/README.md              |   13 +
+ .../bug-61-qr/green-ci-run-42154363218.log         |    2 +
+ docs/TH3/evidence/bug-61-qr/green-vitest.log       |   10 +
+ .../evidence/bug-61-qr/red-ci-run-42154168599.log  |    9 +
+ docs/TH3/evidence/bug-61-qr/red-vitest.log         |   80 ++
+ docs/TH3/evidence/bug-61-qr/v1.0.1-kiem-tra.log    |    2 +
+ docs/TH3/evidence/cr01-red/README.md               |   93 ++
+ docs/TH3/evidence/cr01-red/ci-artifacts/pgtap.txt  |  250 ++++
+ .../cr01-red/ci-artifacts/vitest-junit.xml         |  778 ++++++++++++
+ docs/TH3/evidence/cr01-red/ci-build-test.log       |  880 +++++++++++++
+ docs/TH3/evidence/cr01-red/ci-pgtap.log            |  988 +++++++++++++++
+ .../cr01-red/local-lint-typecheck-build.log        |   54 +
+ docs/TH3/evidence/cr01-red/local-pgtap.log         |  225 ++++
+ docs/TH3/evidence/cr01-red/local-pgtap.png         |  Bin 0 -> 377477 bytes
+ docs/TH3/evidence/cr01-red/local-vitest.log        |  561 +++++++++
+ docs/TH3/evidence/cr01-red/local-vitest.png        |  Bin 0 -> 415168 bytes
+ .../evidence/cr01-red/pr50-build-test-summary.png  |  Bin 0 -> 571116 bytes
+ docs/TH3/evidence/cr01-red/pr50-build-test.png     |  Bin 0 -> 463300 bytes
+ docs/TH3/evidence/cr01-red/pr50-checks.png         |  Bin 0 -> 365121 bytes
+ docs/TH3/evidence/cr01-red/pr50-commits.png        |  Bin 0 -> 329742 bytes
+ docs/TH3/evidence/cr01-red/pr50-draft.png          |  Bin 0 -> 849996 bytes
+ docs/TH3/evidence/cr01-red/pr50-pgtap.png          |  Bin 0 -> 759009 bytes
+ docs/TH3/evidence/logging/README.md                |   90 ++
+ docs/TH3/evidence/logging/error-page-reference.png |  Bin 0 -> 192074 bytes
+ .../logging/excerpts/0-full-run-2026-11-06.log     |   87 ++
+ .../evidence/logging/excerpts/1-app-start-stop.log |    9 +
+ .../logging/excerpts/2-unhandled-error.log         |    4 +
+ .../evidence/logging/excerpts/3-transactions.log   |   27 +
+ .../logging/excerpts/3b-transactions-rejected.log  |    7 +
+ .../evidence/logging/excerpts/4-db-errors-slow.log |   28 +
+ .../excerpts/5-login-failed-access-denied.log      |   12 +
+ docs/TH3/evidence/logging/health.txt               |    5 +
+ docs/TH3/evidence/logging/vitest-logging.txt       |    9 +
+ docs/TH3/evidence/logging/yc5-grep.txt             |   15 +
+ .../evidence/package-release/1-package-v1.0.1.log  |   14 +
+ .../evidence/package-release/2-verify-goi-loi.log  |    5 +
+ .../package-release/3-verify-goi-tren-release.log  |    8 +
+ docs/TH3/evidence/package-release/README.md        |   17 +
+ .../dist-hiu-youth-e-office-v1.0.1.zip.sha256      |    1 +
+ .../package-release/package-release-terminal.png   |  Bin 0 -> 219874 bytes
+ docs/TH3/evidence/report/backup-terminal.png       |  Bin 0 -> 196197 bytes
+ docs/TH3/evidence/report/git-log-first-parent.png  |  Bin 0 -> 519990 bytes
+ docs/TH3/evidence/report/git-log-first-parent.txt  |   41 +
+ docs/TH3/evidence/report/inc-v100-K1a-cat.png      |  Bin 0 -> 23481 bytes
+ docs/TH3/evidence/report/inc-v100-K1c-cat.png      |  Bin 0 -> 1754 bytes
+ docs/TH3/evidence/report/inc-v101-K1a-cat.png      |  Bin 0 -> 29557 bytes
+ docs/TH3/evidence/report/inc-v101-K1c-cat.png      |  Bin 0 -> 19441 bytes
+ docs/TH3/evidence/report/log-terminal.png          |  Bin 0 -> 238293 bytes
+ docs/TH3/evidence/report/milestone-th3.png         |  Bin 0 -> 791549 bytes
+ .../report/package-release-terminal-cat.png        |  Bin 0 -> 195502 bytes
+ docs/TH3/evidence/report/pr60-commits.png          |  Bin 0 -> 385331 bytes
+ docs/TH3/evidence/report/release-v1.0.1.png        |  Bin 0 -> 908239 bytes
+ docs/TH3/evidence/report/rollback-terminal-cat.png |  Bin 0 -> 420604 bytes
+ docs/TH3/evidence/rollback/0-chuan-bi.log          |   11 +
+ docs/TH3/evidence/rollback/README.md               |   32 +
+ docs/TH3/evidence/rollback/drill-terminal.log      |   50 +
+ docs/TH3/evidence/rollback/rollback-drill.sh       |   61 +
+ docs/TH3/evidence/rollback/rollback-terminal.png   |  Bin 0 -> 456260 bytes
+ docs/TH3/evidence/rollback/smoke.log               |   22 +
+ docs/TH3/evidence/rollback/timings.tsv             |    6 +
+ docs/TH3/evidence/rollback/v1.0.0-npm-start.log    |    8 +
+ docs/TH3/evidence/security/README.md               |   28 +
+ docs/TH3/evidence/security/npm-audit-after.txt     |   87 ++
+ docs/TH3/evidence/security/npm-audit-before.txt    |  100 ++
+ docs/TH4/BaoCao_TH4.md                             |   52 +
+ docs/TH4/evidence/README.md                        |   75 ++
+ docs/TH4/evidence/cr01-ac6-red/README.md           |   35 +
+ docs/TH4/evidence/cr01-red-before-green/pgtap.log  |  224 ++++
+ docs/TH4/evidence/cr01-red-before-green/vitest.log |  559 +++++++++
+ docs/TH4/evidence/final/build.log                  |  130 ++
+ docs/TH4/evidence/final/catalog-import.log         |   51 +
+ docs/TH4/evidence/final/lint.log                   |    4 +
+ docs/TH4/evidence/final/pgtap-off.log              |   14 +
+ docs/TH4/evidence/final/pgtap-on.log               |   16 +
+ docs/TH4/evidence/final/seed-demo-refusal.log      |    1 +
+ docs/TH4/evidence/final/seed-demo-verification.log |    4 +
+ docs/TH4/evidence/final/seed-demo.log              |   14 +
+ docs/TH4/evidence/final/smoke-curl.log             |    9 +
+ docs/TH4/evidence/final/smoke-playwright.log       |    1 +
+ docs/TH4/evidence/final/test-cases.log             |   83 ++
+ docs/TH4/evidence/final/typecheck.log              |    4 +
+ docs/TH4/evidence/final/vitest-coverage.log        |  335 +++++
+ docs/TH4/evidence/functional/01-login-error.png    |  Bin 0 -> 48412 bytes
+ docs/TH4/evidence/functional/02-faculty-admin.png  |  Bin 0 -> 62397 bytes
+ .../TH4/evidence/functional/03-faculty-program.png |  Bin 0 -> 108817 bytes
+ .../functional/04-faculty-switched-officer.png     |  Bin 0 -> 62891 bytes
+ docs/TH4/evidence/functional/05-office-review.png  |  Bin 0 -> 129688 bytes
+ .../evidence/functional/06-office-membership.png   |  Bin 0 -> 94148 bytes
+ .../TH4/evidence/functional/07-school-accounts.png |  Bin 0 -> 140745 bytes
+ .../08-feature-off-personal-fallback.png           |  Bin 0 -> 359011 bytes
+ docs/TH4/evidence/functional/results.json          |   25 +
+ docs/TH4/evidence/playwright-functional.mjs        |  160 +++
+ docs/TH4/evidence/playwright-smoke.mjs             |   74 ++
+ .../TH4/evidence/smoke/01-registration-success.png |  Bin 0 -> 111481 bytes
+ .../evidence/smoke/02-logout-protected-route.png   |  Bin 0 -> 39237 bytes
+ docs/TH4/evidence/smoke/results.json               |   25 +
+ docs/operations/backup-restore.md                  |   77 --
+ docs/release/huong-dan-trien-khai.md               |   58 +-
+ docs/runbooks/backup-restore.md                    |  170 +++
+ docs/testing/smoke-test.md                         |    4 +-
+ next.config.ts                                     |    3 +-
+ package-lock.json                                  |  454 ++++++-
+ package.json                                       |   10 +-
+ scripts/backup.sh                                  |  117 ++
+ scripts/bootstrap-school-admin.mjs                 |  103 +-
+ scripts/package-release.sh                         |  155 +++
+ scripts/restore.sh                                 |  152 +++
+ scripts/seed-demo.mjs                              |   57 +-
+ src/app/admin/(auth)/login/officer/page.tsx        |   10 +
+ src/app/admin/(auth)/login/page.tsx                |   19 +
+ src/app/admin/(portal)/accounts/page.tsx           |   19 +
+ src/app/admin/(portal)/forms/[id]/edit/page.tsx    |    5 +
+ .../admin/(portal)/forms/[id]/responses/page.tsx   |    5 +
+ src/app/admin/(portal)/forms/new/page.tsx          |    5 +
+ src/app/admin/(portal)/forms/page.tsx              |    8 +
+ src/app/admin/(portal)/layout.tsx                  |   36 +
+ src/app/admin/(portal)/membership/page.tsx         |    8 +
+ src/app/admin/(portal)/organization/page.tsx       |    8 +
+ src/app/admin/(portal)/page.tsx                    |   11 +
+ .../[id]/attendance/[sessionId]/qr/page.tsx        |    5 +
+ .../(portal)/programs/[id]/attendance/page.tsx     |    5 +
+ src/app/admin/(portal)/programs/[id]/page.tsx      |    5 +
+ .../(portal)/programs/[id]/registrations/page.tsx  |    5 +
+ src/app/admin/(portal)/programs/new/page.tsx       |    5 +
+ src/app/admin/(portal)/programs/page.tsx           |    8 +
+ src/app/admin/(portal)/reviews/[id]/page.tsx       |    5 +
+ src/app/admin/(portal)/reviews/page.tsx            |    8 +
+ src/app/admin/(portal)/security/page.tsx           |    5 +
+ src/app/admin/(portal)/settings/page.tsx           |    5 +
+ src/app/api/admin/accounts/route.ts                |   22 +
+ src/app/api/admin/feature-flag/route.ts            |   17 +
+ src/app/api/attendance/check-in/route.ts           |    8 +-
+ src/app/api/auth/login/route.ts                    |   34 +-
+ src/app/api/auth/organization/change-pin/route.ts  |   21 +
+ src/app/api/auth/organization/officer/route.ts     |  110 ++
+ src/app/api/auth/organization/start/route.ts       |   42 +
+ src/app/api/auth/organization/switch/route.ts      |   27 +
+ src/app/api/health/route.ts                        |   34 +
+ src/app/api/union-membership/review/route.ts       |    8 +
+ src/app/api/union-membership/route.ts              |   10 +-
+ src/app/error.tsx                                  |   33 +
+ src/app/forms/[id]/edit/page.tsx                   |    6 +-
+ src/app/forms/[id]/responses/page.tsx              |    5 +-
+ src/app/forms/new/page.tsx                         |    5 +-
+ src/app/forms/page.tsx                             |    7 +-
+ src/app/global-error.tsx                           |   19 +
+ src/app/globals.css                                |   27 +-
+ src/app/layout.tsx                                 |   10 +-
+ src/app/page.tsx                                   |   34 +-
+ src/app/programs/[id]/attendance-section.tsx       |    7 +-
+ .../[id]/attendance/[sessionId]/qr/page.tsx        |    5 +-
+ src/app/programs/[id]/attendance/page.tsx          |    9 +-
+ src/app/programs/[id]/page.tsx                     |   13 +-
+ src/app/programs/[id]/registration-section.tsx     |    6 +-
+ src/app/programs/[id]/registrations/page.tsx       |    7 +-
+ src/app/programs/new/page.tsx                      |    9 +-
+ src/app/programs/page.tsx                          |   15 +-
+ src/components/account-menu.tsx                    |   14 +-
+ src/components/attendance-session-controls.tsx     |    7 +-
+ src/components/auth-form-v2.tsx                    |    2 +
+ src/components/event-program-editor.tsx            |    7 +-
+ src/components/form-editor.tsx                     |    6 +-
+ src/components/organization-accounts-console.tsx   |   62 +
+ src/components/organization-login-form.tsx         |   80 ++
+ src/components/organization-pin-form.tsx           |   25 +
+ src/components/organization-session-actions.tsx    |   25 +
+ src/instrumentation.ts                             |   36 +
+ src/lib/auth/next-path.ts                          |    2 +-
+ src/lib/auth/organization-login.ts                 |   49 +
+ src/lib/auth/organization-viewer.ts                |   59 +
+ src/lib/auth/rate-limit.ts                         |   20 +-
+ src/lib/auth/viewer.ts                             |    4 +-
+ src/lib/config-check.ts                            |   85 ++
+ src/lib/env.ts                                     |   21 +-
+ src/lib/http.ts                                    |   63 +-
+ src/lib/log-node.ts                                |   70 ++
+ src/lib/log.ts                                     |   87 +-
+ src/lib/request-meta.ts                            |    8 +
+ src/lib/supabase/instrumented-fetch.ts             |   79 ++
+ src/lib/supabase/server.ts                         |    4 +
+ src/lib/user-messages.ts                           |    4 +
+ src/lib/version.ts                                 |    4 +
+ src/modules/organization-auth/display.ts           |   34 +
+ src/modules/organization-auth/errors.ts            |    7 +
+ src/modules/organization-auth/form-paths.ts        |    5 +
+ src/modules/organization-auth/navigation.ts        |   12 +
+ src/modules/organization-auth/policy.ts            |   43 +
+ src/modules/organization-auth/program-paths.ts     |    5 +
+ src/modules/organization-auth/routing.ts           |   35 +
+ src/modules/organization-auth/schemas.ts           |   23 +
+ src/modules/program-attendance/errors.ts           |    4 +
+ src/modules/program-attendance/schemas.ts          |    4 +-
+ src/proxy.ts                                       |   80 +-
+ .../20261109222454_cr01_organization_accounts.sql  | 1310 ++++++++++++++++++++
+ supabase/tests/002_authorization_workflow.sql      |   18 +-
+ supabase/tests/004_forms.sql                       |   17 +-
+ supabase/tests/005_event_programs.sql              |   15 +-
+ supabase/tests/007_program_registrations.sql       |   10 +-
+ supabase/tests/008_program_attendance.sql          |   10 +-
+ supabase/tests/009_account_types.sql               |  119 ++
+ supabase/tests/010_organization_accounts.sql       |  364 ++++++
+ supabase/tests/helpers/organization_login.inc      |   97 ++
+ tests/auth-ui.test.tsx                             |    1 +
+ tests/inc-01-config.test.ts                        |  162 +++
+ tests/logging.test.ts                              |  201 +++
+ tests/organization-auth.test.ts                    |  184 +++
+ tests/qr-token-invalid.test.ts                     |   56 +
+ 340 files changed, 16106 insertions(+), 316 deletions(-)

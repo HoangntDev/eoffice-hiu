@@ -1,0 +1,1543 @@
+{
+  "total": 31,
+  "p": 1,
+  "ps": 500,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 31
+  },
+  "effortTotal": 144,
+  "issues": [
+    {
+      "key": "8edc1017-566b-4611-8c51-f97948a62476",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/attendance-plan-editor.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 169,
+      "textRange": {
+        "startLine": 169,
+        "endLine": 169,
+        "startOffset": 8,
+        "endOffset": 119
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "15692dbb-4e66-4a7e-bc3e-689aca2e4bfa",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/auth-form-v2.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 48,
+      "textRange": {
+        "startLine": 48,
+        "endLine": 48,
+        "startOffset": 10,
+        "endOffset": 155
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "fa6dadf7-4b21-419c-9943-654342711095",
+      "rule": "typescript:S9379",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/auth-form-v2.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 141,
+      "textRange": {
+        "startLine": 141,
+        "endLine": 141,
+        "startOffset": 14,
+        "endOffset": 23
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Remove this \"autoFocus\" attribute, as it can reduce usability and accessibility for users.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "7f2b55d0-1c85-4670-b3f7-b5f0e253f6d3",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/auth-form-v2.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 148,
+      "textRange": {
+        "startLine": 148,
+        "endLine": 150,
+        "startOffset": 12,
+        "endOffset": 21
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "26d78276-3d93-46ab-b9c2-4cdb6c7bfb2b",
+      "rule": "typescript:S9379",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/auth-form-v2.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 203,
+      "textRange": {
+        "startLine": 203,
+        "endLine": 203,
+        "startOffset": 12,
+        "endOffset": 21
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Remove this \"autoFocus\" attribute, as it can reduce usability and accessibility for users.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "87b23e69-c009-40ee-bf54-0f4684a23332",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/event-program-actions.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 74,
+      "textRange": {
+        "startLine": 74,
+        "endLine": 74,
+        "startOffset": 12,
+        "endOffset": 121
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "103e2271-03cc-4c10-82cf-254d88a438e3",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/event-program-actions.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 111,
+      "textRange": {
+        "startLine": 111,
+        "endLine": 111,
+        "startOffset": 12,
+        "endOffset": 84
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "7f5888e4-995e-49a1-a59d-4af038486aa0",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/event-program-editor.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 129,
+      "textRange": {
+        "startLine": 129,
+        "endLine": 131,
+        "startOffset": 8,
+        "endOffset": 17
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "07b2c175-5a4e-441e-abf1-a34915fe5854",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/form-editor.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 260,
+      "textRange": {
+        "startLine": 260,
+        "endLine": 260,
+        "startOffset": 8,
+        "endOffset": 102
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "443da50a-ef95-4a22-a01f-d17132843455",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/form-template-editor.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 247,
+      "textRange": {
+        "startLine": 247,
+        "endLine": 249,
+        "startOffset": 8,
+        "endOffset": 17
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "23d1cbce-a9a0-42c4-bddd-4e433ec4a1c1",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/form-viewer.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 212,
+      "textRange": {
+        "startLine": 212,
+        "endLine": 214,
+        "startOffset": 8,
+        "endOffset": 17
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "e2431b59-9fbd-4cb2-81a2-61428233f69b",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/membership-review-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 13,
+      "textRange": {
+        "startLine": 13,
+        "endLine": 13,
+        "startOffset": 1502,
+        "endOffset": 1552
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "36b0223a-1f8f-41c2-8407-439d374ec6ce",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/membership-review-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 14,
+      "textRange": {
+        "startLine": 14,
+        "endLine": 14,
+        "startOffset": 656,
+        "endOffset": 709
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "963a9966-ae6e-4323-91e4-500a5e0279ec",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/membership-review-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 14,
+      "textRange": {
+        "startLine": 14,
+        "endLine": 14,
+        "startOffset": 1537,
+        "endOffset": 1593
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "c02f2c78-8548-4a0b-8439-18b98997b9d0",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-accounts-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 53,
+      "textRange": {
+        "startLine": 53,
+        "endLine": 53,
+        "startOffset": 30,
+        "endOffset": 76
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "d563a224-59bb-4626-8e3f-4943bd39466e",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 32,
+      "textRange": {
+        "startLine": 32,
+        "endLine": 32,
+        "startOffset": 37,
+        "endOffset": 86
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "e9f9ee11-cfb5-47be-9511-a7ee77189b68",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 35,
+      "textRange": {
+        "startLine": 35,
+        "endLine": 35,
+        "startOffset": 1470,
+        "endOffset": 1517
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "2ae19a78-5d03-496e-945b-82d49b722db6",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 39,
+      "textRange": {
+        "startLine": 39,
+        "endLine": 39,
+        "startOffset": 110,
+        "endOffset": 158
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "e347584b-c2f3-46bc-8ad4-dbc4c502e5f2",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-console.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 42,
+      "textRange": {
+        "startLine": 42,
+        "endLine": 42,
+        "startOffset": 1368,
+        "endOffset": 1419
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "ae14b6d7-2754-4905-af28-ea93581484c4",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-login-form.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 77,
+      "textRange": {
+        "startLine": 77,
+        "endLine": 77,
+        "startOffset": 6,
+        "endOffset": 97
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "fbdcd026-dc91-4178-aff8-45db268127a8",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/organization-pin-form.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 23,
+      "textRange": {
+        "startLine": 23,
+        "endLine": 23,
+        "startOffset": 26,
+        "endOffset": 78
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "53f19e7d-d6c0-4947-90c2-e3ec070fda9e",
+      "rule": "typescript:S9379",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/pin-setup-form.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 109,
+      "textRange": {
+        "startLine": 109,
+        "endLine": 109,
+        "startOffset": 10,
+        "endOffset": 38
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Remove this \"autoFocus\" attribute, as it can reduce usability and accessibility for users.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "96611d59-3a32-45a6-9fa0-66bf9608a794",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/program-registration-settings.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 221,
+      "textRange": {
+        "startLine": 221,
+        "endLine": 221,
+        "startOffset": 10,
+        "endOffset": 85
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "1b918979-7c81-4d94-b69b-70cb4dfbd991",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/student-profile-form.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 77,
+      "textRange": {
+        "startLine": 77,
+        "endLine": 77,
+        "startOffset": 28,
+        "endOffset": 175
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "06bafa70-19a9-4ccb-99d6-465f76da4b08",
+      "rule": "typescript:S9011",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/components/union-application-form.tsx",
+      "project": "hiu-youth-e-office-th4",
+      "line": 241,
+      "textRange": {
+        "startLine": 241,
+        "endLine": 243,
+        "startOffset": 10,
+        "endOffset": 19
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add an explicit \"type\" attribute to this button.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "vue",
+        "react"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "ca4ddf64-3af7-4996-a036-7cb20db67400",
+      "rule": "typescript:S5332",
+      "severity": "MINOR",
+      "component": "hiu-youth-e-office-th4:src/lib/auth/next-path.ts",
+      "project": "hiu-youth-e-office-th4",
+      "textRange": {
+        "startLine": 3,
+        "endLine": 3,
+        "startOffset": 24,
+        "endOffset": 49
+      },
+      "flows": [],
+      "resolution": "FIXED",
+      "status": "CLOSED",
+      "message": "Using http protocol is insecure. Use https instead.",
+      "effort": "30min",
+      "debt": "30min",
+      "tags": [
+        "cwe",
+        "cryptography",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:39:23+0000",
+      "closeDate": "2026-11-10T09:39:23+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "FIXED",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "4aea0cf0-773a-43e4-86a8-847a67e88bd3",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/lib/config-check.ts",
+      "project": "hiu-youth-e-office-th4",
+      "line": 47,
+      "textRange": {
+        "startLine": 47,
+        "endLine": 47,
+        "startOffset": 52,
+        "endOffset": 58
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "6cd77852-44d5-489a-8cc0-2ad1ac46b8f9",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:src/lib/log.ts",
+      "project": "hiu-youth-e-office-th4",
+      "line": 35,
+      "textRange": {
+        "startLine": 35,
+        "endLine": 35,
+        "startOffset": 22,
+        "endOffset": 50
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "78def358-ef57-42f0-b31e-1fadc4dc20ea",
+      "rule": "Web:PageWithoutTitleCheck",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:supabase/templates/confirmation.html",
+      "project": "hiu-youth-e-office-th4",
+      "line": 2,
+      "textRange": {
+        "startLine": 2,
+        "endLine": 2,
+        "startOffset": 0,
+        "endOffset": 16
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add a <title> tag to this page.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "user-experience"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "bd986328-5132-401d-ab98-363dba318efc",
+      "rule": "Web:PageWithoutTitleCheck",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:supabase/templates/magic-link.html",
+      "project": "hiu-youth-e-office-th4",
+      "line": 2,
+      "textRange": {
+        "startLine": 2,
+        "endLine": 2,
+        "startOffset": 0,
+        "endOffset": 16
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add a <title> tag to this page.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "user-experience"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "bf53a2db-0eb4-4a37-97f4-1067d0b1df21",
+      "rule": "Web:PageWithoutTitleCheck",
+      "severity": "MAJOR",
+      "component": "hiu-youth-e-office-th4:supabase/templates/recovery.html",
+      "project": "hiu-youth-e-office-th4",
+      "line": 2,
+      "textRange": {
+        "startLine": 2,
+        "endLine": 2,
+        "startOffset": 0,
+        "endOffset": 16
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add a <title> tag to this page.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "user-experience"
+      ],
+      "creationDate": "2026-11-10T09:11:16+0000",
+      "updateDate": "2026-11-10T09:11:16+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    }
+  ],
+  "components": [
+    {
+      "key": "hiu-youth-e-office-th4:src/components/pin-setup-form.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "pin-setup-form.tsx",
+      "longName": "src/components/pin-setup-form.tsx",
+      "path": "src/components/pin-setup-form.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/auth-form-v2.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "auth-form-v2.tsx",
+      "longName": "src/components/auth-form-v2.tsx",
+      "path": "src/components/auth-form-v2.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:supabase/templates/confirmation.html",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "confirmation.html",
+      "longName": "supabase/templates/confirmation.html",
+      "path": "supabase/templates/confirmation.html"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/organization-console.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "organization-console.tsx",
+      "longName": "src/components/organization-console.tsx",
+      "path": "src/components/organization-console.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/event-program-editor.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "event-program-editor.tsx",
+      "longName": "src/components/event-program-editor.tsx",
+      "path": "src/components/event-program-editor.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/organization-accounts-console.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "organization-accounts-console.tsx",
+      "longName": "src/components/organization-accounts-console.tsx",
+      "path": "src/components/organization-accounts-console.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/program-registration-settings.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "program-registration-settings.tsx",
+      "longName": "src/components/program-registration-settings.tsx",
+      "path": "src/components/program-registration-settings.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/student-profile-form.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "student-profile-form.tsx",
+      "longName": "src/components/student-profile-form.tsx",
+      "path": "src/components/student-profile-form.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:supabase/templates/magic-link.html",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "magic-link.html",
+      "longName": "supabase/templates/magic-link.html",
+      "path": "supabase/templates/magic-link.html"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/organization-login-form.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "organization-login-form.tsx",
+      "longName": "src/components/organization-login-form.tsx",
+      "path": "src/components/organization-login-form.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/organization-pin-form.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "organization-pin-form.tsx",
+      "longName": "src/components/organization-pin-form.tsx",
+      "path": "src/components/organization-pin-form.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/lib/auth/next-path.ts",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "next-path.ts",
+      "longName": "src/lib/auth/next-path.ts",
+      "path": "src/lib/auth/next-path.ts"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/lib/log.ts",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "log.ts",
+      "longName": "src/lib/log.ts",
+      "path": "src/lib/log.ts"
+    },
+    {
+      "key": "hiu-youth-e-office-th4",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "HIU Youth E-Office (TH4 v1.1.0)",
+      "longName": "HIU Youth E-Office (TH4 v1.1.0)"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/membership-review-console.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "membership-review-console.tsx",
+      "longName": "src/components/membership-review-console.tsx",
+      "path": "src/components/membership-review-console.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:supabase/templates/recovery.html",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "recovery.html",
+      "longName": "supabase/templates/recovery.html",
+      "path": "supabase/templates/recovery.html"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/form-viewer.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "form-viewer.tsx",
+      "longName": "src/components/form-viewer.tsx",
+      "path": "src/components/form-viewer.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/lib/config-check.ts",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "config-check.ts",
+      "longName": "src/lib/config-check.ts",
+      "path": "src/lib/config-check.ts"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/form-template-editor.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "form-template-editor.tsx",
+      "longName": "src/components/form-template-editor.tsx",
+      "path": "src/components/form-template-editor.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/form-editor.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "form-editor.tsx",
+      "longName": "src/components/form-editor.tsx",
+      "path": "src/components/form-editor.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/event-program-actions.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "event-program-actions.tsx",
+      "longName": "src/components/event-program-actions.tsx",
+      "path": "src/components/event-program-actions.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/attendance-plan-editor.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "attendance-plan-editor.tsx",
+      "longName": "src/components/attendance-plan-editor.tsx",
+      "path": "src/components/attendance-plan-editor.tsx"
+    },
+    {
+      "key": "hiu-youth-e-office-th4:src/components/union-application-form.tsx",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "union-application-form.tsx",
+      "longName": "src/components/union-application-form.tsx",
+      "path": "src/components/union-application-form.tsx"
+    }
+  ],
+  "facets": []
+}
