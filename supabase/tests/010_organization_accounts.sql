@@ -4,7 +4,7 @@
 -- pg_temp.setup (SQL động, bắt lỗi), nên khi chưa hiện thực, test báo "not ok" kèm lỗi chứ không
 -- dừng cả file.
 begin;
-select plan(73);
+select plan(75);
 
 -- ── Trợ giúp ─────────────────────────────────────────────────────────────────
 -- Giá trị text của câu SQL (chạy bằng postgres), hoặc 'ERROR: <thông báo>'.
@@ -170,6 +170,10 @@ select ok(pg_temp.is_uuid(pg_temp.as_val('authenticated', pg_temp.c('A'), null,
 select pg_temp.setup($$ update public.feature_flags set enabled = true where key = 'ORG_ACCOUNTS_ENABLED' $$);
 select is(pg_temp.as_val('authenticated', pg_temp.c('A'), null, pg_temp.create_program_sql(pg_temp.c('f'), 'Tạo bằng tài khoản cá nhân')),
   'ERROR: FORBIDDEN', 'AC6: công tắc bật thì role_grants quản lý cá nhân bị vô hiệu');
+select is(pg_temp.as_val('authenticated', pg_temp.c('A'), null, format($$ select
+    public.has_permission('student.read_faculty', (select faculty_id from public.organization_units where id = %1$L))::text
+    || '/' || public.user_can_manage_forms_for_org(%1$L)::text $$, pg_temp.c('f'))),
+  'false/false', 'AC6: công tắc bật chặn quyền quản lý cá nhân ở UC-B và UC-C');
 
 -- Đặt PIN tổ chức cho các đơn vị đã có tài khoản.
 select pg_temp.setup(format($$ insert into ctx select k, user_id::text from (values ('acc_f', %L::uuid), ('acc_office', %L::uuid)) u(k, org)
@@ -193,6 +197,10 @@ select is(pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'), $
   'AC1: phiên tổ chức biết cán bộ đang thao tác (hiện ở thanh trên cùng)');
 select is(pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'), $$ select public.organization_session_ok()::text $$), 'true',
   'AC1: phiên tổ chức có cán bộ là phiên hợp lệ');
+select is(pg_temp.as_val('authenticated', pg_temp.c('acc_f'), pg_temp.c('S1'), format($$ select
+    public.has_permission('student.read_faculty', (select faculty_id from public.organization_units where id = %1$L))::text
+    || '/' || public.user_can_manage_forms_for_org(%1$L)::text $$, pg_temp.c('f'))),
+  'true/true', 'AC6: phiên tổ chức giữ quyền quản lý UC-B và UC-C của đúng đơn vị');
 
 -- ── AC2: dropdown chỉ có đơn vị đang hoạt động đã có tài khoản ───────────────
 -- Cho trước F3 có tài khoản nhưng ngừng hoạt động, F2 chưa có tài khoản;
