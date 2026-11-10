@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createUserSupabase } from "@/lib/supabase/server";
 import type { Question } from "@/modules/forms/schemas";
+import { formManagementPath, type FormManagementBasePath } from "@/modules/organization-auth/form-paths";
 
 interface Answer { question_id: string; answer_value: unknown; }
 interface Response {
@@ -12,7 +13,7 @@ interface Response {
   answers: Answer[];
 }
 
-export default async function ResponsesPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ResponsesPage({ params, managementBasePath = "/forms" }: { params: Promise<{ id: string }>; managementBasePath?: FormManagementBasePath }) {
   const { id } = await params;
   const supabase = await createUserSupabase();
 
@@ -81,7 +82,7 @@ export default async function ResponsesPage({ params }: { params: Promise<{ id: 
           <p className="lead">{fullResponses.length} phản hồi</p>
         </div>
         <div className="inline">
-          <Link href={`/forms/${id}/edit`} className="button secondary">Chỉnh sửa</Link>
+          <Link href={formManagementPath(managementBasePath, id, "edit")} className="button secondary">Chỉnh sửa</Link>
           <a href={`/api/forms/${id}/export`} className="button primary" download>
             Xuất CSV
           </a>

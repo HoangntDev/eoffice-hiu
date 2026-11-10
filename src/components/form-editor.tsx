@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { Question, AudienceRule } from "@/modules/forms/schemas";
+import { formManagementPath, type FormManagementBasePath } from "@/modules/organization-auth/form-paths";
 
 interface OrgUnit { id: string; name: string; unit_type: string; }
 interface TemplateOption { id: string; title: string; }
@@ -25,6 +26,7 @@ interface Props {
   form?: Form;
   orgs: OrgUnit[];
   templates: TemplateOption[];
+  managementBasePath?: FormManagementBasePath;
 }
 
 const questionTypeLabels: Record<string, string> = {
@@ -36,7 +38,7 @@ function newQuestion(order: number): Question {
   return { id: crypto.randomUUID(), type: "short_text", label: "", required: false, order };
 }
 
-export function FormEditor({ form, orgs, templates }: Props) {
+export function FormEditor({ form, orgs, templates, managementBasePath = "/forms" }: Props) {
   const router = useRouter();
   const [ownerOrgId, setOwnerOrgId] = useState(form?.owner_org_id ?? orgs[0]?.id ?? "");
   const [title, setTitle] = useState(form?.title ?? "");
@@ -121,7 +123,7 @@ export function FormEditor({ form, orgs, templates }: Props) {
       const result = await res.json() as { id?: string; message?: string };
       if (!res.ok) throw new Error((result as { message?: string }).message ?? "Lưu thất bại.");
       setMessage("Đã lưu biểu mẫu.");
-      if (!form?.id && result.id) router.push(`/forms/${result.id}/edit`);
+      if (!form?.id && result.id) router.push(formManagementPath(managementBasePath, result.id, "edit"));
     } catch (e) {
       setError(e instanceof Error ? e.message : "Lưu thất bại.");
     } finally { setSaving(false); }
