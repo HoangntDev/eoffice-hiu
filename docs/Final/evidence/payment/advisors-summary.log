@@ -1,4 +1,3 @@
 Tổng: 17
 Theo mức: {"WARN":17}
 Liên quan thanh toán: 0
-Hai cảnh báo RLS thanh toán ban đầu đã được xử lý bằng init-plan auth.uid().

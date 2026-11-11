@@ -5,39 +5,35 @@ npm notice run vitest run --coverage --reporter=default --reporter=junit --outpu
       Coverage enabled with v8
 
  ✓ tests/env-config.test.ts (7 tests) 18ms
- ✓ tests/catalog-import-v2.test.mjs (5 tests) 17ms
- ✓ tests/login-next-path.test.ts (16 tests) 21ms
- ✓ tests/validation.test.ts (7 tests) 19ms
- ✓ tests/forms-validation.test.ts (17 tests) 46ms
- ✓ tests/organization-auth.test.ts (26 tests) 30ms
- ✓ tests/event-programs.test.ts (18 tests) 37ms
- ✓ tests/qr-token-invalid.test.ts (5 tests) 48ms
- ✓ tests/program-attendance.test.ts (7 tests) 36ms
- ✓ tests/logging.test.ts (20 tests) 113ms
- ✓ tests/core-business-baseline.test.ts (35 tests) 53ms
- ✓ tests/program-registrations.test.ts (15 tests) 32ms
- ✓ tests/union-fee-payments.test.ts (20 tests) 23ms
- ✓ tests/registration-eligibility.test.ts (5 tests) 7ms
- ✓ tests/inc-01-config.test.ts (10 tests) 58ms
- ✓ tests/nav-access.test.ts (5 tests) 7ms
- ✓ tests/student-profile-form.test.tsx (1 test) 104ms
- ✓ tests/auth-ui.test.tsx (4 tests) 236ms
+ ✓ tests/union-fee-payments.test.ts (21 tests) 83ms
+ ✓ tests/validation.test.ts (7 tests) 23ms
+ ✓ tests/login-next-path.test.ts (16 tests) 27ms
+ ✓ tests/organization-auth.test.ts (26 tests) 36ms
+ ✓ tests/forms-validation.test.ts (17 tests) 58ms
+ ✓ tests/program-attendance.test.ts (7 tests) 32ms
+ ✓ tests/qr-token-invalid.test.ts (5 tests) 44ms
+ ✓ tests/event-programs.test.ts (18 tests) 46ms
+ ✓ tests/logging.test.ts (20 tests) 116ms
+ ✓ tests/core-business-baseline.test.ts (35 tests) 71ms
+ ✓ tests/program-registrations.test.ts (15 tests) 47ms
+ ✓ tests/nav-access.test.ts (5 tests) 8ms
+ ✓ tests/catalog-import-v2.test.mjs (5 tests) 16ms
+ ✓ tests/registration-eligibility.test.ts (5 tests) 6ms
+ ✓ tests/inc-01-config.test.ts (10 tests) 53ms
+ ✓ tests/student-profile-form.test.tsx (1 test) 109ms
+ ✓ tests/auth-ui.test.tsx (4 tests) 219ms
 
  Test Files  18 passed (18)
-      Tests  223 passed (223)
-   Start at  06:01:20
-   Duration  2.99s (import 33%, environment 26%, transform 25%, tests 9%, worker 7%)
-
-  Transform  transforming modules took 2.60s · 25% of tracked time, re-done on every run
-             persist transforms across runs with fsModuleCache: true
-             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns
+      Tests  224 passed (224)
+   Start at  01:59:08
+   Duration  3.04s (import 37%, environment 25%, transform 21%, tests 9%, worker 8%)
 
 JUNIT report written to <repo>/test-results/junit.xml
  % Coverage report from v8
 -------------------|---------|----------|---------|---------|-------------------
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------------|---------|----------|---------|---------|-------------------
-All files          |   18.63 |    15.86 |   22.08 |   19.63 |
+All files          |   18.93 |     16.1 |   22.71 |    19.9 |
  src               |   29.62 |    15.38 |   28.57 |   31.94 |
   ...umentation.ts |       0 |        0 |       0 |       0 | 6-26
   proxy.ts         |    33.8 |     18.6 |   36.36 |   37.09 | ...0,85-92,96-124
@@ -190,7 +186,7 @@ All files          |   18.63 |    15.86 |   22.08 |   19.63 |
  ...ments/checkout |       0 |        0 |       0 |       0 |
   route.ts         |       0 |        0 |       0 |       0 | 10-64
  ...i/payments/ipn |       0 |        0 |       0 |       0 |
-  route.ts         |       0 |        0 |       0 |       0 | 7-48
+  route.ts         |       0 |        0 |       0 |       0 | 7-60
  ...ayments/report |       0 |        0 |       0 |       0 |
   route.ts         |       0 |        0 |       0 |       0 | 16-46
  ...erence-options |       0 |        0 |       0 |       0 |
@@ -335,10 +331,10 @@ All files          |   18.63 |    15.86 |   22.08 |   19.63 |
  ...zation-catalog |   66.66 |    71.42 |    92.3 |   66.66 |
   display.ts       |       0 |        0 |       0 |       0 | 4-5
   schemas.ts       |       0 |      100 |     100 |       0 | 3-26
- ...dules/payments |   73.68 |    62.26 |   78.26 |   80.39 |
+ ...dules/payments |   93.22 |    79.24 |      96 |   96.22 |
   csv.ts           |   91.66 |       60 |     100 |     100 | 19,32-34
   ipn.ts           |   83.33 |      100 |     100 |      80 | 16
-  vnpay-gateway.ts |   53.57 |    56.75 |   61.53 |    62.5 | 24-35,49-66
+  vnpay-gateway.ts |   93.33 |    81.08 |   93.33 |   96.15 | 13
  ...ram-attendance |     100 |    93.33 |     100 |     100 |
   schemas.ts       |     100 |     90.9 |     100 |     100 | 28
  ...-registrations |   95.23 |    85.58 |     100 |   98.68 |
@@ -352,8 +348,8 @@ All files          |   18.63 |    15.86 |   22.08 |   19.63 |
 -------------------|---------|----------|---------|---------|-------------------
 
 =============================== Coverage summary ===============================
-Statements   : 18.63% ( 697/3741 )
-Branches     : 15.86% ( 517/3259 )
-Functions    : 22.08% ( 195/883 )
-Lines        : 19.63% ( 596/3036 )
+Statements   : 18.93% ( 710/3749 )
+Branches     : 16.1% ( 526/3267 )
+Functions    : 22.71% ( 201/885 )
+Lines        : 19.9% ( 606/3044 )
 ================================================================================
