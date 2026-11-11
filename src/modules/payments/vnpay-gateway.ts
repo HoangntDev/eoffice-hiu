@@ -8,11 +8,17 @@ export type VnpayConfig = {
   returnUrl: string;
 };
 
+function vnpayUrlencode(value: string): string {
+  return encodeURIComponent(value)
+    .replace(/[!'()*~]/g, (character) => `%${character.charCodeAt(0).toString(16).toUpperCase()}`)
+    .replace(/%20/g, "+");
+}
+
 function canonicalParams(params: URLSearchParams): string {
   return [...params.entries()]
     .filter(([key, value]) => key.startsWith("vnp_") && key !== "vnp_SecureHash" && key !== "vnp_SecureHashType" && value !== "")
     .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
-    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .map(([key, value]) => `${vnpayUrlencode(key)}=${vnpayUrlencode(value)}`)
     .join("&");
 }
 
