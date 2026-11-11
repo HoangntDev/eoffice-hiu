@@ -37,7 +37,19 @@ export async function GET(request: Request) {
       p_request_id: requestId,
     });
     const code = !error && typeof data === "string" && data in messages ? data : "99";
-    logEvent(code === "00" || code === "02" ? "info" : "warn", "payment.ipn_processed", {
+    let expiredSuccess = false;
+    if (code === "02" && ipn.responseCode === "00" && ipn.transactionStatus === "00") {
+      const { data: order } = await admin.from("union_fee_orders")
+        .select("status").eq("order_ref", ipn.orderRef).maybeSingle();
+      expiredSuccess = order?.status === "expired";
+      if (expiredSuccess) {
+        logEvent("warn", "payment.ipn_for_expired_order", {
+          requestId, orderRef: ipn.orderRef, transactionRef: ipn.transactionRef,
+          signatureValid: true, amountVnd: ipn.amountVnd, result: code,
+        });
+      }
+    }
+    logEvent(expiredSuccess || (code !== "00" && code !== "02") ? "warn" : "info", "payment.ipn_processed", {
       requestId, orderRef: ipn.orderRef, transactionRef: ipn.transactionRef,
       signatureValid: true, amountVnd: ipn.amountVnd, responseCode: ipn.responseCode,
       transactionStatus: ipn.transactionStatus, result: code,

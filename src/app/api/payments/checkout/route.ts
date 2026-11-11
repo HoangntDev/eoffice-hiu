@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     }
     const { data: order, error: orderError } = await supabase
       .from("union_fee_orders")
-      .select("order_ref, amount, union_fee_campaigns(calendar_year)")
+      .select("order_ref, amount, created_at, union_fee_campaigns(calendar_year)")
       .eq("id", orderId).single();
     if (orderError || !order) throw new Error("PAYMENT_ORDER_NOT_FOUND_AFTER_CREATE");
     const campaign = order.union_fee_campaigns as unknown as { calendar_year: number };
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         amountVnd: order.amount,
         orderInfo: `Doan phi nam ${campaign.calendar_year}`,
         ipAddress: clientIp(request.headers),
-        createdAt: new Date(),
+        createdAt: new Date(order.created_at),
       }));
     } catch {
       throw new HttpError(503, "PAYMENT_GATEWAY_UNAVAILABLE", "Cổng thanh toán đang bận. Vui lòng thử lại sau.");
