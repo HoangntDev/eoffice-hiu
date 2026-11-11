@@ -114,6 +114,33 @@ describe("PaymentGateway và IPN", () => {
     });
     expect(gateway.verifyIpn(params).signatureValid).toBe(false);
   });
+
+  it("VnpayGateway ký và gửi query theo urlencode của PHP", async () => {
+    const secret = "unit-test-secret-only";
+    const orderInfo = "Đoàn phí năm 2026: lớp A+B & C";
+    const params = new URLSearchParams({
+      vnp_Amount: "6000000",
+      vnp_OrderInfo: orderInfo,
+      vnp_TmnCode: "TESTCODE",
+      vnp_TxnRef: request.orderRef,
+    });
+    // Vector tính độc lập theo ksort + PHP urlencode + HMAC-SHA512.
+    const expectedOrderInfo = "%C4%90o%C3%A0n+ph%C3%AD+n%C4%83m+2026%3A+l%E1%BB%9Bp+A%2BB+%26+C";
+    const expectedSignature = "b96cc7c345a5ff882812a3e10af84bfcc6d7b0b920d0c0aaa8b6275aad29c9a1a6e229835dd2d2ae276beb1d45b9a360f9cc6ee5f19ac1c734a52c253d0b8925";
+    expect(signVnpayParams(params, secret)).toBe(expectedSignature);
+    params.set("vnp_SecureHash", expectedSignature);
+
+    const gateway = new VnpayGateway({
+      tmnCode: "TESTCODE",
+      hashSecret: secret,
+      paymentUrl: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html",
+      returnUrl: "http://127.0.0.1:3000/payments/return",
+    });
+    expect(gateway.verifyIpn(params).signatureValid).toBe(true);
+
+    const paymentUrl = await gateway.createPaymentUrl({ ...request, orderInfo });
+    expect(new URL(paymentUrl).search).toContain(`vnp_OrderInfo=${expectedOrderInfo}`);
+  });
 });
 
 describe("đối chiếu và log an toàn", () => {
