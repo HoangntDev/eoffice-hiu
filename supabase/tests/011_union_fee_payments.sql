@@ -2,7 +2,7 @@
 -- RED: mọi đối tượng mới được gọi qua SQL động để toàn bộ assertion vẫn chạy khi chưa có migration.
 begin;
 \ir helpers/organization_login.inc
-select plan(46);
+select plan(51);
 
 create function pg_temp.val(p_sql text) returns text language plpgsql as $$
 declare v text;
@@ -191,6 +191,31 @@ select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000002', null);
 select ok(pg_temp.val(format($$ select public.create_union_fee_order(%L, 'retry-after-cancel')::text $$, pg_temp.c('campaign2027'))) ~ '^[0-9a-f-]{36}$',
   'giao dịch hủy cho thanh toán lại bằng đơn mới');
 
+-- Link VNPay hết hạn sau 15 phút phải dùng mã đơn mới để không trùng vnp_TxnRef trong ngày.
+select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000001', pg_temp.c('org1')::uuid);
+select pg_temp.setup($$ insert into payment_ctx values ('campaign2028', public.create_union_fee_campaign(2028, 10000, 'expiry-campaign')::text) $$);
+select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000002', null);
+select pg_temp.setup(format($$ insert into payment_ctx values ('expired_order', public.create_union_fee_order(%L, 'expiry-first')::text) $$, pg_temp.c('campaign2028')));
+select pg_temp.setup(format($$ insert into payment_ctx select 'expired_ref', order_ref from public.union_fee_orders where id = %L $$, pg_temp.c('expired_order')));
+reset role;
+update public.union_fee_orders set created_at = now() - interval '16 minutes' where id = pg_temp.c('expired_order')::uuid;
+set local role authenticated;
+select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000002', null);
+select pg_temp.setup(format($$ insert into payment_ctx values ('replacement_order', public.create_union_fee_order(%L, 'expiry-retry')::text) $$, pg_temp.c('campaign2028')));
+select pg_temp.setup(format($$ insert into payment_ctx select 'replacement_ref', order_ref from public.union_fee_orders where id = %L $$, pg_temp.c('replacement_order')));
+select isnt(pg_temp.c('replacement_ref'), pg_temp.c('expired_ref'),
+  'thanh toán lại sau 15 phút tạo order_ref mới');
+select is(pg_temp.val(format($$ select count(*) filter (where status = 'pending')::text || '/' || count(*) filter (where status = 'expired')::text from public.union_fee_orders where campaign_id = %L and student_user_id = 'f1500000-0000-4000-8000-000000000002' $$, pg_temp.c('campaign2028'))),
+  '1/1', 'sau khi thay link chỉ có một pending và một expired');
+select is(pg_temp.val(format($$ select public.create_union_fee_order(%L, 'within-expiry')::text $$, pg_temp.c('campaign2028'))),
+  pg_temp.c('replacement_order'), 'đơn pending còn hạn được dùng lại');
+reset role;
+set local role service_role;
+select is(pg_temp.val(format($$ select public.record_union_fee_ipn(%L, 120000, '15000003', '00', '00', now(), 'expired-ipn') $$, pg_temp.c('expired_ref'))),
+  '02', 'IPN của đơn expired trả RspCode 02');
+select is(pg_temp.val(format($$ select count(*)::text from public.union_fee_month_payments where order_id = %L $$, pg_temp.c('expired_order'))),
+  '0', 'IPN của đơn expired không ghi nhận 12 tháng');
+
 -- Báo cáo Khoa, lọc lớp, audit và tương thích hồ sơ Đoàn viên.
 select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000001', pg_temp.c('org1')::uuid);
 select is(pg_temp.val(format($$ select count(*)::text from public.faculty_union_fee_report(%L, null) $$, pg_temp.c('campaign2026'))),
@@ -207,7 +232,7 @@ select lives_ok($$ select public.save_student_profile('Sinh viên Thanh toán Ha
   'chưa đóng không chặn cập nhật hồ sơ Đoàn viên');
 reset role;
 select is(pg_temp.val($$ select count(*)::text from public.audit_events where action = 'union_fee.order_created' $$),
-  '3', 'mọi lần tạo đơn đều có audit');
+  '5', 'mọi lần tạo đơn đều có audit');
 select is(pg_temp.val($$ select count(*)::text from public.audit_events where action in ('union_fee.payment_paid','union_fee.payment_cancelled') $$),
   '2', 'IPN thành công hoặc hủy đều có audit');
 
