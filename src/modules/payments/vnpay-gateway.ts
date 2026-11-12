@@ -1,5 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import type { PaymentGateway, PaymentRequest, VerifiedPaymentIpn } from "./gateway";
+import type { IpnPaymentGateway, PaymentRequest, VerifiedPaymentIpn } from "./gateway";
 
 export type VnpayConfig = {
   tmnCode: string;
@@ -48,7 +48,7 @@ function parseVnpayDate(value: string | null): Date | null {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
-export class VnpayGateway implements PaymentGateway {
+export class VnpayGateway implements IpnPaymentGateway {
   constructor(private readonly config: VnpayConfig) {}
 
   async createPaymentUrl(request: PaymentRequest): Promise<string> {

@@ -1,10 +1,10 @@
-import type { PaymentGateway, VerifiedPaymentIpn } from "./gateway";
+import type { IpnPaymentGateway, VerifiedPaymentIpn } from "./gateway";
 
 export type IpnResponse = { RspCode: string; Message: string };
 export type IpnRecorder = (ipn: VerifiedPaymentIpn) => Promise<IpnResponse>;
 
 export async function processPaymentIpn(
-  gateway: PaymentGateway,
+  gateway: IpnPaymentGateway,
   params: URLSearchParams,
   record: IpnRecorder,
 ): Promise<IpnResponse> {

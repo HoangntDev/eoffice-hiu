@@ -1,7 +1,19 @@
-import type { PaymentGateway, PaymentRequest, VerifiedPaymentIpn } from "./gateway";
+import type {
+  IpnPaymentGateway,
+  PaymentRequest,
+  PaypalCapture,
+  PaypalOrder,
+  PaypalPaymentGateway,
+  VerifiedPaymentIpn,
+} from "./gateway";
 
-export class FakeGateway implements PaymentGateway {
-  constructor(private readonly ipn: VerifiedPaymentIpn) {}
+type PaypalFixtures = { order: PaypalOrder; capture: PaypalCapture };
+
+export class FakeGateway implements IpnPaymentGateway, PaypalPaymentGateway {
+  constructor(
+    private readonly ipn: VerifiedPaymentIpn,
+    private readonly paypal?: PaypalFixtures,
+  ) {}
 
   async createPaymentUrl(request: PaymentRequest): Promise<string> {
     const url = new URL("https://fake-gateway.test/pay");
@@ -12,5 +24,16 @@ export class FakeGateway implements PaymentGateway {
 
   verifyIpn(): VerifiedPaymentIpn {
     return this.ipn;
+  }
+
+  async createPaypalOrder(request: PaymentRequest): Promise<PaypalOrder> {
+    void request;
+    if (!this.paypal) throw new Error("PAYPAL_FIXTURE_MISSING");
+    return this.paypal.order;
+  }
+
+  async captureOrder(): Promise<PaypalCapture> {
+    if (!this.paypal) throw new Error("PAYPAL_FIXTURE_MISSING");
+    return this.paypal.capture;
   }
 }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export function PaymentCheckoutButton({ campaignId }: { campaignId: string }) {
+export function PaymentCheckoutButton({ campaignId, provider }: { campaignId: string; provider: "vnpay" | "paypal" }) {
   const [pending, setPending] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -26,8 +26,9 @@ export function PaymentCheckoutButton({ campaignId }: { campaignId: string }) {
 
   return <div>
     <button className="button primary" type="button" disabled={pending} onClick={() => void checkout()}>
-      {pending ? "Đang chuyển sang VNPay…" : "Thanh toán qua VNPay"}
+      {pending ? `Đang chuyển sang ${provider === "paypal" ? "PayPal" : "VNPay"}…`
+        : `Thanh toán qua ${provider === "paypal" ? "PayPal" : "VNPay"}`}
     </button>
-    {message && <p className="notice error" role="alert">{message}</p>}
+    {message ? <p className="notice error" role="alert">{message}</p> : null}
   </div>;
 }

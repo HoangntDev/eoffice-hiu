@@ -65,6 +65,38 @@ export function vnpayEnv() {
   };
 }
 
+const PAYPAL_VARS = [
+  "PAYPAL_CLIENT_ID",
+  "PAYPAL_CLIENT_SECRET",
+  "PAYPAL_API_URL",
+  "PAYPAL_RETURN_URL",
+  "PAYPAL_CANCEL_URL",
+  "PAYPAL_VND_PER_USD",
+] as const;
+
+export function missingPaypalVars(): string[] {
+  return PAYPAL_VARS.filter((name) => !runtime(name)?.trim());
+}
+
+export function paypalEnv() {
+  const vndPerUsd = Number(required("PAYPAL_VND_PER_USD"));
+  if (!Number.isFinite(vndPerUsd) || vndPerUsd <= 0) {
+    throw new Error("CONFIG_INVALID:PAYPAL_VND_PER_USD");
+  }
+  return {
+    clientId: required("PAYPAL_CLIENT_ID"),
+    clientSecret: required("PAYPAL_CLIENT_SECRET"),
+    apiUrl: required("PAYPAL_API_URL"),
+    returnUrl: required("PAYPAL_RETURN_URL"),
+    cancelUrl: required("PAYPAL_CANCEL_URL"),
+    vndPerUsd,
+  };
+}
+
+export function configuredPaymentProvider(): string | undefined {
+  return runtime("PAYMENT_PROVIDER");
+}
+
 export function isProduction() {
   return runtime("NODE_ENV") === "production";
 }
