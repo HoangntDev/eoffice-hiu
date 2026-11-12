@@ -11,7 +11,13 @@ export type OrganizationAccountRow = {
   status: string;
 };
 
-export function OrganizationAccountsConsole({ accounts, enabled }: { accounts: OrganizationAccountRow[]; enabled: boolean }) {
+type Props = {
+  accounts: OrganizationAccountRow[];
+  organizationAccountsEnabled: boolean;
+  paymentEnabled: boolean;
+};
+
+export function OrganizationAccountsConsole({ accounts, organizationAccountsEnabled, paymentEnabled }: Props) {
   const router = useRouter();
   const [message, setMessage] = useState("");
 
@@ -26,10 +32,17 @@ export function OrganizationAccountsConsole({ accounts, enabled }: { accounts: O
     if (response.ok) router.refresh();
   }
 
-  async function toggle() {
+  async function toggle(key: "ORG_ACCOUNTS_ENABLED" | "PAYMENT_ENABLED", enabled: boolean) {
+    const payment = key === "PAYMENT_ENABLED";
     const response = await fetch("/api/admin/feature-flag", {
       method: "POST", headers: { "content-type": "application/json" },
-      body: JSON.stringify({ enabled: !enabled, reason: enabled ? "Tắt để quay về cách quản lý v1.0.0" : "Bật tài khoản tổ chức" }),
+      body: JSON.stringify({
+        key,
+        enabled: !enabled,
+        reason: enabled
+          ? payment ? "Tắt thanh toán Đoàn phí" : "Tắt để quay về cách quản lý v1.0.0"
+          : payment ? "Bật thanh toán Đoàn phí" : "Bật tài khoản tổ chức",
+      }),
     });
     const result = await response.json() as { message?: string };
     setMessage(result.message ?? "Không thể đổi công tắc.");
@@ -40,8 +53,13 @@ export function OrganizationAccountsConsole({ accounts, enabled }: { accounts: O
     {message && <p className="notice">{message}</p>}
     <section className="panel">
       <h2>Công tắc tài khoản tổ chức</h2>
-      <p>Trạng thái database: <strong>{enabled ? "BẬT" : "TẮT"}</strong></p>
-      <button className={enabled ? "secondary" : "primary"} onClick={() => void toggle()}>{enabled ? "Tắt" : "Bật"}</button>
+      <p>Trạng thái database: <strong>{organizationAccountsEnabled ? "BẬT" : "TẮT"}</strong></p>
+      <button className={organizationAccountsEnabled ? "secondary" : "primary"} onClick={() => void toggle("ORG_ACCOUNTS_ENABLED", organizationAccountsEnabled)}>{organizationAccountsEnabled ? "Tắt" : "Bật"}</button>
+    </section>
+    <section className="panel">
+      <h2>Công tắc thanh toán Đoàn phí</h2>
+      <p>Trạng thái database: <strong>{paymentEnabled ? "BẬT" : "TẮT"}</strong></p>
+      <button className={paymentEnabled ? "secondary" : "primary"} onClick={() => void toggle("PAYMENT_ENABLED", paymentEnabled)}>{paymentEnabled ? "Tắt" : "Bật"}</button>
     </section>
     <section className="panel">
       <h2>Tạo hoặc quản lý tài khoản</h2>

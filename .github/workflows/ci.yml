@@ -74,12 +74,12 @@ jobs:
             supabase/tests/007_program_registrations.sql \
             supabase/tests/008_program_attendance.sql \
             2>&1 | tee test-results/pgtap-off.txt
-      - name: Bật tài khoản tổ chức trong database kiểm thử
+      - name: Bật tài khoản tổ chức và thanh toán trong database kiểm thử
         run: |
           docker exec supabase_db_hiu-youth-e-office \
             psql -U postgres -d postgres -v ON_ERROR_STOP=1 \
-            -c "update public.feature_flags set enabled = true where key = 'ORG_ACCOUNTS_ENABLED';"
-      - name: pgTAP công tắc BẬT — toàn bộ
+            -c "update public.feature_flags set enabled = true where key in ('ORG_ACCOUNTS_ENABLED', 'PAYMENT_ENABLED');"
+      - name: pgTAP công tắc BẬT — toàn bộ, gồm thanh toán
         run: |
           set -o pipefail
           supabase test db 2>&1 | tee test-results/pgtap-on.txt

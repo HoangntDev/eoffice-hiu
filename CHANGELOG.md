@@ -5,6 +5,72 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-13
+
+Thanh toán Đoàn phí trực tuyến (#81). Trang đăng ký VNPay sandbox
+(`sandbox.vnpayment.vn/devreg/`) trả 404 trong ngày 11–12/11/2026 nên không lấy được
+mã merchant; bản này chạy thật bằng **PayPal sandbox** (`PAYMENT_PROVIDER=paypal`) và
+giữ nguyên `VnpayGateway` để chuyển lại khi có mã VNPay.
+
+### Added
+
+- Đoàn Khoa tạo khoản Đoàn phí cho một năm dương lịch với một trong bốn mức
+  2.000, 5.000, 10.000 hoặc 20.000 đồng/tháng; database tính khoản đóng gộp 12 tháng (#81).
+- Sinh viên xem khoản phải đóng, chuyển sang VNPay hoặc PayPal sandbox và xem biên nhận gồm
+  mã giao dịch, số tiền, mức tháng, năm và thời gian. Không chặn hồ sơ Đoàn viên khi chưa đóng (#81).
+- Danh sách đã đóng/chưa đóng theo Khoa, lọc theo lớp và CSV có cột tháng 1–12 để
+  cán bộ nhập lại hệ thống quản lý đoàn viên Trung ương (#81).
+- Công tắc database `PAYMENT_ENABLED`; khi tắt, chức năng thanh toán bị ẩn và hệ
+  thống giữ hành vi v1.1.0 (#81).
+- `PaypalGateway` dùng Orders API v2: lấy OAuth token phía server, tạo order
+  `CAPTURE`, quy đổi VND sang USD theo cấu hình và cho phép hủy rồi thanh toán lại (#81).
+
+### Security
+
+- Tách `PaymentGateway`, `VnpayGateway`, `PaypalGateway` và `FakeGateway`. VNPay
+  kiểm HMAC-SHA512; PayPal chỉ ghi nhận sau capture server-to-server trả `COMPLETED`
+  và khớp mã đơn, currency, số tiền. Trang kết quả không ghi trạng thái (#81).
+- RPC chỉ ghi nhận khi mã đơn đang chờ, số tiền khớp mức × 12 và giao dịch thành
+  công. IPN lặp idempotent; sinh viên và Đoàn Khoa khác bị RLS chặn (#81).
+- Log thanh toán chỉ ghi mã đơn, mã giao dịch/capture, trạng thái đối chiếu, số tiền và MSSV
+  che giữa; không ghi secret, chữ ký hoặc dữ liệu thẻ (#81).
+
+### Changed
+
+- Giao dịch lỗi hoặc hủy có thể tạo đơn mới; giao dịch đã đóng đủ năm bị chặn đóng
+  trùng. Hệ thống không cung cấp chức năng hoàn tiền (#81).
+- Tăng phiên bản ứng dụng lên 1.2.0 và bổ sung hướng dẫn chuyển cổng/chạy PayPal
+  hoặc VNPay sandbox (#81).
+
+### Tests
+
+- Thêm Vitest với FakeGateway và pgTAP cho bốn mức thu, số tiền năm, chữ ký/số
+  tiền sai, đơn không tồn tại, callback lặp, PayPal capture sai trạng thái/custom_id/
+  currency/amount, retry, chống đóng trùng, công tắc và phân quyền (#81).
+
+### Migration và rollback
+
+- Thêm migration `20261110224444_online_union_fee_payments.sql`,
+  `20261111185625_expire_union_fee_orders.sql` và
+  `20261112134412_paypal_payment_provider.sql`; migration mặc định để
+  `PAYMENT_ENABLED` tắt. Quay lui hành vi bằng công tắc, không sửa hoặc chạy ngược
+  migration đã phát hành.
+
+### Fixed
+
+- Khôi phục vùng nhập PIN 6 chấm ở bước 1 (PIN tổ chức) và PIN xác nhận cán bộ của
+  đăng nhập tổ chức. Thay đổi ngoài phạm vi thanh toán, phát hiện khi chạy thử, có
+  RED/GREEN riêng (#81).
+
+### Known issues
+
+- #84: bấm "Đăng xuất" có thể kẹt ở "Đang đăng xuất…"; đăng xuất phiên tổ chức không
+  kết thúc phiên cán bộ và chuyển về `/login` thay vì `/admin/login`.
+- #85: trình duyệt còn cookie của phiên đã bị thu hồi (sau đăng xuất, "Đổi cán bộ",
+  thu hồi thành viên) thì mọi trang, kể cả `/login`, trả 500 cho tới khi xóa cookie.
+  Cách tránh tạm thời: xóa cookie của site hoặc đóng mọi cửa sổ ẩn danh rồi mở lại.
+- Hai lỗi trên có từ v1.1.0 và sẽ sửa ở bản vá sau v1.2.0.
+
 ## [1.1.0] - 2026-11-10
 
 CR-01 tách toàn bộ thao tác quản lý sang tài khoản tổ chức. Không thay đổi hành vi
@@ -142,7 +208,8 @@ Phiên bản phát hành đầu tiên của Final Project. Tính từ baseline `
 - K2 – QR điểm danh dùng chung cho cả lượt, nên trong 30 giây hiệu lực vẫn có thể bị chụp lại và gửi cho người khác. Đây là giới hạn thiết kế đã chấp nhận. Hệ thống vẫn yêu cầu đăng nhập, đăng ký được nhận và mỗi lượt chỉ một lần.
 - K5 – Tên một số migration mang ngày 14–15/10, trong khi thực tế được tạo ngày 13/10/2026. Không đổi tên được vì đã áp lên DB. Không ảnh hưởng người dùng.
 
-[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/HoangntDev/eoffice-hiu/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/HoangntDev/eoffice-hiu/releases/tag/v1.0.0

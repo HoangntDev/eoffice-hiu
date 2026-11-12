@@ -19,9 +19,9 @@ const organizationItems = [
   { href: "/admin/settings", label: "Đổi PIN tổ chức" },
 ];
 
-type Props = { fullName: string | null; studentCode: string | null; email: string | null; organization?: boolean };
+type Props = { fullName: string | null; studentCode: string | null; email: string | null; organization?: boolean; paymentEnabled?: boolean };
 
-export function AccountMenu({ fullName, studentCode, email, organization = false }: Props) {
+export function AccountMenu({ fullName, studentCode, email, organization = false, paymentEnabled = false }: Props) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -43,7 +43,10 @@ export function AccountMenu({ fullName, studentCode, email, organization = false
   }, [open]);
 
   const name = organization ? "Tài khoản tổ chức" : (fullName ?? (studentCode ? `MSSV ${studentCode}` : "Tài khoản"));
-  const items = organization ? organizationItems : studentItems;
+  const items = organization ? organizationItems : [
+    ...studentItems,
+    ...(paymentEnabled ? [{ href: "/payments", label: "Đoàn phí" }] : []),
+  ];
   return (
     <div className="account-menu" ref={rootRef}>
       <button

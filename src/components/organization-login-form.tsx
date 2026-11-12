@@ -1,17 +1,48 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import type { LoginUnitGroup } from "@/modules/organization-auth/display";
 
 type Props =
   | { step: "organization"; groups: LoginUnitGroup[] }
   | { step: "officer"; groups?: never };
 
+function PinDots({ value, pending }: { value: string; pending: boolean }) {
+  return (
+    <div className="pin-dots" aria-hidden>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <span
+          key={index}
+          className={[
+            "pin-dot",
+            index < value.length ? "pin-dot--filled" : "",
+            index === value.length && !pending ? "pin-dot--active" : "",
+          ].filter(Boolean).join(" ")}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function OrganizationLoginForm(props: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [organizationPin, setOrganizationPin] = useState("");
+  const [officerPin, setOfficerPin] = useState("");
+  const organizationPinRef = useRef<HTMLInputElement>(null);
+  const officerPinRef = useRef<HTMLInputElement>(null);
+
+  function changeOrganizationPin(event: ChangeEvent<HTMLInputElement>) {
+    setOrganizationPin(event.target.value.replace(/\D/g, "").slice(0, 6));
+    setError("");
+  }
+
+  function changeOfficerPin(event: ChangeEvent<HTMLInputElement>) {
+    setOfficerPin(event.target.value.replace(/\D/g, "").slice(0, 6));
+    setError("");
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,18 +91,72 @@ export function OrganizationLoginForm(props: Props) {
               ))}
             </select>
           </label>
-          <label>PIN tổ chức
-            <input name="organizationPin" type="password" inputMode="numeric" pattern="[0-9]{6}" minLength={6} maxLength={6} autoComplete="current-password" required />
-          </label>
+          <label htmlFor="organization-pin">PIN tổ chức</label>
+          <div
+            className="pin-wrap"
+            onClick={() => organizationPinRef.current?.focus()}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") organizationPinRef.current?.focus();
+            }}
+            role="button"
+            tabIndex={-1}
+            aria-label="Vùng nhập PIN tổ chức"
+          >
+            <PinDots value={organizationPin} pending={busy} />
+            <input
+              ref={organizationPinRef}
+              id="organization-pin"
+              name="organizationPin"
+              type="password"
+              inputMode="numeric"
+              pattern="[0-9]{6}"
+              minLength={6}
+              maxLength={6}
+              autoComplete="current-password"
+              aria-label="PIN tổ chức"
+              className="pin-hidden-input"
+              value={organizationPin}
+              onChange={changeOrganizationPin}
+              disabled={busy}
+              required
+            />
+          </div>
         </>
       ) : (
         <>
           <label>MSSV cán bộ
             <input name="studentCode" inputMode="numeric" pattern="[0-9]{10}" minLength={10} maxLength={10} autoComplete="username" required />
           </label>
-          <label>PIN cá nhân
-            <input name="pin" type="password" inputMode="numeric" pattern="[0-9]{6}" minLength={6} maxLength={6} autoComplete="current-password" required />
-          </label>
+          <label htmlFor="officer-pin">PIN cá nhân</label>
+          <div
+            className="pin-wrap"
+            onClick={() => officerPinRef.current?.focus()}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") officerPinRef.current?.focus();
+            }}
+            role="button"
+            tabIndex={-1}
+            aria-label="Vùng nhập PIN cá nhân"
+          >
+            <PinDots value={officerPin} pending={busy} />
+            <input
+              ref={officerPinRef}
+              id="officer-pin"
+              name="pin"
+              type="password"
+              inputMode="numeric"
+              pattern="[0-9]{6}"
+              minLength={6}
+              maxLength={6}
+              autoComplete="current-password"
+              aria-label="PIN cá nhân"
+              className="pin-hidden-input"
+              value={officerPin}
+              onChange={changeOfficerPin}
+              disabled={busy}
+              required
+            />
+          </div>
         </>
       )}
       <button className="primary" disabled={busy}>{busy ? "Đang xác thực…" : "Tiếp tục"}</button>

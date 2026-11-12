@@ -12,6 +12,7 @@ Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế
 | UC6 | Kế hoạch chương trình sự kiện; chỉ Văn phòng Đoàn – Hội duyệt | `/programs`, `/programs/new`, `/programs/{id}` |
 | UC7 | Đăng ký tham gia chương trình | `/programs/{id}`, `/programs/{id}/registrations` |
 | UC8 | Điểm danh QR theo lượt, điểm rèn luyện dự kiến đề nghị | `/programs/{id}/attendance`, `/attend/{sessionId}?t=…` |
+| UC9 | Đoàn phí theo tháng, đóng gộp năm qua cổng sandbox và đối chiếu theo lớp | `/payments`, `/admin/payments` |
 
 Bốn use case chính của bản phát hành v1.0.0 (dùng thống nhất trong test case và CHANGELOG): **UC-A** Hồ sơ Đoàn viên (thuộc UC2), **UC-B** Kế hoạch chương trình (UC6), **UC-C** Đăng ký tham gia (UC7), **UC-D** Điểm danh QR và điểm dự kiến đề nghị (UC8). Các UC còn lại là phần nền.
 
@@ -53,7 +54,7 @@ Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 ```bash
 # 1. Lấy mã nguồn đúng phiên bản phát hành
 git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
-git switch --detach v1.1.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+git switch --detach v1.2.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
 
 # 2. Cài dependency đúng theo package-lock.json
 npm ci
@@ -120,6 +121,17 @@ Sao chép từ [`.env.example`](.env.example) sang `.env.local`. Không commit `
 | `NEXT_PUBLIC_APP_URL` | trình duyệt + server | Origin của app, dùng trong link xác thực/khôi phục |
 | `LOG_LEVEL` | chỉ server | Mức log JSON: `debug`, `info`, `warn`, `error`. Để trống thì theo môi trường: dev → `debug`, production → `info`, test → `warn`. Log ghi ra console và file `logs/app-YYYY-MM-DD.log` (xoay theo ngày, giữ 7 file) |
 | `DB_SLOW_MS` | chỉ server | Ngưỡng (ms) ghi log `db.slow` khi lời gọi database chậm. Trống thì 1000 |
+| `PAYMENT_PROVIDER` | chỉ server | Cổng thanh toán: `vnpay` (mặc định) hoặc `paypal` |
+| `VNP_TMN_CODE` | chỉ server | Mã website/merchant do VNPay sandbox cấp |
+| `VNP_HASH_SECRET` | chỉ server | Khóa HMAC-SHA512 của VNPay sandbox; không ghi log hoặc đưa ra trình duyệt |
+| `VNP_URL` | chỉ server | URL cổng thanh toán VNPay sandbox |
+| `VNP_RETURN_URL` | chỉ server | URL đưa trình duyệt về `/payments/return`; trang này chỉ đọc trạng thái database |
+| `PAYPAL_CLIENT_ID` | chỉ server | Client ID của ứng dụng PayPal sandbox |
+| `PAYPAL_CLIENT_SECRET` | chỉ server | Client secret PayPal sandbox; không ghi log hoặc đưa ra trình duyệt |
+| `PAYPAL_API_URL` | chỉ server | REST API base URL của PayPal sandbox |
+| `PAYPAL_RETURN_URL` | chỉ server | URL server `/api/payments/paypal/return` thực hiện capture rồi chuyển sang trang kết quả |
+| `PAYPAL_CANCEL_URL` | chỉ server | URL server `/api/payments/paypal/cancel` ghi nhận hủy và cho tạo đơn mới |
+| `PAYPAL_VND_PER_USD` | chỉ server | Tỷ giá VND cho 1 USD được chốt cho đợt thử; database vẫn giữ số tiền nghiệp vụ bằng VND |
 | `PORT` | chỉ server | Cổng của `npm start` / `next start` (mặc định 3000) |
 
 Tạo file cấu hình từ file mẫu:
@@ -179,6 +191,62 @@ Next.js. Chỉ phiên tổ chức Đoàn Trường có cán bộ mới đổi đ
 Trình tự nâng cấp an toàn: sao lưu, áp migration, chạy test/smoke khi công tắc còn
 TẮT, bootstrap Đoàn Trường nếu cần, đăng nhập Đoàn Trường và bật công tắc. Nếu cần
 quay lui hành vi, tắt công tắc; không xóa grant hay chạy migration ngược.
+
+### Thanh toán Đoàn phí qua cổng sandbox
+
+`PAYMENT_ENABLED` nằm trong bảng `feature_flags` và mặc định **TẮT** sau migration.
+Khi tắt, menu, trang và API khởi tạo thanh toán không hoạt động; các chức năng v1.1.0
+vẫn giữ nguyên. Phiên tổ chức Đoàn Trường có cán bộ bật hoặc tắt công tắc tại
+`/admin/accounts`; database ghi audit cho mỗi lần đổi. Chọn cổng bằng
+`PAYMENT_PROVIDER=vnpay|paypal`; để trống dùng VNPay.
+
+Luồng nghiệp vụ:
+
+1. Đoàn Khoa tạo khoản thu cho một năm dương lịch tại `/admin/payments`; nếu
+   `ORG_ACCOUNTS_ENABLED` tắt thì cán bộ dùng tài khoản cá nhân tại `/payments/manage`.
+2. Mỗi Khoa chọn đúng một mức 2.000, 5.000, 10.000 hoặc 20.000 đồng/tháng. Database
+   tính số tiền cả năm bằng mức × 12; sinh viên không nhập hoặc sửa số tiền.
+3. Sinh viên mở `/payments` và chuyển sang cổng đã cấu hình. Với VNPay, chỉ
+   `/api/payments/ipn` có HMAC-SHA512 hợp lệ mới ghi nhận. Với PayPal, server gọi
+   Orders API v2 để capture khi trình duyệt quay về, rồi đối chiếu `COMPLETED`,
+   `custom_id`, USD và số tiền đã tính trước khi dùng RPC chung ghi đủ tháng 1–12.
+   Trang `/payments/return` chỉ đọc trạng thái database; callback lặp không ghi trùng.
+4. Đoàn Khoa lọc danh sách theo lớp và xuất CSV để nhập lại hệ thống Trung ương.
+
+#### Chạy PayPal sandbox
+
+1. Tạo ứng dụng sandbox trong PayPal Developer Dashboard và đặt Client ID/secret
+   chỉ trong `.env.local`. Đặt `PAYMENT_PROVIDER=paypal`, REST API base URL sandbox,
+   tỷ giá thử và hai URL quay về ứng dụng local tương ứng
+   `/api/payments/paypal/return` và `/api/payments/paypal/cancel`.
+2. Khởi động lại ứng dụng, bật `PAYMENT_ENABLED`, tạo khoản thu rồi đăng nhập tài
+   khoản Personal sandbox trên trang PayPal. Luồng return chạy capture server-to-server,
+   nên kiểm thử local không cần mở tunnel.
+3. Không ghi Client ID, secret, OAuth token, header `Authorization`, email sandbox
+   hoặc dữ liệu thẻ vào Git, log hay ảnh bằng chứng.
+4. `NEXT_PUBLIC_APP_URL`, `PAYPAL_RETURN_URL` và `PAYPAL_CANCEL_URL` phải **cùng một
+   origin** với địa chỉ người dùng mở trình duyệt. Nếu đăng nhập ở `localhost` mà PayPal
+   chuyển về `127.0.0.1` thì cookie phiên không đi kèm và return không capture được.
+   Ví dụ cấu hình đã chạy thật (13/11/2026):
+
+   ```bash
+   PAYMENT_PROVIDER=paypal
+   PAYPAL_API_URL=https://api-m.sandbox.paypal.com
+   NEXT_PUBLIC_APP_URL=http://127.0.0.1:3100
+   PAYPAL_RETURN_URL=http://127.0.0.1:3100/api/payments/paypal/return
+   PAYPAL_CANCEL_URL=http://127.0.0.1:3100/api/payments/paypal/cancel
+   PAYPAL_VND_PER_USD=<tỷ giá thử>
+   PAYPAL_CLIENT_ID=<chỉ trong .env.local>
+   PAYPAL_CLIENT_SECRET=<chỉ trong .env.local>
+   ```
+5. Thanh toán bằng tài khoản sandbox loại **Personal**. Tài khoản **Business** là bên
+   nhận tiền (merchant) của ứng dụng, không dùng để thanh toán. Lần chạy thật 13/11 đăng
+   nhập nhầm tài khoản này nên phải hủy; đơn chuyển `cancelled` và sinh viên tạo đơn mới.
+
+Trang đăng ký VNPay sandbox `sandbox.vnpayment.vn/devreg/` được quan sát trả 404 từ
+ngày 11/11/2026 đến 12/11/2026. `VnpayGateway` vẫn được giữ nguyên để dùng lại khi
+có mã merchant. VNPay cần IPN URL công khai; chỉ mở tunnel tạm sau khi được người
+phụ trách môi trường cho phép và không ghi URL có thông tin truy cập vào Git/log.
 
 ### Import danh mục học vụ
 

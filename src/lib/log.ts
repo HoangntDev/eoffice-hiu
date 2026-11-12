@@ -34,7 +34,7 @@ export function maskEmail(value: string): string {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Khóa có tên như sau bị bỏ hẳn khỏi dòng log (không ghi cả giá trị lẫn tên).
-const FORBIDDEN_KEY = /(pin|password|passwd|token|secret|cookie|authorization|pepper|(api|service_?role|private|secret|access|signing|publishable)_?key)$/i;
+const FORBIDDEN_KEY = /(pin|password|passwd|token|secret|cookie|authorization|pepper|signature|secure_?hash|(api|service_?role|private|secret|access|signing|publishable)_?key)$/i;
 const STUDENT_CODE_KEY = /^(studentCode|student_code|mssv)$/i;
 
 function sanitize(value: unknown, depth: number): unknown {
