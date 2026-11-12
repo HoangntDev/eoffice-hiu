@@ -1,22 +1,16 @@
 import { NextResponse } from "next/server";
-import { appUrl, paypalEnv } from "@/lib/env";
+import { paypalEnv } from "@/lib/env";
 import { errorFields, logEvent, requestIdFrom } from "@/lib/log";
 import { createAdminSupabase } from "@/lib/supabase/server";
 import { processPaypalCapture } from "@/modules/payments/paypal";
 import { PaypalGateway } from "@/modules/payments/paypal-gateway";
 import type { PaypalCapture } from "@/modules/payments/gateway";
-
-function resultUrl(orderRef?: string, gatewayError = false): URL {
-  const url = new URL("/payments/return", appUrl());
-  if (orderRef) url.searchParams.set("order", orderRef);
-  if (gatewayError) url.searchParams.set("gateway_error", "1");
-  return url;
-}
+import { paymentResultUrl } from "@/modules/payments/result-url";
 
 export async function GET(request: Request) {
   const requestId = requestIdFrom(request);
   const providerOrderId = new URL(request.url).searchParams.get("token")?.trim();
-  if (!providerOrderId) return NextResponse.redirect(resultUrl());
+  if (!providerOrderId) return NextResponse.redirect(paymentResultUrl());
   const admin = createAdminSupabase();
   const { data: order } = await admin.from("union_fee_orders")
     .select("order_ref, status, provider_currency, provider_amount")
@@ -25,10 +19,10 @@ export async function GET(request: Request) {
     .maybeSingle();
   if (!order) {
     logEvent("warn", "payment.paypal_return_unknown", { requestId, providerOrderId });
-    return NextResponse.redirect(resultUrl());
+    return NextResponse.redirect(paymentResultUrl());
   }
   if (order.status !== "pending") {
-    return NextResponse.redirect(resultUrl(order.order_ref));
+    return NextResponse.redirect(paymentResultUrl(order.order_ref));
   }
 
   try {
@@ -73,11 +67,11 @@ export async function GET(request: Request) {
       currency: observedCapture?.currency ?? order.provider_currency,
     });
     const gatewayError = result.RspCode === "99" && !observedCapture;
-    return NextResponse.redirect(resultUrl(order.order_ref, gatewayError));
+    return NextResponse.redirect(paymentResultUrl(order.order_ref, gatewayError));
   } catch (error) {
     logEvent("error", "payment.paypal_capture_failed", {
       requestId, orderRef: order.order_ref, providerOrderId, ...errorFields(error),
     });
-    return NextResponse.redirect(resultUrl(order.order_ref, true));
+    return NextResponse.redirect(paymentResultUrl(order.order_ref, true));
   }
 }

@@ -1,13 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireUser } from "@/lib/auth/dal";
-import { configuredPaymentProvider, paypalEnv, vnpayEnv } from "@/lib/env";
+import { paymentProvider, paypalEnv, vnpayEnv } from "@/lib/env";
 import { apiError, HttpError, readJson } from "@/lib/http";
 import { logEvent, requestIdFrom } from "@/lib/log";
 import { clientIp } from "@/lib/request-meta";
 import { createAdminSupabase } from "@/lib/supabase/server";
 import { PaypalGateway } from "@/modules/payments/paypal-gateway";
-import { resolvePaymentProvider } from "@/modules/payments/provider";
 import { VnpayGateway } from "@/modules/payments/vnpay-gateway";
 
 const schema = z.object({ campaignId: z.string().uuid() }).strict();
@@ -45,12 +44,7 @@ export async function POST(request: Request) {
       .eq("id", orderId).single();
     if (orderError || !order) throw new Error("PAYMENT_ORDER_NOT_FOUND_AFTER_CREATE");
     const campaign = order.union_fee_campaigns as unknown as { calendar_year: number };
-    let provider;
-    try {
-      provider = resolvePaymentProvider(configuredPaymentProvider());
-    } catch {
-      throw new Error("CONFIG_INVALID:PAYMENT_PROVIDER");
-    }
+    const provider = paymentProvider();
     let paymentUrl: string;
     let providerOrderId: string | null = null;
     let amountUsd: string | null = null;
