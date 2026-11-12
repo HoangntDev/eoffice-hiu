@@ -1,0 +1,40 @@
+# Đối chiếu DB stack chạy thử (eoffice-payment-final, 583xx), 2026-11-13 05:48 +0700. MSSV che 3 đầu + 2 cuối.
+## Công tắc
+ORG_ACCOUNTS_ENABLED | t
+PAYMENT_ENABLED | t
+## Khoản thu
+2026 | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | 2000 | 24000 | 220***01
+## Đơn (order_ref | SV | provider | status | VND | USD | PayPal order | capture | tạo | cập nhật, giờ VN)
+UF20264B7D62E83C5A4252A448 | 221***01 | paypal | cancelled | 24000 | 0.96 USD | 3PV76443SW464614J | - | 05:12:57 | 05:15:35
+UF202690355809966147A7BBBD | 221***01 | paypal | expired | 24000 | 0.96 USD | 23966964VT5544422 | - | 05:15:46 | 05:31:27
+UF202628FDAD6459B74AF68793 | 220***01 | paypal | paid | 24000 | 0.96 USD | 4MM25966VT6758148 | 6R820438LF665854E | 05:16:34 | 05:17:44
+UF2026EADBFBB5F3E94EDA87A3 | 221***01 | paypal | paid | 24000 | 0.96 USD | 21S969393H886822N | 72G57248YA062632S | 05:31:27 | 05:31:53
+## Dòng tháng theo đơn (đơn | số dòng | số tháng khác nhau | tháng)
+UF202628FDAD6459B74AF68793 | 12 | 12 | 1,2,3,4,5,6,7,8,9,10,11,12
+UF2026EADBFBB5F3E94EDA87A3 | 12 | 12 | 1,2,3,4,5,6,7,8,9,10,11,12
+## Audit (id | action | đơn vị | cán bộ | giờ VN | after_data)
+252 | feature_flag.updated | Đoàn Trường | 999***99 | 22:28:30 | {"reason": "Bật thanh toán Đoàn phí", "enabled": true}
+253 | organization_session.officer_started | Đoàn Trường | 999***99 | 04:47:15 | (lược after_data: không thuộc thanh toán)
+254 | organization_session.officer_started | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | 220***01 | 04:56:26 | (lược after_data: không thuộc thanh toán)
+255 | union_fee.campaign_created | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | 220***01 | 04:57:21 | {"calendar_year": 2026, "monthly_amount": 2000}
+256 | student_profile.saved | - | - | 05:12:34 | (lược after_data: không thuộc thanh toán)
+257 | union_fee.order_created | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:12:57 | {"amount": 24000, "campaign_id": "8e32d4a0-2218-40e3-a4c4-9090ce635834"}
+258 | union_fee.paypal_order_bound | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:12:59 | {"amount": 0.96, "currency": "USD", "provider": "paypal", "provider_order_id": "3PV76443SW464614J"}
+259 | union_fee.payment_cancelled | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:15:35 | {"amount": 24000, "status": "cancelled", "transaction_ref": "3PV76443SW464614J"}
+260 | union_fee.order_created | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:15:46 | {"amount": 24000, "campaign_id": "8e32d4a0-2218-40e3-a4c4-9090ce635834"}
+261 | union_fee.paypal_order_bound | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:15:48 | {"amount": 0.96, "currency": "USD", "provider": "paypal", "provider_order_id": "23966964VT5544422"}
+262 | union_fee.order_created | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:16:34 | {"amount": 24000, "campaign_id": "8e32d4a0-2218-40e3-a4c4-9090ce635834"}
+263 | union_fee.paypal_order_bound | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:16:36 | {"amount": 0.96, "currency": "USD", "provider": "paypal", "provider_order_id": "4MM25966VT6758148"}
+264 | union_fee.payment_paid | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:17:44 | {"amount": 24000, "status": "paid", "transaction_ref": "6R820438LF665854E"}
+265 | union_fee.paypal_capture_recorded | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:17:44 | {"amount": 0.96, "status": "COMPLETED", "currency": "USD", "provider_order_id": "4MM25966VT6758148", "provider_capture_id": "6R820438LF665854E"}
+266 | organization_session.officer_started | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | 220***01 | 05:19:53 | (lược after_data: không thuộc thanh toán)
+267 | union_fee.order_expired | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:31:27 | {"status": "expired"}
+268 | union_fee.order_created | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:31:27 | {"amount": 24000, "campaign_id": "8e32d4a0-2218-40e3-a4c4-9090ce635834"}
+269 | union_fee.paypal_order_bound | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:31:29 | {"amount": 0.96, "currency": "USD", "provider": "paypal", "provider_order_id": "21S969393H886822N"}
+270 | union_fee.payment_paid | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:31:53 | {"amount": 24000, "status": "paid", "transaction_ref": "72G57248YA062632S"}
+271 | union_fee.paypal_capture_recorded | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | - | 05:31:53 | {"amount": 0.96, "status": "COMPLETED", "currency": "USD", "provider_order_id": "21S969393H886822N", "provider_capture_id": "72G57248YA062632S"}
+272 | organization_session.officer_started | Đoàn Khoa Khoa Công Nghệ - Kỹ Thuật | 220***01 | 05:32:47 | (lược after_data: không thuộc thanh toán)
+## Trạng thái order phía PayPal sandbox (GET /v2/checkout/orders, chỉ đọc), 05:2x 13/11
+3PV76443SW464614J | PAYER_ACTION_REQUIRED | custom_id UF20264B7D62E83C5A4252A448 | 0.96 USD | không capture
+23966964VT5544422 | PAYER_ACTION_REQUIRED | custom_id UF202690355809966147A7BBBD | 0.96 USD | không capture
+4MM25966VT6758148 | COMPLETED | custom_id UF202628FDAD6459B74AF68793 | 0.96 USD | capture COMPLETED 6R820438LF665854E

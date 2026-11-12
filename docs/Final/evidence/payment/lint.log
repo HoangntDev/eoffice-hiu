@@ -1,2 +1,3 @@
 npm notice run hiu-youth-e-office@1.2.0 lint
 npm notice run eslint .
+exit=0

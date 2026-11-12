@@ -1,11 +1,16 @@
-PAYMENT_PROVIDER: MISSING
-PAYPAL_CLIENT_ID: MISSING
-PAYPAL_CLIENT_SECRET: MISSING
-PAYPAL_API_URL: MISSING
-PAYPAL_RETURN_URL: MISSING
-PAYPAL_CANCEL_URL: MISSING
-PAYPAL_VND_PER_USD: MISSING
-VNP_TMN_CODE: MISSING
-VNP_HASH_SECRET: MISSING
-VNP_URL: MISSING
-VNP_RETURN_URL: MISSING
+# Kiểm có/không biến cấu hình của app chạy thật (127.0.0.1:3100), 2026-11-12 21:53 +0700
+# Nguồn: biến đặt rõ khi khởi động (script chạy app) + .env.local của worktree chạy thử. Không đọc/ghi giá trị.
+PAYMENT_PROVIDER: có (đặt rõ khi khởi động)
+PAYPAL_API_URL: có (đặt rõ khi khởi động)
+PAYPAL_RETURN_URL: có (đặt rõ khi khởi động)
+PAYPAL_CANCEL_URL: có (đặt rõ khi khởi động)
+NEXT_PUBLIC_APP_URL: có (đặt rõ khi khởi động)
+PAYPAL_CLIENT_ID: có
+PAYPAL_CLIENT_SECRET: có
+PAYPAL_VND_PER_USD: có
+VNP_TMN_CODE: KHÔNG (VNPay sandbox: trang đăng ký 404, không dùng)
+VNP_HASH_SECRET: KHÔNG (VNPay sandbox: trang đăng ký 404, không dùng)
+VNP_URL: KHÔNG (VNPay sandbox: trang đăng ký 404, không dùng)
+VNP_RETURN_URL: KHÔNG (VNPay sandbox: trang đăng ký 404, không dùng)
+PayPal OAuth sandbox (POST /v1/oauth2/token): HTTP 200
+GET /api/health: HTTP 200 {"app":"ok","db":"ok","config":"ok","version":"1.2.0"}
