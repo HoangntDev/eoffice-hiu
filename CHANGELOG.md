@@ -11,38 +11,45 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 - Đoàn Khoa tạo khoản Đoàn phí cho một năm dương lịch với một trong bốn mức
   2.000, 5.000, 10.000 hoặc 20.000 đồng/tháng; database tính khoản đóng gộp 12 tháng (#81).
-- Sinh viên xem khoản phải đóng, chuyển sang VNPay sandbox và xem biên nhận gồm
+- Sinh viên xem khoản phải đóng, chuyển sang VNPay hoặc PayPal sandbox và xem biên nhận gồm
   mã giao dịch, số tiền, mức tháng, năm và thời gian. Không chặn hồ sơ Đoàn viên khi chưa đóng (#81).
 - Danh sách đã đóng/chưa đóng theo Khoa, lọc theo lớp và CSV có cột tháng 1–12 để
   cán bộ nhập lại hệ thống quản lý đoàn viên Trung ương (#81).
 - Công tắc database `PAYMENT_ENABLED`; khi tắt, chức năng thanh toán bị ẩn và hệ
   thống giữ hành vi v1.1.0 (#81).
+- `PaypalGateway` dùng Orders API v2: lấy OAuth token phía server, tạo order
+  `CAPTURE`, quy đổi VND sang USD theo cấu hình và cho phép hủy rồi thanh toán lại (#81).
 
 ### Security
 
-- Tách `PaymentGateway`, `VnpayGateway` và `FakeGateway`. IPN kiểm HMAC-SHA512
-  trước mọi thao tác; Return URL không ghi trạng thái (#81).
+- Tách `PaymentGateway`, `VnpayGateway`, `PaypalGateway` và `FakeGateway`. VNPay
+  kiểm HMAC-SHA512; PayPal chỉ ghi nhận sau capture server-to-server trả `COMPLETED`
+  và khớp mã đơn, currency, số tiền. Trang kết quả không ghi trạng thái (#81).
 - RPC chỉ ghi nhận khi mã đơn đang chờ, số tiền khớp mức × 12 và giao dịch thành
   công. IPN lặp idempotent; sinh viên và Đoàn Khoa khác bị RLS chặn (#81).
-- Log thanh toán chỉ ghi mã đơn, mã giao dịch, kết quả kiểm chữ ký, số tiền và MSSV
+- Log thanh toán chỉ ghi mã đơn, mã giao dịch/capture, trạng thái đối chiếu, số tiền và MSSV
   che giữa; không ghi secret, chữ ký hoặc dữ liệu thẻ (#81).
 
 ### Changed
 
 - Giao dịch lỗi hoặc hủy có thể tạo đơn mới; giao dịch đã đóng đủ năm bị chặn đóng
   trùng. Hệ thống không cung cấp chức năng hoàn tiền (#81).
-- Tăng phiên bản ứng dụng lên 1.2.0 và bổ sung hướng dẫn cấu hình/chạy VNPay sandbox (#81).
+- Tăng phiên bản ứng dụng lên 1.2.0 và bổ sung hướng dẫn chuyển cổng/chạy PayPal
+  hoặc VNPay sandbox (#81).
 
 ### Tests
 
 - Thêm Vitest với FakeGateway và pgTAP cho bốn mức thu, số tiền năm, chữ ký/số
-  tiền sai, đơn không tồn tại, IPN lặp, retry, chống đóng trùng, công tắc và phân quyền (#81).
+  tiền sai, đơn không tồn tại, callback lặp, PayPal capture sai trạng thái/custom_id/
+  currency/amount, retry, chống đóng trùng, công tắc và phân quyền (#81).
 
 ### Migration và rollback
 
-- Thêm migration `20261110224444_online_union_fee_payments.sql`; migration mặc
-  định để `PAYMENT_ENABLED` tắt. Quay lui hành vi bằng công tắc, không sửa hoặc
-  chạy ngược migration đã phát hành.
+- Thêm migration `20261110224444_online_union_fee_payments.sql`,
+  `20261111185625_expire_union_fee_orders.sql` và
+  `20261112134412_paypal_payment_provider.sql`; migration mặc định để
+  `PAYMENT_ENABLED` tắt. Quay lui hành vi bằng công tắc, không sửa hoặc chạy ngược
+  migration đã phát hành.
 
 ## [1.1.0] - 2026-11-10
 

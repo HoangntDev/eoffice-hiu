@@ -1,8 +1,8 @@
 # Bằng chứng thanh toán Đoàn phí (#81)
 
-Thời điểm chốt cục bộ gần nhất: 2026-11-12 02:00:02 +0700. Nhánh
+Thời điểm chốt cục bộ gần nhất: 2026-11-12 20:54:41 +0700. Nhánh
 `feat/81-online-payment`; commit mã nguồn được kiểm tra từ đầu trên stack tách biệt:
-`1dc58d8`. Stack dùng project ID riêng và dải cổng 593xx, không áp migration lên
+`70ffb2a`. Stack dùng project ID riêng và dải cổng 593xx, không áp migration lên
 stack phát triển 543xx.
 
 ## RED
@@ -19,6 +19,10 @@ stack phát triển 543xx.
 - RED mã đơn hết hạn: pgTAP thất bại 6/51, trong đó đơn quá 15 phút vẫn giữ cùng
   `order_ref`, không chuyển `expired`, IPN vẫn ghi đủ 12 tháng và hai assertion
   audit phản ánh các ghi sai kéo theo.
+- RED PayPal: commit `69c9c8b` làm Vitest dừng ở bước nạp vì ba module PayPal chưa
+  tồn tại. pgTAP chạy đủ 70 assertion, thất bại 18 assertion PayPal do thiếu sáu
+  cột và hai RPC mới; lần chạy đầu cũng phát hiện plan ghi nhầm 69 thay vì 70 và
+  được sửa bằng commit test riêng `e55f6df` trước GREEN.
 
 ## GREEN và hồi quy
 
@@ -26,10 +30,10 @@ stack phát triển 543xx.
 |---|---:|
 | ESLint | PASS |
 | TypeScript | PASS |
-| Vitest + coverage | 18 file, 224/224 test PASS |
+| Vitest + coverage | 19 file, 233/233 test PASS |
 | pgTAP, hai công tắc TẮT | 8 file, 205/205 assertion cũ PASS |
-| pgTAP, `ORG_ACCOUNTS_ENABLED` và `PAYMENT_ENABLED` BẬT | 11 file, 357/357 assertion PASS |
-| Next.js production build | PASS, 77 trang |
+| pgTAP, `ORG_ACCOUNTS_ENABLED` và `PAYMENT_ENABLED` BẬT | 11 file, 376/376 assertion PASS |
+| Next.js production build | PASS, 79 trang |
 | Database advisors | 17 cảnh báo cũ; 0 cảnh báo liên quan thanh toán |
 
 Log đã thay đường dẫn máy bằng `<repo>`:
@@ -41,7 +45,10 @@ Log đã thay đường dẫn máy bằng `<repo>`:
 ## Sandbox thật
 
 `sandbox-env-presence.log` chỉ ghi trạng thái có/thiếu, không đọc ra giá trị.
-Cả bốn biến `VNP_TMN_CODE`, `VNP_HASH_SECRET`, `VNP_URL`, `VNP_RETURN_URL` hiện
-đều thiếu; trang đăng ký `https://sandbox.vnpayment.vn/devreg/` đang trả 404 theo
-kiểm tra ngày 12/11/2026. Theo chỉ đạo, không mở tunnel, không chạy thẻ sandbox,
-không tạo ảnh luồng thật, không merge, tag hoặc phát hành.
+Bảy biến `PAYMENT_PROVIDER` và `PAYPAL_*` hiện đều thiếu. Phần FakeGateway, pgTAP,
+lint, typecheck và build đã hoàn tất; chưa gọi PayPal API. Cần người phụ trách điền
+biến trong `.env.local` và đăng nhập tài khoản Personal sandbox để chạy luồng thật.
+
+Trang đăng ký `https://sandbox.vnpayment.vn/devreg/` đang trả 404 từ 11/11 đến lần
+kiểm tra 12/11/2026; bốn biến `VNP_*` cũng thiếu. Theo chỉ đạo, không mở tunnel,
+không tạo ảnh sandbox, không merge, tag hoặc phát hành trước khi chạy thật.
