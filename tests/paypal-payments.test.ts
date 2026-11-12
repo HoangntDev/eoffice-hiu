@@ -28,7 +28,7 @@ const paypalOrder = {
   approvalUrl: "https://www.sandbox.paypal.com/checkoutnow?token=5O190127TN364715T",
   amountUsd: "2.40",
   currency: "USD",
-};
+} as const;
 
 const completedCapture = {
   providerOrderId: paypalOrder.providerOrderId,
@@ -38,7 +38,7 @@ const completedCapture = {
   amountUsd: paypalOrder.amountUsd,
   currency: paypalOrder.currency,
   paidAt: new Date("2026-11-12T13:10:00.000Z"),
-};
+} as const;
 
 describe("PayPal sandbox qua PaymentGateway", () => {
   it("FakeGateway mô phỏng trọn luồng tạo order và capture PayPal", async () => {
@@ -70,7 +70,7 @@ describe("PayPal sandbox qua PaymentGateway", () => {
     [{ amountUsd: "2.41" }, "amount"],
     [{ currency: "EUR" }, "currency"],
     [{ customId: "UF2026OTHER" }, "custom_id"],
-  ])("không ghi database khi %s lệch", async (change) => {
+  ])("không ghi database khi %s lệch", async (change, _field) => {
     const gateway = new FakeGateway(unusedIpn, {
       order: paypalOrder,
       capture: { ...completedCapture, ...change },
@@ -90,7 +90,7 @@ describe("PayPal sandbox qua PaymentGateway", () => {
       recorded = true;
       return { RspCode: "00", Message: "Confirm Success" };
     });
-    const expected = { orderRef: request.orderRef, amountUsd: "2.40", currency: "USD" };
+    const expected = { orderRef: request.orderRef, amountUsd: "2.40", currency: "USD" } as const;
     await expect(processPaypalCapture(gateway, paypalOrder.providerOrderId, expected, record))
       .resolves.toMatchObject({ RspCode: "00" });
     await expect(processPaypalCapture(gateway, paypalOrder.providerOrderId, expected, record))
