@@ -2,7 +2,7 @@
 -- RED: mọi đối tượng mới được gọi qua SQL động để toàn bộ assertion vẫn chạy khi chưa có migration.
 begin;
 \ir helpers/organization_login.inc
-select plan(51);
+select plan(69);
 
 create function pg_temp.val(p_sql text) returns text language plpgsql as $$
 declare v text;
@@ -236,7 +236,50 @@ select is(pg_temp.val($$ select count(*)::text from public.audit_events where ac
 select is(pg_temp.val($$ select count(*)::text from public.audit_events where action in ('union_fee.payment_paid','union_fee.payment_cancelled') $$),
   '2', 'IPN thành công hoặc hủy đều có audit');
 
+-- PayPal Orders API v2: metadata cổng, capture server-to-server và idempotency.
+select has_column('public', 'union_fee_orders', 'provider', 'đơn lưu tên cổng thanh toán');
+select has_column('public', 'union_fee_orders', 'provider_order_id', 'đơn lưu PayPal order id');
+select has_column('public', 'union_fee_orders', 'provider_capture_id', 'đơn lưu PayPal capture id');
+select has_column('public', 'union_fee_orders', 'provider_currency', 'đơn lưu tiền tệ cổng');
+select has_column('public', 'union_fee_orders', 'provider_amount', 'đơn lưu số tiền cổng');
+select has_column('public', 'union_fee_orders', 'provider_approval_url', 'đơn lưu URL phê duyệt để dùng lại trong 15 phút');
+
+set local role authenticated;
+select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000001', pg_temp.c('org1')::uuid);
+select pg_temp.setup($$ insert into payment_ctx values ('campaign2029', public.create_union_fee_campaign(2029, 5000, 'paypal-campaign')::text) $$);
+select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000002', null);
+select pg_temp.setup(format($$ insert into payment_ctx values ('paypal_order', public.create_union_fee_order(%L, 'paypal-order')::text) $$, pg_temp.c('campaign2029')));
+select pg_temp.setup(format($$ insert into payment_ctx select 'paypal_ref', order_ref from public.union_fee_orders where id = %L $$, pg_temp.c('paypal_order')));
+reset role;
+set local role service_role;
+select is(pg_temp.val(format($$ select public.bind_union_fee_paypal_order(%L, '5O190127TN364715T', 2.40, 'USD', 'https://www.sandbox.paypal.com/checkoutnow?token=5O190127TN364715T', 'paypal-bind') $$, pg_temp.c('paypal_ref'))),
+  '00', 'server gắn PayPal order vào đơn pending');
+select is(pg_temp.val(format($$ select provider || '/' || provider_order_id || '/' || provider_currency || '/' || provider_amount::text from public.union_fee_orders where id = %L $$, pg_temp.c('paypal_order'))),
+  'paypal/5O190127TN364715T/USD/2.40', 'metadata PayPal được lưu để đối chiếu');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%1$L, '5O190127TN364715T', '3C679366HH908993A', %1$L, 2.41, 'USD', 'COMPLETED', now(), 'paypal-amount') $$, pg_temp.c('paypal_ref'))),
+  '04', 'capture sai số tiền không được ghi nhận');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%1$L, '5O190127TN364715T', '3C679366HH908993B', %1$L, 2.40, 'EUR', 'COMPLETED', now(), 'paypal-currency') $$, pg_temp.c('paypal_ref'))),
+  '04', 'capture sai currency không được ghi nhận');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%L, '5O190127TN364715T', '3C679366HH908993C', 'UF2026OTHER', 2.40, 'USD', 'COMPLETED', now(), 'paypal-custom') $$, pg_temp.c('paypal_ref'))),
+  '04', 'capture sai custom_id không được ghi nhận');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%1$L, '5O190127TN364715T', '3C679366HH908993D', %1$L, 2.40, 'USD', 'PENDING', now(), 'paypal-pending') $$, pg_temp.c('paypal_ref'))),
+  '99', 'capture chưa COMPLETED không được ghi nhận');
+select is(pg_temp.val(format($$ select status from public.union_fee_orders where id = %L $$, pg_temp.c('paypal_order'))),
+  'pending', 'capture bị từ chối giữ nguyên đơn pending');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%1$L, '5O190127TN364715T', '3C679366HH908993F', %1$L, 2.40, 'USD', 'COMPLETED', '2026-11-12 20:10+07', 'paypal-success') $$, pg_temp.c('paypal_ref'))),
+  '00', 'capture COMPLETED hợp lệ được ghi nhận');
+select is(pg_temp.val(format($$ select status || '/' || provider_capture_id from public.union_fee_orders where id = %L $$, pg_temp.c('paypal_order'))),
+  'paid/3C679366HH908993F', 'đơn lưu trạng thái paid và capture id');
+select is(pg_temp.val(format($$ select count(*)::text from public.union_fee_month_payments where order_id = %L $$, pg_temp.c('paypal_order'))),
+  '12', 'PayPal hợp lệ ghi đủ 12 tháng');
+select is(pg_temp.val(format($$ select public.record_union_fee_paypal_capture(%1$L, '5O190127TN364715T', '3C679366HH908993F', %1$L, 2.40, 'USD', 'COMPLETED', '2026-11-12 20:10+07', 'paypal-repeat') $$, pg_temp.c('paypal_ref'))),
+  '02', 'capture PayPal lặp trả mã idempotent');
+select is(pg_temp.val(format($$ select count(*)::text from public.union_fee_month_payments where order_id = %L $$, pg_temp.c('paypal_order'))),
+  '12', 'capture PayPal lặp không ghi trùng tháng');
+
 update public.feature_flags set enabled = false where key = 'PAYMENT_ENABLED';
+select is(pg_temp.val(format($$ select public.bind_union_fee_paypal_order(%L, '5O190127TN364715U', 2.40, 'USD', 'https://www.sandbox.paypal.com/checkoutnow?token=5O190127TN364715U', 'paypal-flag-off') $$, pg_temp.c('replacement_ref'))),
+  'ERROR: PAYMENT_DISABLED', 'công tắc tắt chặn gắn order PayPal');
 set local role authenticated;
 select pg_temp.cr01_login_as('f1500000-0000-4000-8000-000000000003', null);
 select is(pg_temp.val(format($$ select public.create_union_fee_order(%L, 'flag-off-order')::text $$, pg_temp.c('campaign2026'))),
