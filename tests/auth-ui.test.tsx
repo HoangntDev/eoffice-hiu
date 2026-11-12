@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AccountSecurityPanel } from "@/components/account-security-panel";
 import { AuthFormV2 } from "@/components/auth-form-v2";
 import { LogoutButton } from "@/components/logout-button";
+import { OrganizationLoginForm } from "@/components/organization-login-form";
 import { PinSetupForm } from "@/components/pin-setup-form";
 
 vi.mock("next/navigation", () => ({
@@ -57,5 +58,18 @@ describe("independent account flows", () => {
   it("shows a clear SIGN OUT control", () => {
     render(<LogoutButton />);
     expect(screen.getByRole("button", { name: "Đăng xuất" })).toBeEnabled();
+  });
+
+  it("PIN tổ chức dùng vùng nhập 6 chấm tròn thay cho textbox", () => {
+    render(<OrganizationLoginForm step="organization" groups={[{
+      level: 2,
+      label: "Đoàn Khoa",
+      units: [{ id: "f1100000-0000-4000-8000-000000000001", name: "Đoàn Khoa kiểm thử" }],
+    }]} />);
+    const pin = screen.getByLabelText("PIN tổ chức");
+    expect(pin).toHaveClass("pin-hidden-input");
+    expect(document.querySelectorAll(".pin-dot")).toHaveLength(6);
+    fireEvent.change(pin, { target: { value: "123" } });
+    expect(document.querySelectorAll(".pin-dot--filled")).toHaveLength(3);
   });
 });
