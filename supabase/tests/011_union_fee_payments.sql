@@ -2,7 +2,7 @@
 -- RED: mọi đối tượng mới được gọi qua SQL động để toàn bộ assertion vẫn chạy khi chưa có migration.
 begin;
 \ir helpers/organization_login.inc
-select plan(69);
+select plan(70);
 
 create function pg_temp.val(p_sql text) returns text language plpgsql as $$
 declare v text;
