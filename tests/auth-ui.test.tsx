@@ -72,4 +72,13 @@ describe("independent account flows", () => {
     fireEvent.change(pin, { target: { value: "123" } });
     expect(document.querySelectorAll(".pin-dot--filled")).toHaveLength(3);
   });
+
+  it("PIN cá nhân ở bước xác nhận cán bộ cũng dùng 6 chấm tròn", () => {
+    render(<OrganizationLoginForm step="officer" />);
+    const pin = screen.getByLabelText("PIN cá nhân");
+    expect(pin).toHaveClass("pin-hidden-input");
+    expect(document.querySelectorAll(".pin-dot")).toHaveLength(6);
+    fireEvent.change(pin, { target: { value: "1234" } });
+    expect(document.querySelectorAll(".pin-dot--filled")).toHaveLength(4);
+  });
 });
