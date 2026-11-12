@@ -67,10 +67,10 @@ describe("PayPal sandbox qua PaymentGateway", () => {
   });
 
   it.each([
-    [{ amountUsd: "2.41" }, "amount"],
-    [{ currency: "EUR" }, "currency"],
-    [{ customId: "UF2026OTHER" }, "custom_id"],
-  ])("không ghi database khi %s lệch", async (change, _field) => {
+    { change: { amountUsd: "2.41" }, field: "amount" },
+    { change: { currency: "EUR" }, field: "currency" },
+    { change: { customId: "UF2026OTHER" }, field: "custom_id" },
+  ])("không ghi database khi $field lệch", async ({ change }) => {
     const gateway = new FakeGateway(unusedIpn, {
       order: paypalOrder,
       capture: { ...completedCapture, ...change },
