@@ -60,5 +60,7 @@ Log đã thay đường dẫn máy bằng `<repo>`:
 - `screenshots/`: ảnh do người phụ trách tự chụp.
 
 Trang đăng ký `https://sandbox.vnpayment.vn/devreg/` trả 404 trong ngày 11–12/11/2026,
-nên không có mã merchant VNPay; luồng thật dùng PayPal sandbox. `VnpayGateway` và
+nên không có mã merchant VNPay; luồng thật dùng PayPal sandbox. Ảnh:
+`vnpay-404/vnpay-devreg-404-2026-11-11.png` (10:18 11/11) và
+`vnpay-404/vnpay-devreg-404-2026-11-12.png` (19:52 12/11). `VnpayGateway` và
 toàn bộ test VNPay giữ nguyên.
