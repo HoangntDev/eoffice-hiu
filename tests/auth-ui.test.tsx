@@ -62,7 +62,7 @@ describe("independent account flows", () => {
 
   it("PIN tổ chức dùng vùng nhập 6 chấm tròn thay cho textbox", () => {
     render(<OrganizationLoginForm step="organization" groups={[{
-      level: 2,
+      level: "faculty_union",
       label: "Đoàn Khoa",
       units: [{ id: "f1100000-0000-4000-8000-000000000001", name: "Đoàn Khoa kiểm thử" }],
     }]} />);
