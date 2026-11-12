@@ -5,7 +5,12 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
-## [1.2.0] - Unreleased
+## [1.2.0] - 2026-11-13
+
+Thanh toán Đoàn phí trực tuyến (#81). Trang đăng ký VNPay sandbox
+(`sandbox.vnpayment.vn/devreg/`) trả 404 trong ngày 11–12/11/2026 nên không lấy được
+mã merchant; bản này chạy thật bằng **PayPal sandbox** (`PAYMENT_PROVIDER=paypal`) và
+giữ nguyên `VnpayGateway` để chuyển lại khi có mã VNPay.
 
 ### Added
 
@@ -50,6 +55,21 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
   `20261112134412_paypal_payment_provider.sql`; migration mặc định để
   `PAYMENT_ENABLED` tắt. Quay lui hành vi bằng công tắc, không sửa hoặc chạy ngược
   migration đã phát hành.
+
+### Fixed
+
+- Khôi phục vùng nhập PIN 6 chấm ở bước 1 (PIN tổ chức) và PIN xác nhận cán bộ của
+  đăng nhập tổ chức. Thay đổi ngoài phạm vi thanh toán, phát hiện khi chạy thử, có
+  RED/GREEN riêng (#81).
+
+### Known issues
+
+- #84: bấm "Đăng xuất" có thể kẹt ở "Đang đăng xuất…"; đăng xuất phiên tổ chức không
+  kết thúc phiên cán bộ và chuyển về `/login` thay vì `/admin/login`.
+- #85: trình duyệt còn cookie của phiên đã bị thu hồi (sau đăng xuất, "Đổi cán bộ",
+  thu hồi thành viên) thì mọi trang, kể cả `/login`, trả 500 cho tới khi xóa cookie.
+  Cách tránh tạm thời: xóa cookie của site hoặc đóng mọi cửa sổ ẩn danh rồi mở lại.
+- Hai lỗi trên có từ v1.1.0 và sẽ sửa ở bản vá sau v1.2.0.
 
 ## [1.1.0] - 2026-11-10
 

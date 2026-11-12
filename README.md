@@ -224,6 +224,24 @@ Luồng nghiệp vụ:
    nên kiểm thử local không cần mở tunnel.
 3. Không ghi Client ID, secret, OAuth token, header `Authorization`, email sandbox
    hoặc dữ liệu thẻ vào Git, log hay ảnh bằng chứng.
+4. `NEXT_PUBLIC_APP_URL`, `PAYPAL_RETURN_URL` và `PAYPAL_CANCEL_URL` phải **cùng một
+   origin** với địa chỉ người dùng mở trình duyệt. Nếu đăng nhập ở `localhost` mà PayPal
+   chuyển về `127.0.0.1` thì cookie phiên không đi kèm và return không capture được.
+   Ví dụ cấu hình đã chạy thật (13/11/2026):
+
+   ```bash
+   PAYMENT_PROVIDER=paypal
+   PAYPAL_API_URL=https://api-m.sandbox.paypal.com
+   NEXT_PUBLIC_APP_URL=http://127.0.0.1:3100
+   PAYPAL_RETURN_URL=http://127.0.0.1:3100/api/payments/paypal/return
+   PAYPAL_CANCEL_URL=http://127.0.0.1:3100/api/payments/paypal/cancel
+   PAYPAL_VND_PER_USD=<tỷ giá thử>
+   PAYPAL_CLIENT_ID=<chỉ trong .env.local>
+   PAYPAL_CLIENT_SECRET=<chỉ trong .env.local>
+   ```
+5. Thanh toán bằng tài khoản sandbox loại **Personal**. Tài khoản **Business** là bên
+   nhận tiền (merchant) của ứng dụng, không dùng để thanh toán. Lần chạy thật 13/11 đăng
+   nhập nhầm tài khoản này nên phải hủy; đơn chuyển `cancelled` và sinh viên tạo đơn mới.
 
 Trang đăng ký VNPay sandbox `sandbox.vnpayment.vn/devreg/` được quan sát trả 404 từ
 ngày 11/11/2026 đến 12/11/2026. `VnpayGateway` vẫn được giữ nguyên để dùng lại khi
