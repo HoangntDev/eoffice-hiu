@@ -1,0 +1,13 @@
+# Smoke 8 bước, gói v1.2.1 tải từ Release (SHA-256 142baec4… khớp), 2026-11-13 07:14:42 +0700
+# Gói cài ở ~/Developer/eoffice-smoke-v1.2.1/app, stack eoffice-smoke-v120 (584xx, không phải DB đang dùng), cổng 3600
+# Công tắc: ORG_ACCOUNTS_ENABLED=false, PAYMENT_ENABLED=false
+[Bước 1] PASS – log có Ready: 1, MISSING_ENV: 0
+[Bước 2] PASS – GET / → 200
+[Bước 3] PASS – stack healthy; GET /forms → 200; có biểu mẫu từ DB: 1
+[Bước 4] PASS – GET /programs → 307 http://127.0.0.1:3600/login?next=%2Fprograms
+/api/health: {"app":"ok","db":"ok","config":"ok","version":"1.2.1"}
+[Bước 5] PASS – URL /onboarding/profile; thanh trên: "PB Phạm Quốc Bảo 2201110203 ▾"
+[Bước 6] PASS – "Việc của tôi": true; cột: CHƯƠNG TRÌNH | ĐƠN VỊ | THỜI GIAN | ĐĂNG KÝ CỦA TÔI; dòng trước: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 22/11/26 Đang mở đăng ký Xem"
+[Bước 7] PASS – thông báo: "Đăng ký thành công. Bạn đã được xác nhận tham gia."; dòng sau: "Ngày hội Hiến máu tình nguyện “Giọt hồng HIU” 2026 Sảnh tòa nhà A, cơ sở chính Đoàn Khoa Công Nghệ - Kỹ Thuật 07:30 22/11/26 Đã xác nhận Xem"; "Việc của tôi" có chương trình: true
+[Bước 8] PASS – về /login sau 425 ms, có nút Đăng nhập: true; mở /programs → /login?next=%2Fprograms
+5xx trong toàn bộ smoke: không
