@@ -15,8 +15,15 @@ export async function createUserSupabase() {
     cookies: {
       getAll: () => cookieStore.getAll(),
       setAll: (cookiesToSet) => {
-        for (const cookie of cookiesToSet) {
-          cookieStore.set(cookie.name, cookie.value, cookie.options);
+        // Server Component không được ghi cookie (Next ném lỗi). Khi supabase-js tự xóa phiên đã bị thu hồi
+        // trong lúc render thì bỏ qua để trang hiển thị như khách thay vì 500 (#85); việc xóa cookie thật
+        // do proxy và route handler đảm nhận.
+        try {
+          for (const cookie of cookiesToSet) {
+            cookieStore.set(cookie.name, cookie.value, cookie.options);
+          }
+        } catch {
+          // Đang render Server Component: không ghi được cookie, giữ nguyên.
         }
       },
     },

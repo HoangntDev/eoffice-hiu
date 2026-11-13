@@ -81,7 +81,7 @@ export function AccountMenu({ fullName, studentCode, email, organization = false
               {item.label}
             </Link>
           ))}
-          <div className="account-menu-foot"><LogoutButton /></div>
+          <div className="account-menu-foot"><LogoutButton fallbackNext={organization ? "/admin/login" : "/login"} /></div>
         </div>
       )}
     </div>

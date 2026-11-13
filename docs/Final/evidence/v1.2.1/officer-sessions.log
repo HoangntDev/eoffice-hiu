@@ -1,0 +1,6 @@
+# organization_session_officers trên stack eoffice-smoke-v120 sau hai lần chạy Playwright (giờ VN), 2026-11-13 07:06 +0700
+# started | ended_at | auth.sessions còn
+07:05:27 | NULL | f
+07:05:29 | 07:05:29 | f
+07:05:46 | 07:05:46 | f
+07:05:48 | 07:05:49 | f

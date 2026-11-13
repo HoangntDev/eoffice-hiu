@@ -5,6 +5,30 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-11-13
+
+Bản vá phiên đăng nhập. Không có migration, không đổi schema; nâng cấp từ 1.2.0 chỉ cần thay gói.
+
+### Fixed
+
+- Đăng xuất không còn kẹt ở "Đang đăng xuất…" (#84): bỏ header `Clear-Site-Data: "cache"`,
+  `signOut` dùng `scope: "local"` và có giới hạn thời gian; dù Auth lỗi, route vẫn xóa mọi cookie
+  `sb-*` và trả 200. Nút đăng xuất có timeout 8 giây, luôn chuyển về trang đăng nhập và hiện thông
+  báo lỗi nhìn thấy được.
+- Đăng xuất phiên tổ chức kết thúc phiên cán bộ (`end_officer_session`) và chuyển về
+  `/admin/login`; phiên sinh viên về `/login` (#84). Log `auth.logout` ghi kết quả, không ghi
+  token hay cookie.
+- Cookie của phiên đã bị thu hồi (sau đăng xuất, "Đổi cán bộ", thu hồi thành viên) không còn làm
+  mọi trang trả 500 (#85). Proxy hỏi Auth khi có cookie phiên; phiên không còn thì xóa cookie và chuyển
+  về `/login` (hoặc `/admin/login` với khu quản trị). Lỗi hạ tầng (Auth không gọi được, 5xx) vẫn trả
+  503 có mã tham chiếu, không bị coi là "chưa đăng nhập". Server Component không ném lỗi khi
+  supabase-js cố xóa cookie trong lúc render.
+
+### Tests
+
+- Vitest `tests/logout-session.test.ts` và `tests/logout-button.test.tsx` (14 test): commit RED trước,
+  commit sửa sau (#84, #85).
+
 ## [1.2.0] - 2026-11-13
 
 Thanh toán Đoàn phí trực tuyến (#81). Trang đăng ký VNPay sandbox

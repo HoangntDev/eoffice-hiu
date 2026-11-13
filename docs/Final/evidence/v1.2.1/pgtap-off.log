@@ -1,0 +1,12 @@
+Connecting to local database...
+<repo>/supabase/tests/001_business_rules.sql ........... ok
+<repo>/supabase/tests/002_authorization_workflow.sql ... ok
+<repo>/supabase/tests/003_account_lifecycle.sql ........ ok
+<repo>/supabase/tests/004_forms.sql .................... ok
+<repo>/supabase/tests/005_event_programs.sql ........... ok
+<repo>/supabase/tests/006_bootstrap_template_seed.sql .. ok
+<repo>/supabase/tests/007_program_registrations.sql .... ok
+<repo>/supabase/tests/008_program_attendance.sql ....... ok
+All tests successful.
+Files=8, Tests=205,  1 wallclock secs ( 0.06 usr  0.01 sys +  0.12 cusr  0.05 csys =  0.24 CPU)
+Result: PASS
