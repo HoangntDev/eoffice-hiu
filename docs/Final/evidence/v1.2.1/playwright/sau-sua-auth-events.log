@@ -1,0 +1,11 @@
+{"ts":"2026-11-13T00:05:44.627Z","level":"info","source":"auth","event":"auth.logout","requestId":"edfe9ddb-88d2-4d6a-b9ca-5c1bc75467ee","accountType":"student","officerSessionEnded":false,"result":"ok","next":"/login"}
+{"ts":"2026-11-13T00:05:44.635Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"a7a835af-5103-4e22-aa11-4f099a42f1f9","path":"/login","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:46.948Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"74806ac1-4b91-493b-b362-2f28920f6426","path":"/admin/settings","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:46.967Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"e640acde-7d2c-4882-a09d-5cfd4edecfb9","path":"/admin/programs","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:47.008Z","level":"info","source":"auth","event":"auth.logout","requestId":"7d57dc53-0f15-4c4d-9769-2b39a03711b3","accountType":"organization","officerSessionEnded":true,"result":"ok","next":"/admin/login"}
+{"ts":"2026-11-13T00:05:47.016Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"7d5c3fbf-89bf-4a23-ac17-2b79fbe76310","path":"/admin/login","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:49.518Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"b8017fc8-d0a1-4594-9945-181b14467f0f","path":"/","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:49.561Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"f7c18940-7bbd-4c2b-9012-3d6a7e7fc272","path":"/admin/settings","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:49.564Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"68883be1-eb3d-4517-85f4-e4bb5edc5580","path":"/admin/forms","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:49.578Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"702a716a-c326-45fb-b1e0-e3e5441a91d3","path":"/admin/programs","reason":"session_missing"}
+{"ts":"2026-11-13T00:05:50.062Z","level":"info","source":"proxy","event":"auth.session_cleared","requestId":"f7b6c4e6-fa37-4276-9055-161fdfc2a180","path":"/","reason":"session_missing"}

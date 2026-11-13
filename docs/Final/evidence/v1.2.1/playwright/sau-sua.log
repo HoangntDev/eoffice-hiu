@@ -1,0 +1,4 @@
+[sau-sua] 1 SV đăng xuất: chuyển trang sau 569 ms → /login; mở /programs → /login?next=%2Fprograms; 5xx: không
+[sau-sua] 2 Tổ chức đăng xuất: chuyển trang sau 350 ms → /admin/login; mở /admin → /login; 5xx: không
+[sau-sua] 3a Tab cũ sau "Đổi cán bộ": HTTP 200 → /login
+[sau-sua] 3b Cookie phiên đã thu hồi: / → HTTP 200 /; /login → HTTP 200 /login; /admin → HTTP 200 /login; /programs → HTTP 200 /login; cookie phiên còn lại: 0; 5xx: không
