@@ -53,3 +53,6 @@ next-env.d.ts
 
 # gói phát hành do scripts/package-release.sh tạo – tải lên Release, không commit
 /dist/
+
+# Ghi chú riêng cho môi trường local
+/docs/context/LOCAL.md
