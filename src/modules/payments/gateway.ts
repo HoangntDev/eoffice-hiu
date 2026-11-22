@@ -23,25 +23,3 @@ export interface PaymentGateway {
 export interface IpnPaymentGateway extends PaymentGateway {
   verifyIpn(params: URLSearchParams): VerifiedPaymentIpn;
 }
-
-export type PaypalOrder = {
-  providerOrderId: string;
-  approvalUrl: string;
-  amountUsd: string;
-  currency: "USD";
-};
-
-export type PaypalCapture = {
-  providerOrderId: string;
-  captureId: string;
-  status: string;
-  customId: string;
-  amountUsd: string;
-  currency: string;
-  paidAt: Date | null;
-};
-
-export interface PaypalPaymentGateway extends PaymentGateway {
-  createPaypalOrder(request: PaymentRequest): Promise<PaypalOrder>;
-  captureOrder(providerOrderId: string): Promise<PaypalCapture>;
-}

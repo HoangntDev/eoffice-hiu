@@ -1,12 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireUser } from "@/lib/auth/dal";
-import { paymentProvider, paypalEnv, vnpayEnv } from "@/lib/env";
+import { vnpayEnv } from "@/lib/env";
 import { apiError, HttpError, readJson } from "@/lib/http";
 import { logEvent, requestIdFrom } from "@/lib/log";
 import { clientIp } from "@/lib/request-meta";
-import { createAdminSupabase } from "@/lib/supabase/server";
-import { PaypalGateway } from "@/modules/payments/paypal-gateway";
 import { VnpayGateway } from "@/modules/payments/vnpay-gateway";
 
 const schema = z.object({ campaignId: z.string().uuid() }).strict();
@@ -40,14 +38,14 @@ export async function POST(request: Request) {
     }
     const { data: order, error: orderError } = await supabase
       .from("union_fee_orders")
-      .select("order_ref, amount, created_at, provider, provider_order_id, provider_currency, provider_amount, provider_approval_url, union_fee_campaigns(calendar_year)")
+      .select("order_ref, amount, created_at, provider, union_fee_campaigns(calendar_year)")
       .eq("id", orderId).single();
     if (orderError || !order) throw new Error("PAYMENT_ORDER_NOT_FOUND_AFTER_CREATE");
     const campaign = order.union_fee_campaigns as unknown as { calendar_year: number };
-    const provider = paymentProvider();
+    if (order.provider !== "vnpay") {
+      throw new HttpError(409, "PAYMENT_PROVIDER_CHANGED", "Đơn đang chờ cổng thanh toán cũ. Vui lòng thử lại sau khi đơn hết hạn.");
+    }
     let paymentUrl: string;
-    let providerOrderId: string | null = null;
-    let amountUsd: string | null = null;
     const paymentRequest = {
       orderRef: order.order_ref,
       amountVnd: order.amount,
@@ -55,47 +53,16 @@ export async function POST(request: Request) {
       ipAddress: clientIp(request.headers),
       createdAt: new Date(order.created_at),
     };
-    if (provider === "paypal") {
-      if (order.provider === "paypal" && order.provider_order_id && order.provider_approval_url) {
-        paymentUrl = order.provider_approval_url;
-        providerOrderId = order.provider_order_id;
-        amountUsd = order.provider_amount == null ? null : Number(order.provider_amount).toFixed(2);
-      } else {
-        try {
-          const paypalOrder = await new PaypalGateway(paypalEnv()).createPaypalOrder(paymentRequest);
-          const admin = createAdminSupabase();
-          const { data: bindCode, error: bindError } = await admin.rpc("bind_union_fee_paypal_order", {
-            p_order_ref: order.order_ref,
-            p_paypal_order_id: paypalOrder.providerOrderId,
-            p_amount_usd: paypalOrder.amountUsd,
-            p_currency: paypalOrder.currency,
-            p_approval_url: paypalOrder.approvalUrl,
-            p_request_id: requestId,
-          });
-          if (bindError || bindCode !== "00") throw new Error("PAYPAL_ORDER_BIND_FAILED");
-          paymentUrl = paypalOrder.approvalUrl;
-          providerOrderId = paypalOrder.providerOrderId;
-          amountUsd = paypalOrder.amountUsd;
-        } catch (error) {
-          if (error instanceof Error && /^(MISSING_ENV|CONFIG_INVALID):/.test(error.message)) throw error;
-          throw new HttpError(503, "PAYMENT_GATEWAY_UNAVAILABLE", "PayPal đang bận. Vui lòng thử lại sau.");
-        }
-      }
-    } else {
-      if (order.provider === "paypal" && order.provider_order_id) {
-        throw new HttpError(409, "PAYMENT_PROVIDER_CHANGED", "Đơn đang chờ PayPal. Vui lòng thử lại sau khi đơn hết hạn.");
-      }
-      try {
-        paymentUrl = await withTimeout(new VnpayGateway(vnpayEnv()).createPaymentUrl(paymentRequest));
-      } catch (error) {
-        if (error instanceof Error && error.message.startsWith("MISSING_ENV:")) throw error;
-        throw new HttpError(503, "PAYMENT_GATEWAY_UNAVAILABLE", "VNPay đang bận. Vui lòng thử lại sau.");
-      }
+    try {
+      paymentUrl = await withTimeout(new VnpayGateway(vnpayEnv()).createPaymentUrl(paymentRequest));
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith("MISSING_ENV:")) throw error;
+      throw new HttpError(503, "PAYMENT_GATEWAY_UNAVAILABLE", "VNPay đang bận. Vui lòng thử lại sau.");
     }
     const { data: account } = await supabase.from("accounts").select("student_code").eq("user_id", user.id).maybeSingle();
     logEvent("info", "payment.checkout_started", {
-      requestId, studentCode: account?.student_code, orderRef: order.order_ref, provider,
-      providerOrderId, amountVnd: order.amount, amountUsd,
+      requestId, studentCode: account?.student_code, orderRef: order.order_ref, provider: order.provider,
+      amountVnd: order.amount,
     });
     return NextResponse.json({ paymentUrl }, { headers: { "x-request-id": requestId } });
   } catch (error) {
