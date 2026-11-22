@@ -11,6 +11,8 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ### Changed
 
+- Ghi audit mỗi lần cán bộ mở thông tin định danh, giới hạn quyền đọc và loại cột CCCD, tôn giáo khỏi CSV biểu mẫu và đăng ký chương trình (#100).
+
 - Log JSON ghi ra stdout/stderr, lọc thêm CCCD và tôn giáo (#95).
 
 ### Removed

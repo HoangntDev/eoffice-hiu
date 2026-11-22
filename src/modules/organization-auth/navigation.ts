@@ -3,7 +3,7 @@ import type { OrganizationUnitType } from "./routing";
 
 export function adminMenuFor(unitType: OrganizationUnitType, paymentEnabled = false): string[] {
   if (unitType === "school_union") {
-    return ["/admin", "/admin/organization", "/admin/accounts", "/admin/forms", "/admin/settings"];
+    return ["/admin", "/admin/organization", "/admin/membership", "/admin/accounts", "/admin/forms", "/admin/settings"];
   }
   if (unitType === "office") {
     return ["/admin", "/admin/reviews", "/admin/membership", "/admin/settings"];
