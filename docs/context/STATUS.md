@@ -13,12 +13,12 @@
 - [x] Bỏ `package-release.sh`; đánh dấu `backup.sh`/`restore.sh` chỉ dùng local (#96)
 - [x] Rút gọn `AGENTS.md`, `CLAUDE.md` chỉ còn `@AGENTS.md` (#89)
 - [ ] Thay danh mục lớp bằng `data/danh-muc-lop.csv` (415 lớp)
-- [ ] Sửa #83 (link xác minh email)
+- [x] Sửa #83: callback giữ origin công khai khi chuyển sang tạo PIN
 - [ ] Bảo vệ dữ liệu nhạy cảm, ô đồng ý, trang chính sách (D-006)
 - [ ] Phát hành v1.3.0
 
 ## Tiếp theo
-- **Giai đoạn 1:** cập nhật danh mục lớp và sửa liên kết xác minh email (#83).
+- **Giai đoạn 1:** cập nhật danh mục lớp và bảo vệ dữ liệu nhạy cảm.
 - **Giai đoạn 2:** tạo Supabase Cloud + Vercel cho staging; cấu hình Auth (Site URL, Redirect URLs), SMTP gửi mail thật; runbook sao lưu cloud.
 - **Giai đoạn 3:** production `doanhoihiu.io.vn`, nhập danh mục và cán bộ Khoa NN&VHQT, tập huấn.
 - **Giai đoạn 4:** cổng thanh toán thật.
@@ -30,7 +30,6 @@
 - Nội dung trang chính sách dữ liệu.
 
 ## Vấn đề đã biết
-- #83: link xác minh email quay về sai origin.
 - Trang `/admin/membership` khó dùng: hiện mã trạng thái tiếng Anh, chọn vai trò bằng tay, hai form không rõ thứ tự.
 - CSV Đoàn phí ghi ngày theo UTC.
 
