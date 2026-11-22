@@ -53,3 +53,9 @@ Chỉ thêm mới. Muốn đổi một quyết định thì thêm mục mới gh
 - Đơn PayPal sandbox chỉ có trên stack local; không đối soát, không chuyển lên production.
 - Không viết migration xóa/sửa dữ liệu PayPal; giữ giá trị 'paypal' trong schema để tương thích.
 - Thí điểm dùng khoản thu mới tạo trên production.
+
+## D-011 – Danh mục lớp và chính sách dữ liệu (22/11/2026)
+- Danh mục dùng 414 lớp; lớp KK23QWV-QD2 (trùng tên KK23QĐV-QD1, 0 sinh viên) chưa nhập, cần phòng Đào tạo xác nhận khi mở rộng toàn trường.
+- Đơn vị chịu trách nhiệm dữ liệu: Đoàn Trường; đầu mối liên hệ: doanhoihiu@gmail.com.
+- Thời hạn lưu: hồ sơ đến 12 tháng sau tốt nghiệp/chuyển sinh hoạt; nhật ký truy cập dữ liệu nhạy cảm 24 tháng.
+- Việc xóa/ẩn danh tự động theo thời hạn lưu: làm sau, tạo issue riêng.

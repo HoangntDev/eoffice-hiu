@@ -14,7 +14,7 @@ function SingleStepForm({ mode, initialError = "" }: { mode: "register" | "recov
   const [message, setMessage] = useState("");
   const [error, setError] = useState(initialError);
 
-  async function send(url: string, body: Record<string, FormDataEntryValue>) {
+  async function send(url: string, body: Record<string, FormDataEntryValue | boolean>) {
     setPending(true); setError(""); setMessage("");
     try {
       const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
@@ -28,12 +28,17 @@ function SingleStepForm({ mode, initialError = "" }: { mode: "register" | "recov
 
   async function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await send(`/api/auth/${mode}`, Object.fromEntries(new FormData(e.currentTarget).entries()));
+    const form = new FormData(e.currentTarget);
+    const values = Object.fromEntries(form);
+    await send(`/api/auth/${mode}`, mode === "register"
+      ? { ...values, dataConsent: form.has("dataConsent") }
+      : values);
   }
 
   async function resendSignup() {
     if (!formRef.current) return;
-    await send("/api/auth/resend-signup", Object.fromEntries(new FormData(formRef.current).entries()));
+    const form = new FormData(formRef.current);
+    await send("/api/auth/resend-signup", { studentCode: String(form.get("studentCode")), gmail: String(form.get("gmail")) });
   }
 
   return (
@@ -45,6 +50,10 @@ function SingleStepForm({ mode, initialError = "" }: { mode: "register" | "recov
         <form ref={formRef} className="stack" style={{ marginTop: 20 }} onSubmit={submit}>
           <label>MSSV<input name="studentCode" inputMode="numeric" pattern="[0-9]{10}" maxLength={10} required autoComplete="username" placeholder="10 chữ số" /></label>
           {mode === "register" && <label>Email sinh viên HIU<input name="gmail" type="email" required autoComplete="email" placeholder="ten@student.hiu.vn" /></label>}
+          {mode === "register" && <label>
+            <input type="checkbox" name="dataConsent" required />
+            <span>Tôi đã đọc <Link href="/chinh-sach-du-lieu" target="_blank" rel="noopener">chính sách dữ liệu cá nhân</Link> và đồng ý cho xử lý dữ liệu theo chính sách này.</span>
+          </label>}
           <button className="primary" disabled={pending}>{pending ? "Đang xử lý…" : (mode === "register" ? "Gửi xác thực" : "Gửi link khôi phục")}</button>
           {mode === "register" && <button type="button" className="secondary" disabled={pending} onClick={() => void resendSignup()}>Gửi lại email xác thực</button>}
         </form>
