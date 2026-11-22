@@ -12,7 +12,7 @@
 - [x] Log JSON ra stdout/stderr (D-007, #95)
 - [x] Bỏ `package-release.sh`; đánh dấu `backup.sh`/`restore.sh` chỉ dùng local (#96)
 - [x] Rút gọn `AGENTS.md`, `CLAUDE.md` chỉ còn `@AGENTS.md` (#89)
-- [ ] Thay danh mục lớp bằng `data/danh-muc-lop.csv` (415 lớp)
+- [x] Danh mục tháng 11 gồm 414 lớp, trong đó có 32 lớp thí điểm (#103, #104).
 - [x] Sửa #83: callback giữ origin công khai khi chuyển sang tạo PIN
 - [x] Giới hạn và audit khi mở định danh, lọc cột nhạy cảm trong CSV (D-006, #100)
 - [ ] Ô đồng ý đăng ký, lưu thời điểm và trang chính sách (D-006)
@@ -29,7 +29,6 @@
 - Tỷ lệ và kỳ Đoàn Khoa nộp lên Đoàn Trường.
 - Danh sách cán bộ Đoàn Khoa NN&VHQT (không đưa vào repo).
 - Nội dung trang chính sách dữ liệu.
-- Danh mục tháng 11 có 415 dòng, 414 mã duy nhất. Hai dòng 134–135 trùng mã và nội dung; chờ xác nhận bản nguồn hoặc bỏ dòng lặp.
 
 ## Vấn đề đã biết
 - Trang `/admin/membership` khó dùng: hiện mã trạng thái tiếng Anh, chọn vai trò bằng tay, hai form không rõ thứ tự.
