@@ -1,6 +1,6 @@
 # HIU Youth E-Office
 
-Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế Hồng Bàng (HIU). Đây là Final Project môn *Phát triển, vận hành, bảo trì phần mềm*. Baseline của môn là tag `course-baseline` trên `main`, gồm 8 use case:
+HIU Youth E-Office phục vụ sinh viên, cán bộ Khoa và Văn phòng Đoàn – Hội Trường Đại học Quốc tế Hồng Bàng. Hệ thống đang được chuẩn bị để thí điểm tại Khoa Ngôn ngữ & Văn hoá Quốc tế. Hiện tại đội vận hành chạy và kiểm thử trên môi trường local.
 
 | UC | Chức năng | Trang chính |
 |---|---|---|
@@ -14,9 +14,9 @@ Văn phòng Đoàn – Hội điện tử cho Trường Đại học Quốc tế
 | UC8 | Điểm danh QR theo lượt, điểm rèn luyện dự kiến đề nghị | `/programs/{id}/attendance`, `/attend/{sessionId}?t=…` |
 | UC9 | Đoàn phí theo tháng, đóng gộp năm qua cổng sandbox và đối chiếu theo lớp | `/payments`, `/admin/payments` |
 
-Bốn use case chính của bản phát hành v1.0.0 (dùng thống nhất trong test case và CHANGELOG): **UC-A** Hồ sơ Đoàn viên (thuộc UC2), **UC-B** Kế hoạch chương trình (UC6), **UC-C** Đăng ký tham gia (UC7), **UC-D** Điểm danh QR và điểm dự kiến đề nghị (UC8). Các UC còn lại là phần nền.
+Theo dõi công việc đang triển khai trong [sổ bàn giao](docs/context/STATUS.md). Phạm vi thí điểm, hạ tầng dự kiến và quy tắc bảo vệ dữ liệu nằm trong [các quyết định đã chốt](docs/context/DECISIONS.md).
 
-Tài liệu nghiệp vụ nằm ở [`docs/requirements/`](docs/requirements/). Báo cáo bài thực hành nằm trong `docs/TH1/` đến `docs/TH4/`. Lịch sử phiên bản: [`CHANGELOG.md`](CHANGELOG.md).
+Tra cứu [yêu cầu nghiệp vụ](docs/requirements/), [hướng dẫn vận hành](docs/operations/) và [lịch sử phát hành](CHANGELOG.md). Bản nộp môn học được lưu tại [tag course-final](https://github.com/HoangntDev/eoffice-hiu/tree/course-final).
 
 ## Công nghệ
 
@@ -54,7 +54,7 @@ Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 ```bash
 # 1. Lấy mã nguồn đúng phiên bản phát hành
 git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
-git switch --detach v1.2.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+git switch --detach v1.2.1            # bỏ bước này nếu muốn chạy bản mới nhất trên main
 
 # 2. Cài dependency đúng theo package-lock.json
 npm ci
@@ -78,13 +78,13 @@ Sau khi app chạy:
 1. Tạo tài khoản đầu tiên tại `/register`. Mở email xác thực trong Mailpit (http://127.0.0.1:54324), rồi tạo PIN.
 2. Tạo tài khoản tổ chức Đoàn Trường đầu tiên (mục "Bootstrap Đoàn Trường" bên dưới).
 3. Import danh mục học vụ (mục "Import danh mục học vụ").
-4. Hoặc, để có ngay dữ liệu mẫu, dựng một stack demo riêng theo [`docs/TH2/demo-data.md`](docs/TH2/demo-data.md).
+4. Để kiểm thử với dữ liệu giả, dùng stack local tách biệt còn trống và làm theo hướng dẫn ở đầu `scripts/seed-demo.mjs`.
 
 Kiểm tra nhanh sau khi cài: [`docs/testing/smoke-test.md`](docs/testing/smoke-test.md). Cài từ gói phát hành (artifact) của GitHub Release, không cần build: [`docs/release/huong-dan-trien-khai.md`](docs/release/huong-dan-trien-khai.md).
 
-Nếu máy đã có một stack Supabase khác chạy ở cổng 543xx, đổi `project_id` và các cổng trong `supabase/config.toml` như ở `docs/TH2/demo-data.md`, rồi sửa `NEXT_PUBLIC_SUPABASE_URL` cho khớp.
+Nếu máy đã dùng cổng 543xx, chọn `project_id` và bộ cổng riêng trong `supabase/config.toml` trước khi dựng stack thử. Trỏ `.env.local` vào đúng URL và khóa của stack đó.
 
-`supabase db reset` xóa toàn bộ dữ liệu local. Chỉ dùng khi bạn chủ động muốn dựng lại DB từ đầu.
+Khi cần kiểm tra cài đặt từ đầu, dựng một stack tách biệt và giữ nguyên DB đang dùng.
 
 ## Build và kiểm thử
 
@@ -142,7 +142,7 @@ supabase status -o env      # lấy API_URL, PUBLISHABLE_KEY (ANON_KEY), SERVICE
 openssl rand -hex 32        # giá trị cho AUTH_RATE_LIMIT_PEPPER
 ```
 
-Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc thì server báo `MISSING_ENV:<tên>`. Mọi biến, kể cả `NEXT_PUBLIC_*`, được đọc **lúc chạy** ở server (app không có Supabase client phía trình duyệt). Vì vậy một bản build dùng được cho mọi môi trường: chỉ cần đổi `.env.local` rồi khởi động lại. Bảng kê cấu hình và dependency: [`docs/TH2/config-dependency.md`](docs/TH2/config-dependency.md).
+Mọi biến được đọc qua `src/lib/env.ts`. Thiếu biến bắt buộc thì server báo `MISSING_ENV:<tên>`. Mọi biến, kể cả `NEXT_PUBLIC_*`, được đọc **lúc chạy** ở server (app không có Supabase client phía trình duyệt). Vì vậy một bản build dùng được cho mọi môi trường: chỉ cần đổi `.env.local` rồi khởi động lại.
 
 ## Tài khoản và email sinh viên
 
@@ -277,7 +277,7 @@ supabase/
   config.toml     Cấu hình stack local
 tests/            Vitest (schema, component, importer)
 scripts/          Import danh mục, bootstrap admin, script kiểm thử đồng thời
-docs/             requirements/, operations/, testing/, release/, reports/, TH1/, TH2/
+docs/             context/, requirements/, operations/, testing/, release/, runbooks/
 data/             CSV danh mục học vụ chính thức
 .github/workflows CI
 ```

@@ -1,4 +1,4 @@
-// Seed dữ liệu demo tiếng Việt cho stack Supabase DEMO tách biệt (xem docs/TH2/demo-data.md).
+// Seed dữ liệu demo tiếng Việt cho stack Supabase DEMO tách biệt.
 //
 // An toàn:
 //   - Không đọc .env.local: chỉ nhận DEMO_SUPABASE_URL và DEMO_SERVICE_ROLE_KEY truyền tường minh.
