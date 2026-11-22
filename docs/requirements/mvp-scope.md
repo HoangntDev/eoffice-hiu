@@ -63,7 +63,7 @@ BTC cấu hình nhiều lượt, điểm tối đa (số nguyên) và một tron
 
 ## Cần xác nhận / NEEDS_USER_ACTION
 
-- CSV `data/DSN LOPWS - Sheet1 (1).csv` đã được đối chiếu checksum với bản người dùng cung cấp: 347 dòng dữ liệu, 10 Khoa, 51 Ngành, 6 Khóa, 347 mã Lớp; không trùng mã hoặc thiếu ô. Import local ngày 02/10/2026 tạo đúng các số lượng này; chạy lại thêm/cập nhật 0 bản ghi.
+- Danh mục hiện hành: `data/danh-muc-lop.csv` (tháng 11/2026). Bản tháng 10 ở tag `course-final` đã được đối chiếu checksum với bản người dùng cung cấp: 347 dòng dữ liệu, 10 Khoa, 51 Ngành, 6 Khóa, 347 mã Lớp; không trùng mã hoặc thiếu ô. Import local ngày 02/10/2026 tạo đúng các số lượng này; chạy lại thêm/cập nhật 0 bản ghi.
 - CSV không có mã Khoa/Ngành riêng: importer giữ tên gốc, để mã chính thức `NULL`; cần nguồn mã.
 - Chưa có nguồn sáu danh mục trình độ/chuyên môn và checklist; UI cho người có quyền cấu hình, không seed giả.
 - Cần xác nhận quy tắc `cycle_key` sau `2026-2027` và nghiệp vụ rút Sổ mở rộng.
