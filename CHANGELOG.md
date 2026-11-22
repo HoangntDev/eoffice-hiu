@@ -5,6 +5,10 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+### Fixed
+
+- Liên kết xác minh email giữ đúng origin khi chuyển đến trang tạo PIN (#83).
+
 ### Changed
 
 - Log JSON ghi ra stdout/stderr, lọc thêm CCCD và tôn giáo (#95).

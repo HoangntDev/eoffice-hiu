@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import type { EmailOtpType, User } from "@supabase/supabase-js";
 import { NextResponse, type NextRequest } from "next/server";
-import { isProduction } from "@/lib/env";
+import { appUrl, isProduction } from "@/lib/env";
 import { createAdminSupabase, createUserSupabase } from "@/lib/supabase/server";
 
 type ConfirmationFlow = "signup" | "finish-signup" | "recovery" | "change-email";
@@ -20,8 +20,8 @@ function failurePath(flow: ConfirmationFlow | null) {
   return "/login?error=confirmation";
 }
 
-function redirect(request: NextRequest, path: string) {
-  return NextResponse.redirect(new URL(path, request.url));
+function redirect(path: string) {
+  return NextResponse.redirect(new URL(path, appUrl()));
 }
 
 async function completeSignup(user: User, flow: "signup" | "finish-signup") {
@@ -105,7 +105,7 @@ export async function handleConfirmation(request: NextRequest) {
   const type = request.nextUrl.searchParams.get("type") as EmailOtpType | null;
   const confirmationMessage = request.nextUrl.searchParams.get("message");
   if (flow === "change-email" && confirmationMessage && !code && !tokenHash) {
-    return redirect(request, "/account/security?email=pending");
+    return redirect("/account/security?email=pending");
   }
   const supabase = await createUserSupabase();
   const result = code
@@ -115,24 +115,24 @@ export async function handleConfirmation(request: NextRequest) {
       : { data: { user: null }, error: new Error("Missing confirmation token") };
 
   if (!flow || result.error || !result.data.user) {
-    return redirect(request, failurePath(flow));
+    return redirect(failurePath(flow));
   }
 
   if (flow === "signup" || flow === "finish-signup") {
     return await completeSignup(result.data.user, flow)
-      ? redirect(request, "/signup/create-pin")
-      : redirect(request, failurePath(flow));
+      ? redirect("/signup/create-pin")
+      : redirect(failurePath(flow));
   }
   if (flow === "change-email") {
     const emailChange = await completeEmailChange(result.data.user);
-    if (emailChange === "updated") return redirect(request, "/account/security?email=updated");
-    if (emailChange === "pending") return redirect(request, "/account/security?email=pending");
-    return redirect(request, failurePath(flow));
+    if (emailChange === "updated") return redirect("/account/security?email=updated");
+    if (emailChange === "pending") return redirect("/account/security?email=pending");
+    return redirect(failurePath(flow));
   }
 
   const recoveryToken = await authorizePinRecovery(result.data.user);
-  if (!recoveryToken) return redirect(request, failurePath(flow));
-  const response = redirect(request, "/account/recover-pin");
+  if (!recoveryToken) return redirect(failurePath(flow));
+  const response = redirect("/account/recover-pin");
   response.cookies.set("pin_recovery", recoveryToken, {
     httpOnly: true,
     sameSite: "lax",
