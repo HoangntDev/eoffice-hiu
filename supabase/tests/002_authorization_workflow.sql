@@ -1,6 +1,6 @@
 begin;
 \ir helpers/organization_login.inc
-select plan(10);
+select plan(17);
 
 insert into auth.users(id, email) values
   ('10000000-0000-4000-8000-000000000001', 'admin0000001@student.hiu.vn'),
@@ -37,10 +37,37 @@ insert into public.membership_application_assignments(application_id, collaborat
 values ('30000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000003',
   '00000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000002');
 
+insert into public.union_identity_details(application_id,date_of_birth,ethnicity,religion,citizen_id,
+  citizen_issued_on,citizen_issued_by,hometown_province_name,hometown_ward_name,
+  permanent_province_name,permanent_ward_name)
+values ('30000000-0000-4000-8000-000000000001','2004-01-01','demo','demo religion','999000000000',
+  '2024-01-01','demo','demo','demo','demo','demo');
+
 select pg_temp.cr01_setup_organization_logins();
 
 set local role authenticated;
 select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000003', null);
+-- Cán bộ phải mở qua RPC. Mỗi lần đọc được ghi một sự kiện riêng.
+select is((select count(*) from public.union_identity_details), 0::bigint, 'CTV không đọc trực tiếp định danh');
+select is((public.read_union_identity_for_review('30000000-0000-4000-8000-000000000001')).religion,
+  'demo religion', 'CTV được phân công mở định danh');
+select is((public.read_union_identity_for_review('30000000-0000-4000-8000-000000000001')).citizen_id,
+  '999000000000', 'CTV mở lại phần nhạy cảm');
+reset role;
+select is((select count(*) from public.audit_events where action='union_application.identity_viewed'
+  and actor_user_id='10000000-0000-4000-8000-000000000003' and target_id='30000000-0000-4000-8000-000000000001'
+  and before_data is null and after_data is null), 2::bigint, 'hai lần xem có hai audit, không lưu dữ liệu định danh');
+set local role authenticated;
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000002','00000000-0000-4000-8000-000000000002');
+select is((public.read_union_identity_for_review('30000000-0000-4000-8000-000000000001')).citizen_id,
+  '999000000000', 'cán bộ xét hồ sơ được mở định danh');
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000001', null);
+select throws_ok($$select public.read_union_identity_for_review('30000000-0000-4000-8000-000000000001')$$,
+  '42501','FORBIDDEN','tài khoản ngoài phạm vi bị từ chối');
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000004', null);
+select is((select religion from public.union_identity_details limit 1), 'demo religion','chủ hồ sơ đọc được thông tin của mình');
+select pg_temp.cr01_login_as('10000000-0000-4000-8000-000000000003', null);
+
 select throws_ok(
   $$select public.review_union_application('30000000-0000-4000-8000-000000000001','recognize','CTV không được duyệt','20000000-0000-4000-8000-000000000002')$$,
   'P0001', 'COLLABORATOR_CANNOT_FINALIZE', 'CTV cannot make final recognition'

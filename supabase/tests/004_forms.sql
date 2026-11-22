@@ -3,7 +3,7 @@
 
 begin;
 \ir helpers/organization_login.inc
-select plan(14);
+select plan(16);
 
 -- ── Setup: create test accounts and roles ─────────────────────────────────────
 
@@ -134,6 +134,18 @@ select throws_ok($$
   insert into public.form_responses(form_id, form_version, questions_snapshot)
   values (gen_random_uuid(), 1, '[]'::jsonb)
 $$, null, null, 'direct insert into form_responses is denied');
+
+reset role;
+update public.forms set questions = '[{"id":"q1","label":"Họ tên"},{"id":"q2","label":"Mã"},{"id":"q3","label":"Tôn giáo"}]'
+where title = 'Biểu mẫu Ban TC-KT';
+insert into public.form_responses(form_id,form_version,questions_snapshot)
+select id,1,'[{"id":"q2","label":"Số CCCD"}]' from public.forms where title = 'Biểu mẫu Ban TC-KT';
+set local role authenticated;
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000003', null);
+select is(public.form_csv_questions((select id from public.forms where title='Biểu mẫu Ban TC-KT')),
+  '[{"id":"q1","label":"Họ tên"}]'::jsonb, 'CSV loại cột nhạy cảm, kể cả cột đã đổi tên');
+select pg_temp.cr01_login_as('aaaaaaaa-0000-4000-8000-000000000002', null);
+select throws_ok($$select public.form_csv_questions(null)$$,'42501','FORBIDDEN','từ chối đọc cấu hình xuất ngoài phạm vi');
 
 select * from finish();
 rollback;

@@ -3,11 +3,6 @@ import { requireUser } from "@/lib/auth/dal";
 import { apiError, HttpError } from "@/lib/http";
 import type { Question } from "@/modules/forms/schemas";
 
-// CSV export: one row per response; columns = stable question labels from the latest snapshot.
-// Why questions_snapshot from the first response rather than live form? Because if questions changed,
-// each response may have a different schema. We use the form's current questions as the column header,
-// then match answers by question_id (stable), so old answers still appear under the right column.
-
 function escapeCsv(value: unknown): string {
   if (value === null || value === undefined) return "";
   const str = Array.isArray(value) ? value.join("; ") : String(value);
@@ -22,23 +17,17 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const { id } = await params;
     const { supabase } = await requireUser();
 
-    // Fetch form (owner check via RLS)
-    const { data: form, error: formError } = await supabase
-      .from("forms")
-      .select("title, questions")
-      .eq("id", id)
-      .single();
-    if (formError || !form) throw new HttpError(404, "FORM_NOT_FOUND", "Biểu mẫu không tồn tại.");
-
-    const questions: Question[] = (form.questions as Question[]) ?? [];
-
     // Fetch responses with answers (RLS restricts to owner org)
     const { data: responses, error: respError } = await supabase
       .from("form_responses")
-      .select("id, respondent_user_id, respondent_email, submitted_at, identity_snapshot")
+      .select("id, respondent_email, submitted_at")
       .eq("form_id", id)
       .order("submitted_at", { ascending: true });
     if (respError) throw new HttpError(403, "FORBIDDEN", "Bạn không có quyền xuất phản hồi.");
+
+    const { data: columns, error: formError } = await supabase.rpc("form_csv_questions", { p_form_id: id });
+    if (formError) throw new HttpError(403, "FORBIDDEN", "Bạn không có quyền xuất phản hồi.");
+    const questions = columns as Question[];
 
     if (!responses || responses.length === 0) {
       return new NextResponse("Không có phản hồi nào.", {
@@ -59,7 +48,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
       answerMap.get(a.response_id)!.set(a.question_id, a.answer_value);
     }
 
-        // Build CSV — sorted by question order
+    // Build CSV — sorted by question order
     const sortedQuestions = [...questions].sort((a, b) => a.order - b.order);
 
     // Option ID → label lookup for choice questions

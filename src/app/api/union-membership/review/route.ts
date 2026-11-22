@@ -22,15 +22,14 @@ export async function GET(request: Request) {
     if (id) {
       const { data: canAccess } = await supabase.rpc("can_access_application", { p_application_id: id });
       if (!canAccess) throw new HttpError(403, "FORBIDDEN", "Hồ sơ không thuộc phạm vi xử lý.");
-      const [{ data: application }, { data: identity }, { data: membership }, { data: qualifications }, { data: checks }, { data: checklistItems }] = await Promise.all([
+      const [{ data: application }, { data: membership }, { data: qualifications }, { data: checks }, { data: checklistItems }] = await Promise.all([
         supabase.from("union_applications").select("*").eq("id", id).single(),
-        supabase.from("union_identity_details").select("*").eq("application_id", id).single(),
         supabase.from("union_membership_details").select("*").eq("application_id", id).single(),
         supabase.from("union_qualification_details").select("*").eq("application_id", id).single(),
         supabase.from("membership_application_checks").select("*").eq("application_id", id),
         supabase.from("membership_review_checklist_items").select("id,code,label,is_required,display_order").eq("is_active",true).order("display_order"),
       ]);
-      return NextResponse.json({ application, identity, membership, qualifications, checks: checks ?? [], checklistItems: checklistItems ?? [] });
+      return NextResponse.json({ application, membership, qualifications, checks: checks ?? [], checklistItems: checklistItems ?? [] });
     }
 
     const { data, error } = await supabase.from("union_applications")

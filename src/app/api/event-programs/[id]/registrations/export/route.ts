@@ -22,9 +22,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       .filter((row) => status === "all" || row.status === status)
       .sort((a, b) => a.registered_at.localeCompare(b.registered_at));
 
-    const { data: settings } = await supabase
-      .from("program_registration_settings").select("form_id, forms(questions)").eq("program_id", id).maybeSingle();
-    const questions = ((settings?.forms as unknown as { questions: Question[] } | null)?.questions ?? []) as Question[];
+    const { data: settings, error: settingsError } = await supabase
+      .from("program_registration_settings").select("form_id").eq("program_id", id).maybeSingle();
+    if (settingsError) throw new Error("REGISTRATION_SETTINGS_READ_FAILED");
+    let questions: Question[] = [];
+    if (settings?.form_id) {
+      const { data: columns, error: columnError } = await supabase.rpc("form_csv_questions", { p_form_id: settings.form_id });
+      if (columnError) throw registrationRpcError(columnError.message);
+      questions = columns as Question[];
+    }
 
     logEvent("info", "program_registration.exported", { requestId, userId: user.id, programId: id, status, rows: rows.length });
     return new NextResponse(buildRegistrationCsv(rows, questions), {
