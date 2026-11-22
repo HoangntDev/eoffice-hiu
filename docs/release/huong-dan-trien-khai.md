@@ -59,7 +59,7 @@ Bảng biến môi trường xem ở README, mục "Biến môi trường".
   3. Import danh mục: `npm run catalog:import -- <file.csv>`, chạy thử trước rồi thêm `--apply`.
 
   Chi tiết các bước ở README.
-- **Môi trường demo hoặc kiểm thử:** dùng `npm run demo:seed -- --confirm-demo` theo `docs/TH2/demo-data.md`. Script chỉ chạy trên DB local còn trống.
+- **Môi trường demo hoặc kiểm thử:** dùng `npm run demo:seed -- --confirm-demo` với các biến cấu hình ở đầu `scripts/seed-demo.mjs`. Script chỉ chạy trên DB local còn trống.
 
 ## 5. Kiểm tra sau triển khai
 
@@ -81,7 +81,7 @@ Nếu có migration mới, migration đã áp không tự gỡ được: phải 
 |---|---|---|
 | v1.0.1 → v1.0.0 | Không đổi (migration cuối của cả hai là `202610150003`) | Rollback không cần đụng DB. v1.0.0 không có `/api/health`, không ghi log ra file |
 
-**Các bước** (đã diễn tập ngày 06/11/2026, số liệu ở `docs/TH3/evidence/rollback/`):
+**Các bước** (đã diễn tập ngày 06/11/2026, số liệu tại [bản lưu](https://github.com/HoangntDev/eoffice-hiu/tree/course-final/docs/TH3/evidence/rollback)):
 
 1. **Quyết định và sao lưu:** kiểm schema như trên, rồi `scripts/backup.sh <stack>`. Diễn tập: 1,2 giây.
 2. **Dừng bản mới:** `kill -TERM $(lsof -t -iTCP:<cổng> -sTCP:LISTEN)` (hoặc Ctrl+C ở cửa sổ chạy `npm start`). Diễn tập: 0,2 giây.
@@ -103,7 +103,7 @@ Tổng từ lúc quyết định rollback tới smoke xong trong diễn tập: *
 
 ## 7. Đóng gói một phiên bản (dành cho người phát hành)
 
-Dùng `scripts/package-release.sh`, không ghép gói bằng tay. Script được thêm sau sự cố đóng gói v1.0.1: gói tải lên lần đầu bị `zip` bỏ mất 2 symlink `.next/node_modules/winston-*` nên `npm start` báo `Cannot find module` (xem `docs/TH3/INC-01-ThieuCauHinh/incident-report.md`).
+Dùng `scripts/package-release.sh`, không ghép gói bằng tay. Script được thêm sau sự cố đóng gói v1.0.1: gói tải lên lần đầu bị `zip` bỏ mất 2 symlink `.next/node_modules/winston-*` nên `npm start` báo `Cannot find module` (xem [báo cáo sự cố](https://github.com/HoangntDev/eoffice-hiu/blob/course-final/docs/TH3/INC-01-ThieuCauHinh/incident-report.md)).
 
 ```bash
 git tag -a v1.0.2 <commit> -m "…" && git push origin v1.0.2   # tag annotated, sau khi CI trên main xanh

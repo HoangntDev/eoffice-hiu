@@ -105,7 +105,7 @@ Lưu ý: bản sao lưu nằm trên cùng máy với DB. Sau mỗi lần sao lư
 
 ### 06/11/2026 – diễn tập đầy đủ bằng script (issue #57)
 
-Stack tách biệt `eoffice-v100` (dữ liệu demo giả, migration `202610150003`); web là bản build có logging (PR #56) chạy ở cổng 3400. Không đụng stack dev chính. Bằng chứng: [`docs/TH3/evidence/backup/`](../TH3/evidence/backup/README.md).
+Stack tách biệt `eoffice-v100` (dữ liệu demo giả, migration `202610150003`); web là bản build có logging (PR #56) chạy ở cổng 3400. Không đụng stack dev chính. Bằng chứng: [`docs/TH3/evidence/backup/`](https://github.com/HoangntDev/eoffice-hiu/blob/course-final/docs/TH3/evidence/backup/README.md).
 
 | Bước | Thời gian |
 |---|---|

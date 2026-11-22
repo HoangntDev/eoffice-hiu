@@ -1,4 +1,4 @@
-// Mọi cấu hình đọc từ biến môi trường đi qua file này (bảng kê: docs/TH2/config-dependency.md).
+// Mọi cấu hình đọc từ biến môi trường đi qua file này (xem mục Biến môi trường trong README.md).
 // Luôn đọc bằng tên động (process.env[name]) để Next không nhúng giá trị NEXT_PUBLIC_* lúc build:
 // app không có Supabase client phía trình duyệt, nên một bản build dùng được cho mọi môi trường.
 import { resolvePaymentProvider, type PaymentProvider } from "@/modules/payments/provider";

@@ -61,7 +61,7 @@ Repo là nguồn sự thật duy nhất. Không dựa vào trí nhớ riêng c�
 
 ## Secret, dữ liệu cá nhân, mạng nội bộ
 - Không commit secret, `.env*` (trừ `.env.example` chỉ có giá trị giữ chỗ), `logs/`, `backups/`, `dist/`, dữ liệu cá nhân thật hoặc dữ liệu test thật. Không dán secret, token, PIN, cookie vào log, issue, PR, báo cáo.
-- Dữ liệu demo/test là dữ liệu giả (MSSV `888…`, `999…`, tài khoản demo trong `docs/TH2/demo-data.md`).
+- Dữ liệu demo/test là dữ liệu giả (MSSV `888…`, `999…`, fixture trong `scripts/seed-demo.mjs`).
 - Khi chia sẻ log hoặc ảnh, che IP mạng nội bộ (10.x, 172.16–31.x, 192.168.x) bằng `<LAN-IP>` và thay đường dẫn máy bằng `~` hoặc `<repo>`. Có thể dùng IP dành cho tài liệu (`198.51.100.x`, `203.0.113.x`).
 - Log ứng dụng không bao giờ ghi PIN, token, cookie, email đầy đủ; MSSV che dạng `221***34` (`src/lib/log.ts`).
 
