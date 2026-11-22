@@ -80,7 +80,7 @@ Sau khi app chạy:
 3. Import danh mục học vụ (mục "Import danh mục học vụ").
 4. Để kiểm thử với dữ liệu giả, dùng stack local tách biệt còn trống và làm theo hướng dẫn ở đầu `scripts/seed-demo.mjs`.
 
-Kiểm tra nhanh sau khi cài: [`docs/testing/smoke-test.md`](docs/testing/smoke-test.md). Cài từ gói phát hành (artifact) của GitHub Release, không cần build: [`docs/release/huong-dan-trien-khai.md`](docs/release/huong-dan-trien-khai.md).
+Kiểm tra nhanh sau khi cài: [`docs/testing/smoke-test.md`](docs/testing/smoke-test.md). Dựng từ tag và quay lui phiên bản theo [`docs/release/huong-dan-trien-khai.md`](docs/release/huong-dan-trien-khai.md).
 
 Nếu máy đã dùng cổng 543xx, chọn `project_id` và bộ cổng riêng trong `supabase/config.toml` trước khi dựng stack thử. Trỏ `.env.local` vào đúng URL và khóa của stack đó.
 

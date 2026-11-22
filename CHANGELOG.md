@@ -11,6 +11,8 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ### Removed
 
+- Bỏ script đóng gói ZIP. Hướng dẫn local dùng mã nguồn tại tag (#96).
+
 - Gỡ cổng PayPal sandbox và quy đổi USD. Báo cáo vẫn đọc được đơn cũ (#93).
 
 ## [1.2.1] - 2026-11-13

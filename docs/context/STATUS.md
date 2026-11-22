@@ -10,7 +10,7 @@
 - [x] Dọn tài liệu và bằng chứng môn học, cập nhật README vận hành (#91)
 - [x] Bỏ PayPal sandbox, giữ khả năng đọc đơn cũ (D-005, D-010, #93)
 - [x] Log JSON ra stdout/stderr (D-007, #95)
-- [ ] Bỏ `package-release.sh`; đánh dấu `backup.sh`/`restore.sh` chỉ dùng local
+- [x] Bỏ `package-release.sh`; đánh dấu `backup.sh`/`restore.sh` chỉ dùng local (#96)
 - [x] Rút gọn `AGENTS.md`, `CLAUDE.md` chỉ còn `@AGENTS.md` (#89)
 - [ ] Thay danh mục lớp bằng `data/danh-muc-lop.csv` (415 lớp)
 - [ ] Sửa #83 (link xác minh email)
@@ -18,7 +18,7 @@
 - [ ] Phát hành v1.3.0
 
 ## Tiếp theo
-- **Giai đoạn 1:** dọn script đóng gói và cập nhật phạm vi sao lưu local.
+- **Giai đoạn 1:** cập nhật danh mục lớp và sửa liên kết xác minh email (#83).
 - **Giai đoạn 2:** tạo Supabase Cloud + Vercel cho staging; cấu hình Auth (Site URL, Redirect URLs), SMTP gửi mail thật; runbook sao lưu cloud.
 - **Giai đoạn 3:** production `doanhoihiu.io.vn`, nhập danh mục và cán bộ Khoa NN&VHQT, tập huấn.
 - **Giai đoạn 4:** cổng thanh toán thật.
