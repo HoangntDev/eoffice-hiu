@@ -20,7 +20,7 @@ scripts/restore.sh <stack> <bản sao lưu|latest> # phục hồi (ghi đè toà
 | Metadata của file (đường dẫn, phiên bản, kích thước) | Postgres, schema `storage` (`storage.objects`, `storage.buckets`) | Cùng file `.dump` |
 | File PDF kế hoạch chương trình (bucket `event-program-plans`) | Thư mục file của container Storage (`/mnt`, backend `file`) | Chép nguyên thư mục ra `.storage/` |
 
-Không sao lưu: lược đồ (bảng, hàm, RLS) vì đã có trong `supabase/migrations/` trên git; `.env.local` và khóa (mỗi máy tự cấu hình, không được chép vào bản sao lưu); log ứng dụng `logs/`.
+Không sao lưu: lược đồ (bảng, hàm, RLS) vì đã có trong `supabase/migrations/` trên git; `.env.local` và khóa (mỗi máy tự cấu hình, không được chép vào bản sao lưu).
 
 Mỗi lần sao lưu tạo trong `backups/` (đã nằm trong `.gitignore`, không commit vì chứa dữ liệu cá nhân):
 
@@ -99,7 +99,7 @@ Lưu ý: bản sao lưu nằm trên cùng máy với DB. Sau mỗi lần sao lư
 - `restore.sh` in "Số bản ghi khớp lúc sao lưu: N bảng" và thoát mã 0. Mã khác 0 nghĩa là có bảng lệch: xem phần `diff` script in ra.
 - Kiểm vài bản ghi mẫu đã biết (tên và trạng thái kế hoạch, trạng thái hồ sơ) và mở được một file PDF kế hoạch.
 - Chạy checklist [`docs/testing/smoke-test.md`](../testing/smoke-test.md) (8 bước) và lưu log vào thư mục bằng chứng.
-- Kiểm log ứng dụng `logs/app-*.log` không có `db.call_failed` sau thời điểm khởi động lại.
+- Kiểm log JSON trên stdout/stderr của ứng dụng không có `db.call_failed` sau thời điểm khởi động lại.
 
 ## 7. Lần diễn tập gần nhất
 

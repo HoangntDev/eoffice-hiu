@@ -5,6 +5,10 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+### Changed
+
+- Log JSON ghi ra stdout/stderr, lọc thêm CCCD và tôn giáo (#95).
+
 ### Removed
 
 - Gỡ cổng PayPal sandbox và quy đổi USD. Báo cáo vẫn đọc được đơn cũ (#93).

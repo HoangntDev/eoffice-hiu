@@ -1,17 +1,7 @@
 // Log JSON có cấu trúc, mỗi sự kiện một dòng. Không bao giờ ghi nội dung PDF, PIN, token, cookie, email đầy đủ.
-// File này chạy được ở mọi runtime: chỉ ghi console. Ghi file (winston) do src/lib/log-node.ts gắn vào
-// lúc khởi động ở runtime Node, qua sink trên globalThis, nên các route không phải nạp winston.
 import { logLevel, type LogLevel as Level } from "@/lib/env";
 
 const order: Record<Level, number> = { debug: 10, info: 20, warn: 30, error: 40 };
-
-export type LogSink = (level: Level, line: string) => void;
-const SINK_KEY = Symbol.for("eoffice.logSink");
-type SinkHolder = { [SINK_KEY]?: LogSink };
-
-export function setLogSink(sink: LogSink | undefined) {
-  (globalThis as SinkHolder)[SINK_KEY] = sink;
-}
 
 export function requestIdFrom(request: Request): string {
   const incoming = request.headers.get("x-request-id");
@@ -34,7 +24,7 @@ export function maskEmail(value: string): string {
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Khóa có tên như sau bị bỏ hẳn khỏi dòng log (không ghi cả giá trị lẫn tên).
-const FORBIDDEN_KEY = /(pin|password|passwd|token|secret|cookie|authorization|pepper|signature|secure_?hash|(api|service_?role|private|secret|access|signing|publishable)_?key)$/i;
+const FORBIDDEN_KEY = /(cccd|citizen_?id|religion|pin|password|passwd|token|secret|cookie|authorization|pepper|signature|secure_?hash|(api|service_?role|private|secret|access|signing|publishable)_?key)$/i;
 const STUDENT_CODE_KEY = /^(studentCode|student_code|mssv)$/i;
 
 function sanitize(value: unknown, depth: number): unknown {
@@ -76,11 +66,6 @@ export function logEvent(level: Level, event: string, fields: Record<string, unk
   if (level === "error") console.error(line);
   else if (level === "warn") console.warn(line);
   else console.info(line);
-  try {
-    (globalThis as SinkHolder)[SINK_KEY]?.(level, line);
-  } catch {
-    // Ghi file lỗi không được làm hỏng request.
-  }
 }
 
 // Lỗi → các trường an toàn để ghi log (stack chỉ ghi ở mức error).

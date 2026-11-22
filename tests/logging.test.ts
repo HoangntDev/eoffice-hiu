@@ -1,10 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { formatLogLine, logEvent, maskEmail, maskStudentCode, setLogSink } from "@/lib/log";
+import { formatLogLine, logEvent, maskEmail, maskStudentCode } from "@/lib/log";
 import { instrumentedFetch, supabaseOperation } from "@/lib/supabase/instrumented-fetch";
 import { apiError, HttpError } from "@/lib/http";
 
 afterEach(() => {
-  setLogSink(undefined);
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
@@ -24,30 +23,11 @@ describe("lọc mức log theo LOG_LEVEL", () => {
     ["info", ["info", "warn", "error"]],
     ["warn", ["warn", "error"]],
     ["error", ["error"]],
-  ] as const)("LOG_LEVEL=%s chỉ ghi %j, cả console lẫn sink file", (configured, expected) => {
+  ] as const)("LOG_LEVEL=%s chỉ ghi %j", (configured, expected) => {
     vi.stubEnv("LOG_LEVEL", configured);
     const lines = captureConsole();
-    const sink = vi.fn();
-    setLogSink(sink);
     for (const level of ["debug", "info", "warn", "error"] as const) logEvent(level, `test.${level}`);
     expect(lines.map((line) => line.level)).toEqual(expected);
-    expect(sink.mock.calls.map(([level]) => level)).toEqual(expected);
-  });
-
-  it("sink nhận đúng dòng JSON đã ghi ra console", () => {
-    vi.stubEnv("LOG_LEVEL", "info");
-    const lines = captureConsole();
-    const sink = vi.fn();
-    setLogSink(sink);
-    logEvent("info", "event_program.submitted", { requestId: "req-12345678", programId: "p1" });
-    expect(JSON.parse(sink.mock.calls[0][1])).toEqual(lines[0]);
-  });
-
-  it("sink lỗi không làm hỏng lời gọi logEvent", () => {
-    vi.stubEnv("LOG_LEVEL", "info");
-    captureConsole();
-    setLogSink(() => { throw new Error("disk full"); });
-    expect(() => logEvent("info", "x.y")).not.toThrow();
   });
 });
 
@@ -109,13 +89,13 @@ describe("che dữ liệu nhạy cảm", () => {
       apikey: "k",
       clientSecret: "s",
       publishableKey: "pk",
-      nested: { otpToken: "999999", ok: 1 },
+      nested: { otpToken: "999999", citizen_id: "sensitive-id", religion: "sensitive-religion", ok: 1 },
       cycleKey: "2026-2027",
       keep: "giữ lại",
     });
     const parsed = JSON.parse(line);
     expect(parsed).toMatchObject({ keep: "giữ lại", cycleKey: "2026-2027", nested: { ok: 1 } });
-    expect(line).not.toMatch(/123456|654321|p@ss|eyJhbGciOi|r-tok|Bearer|srk|999999/);
+    expect(line).not.toMatch(/123456|654321|p@ss|eyJhbGciOi|r-tok|Bearer|srk|999999|sensitive-/);
     expect(line).not.toMatch(/"(pin|newPin|password|accessToken|refresh_token|cookie|authorization|serviceRoleKey|apikey|clientSecret|publishableKey|otpToken)"/);
   });
 });
