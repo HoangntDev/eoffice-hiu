@@ -215,9 +215,9 @@ CSV phải có đúng header và thứ tự `Khoa chủ quản,Tên lớp học,
 ```bash
 eval "$(supabase status -o env 2>/dev/null)"
 NEXT_PUBLIC_SUPABASE_URL="$API_URL" SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" \
-  npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv"            # dry-run
+  npm run catalog:import -- data/danh-muc-lop.csv            # dry-run
 NEXT_PUBLIC_SUPABASE_URL="$API_URL" SUPABASE_SERVICE_ROLE_KEY="$SERVICE_ROLE_KEY" \
-  npm run catalog:import -- "data/DSN LOPWS - Sheet1 (1).csv" --apply
+  npm run catalog:import -- data/danh-muc-lop.csv --apply
 ```
 
 ## Cấu trúc thư mục

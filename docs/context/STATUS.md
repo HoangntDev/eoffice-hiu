@@ -12,7 +12,7 @@
 - [x] Log JSON ra stdout/stderr (D-007, #95)
 - [x] Bỏ `package-release.sh`; đánh dấu `backup.sh`/`restore.sh` chỉ dùng local (#96)
 - [x] Rút gọn `AGENTS.md`, `CLAUDE.md` chỉ còn `@AGENTS.md` (#89)
-- [ ] Thay danh mục lớp bằng `data/danh-muc-lop.csv` (415 lớp)
+- [ ] Danh mục lớp tháng 11 (#103): bản đề xuất bỏ một dòng lặp, 414 mã, 32 lớp thí điểm; đã kiểm tra import trên stack tách biệt. Chờ chốt số liệu.
 - [x] Sửa #83: callback giữ origin công khai khi chuyển sang tạo PIN
 - [x] Giới hạn và audit khi mở định danh, lọc cột nhạy cảm trong CSV (D-006, #100)
 - [ ] Ô đồng ý đăng ký, lưu thời điểm và trang chính sách (D-006)
