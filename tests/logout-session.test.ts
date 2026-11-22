@@ -70,7 +70,6 @@ vi.mock("@supabase/supabase-js", async (importOriginal) => {
   };
 });
 
-import { setLogSink } from "@/lib/log";
 import { createUserSupabase } from "@/lib/supabase/server";
 import { POST as logoutRoute } from "@/app/api/auth/logout/route";
 import { proxy } from "@/proxy";
@@ -109,11 +108,12 @@ beforeEach(() => {
   state.getUserResult = { data: { user: { id: "student-user-id" } }, error: null };
   state.capturedCookieOptions = [];
   logs.length = 0;
-  setLogSink((_level, line) => { logs.push(line); });
+  for (const method of ["info", "warn", "error"] as const) {
+    vi.spyOn(console, method).mockImplementation((line) => { logs.push(String(line)); });
+  }
 });
 
 afterEach(() => {
-  setLogSink(undefined);
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });

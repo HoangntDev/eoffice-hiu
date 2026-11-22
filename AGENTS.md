@@ -94,7 +94,7 @@ Repo là nguồn sự thật duy nhất. Không dựa vào trí nhớ riêng c�
 - `GET /api/health` → `{app, db, config, version}`; 200 khi bình thường.
 
 ## Vận hành, phát hành
-- Logging: `src/lib/log.ts` (`logEvent`, `requestIdFrom`), file `logs/app-%DATE%.log` (winston, xoay theo ngày, giữ 7 file), mức theo `LOG_LEVEL`, ngưỡng chậm `DB_SLOW_MS`. Kiểm tra log để phát hiện secret hoặc dữ liệu nhạy cảm.
+- Logging: `src/lib/log.ts` (`logEvent`, `requestIdFrom`), JSON ra stdout/stderr, mức theo `LOG_LEVEL`, ngưỡng chậm `DB_SLOW_MS`. Kiểm tra log để phát hiện secret hoặc dữ liệu nhạy cảm.
 - Sao lưu/phục hồi: `scripts/backup.sh <stack>`, `scripts/restore.sh <stack> <bản sao lưu|latest>` (từ chối stack dev chính nếu thiếu `--confirm-dev-stack`); runbook `docs/runbooks/backup-restore.md` (RPO 1 giờ, RTO 30 phút).
 - Đóng gói phát hành: `scripts/package-release.sh <version>` (build từ tag annotated, `zip -y` giữ symlink, tự kiểm tra `/api/health`); kiểm gói có sẵn: `--verify <zip> <version>`. Không ghép gói bằng tay.
 - Triển khai, rollback (chỉ khi không đổi schema): `docs/release/huong-dan-trien-khai.md`. Ghi thay đổi vào `CHANGELOG.md` (Keep a Changelog).
