@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     const admin = createAdminSupabase();
     const { data: reserved, error: reservationError } = await admin.rpc(
       "reserve_account_registration",
-      { p_student_code: input.studentCode, p_gmail: input.gmail },
+      { p_student_code: input.studentCode, p_gmail: input.gmail, p_data_consent: input.dataConsent },
     );
     if (reservationError || reserved !== true) {
       await limiter.record(false);

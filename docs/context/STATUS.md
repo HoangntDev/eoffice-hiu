@@ -15,7 +15,7 @@
 - [ ] Thay danh mục lớp bằng `data/danh-muc-lop.csv` (415 lớp)
 - [x] Sửa #83: callback giữ origin công khai khi chuyển sang tạo PIN
 - [x] Giới hạn và audit khi mở định danh, lọc cột nhạy cảm trong CSV (D-006, #100)
-- [ ] Ô đồng ý đăng ký, lưu thời điểm và trang chính sách (D-006)
+- [ ] Ô đồng ý đăng ký và lưu thời điểm đã có ở nhánh của issue #101; trang chính sách đang chờ duyệt (D-006)
 - [ ] Phát hành v1.3.0
 
 ## Tiếp theo

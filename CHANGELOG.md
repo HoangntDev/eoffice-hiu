@@ -5,6 +5,10 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+### Added
+
+- Đăng ký tài khoản yêu cầu xác nhận chính sách dữ liệu và lưu thời điểm đồng ý khi gửi yêu cầu (#101).
+
 ### Fixed
 
 - Liên kết xác minh email giữ đúng origin khi chuyển đến trang tạo PIN (#83).

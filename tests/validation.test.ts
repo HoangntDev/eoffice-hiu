@@ -18,10 +18,15 @@ describe("student account validation", () => {
   });
   it("requires a @student.hiu.vn email matching the MSSV at registration", () => {
     // MSSV 0123456789 → email number must end with "012" + "6789"
-    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"student@example.com" }).success).toBe(false);
-    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0126789@gmail.com" }).success).toBe(false);
-    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0129999@student.hiu.vn" }).success).toBe(false);
-    expect(registerSchema.safeParse({ studentCode:"0123456789",gmail:"an0126789@student.hiu.vn" }).success).toBe(true);
+    expect(registerSchema.safeParse({ dataConsent:true, studentCode:"0123456789",gmail:"student@example.com" }).success).toBe(false);
+    expect(registerSchema.safeParse({ dataConsent:true, studentCode:"0123456789",gmail:"an0126789@gmail.com" }).success).toBe(false);
+    expect(registerSchema.safeParse({ dataConsent:true, studentCode:"0123456789",gmail:"an0129999@student.hiu.vn" }).success).toBe(false);
+    expect(registerSchema.safeParse({ dataConsent:true, studentCode:"0123456789",gmail:"an0126789@student.hiu.vn" }).success).toBe(true);
+  });
+  it("requires explicit consent for a new registration", () => {
+    const identity = { studentCode: "8880001234", gmail: "demo8881234@student.hiu.vn" };
+    expect(registerSchema.safeParse(identity).success).toBe(false);
+    expect(registerSchema.safeParse({ ...identity, dataConsent: false }).success).toBe(false);
   });
   it("accepts only a six-digit PIN", () => {
     expect(pinSchema.safeParse("012345").success).toBe(true);

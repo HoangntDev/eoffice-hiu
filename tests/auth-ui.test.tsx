@@ -20,6 +20,10 @@ describe("independent account flows", () => {
     render(<AuthFormV2 mode="register" />);
     expect(screen.getByLabelText("MSSV")).toBeRequired();
     expect(screen.getByLabelText("Email sinh viên HIU")).toBeRequired();
+    const consent = screen.getByRole("checkbox", { name: /đồng ý/ });
+    expect(consent).toBeRequired();
+    expect(consent).not.toBeChecked();
+    expect(screen.getByRole("link", { name: "chính sách dữ liệu cá nhân" })).toHaveAttribute("href", "/chinh-sach-du-lieu");
     expect(screen.queryByLabelText(/PIN/)).toBeNull();
     expect(screen.getByRole("button", { name: "Gửi lại email xác thực" })).toBeEnabled();
   });

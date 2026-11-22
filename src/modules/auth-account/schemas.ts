@@ -6,7 +6,7 @@ export const studentEmailSchema = z.string().trim().toLowerCase().email().regex(
 export const gmailSchema = studentEmailSchema;
 export const pinSchema = z.string().regex(/^\d{6}$/, "PIN phải có đúng 6 chữ số.");
 
-export const registerSchema = z.object({
+export const registrationIdentitySchema = z.object({
   studentCode: studentCodeSchema,
   gmail: studentEmailSchema,
 }).strict().superRefine((val, ctx) => {
@@ -21,6 +21,8 @@ export const registerSchema = z.object({
     });
   }
 });
+
+export const registerSchema = registrationIdentitySchema.safeExtend({ dataConsent: z.literal(true) });
 
 export const loginSchema = z.object({
   studentCode: studentCodeSchema,
