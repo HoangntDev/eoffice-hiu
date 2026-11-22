@@ -48,3 +48,8 @@ Chỉ thêm mới. Muốn đổi một quyết định thì thêm mục mới gh
 - Bỏ: milestone TH, ảnh chụp bằng chứng, báo cáo môn học.
 - Commit, PR, issue không ghi dấu hiệu công cụ AI.
 - Dùng nhiều công cụ (Codex, Claude Code, Antigravity); bộ nhớ chung theo mục "Bộ nhớ dùng chung" trong `AGENTS.md`.
+
+## D-010 – Dữ liệu PayPal sandbox cũ (22/11/2026)
+- Đơn PayPal sandbox chỉ có trên stack local; không đối soát, không chuyển lên production.
+- Không viết migration xóa/sửa dữ liệu PayPal; giữ giá trị 'paypal' trong schema để tương thích.
+- Thí điểm dùng khoản thu mới tạo trên production.

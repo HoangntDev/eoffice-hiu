@@ -2,7 +2,6 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { PaymentCheckoutButton } from "@/components/payment-checkout-button";
 import { getViewer } from "@/lib/auth/viewer";
-import { paymentProvider } from "@/lib/env";
 import { paymentEnabled } from "@/lib/payments";
 import { createUserSupabase } from "@/lib/supabase/server";
 
@@ -27,7 +26,6 @@ export default async function PaymentsPage() {
   const viewer = await getViewer();
   if (!viewer) redirect("/login?next=/payments");
   if (!await paymentEnabled()) notFound();
-  const provider = paymentProvider();
   const supabase = await createUserSupabase();
   const { data } = await supabase
     .from("union_fee_campaigns")
@@ -57,7 +55,7 @@ export default async function PaymentsPage() {
           {order?.status === "failed" || order?.status === "cancelled" || order?.status === "expired"
             ? <p className="notice warning">Giao dịch trước không thành công; bạn có thể thanh toán lại.</p>
             : null}
-          <PaymentCheckoutButton campaignId={campaign.id} provider={provider} />
+          <PaymentCheckoutButton campaignId={campaign.id} />
         </>}
       </section>;
     })}

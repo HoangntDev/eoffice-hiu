@@ -3,18 +3,18 @@ import { notFound, redirect } from "next/navigation";
 import { paymentEnabled } from "@/lib/payments";
 import { createUserSupabase } from "@/lib/supabase/server";
 
-type Props = { searchParams: Promise<{ vnp_TxnRef?: string; order?: string; gateway_error?: string }> };
+type Props = { searchParams: Promise<{ vnp_TxnRef?: string; order?: string }> };
 
 export default async function PaymentReturnPage({ searchParams }: Props) {
   if (!await paymentEnabled()) notFound();
   const supabase = await createUserSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login?next=/payments");
-  const { vnp_TxnRef, order: paypalOrderRef, gateway_error } = await searchParams;
-  const orderRef = paypalOrderRef ?? vnp_TxnRef;
+  const { vnp_TxnRef, order: savedOrderRef } = await searchParams;
+  const orderRef = savedOrderRef ?? vnp_TxnRef;
   const { data: order } = orderRef
     ? await supabase.from("union_fee_orders")
-      .select("order_ref, amount, status, transaction_ref, paid_at, provider, union_fee_campaigns(calendar_year, monthly_amount)")
+      .select("order_ref, amount, status, transaction_ref, paid_at, union_fee_campaigns(calendar_year, monthly_amount)")
       .eq("order_ref", orderRef).maybeSingle()
     : { data: null };
   if (!order) notFound();
@@ -28,9 +28,7 @@ export default async function PaymentReturnPage({ searchParams }: Props) {
     ? "Giao dịch đã được cổng thanh toán xác nhận và hệ thống đã ghi đủ tháng 1–12."
     : order.status === "cancelled"
       ? "Bạn đã hủy giao dịch. Có thể quay lại khoản thu để thanh toán bằng đơn mới."
-      : gateway_error === "1"
-        ? "PayPal tạm thời chưa phản hồi. Trạng thái chưa được thay đổi; vui lòng thử lại sau."
-        : "Hệ thống chưa nhận được xác nhận hợp lệ. Trang này chỉ đọc trạng thái đã lưu trong cơ sở dữ liệu.";
+      : "Hệ thống chưa nhận được xác nhận hợp lệ. Trang này chỉ đọc trạng thái đã lưu trong cơ sở dữ liệu.";
   return <main className="page"><section className="panel">
     <p className="eyebrow">Kết quả thanh toán</p>
     <h1>{heading}</h1>

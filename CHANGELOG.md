@@ -5,6 +5,10 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+### Removed
+
+- Gỡ cổng PayPal sandbox và quy đổi USD. Báo cáo vẫn đọc được đơn cũ (#93).
+
 ## [1.2.1] - 2026-11-13
 
 Bản vá phiên đăng nhập. Không có migration, không đổi schema; nâng cấp từ 1.2.0 chỉ cần thay gói.
