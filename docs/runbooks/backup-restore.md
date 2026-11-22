@@ -1,4 +1,4 @@
-# Runbook – Sao lưu và phục hồi dữ liệu
+# Sao lưu và phục hồi stack Supabase local
 
 Áp dụng cho stack Supabase local (Docker) của HIU Youth E-Office. Supabase cloud chưa được phê duyệt dùng, nên chưa có quy trình cloud (xem cuối tài liệu).
 
