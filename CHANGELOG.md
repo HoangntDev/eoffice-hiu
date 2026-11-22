@@ -5,6 +5,8 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-22
+
 ### Added
 
 - Đăng ký tài khoản yêu cầu xác nhận chính sách dữ liệu và lưu thời điểm đồng ý khi gửi yêu cầu (#101).
@@ -14,6 +16,8 @@ Mọi thay đổi đáng chú ý của HIU Youth E-Office được ghi ở đây
 - Liên kết xác minh email giữ đúng origin khi chuyển đến trang tạo PIN (#83).
 
 ### Changed
+
+- Cập nhật danh mục tháng 11 với 414 lớp, trong đó có 32 lớp thí điểm (#103).
 
 - Ghi audit mỗi lần cán bộ mở thông tin định danh, giới hạn quyền đọc và loại cột CCCD, tôn giáo khỏi CSV biểu mẫu và đăng ký chương trình (#100).
 

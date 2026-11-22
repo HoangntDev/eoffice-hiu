@@ -3,7 +3,7 @@
 > Sổ bàn giao giữa các công cụ. **Ghi đè** khi cập nhật, giữ dưới 150 dòng. Lịch sử đầy đủ xem `git log`, CHANGELOG, Issues.
 
 **Cập nhật lần cuối:** 22/11/2026
-**Phiên bản mới nhất:** v1.2.1 (tag trên `2baaf97`). Bản nộp môn học: tag `course-final`.
+**Phiên bản:** v1.3.0 đang chuẩn bị phát hành (#106). Bản nộp môn học: tag `course-final`.
 
 ## Giai đoạn hiện tại: 1 – Dọn code để vận hành thật
 - [x] Gắn tag `course-final` trên `cf91cf8` và push lên GitHub
@@ -16,10 +16,10 @@
 - [x] Sửa #83: callback giữ origin công khai khi chuyển sang tạo PIN
 - [x] Giới hạn và audit khi mở định danh, lọc cột nhạy cảm trong CSV (D-006, #100)
 - [x] Ô đồng ý đăng ký, thời điểm đồng ý và chính sách dữ liệu (D-006, D-011, #105).
-- [ ] Phát hành v1.3.0
+- [ ] Phát hành v1.3.0 sau khi đồng bộ bộ lọc CSV và log với chính sách (#109).
 
 ## Tiếp theo
-- **Giai đoạn 1:** kiểm thử và phát hành v1.3.0 (#106). Công việc sau phát hành: thời hạn lưu (#107), quy trình yêu cầu dữ liệu (#108).
+- **Giai đoạn 1:** lọc trường Dân tộc trong CSV và log (#109), sau đó phát hành v1.3.0 (#106). Công việc sau phát hành: thời hạn lưu (#107), quy trình yêu cầu dữ liệu (#108).
 - **Giai đoạn 2:** tạo Supabase Cloud + Vercel cho staging; cấu hình Auth (Site URL, Redirect URLs), SMTP gửi mail thật; runbook sao lưu cloud.
 - **Giai đoạn 3:** production `doanhoihiu.io.vn`, nhập danh mục và cán bộ Khoa NN&VHQT, tập huấn.
 - **Giai đoạn 4:** cổng thanh toán thật.

@@ -54,7 +54,7 @@ Các bước (macOS/Linux; trên Windows dùng Git Bash hoặc WSL):
 ```bash
 # 1. Lấy mã nguồn đúng phiên bản phát hành
 git clone https://github.com/HoangntDev/eoffice-hiu.git && cd eoffice-hiu
-git switch --detach v1.2.1            # bỏ bước này nếu muốn chạy bản mới nhất trên main
+git switch --detach v1.3.0            # bỏ bước này nếu muốn chạy bản mới nhất trên main
 
 # 2. Cài dependency đúng theo package-lock.json
 npm ci
