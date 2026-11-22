@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Phục hồi một stack Supabase local từ bản sao lưu của scripts/backup.sh. Runbook: docs/runbooks/backup-restore.md
+# Chỉ dùng với stack Docker local.
 #
 #   scripts/restore.sh <stack> <bản sao lưu> [--confirm-dev-stack]
 #

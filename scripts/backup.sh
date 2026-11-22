@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Sao lưu một stack Supabase local bằng một lệnh. Runbook: docs/runbooks/backup-restore.md
+# Chỉ dùng với stack Docker local.
 #
 #   scripts/backup.sh <stack>          # <stack> = project_id trong supabase/config.toml, ví dụ eoffice-v100
 #
